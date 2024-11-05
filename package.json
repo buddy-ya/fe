@@ -12,6 +12,7 @@
     "@emotion/css": "^11.13.4",
     "@emotion/native": "^11.11.0",
     "@emotion/react": "^11.13.3",
+    "@react-native-async-storage/async-storage": "^2.0.0",
     "@react-navigation/bottom-tabs": "^6.6.1",
     "@react-navigation/native": "^6.1.18",
     "@react-navigation/native-stack": "^6.11.0",

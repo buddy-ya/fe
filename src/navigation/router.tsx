@@ -10,9 +10,11 @@ import MatchingScreen from "@screens/matching/MatchingScreen";
 import ChatScreen from "@screens/chat/ChatScreen";
 import FeedScreen from "@screens/feed/FeedScreen";
 import MyPageScreen from "@screens/mypage/MyPageScreen";
+import SplashScreen from "@/screens/SplashScreen";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
+const OnboardingStack = createNativeStackNavigator();
 
 function TabNavigator() {
   return (
@@ -26,14 +28,23 @@ function TabNavigator() {
   );
 }
 
+function OnboardingNavigator() {
+  return (
+    <OnboardingStack.Navigator>
+      <OnboardingStack.Screen name="Onboarding" component={OnboardingScreen} />
+    </OnboardingStack.Navigator>
+  );
+}
+
 export default function Router() {
   let isLoggedIn = false;
 
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="Splash" component={SplashScreen} />
         {!isLoggedIn ? (
-          <Stack.Screen name="Onboarding" component={OnboardingScreen} />
+          <Stack.Screen name="Onboarding" component={OnboardingNavigator} />
         ) : (
           <Stack.Screen name="Main" component={TabNavigator} />
         )}
