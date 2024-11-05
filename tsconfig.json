@@ -3,6 +3,7 @@
   "compilerOptions": {
     "strict": false,
     "baseUrl": ".",
+    "moduleResolution": "node",
     "paths": {
       "@/*": ["src/*"],
       "@components/*": ["src/components/*"],
