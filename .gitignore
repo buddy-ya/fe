@@ -1,0 +1,32 @@
+# dependencies
+node_modules/
+npm-debug.*
+
+# expo
+.expo/
+dist/
+web-build/
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+*.orig.*
+
+# macOS
+.DS_Store
+*.pem
+
+# local env files
+.env*.local
+.env
+
+# typescript
+*.tsbuildinfo
+
+# IDE
+.idea/
+.vscode/
+
+# logs
+*.log
