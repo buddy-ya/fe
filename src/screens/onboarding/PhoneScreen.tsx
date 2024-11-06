@@ -8,6 +8,7 @@ import KeyboardLayout from "@/components/common/KeyboardLayout";
 import InnerLayout from "@/components/common/InnerLayout";
 import HeadingDescription from "@/components/onboarding/HeadingDescription";
 import { ChevronRight, Lock } from "lucide-react-native";
+import KoreaLogo from "@assets/icons/korea.svg";
 
 export default function PhoneScreen({ navigation }) {
   const { t } = useTranslation("onboarding");
@@ -46,16 +47,22 @@ export default function PhoneScreen({ navigation }) {
         <InnerLayout>
           <Heading className="mt-8">{t("phone.title")}</Heading>
           <HeadingDescription>{t("phone.titleDescription")}</HeadingDescription>
-          <TextInput
-            value={phone}
-            onChangeText={handlePhoneChange}
-            keyboardType="number-pad"
-            maxLength={11}
-            placeholder={t("phone.placeholder")}
-            className="mt-12 px-4 py-3 w-[70%] text-xl tracking-wide border border-gray-400 rounded-xl"
-            placeholderTextColor="#999"
-            autoFocus
-          />
+          <View className="mt-12 flex-row items-center">
+            <View className="flex-row items-center mr-4 px-3 py-3 border rounded-lg border-gray-500">
+              <KoreaLogo />
+              <Text className="ml-2 text-xl">+82</Text>
+            </View>
+            <TextInput
+              value={phone}
+              onChangeText={handlePhoneChange}
+              keyboardType="number-pad"
+              maxLength={11}
+              placeholder={t("phone.placeholder")}
+              className="px-4 py-3 w-[60%] text-xl tracking-wide border border-gray-500 rounded-xl"
+              placeholderTextColor="#999"
+              autoFocus
+            />
+          </View>
           <Text className="text-gray-400 text-[14px] ml-2 mt-4">
             {t("phone.description")}
           </Text>

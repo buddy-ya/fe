@@ -14,7 +14,7 @@ export default function SplashScreen({ navigation }) {
       if (token) {
         navigation.navigate("Main");
       } else {
-        navigation.navigate("Onboarding", { screen: "OnboardingNotification" });
+        navigation.navigate("Onboarding", { screen: "OnboardingPhone" });
       }
     } catch (error) {
       console.error("App initialization failed:", error);

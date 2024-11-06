@@ -73,7 +73,7 @@ export default function PhoneVerificationScreen({ navigation, route }) {
       <KeyboardLayout footer={footer}>
         <InnerLayout>
           <Heading className="mt-8">{t("verification.title")}</Heading>
-          <HeadingDescription className="mb-12">
+          <HeadingDescription className="mb-10 mt-1">
             {`${phoneNumber}으로 전송된 코드를 입력하세요.`}
           </HeadingDescription>
           <OTPInput value={code} onChange={setCode} length={6} />

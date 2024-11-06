@@ -36,8 +36,8 @@ export default function OTPInput({
               border rounded-lg 
               items-center justify-center
               mr-3
-              ${value[index] ? "border-primary" : "border-gray-600"}
             `}
+            // ${value[index] ? "border-primary" : "border-gray-600"}
           >
             <Text
               className={`text-lg ${
