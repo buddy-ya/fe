@@ -13,7 +13,8 @@
   },
   "verification": {
     "title": "방금 인증코드를 보내드렸어요!",
-    "notReceived": "인증코드를 받지 못하셨나요?",
+    "notReceived": "인증코드를 입력해주세요",
+    "expired": "인증 시간이 만료되었습니다",
     "resend": "인증코드 재발송"
   }
 }
