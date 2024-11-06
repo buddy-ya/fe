@@ -28,7 +28,7 @@ export default function PhoneVerificationScreen({ navigation, route }) {
   };
 
   const handleNavigateButton = () => {
-    navigation.navigate("#");
+    navigation.replace("OnboardingNotification");
   };
 
   const renderTimerContent = () => {
