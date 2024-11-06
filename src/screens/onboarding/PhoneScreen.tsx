@@ -7,6 +7,7 @@ import Heading from "@/components/onboarding/Heading";
 import KeyboardLayout from "@/components/common/KeyboardLayout";
 import InnerLayout from "@/components/common/InnerLayout";
 import HeadingDescription from "@/components/onboarding/HeadingDescription";
+import { ChevronRight, Lock } from "lucide-react-native";
 
 export default function PhoneScreen({ navigation }) {
   const { t } = useTranslation("onboarding");
@@ -14,7 +15,7 @@ export default function PhoneScreen({ navigation }) {
   const [isValid, setIsValid] = useState(false);
 
   useEffect(() => {
-    const phoneRegex = /^[0-9]{11}$/;
+    const phoneRegex = /^010\d{8}$/;
     setIsValid(phoneRegex.test(phone));
   }, [phone]);
 
@@ -27,15 +28,21 @@ export default function PhoneScreen({ navigation }) {
     navigation.navigate("OnboardingPhoneVerification", { phone });
   };
 
-  const nextButton = (
-    <Button type="circle" onPress={handleNavigateButton} disabled={!isValid}>
-      <Text className="text-white text-2xl">→</Text>
-    </Button>
+  const footer = (
+    <View className="w-full absolute flex-row items-center justify-between px-4 bottom-4">
+      <View className="flex-1 flex-row items-center mr-4">
+        <Lock strokeWidth={1} color={"black"} />
+        <Text className="text-sm mx-4">{t("phone.footer")}</Text>
+      </View>
+      <Button type="circle" onPress={handleNavigateButton} disabled={!isValid}>
+        <ChevronRight strokeWidth={2} size={32} color={"white"} />
+      </Button>
+    </View>
   );
 
   return (
     <Layout showHeader onBack={() => navigation.goBack()}>
-      <KeyboardLayout bottomButton={nextButton}>
+      <KeyboardLayout footer={footer}>
         <InnerLayout>
           <Heading>{t("phone.title")}</Heading>
           <HeadingDescription>{t("phone.titleDescription")}</HeadingDescription>
@@ -45,11 +52,10 @@ export default function PhoneScreen({ navigation }) {
             keyboardType="number-pad"
             maxLength={11}
             placeholder={t("phone.placeholder")}
-            className="mt-12 px-6 py-3 w-[70%] text-xl tracking-wide border border-gray-400 rounded-xl"
+            className="mt-12 px-4 py-3 w-[70%] text-xl tracking-wide border border-gray-400 rounded-xl"
             placeholderTextColor="#999"
             autoFocus
           />
-
           <Text className="text-gray-400 text-[14px] ml-2 mt-4">
             {t("phone.description")}
           </Text>

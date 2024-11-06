@@ -9,13 +9,10 @@ interface HeaderProps {
 
 export default function Header({ onBack, showBackButton = true }: HeaderProps) {
   return (
-    <View className="px-0 py-4 flex-row items-center">
+    <View className="px-4 py-4 flex-row items-center">
       {showBackButton && (
-        <TouchableOpacity
-          onPress={onBack}
-          className="ml-2 flex-row items-center"
-        >
-          <ChevronLeft size={32} color="#000000" />
+        <TouchableOpacity onPress={onBack} className="flex-row items-center">
+          <ChevronLeft strokeWidth={2} size={24} color="#000000" />
           <Text className="text-xl">뒤로</Text>
         </TouchableOpacity>
       )}

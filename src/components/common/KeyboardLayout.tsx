@@ -3,12 +3,12 @@ import { KeyboardAvoidingView, Platform, View } from "react-native";
 
 interface KeyboardLayoutProps {
   children: ReactNode;
-  bottomButton?: ReactNode;
+  footer?: ReactNode;
 }
 
 export default function KeyboardLayout({
   children,
-  bottomButton,
+  footer,
 }: KeyboardLayoutProps) {
   return (
     <KeyboardAvoidingView
@@ -17,9 +17,7 @@ export default function KeyboardLayout({
     >
       <View className="flex-1">
         {children}
-        {bottomButton && (
-          <View className="absolute bottom-8 right-5">{bottomButton}</View>
-        )}
+        {footer}
       </View>
     </KeyboardAvoidingView>
   );
