@@ -2,10 +2,10 @@ import Layout from "@/components/common/Layout";
 import React from "react";
 import { View, Text } from "react-native";
 
-export default function BuddyyaIdCard() {
+export default function UniversitySelectScreen() {
   return (
     <Layout>
-      <Text>BuddyyaIdCard</Text>
+      <Text>UniversitySelectScreen</Text>
     </Layout>
   );
 }

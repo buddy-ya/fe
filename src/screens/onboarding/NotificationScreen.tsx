@@ -23,7 +23,7 @@ export default function NotificationScreen({ navigation }) {
       }
 
       if (finalStatus === "granted") {
-        navigation.replace("OnboardingBuddyyaIdCard");
+        navigation.replace("OnboardingStudentInfo");
       } else {
       }
     } catch (error) {
