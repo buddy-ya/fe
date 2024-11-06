@@ -12,6 +12,8 @@ import ChatScreen from "@screens/chat/ChatScreen";
 import FeedScreen from "@screens/feed/FeedScreen";
 import MyPageScreen from "@screens/mypage/MyPageScreen";
 import PhoneScreen from "@/screens/onboarding/PhoneScreen";
+import PhoneVerificationScreen from "@/screens/onboarding/PhoneVerificationScreen";
+import NotificationScreen from "@/screens/onboarding/NotificationScreen";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -31,13 +33,20 @@ function TabNavigator() {
 
 function OnboardingNavigator() {
   return (
-    <OnboardingStack.Navigator>
+    <OnboardingStack.Navigator screenOptions={{ headerShown: false }}>
       <OnboardingStack.Screen
         name="OnboardingWelcome"
         component={WelcomeScreen}
-        options={{ headerShown: false }}
       />
       <OnboardingStack.Screen name="OnboardingPhone" component={PhoneScreen} />
+      <OnboardingStack.Screen
+        name="OnboardingPhoneVerification"
+        component={PhoneVerificationScreen}
+      />
+      <OnboardingStack.Screen
+        name="OnboardingNotification"
+        component={NotificationScreen}
+      />
     </OnboardingStack.Navigator>
   );
 }

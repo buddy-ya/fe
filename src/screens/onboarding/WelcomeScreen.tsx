@@ -1,25 +1,20 @@
 import React from "react";
-import {
-  View,
-  Text,
-  Image,
-  SafeAreaView,
-  TouchableOpacity,
-} from "react-native";
+import { View, Text, Image, SafeAreaView } from "react-native";
 import { useTranslation } from "react-i18next";
 import "@/../global.css";
 import Button from "@/components/common/Button";
+import InnerLayout from "@/components/common/InnerLayout";
 
 export default function WelcomeScreen({ navigation }) {
   const { t } = useTranslation("onboarding");
 
-  const handleButton = () => {
+  const handleNavigateButton = () => {
     navigation.navigate("OnboardingPhone");
   };
 
   return (
     <SafeAreaView className="flex-1 bg-white">
-      <View className="flex-1 px-4">
+      <InnerLayout>
         <View className="items-center mt-[60px]">
           <Image
             source={require("@assets/images/onboarding/logo.png")}
@@ -46,12 +41,12 @@ export default function WelcomeScreen({ navigation }) {
             className="w-full h-[344px]"
           />
         </View>
-        <Button className="mt-16 bg-primary" onPress={handleButton}>
+        <Button className="mt-16" onPress={handleNavigateButton}>
           <Text className="text-white text-lg font-bold">
             {t("intro.button")}
           </Text>
         </Button>
-      </View>
+      </InnerLayout>
     </SafeAreaView>
   );
 }

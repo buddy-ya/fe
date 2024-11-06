@@ -6,8 +6,14 @@ module.exports = {
     extend: {
       colors: {
         primary: "#10774A",
-        white: "#FFFFFF",
-        black: "#000000",
+        buttonPrimary: "#10774A",
+        buttonSecondary: "#4A90E2",
+        buttonDisabled: "#D1D1D6",
+        textPrimary: "#000000",
+        textSecondary: "#666666",
+        textDisabled: "#999999",
+        background: "#FFFFFF",
+        border: "#E5E5EA",
       },
     },
   },

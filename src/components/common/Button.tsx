@@ -1,12 +1,13 @@
+// src/components/common/Button.tsx
 import React, { ReactNode } from "react";
-import { TouchableOpacity, ActivityIndicator } from "react-native";
+import { TouchableOpacity, Text } from "react-native";
 
 interface ButtonProps {
   onPress: () => void;
   children: ReactNode;
   type?: "circle" | "box";
   disabled?: boolean;
-  loading?: boolean;
+  color?: "primary" | "secondary" | "disabled";
   className?: string;
 }
 
@@ -15,7 +16,6 @@ export default function Button({
   children,
   type = "box",
   disabled = false,
-  loading = false,
   className = "",
 }: ButtonProps) {
   const getTypeStyles = () => {
@@ -24,17 +24,21 @@ export default function Button({
         return "w-14 h-14 rounded-full items-center justify-center";
       case "box":
         return "py-5 px-6 rounded-[20px] items-center";
-      default:
-        return "py-5 px-6 rounded-[20px] items-center";
     }
   };
+
+  const getColorStyles = () => {
+    if (disabled) return "bg-buttonDisabled";
+    return "bg-primary";
+  };
+
   return (
     <TouchableOpacity
       onPress={onPress}
-      disabled={disabled || loading}
+      disabled={disabled}
       className={`
         ${getTypeStyles()}
-        ${disabled ? "opacity-50" : ""}
+        ${getColorStyles()}
         ${className}
       `}
     >
