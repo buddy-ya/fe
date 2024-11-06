@@ -44,7 +44,7 @@ export default function PhoneScreen({ navigation }) {
     <Layout showHeader onBack={() => navigation.goBack()}>
       <KeyboardLayout footer={footer}>
         <InnerLayout>
-          <Heading>{t("phone.title")}</Heading>
+          <Heading className="mt-8">{t("phone.title")}</Heading>
           <HeadingDescription>{t("phone.titleDescription")}</HeadingDescription>
           <TextInput
             value={phone}

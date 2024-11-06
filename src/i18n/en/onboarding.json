@@ -10,5 +10,12 @@
     "title": "Please enter your phone number",
     "placeholder": "01012345678",
     "description": "Numbers only, without dashes"
+  },
+  "notification": {
+    "title1": "Would you like Buddya to notify you",
+    "title2": "for quick chats with new friends?",
+    "description1": "Allow notifications to help you use",
+    "description2": "Buddya more conveniently!",
+    "allow": "Allow"
   }
 }

@@ -14,6 +14,7 @@ import MyPageScreen from "@screens/mypage/MyPageScreen";
 import PhoneScreen from "@/screens/onboarding/PhoneScreen";
 import PhoneVerificationScreen from "@/screens/onboarding/PhoneVerificationScreen";
 import NotificationScreen from "@/screens/onboarding/NotificationScreen";
+import BuddyyaIdCard from "@/screens/onboarding/BuddyyaIdCard";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -46,6 +47,10 @@ function OnboardingNavigator() {
       <OnboardingStack.Screen
         name="OnboardingNotification"
         component={NotificationScreen}
+      />
+      <OnboardingStack.Screen
+        name="OnboardingBuddyyaIdCard"
+        component={BuddyyaIdCard}
       />
     </OnboardingStack.Navigator>
   );

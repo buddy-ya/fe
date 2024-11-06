@@ -18,5 +18,12 @@
     "notReceived": "제한 시간 안에 인증코드를 입력해주세요.",
     "expired": "인증 시간이 만료되었습니다",
     "resend": "인증코드 재발송"
+  },
+  "notification": {
+    "title1": "새로운 친구와 빠르게 얘기하도록",
+    "title2": "버디야가 알려드릴까요?",
+    "description1": "알림을 허용하면 버디야 사용을",
+    "description2": "더 편리하게 도와드릴게요!",
+    "allow": "허용"
   }
 }
