@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import { useTranslation } from "react-i18next";
 import "@/../global.css";
+import Button from "@/components/common/Button";
 
 export default function WelcomeScreen({ navigation }) {
   const { t } = useTranslation("onboarding");
@@ -45,14 +46,11 @@ export default function WelcomeScreen({ navigation }) {
             className="w-full h-[344px]"
           />
         </View>
-        <TouchableOpacity
-          className="mt-16 py-5 items-center bg-primary rounded-[20px]"
-          onPress={handleButton}
-        >
+        <Button className="mt-16 bg-primary" onPress={handleButton}>
           <Text className="text-white text-lg font-bold">
             {t("intro.button")}
           </Text>
-        </TouchableOpacity>
+        </Button>
       </View>
     </SafeAreaView>
   );
