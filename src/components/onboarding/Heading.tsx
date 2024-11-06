@@ -8,6 +8,6 @@ interface HeadingProps {
 
 export default function Heading({ children, className = "" }: HeadingProps) {
   return (
-    <Text className={`text-2xl font-bold my-8 ${className}`}>{children}</Text>
+    <Text className={`text-3xl font-bold my-5 ${className}`}>{children}</Text>
   );
 }

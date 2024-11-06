@@ -6,6 +6,7 @@ import Layout from "@/components/common/Layout";
 import Heading from "@/components/onboarding/Heading";
 import KeyboardLayout from "@/components/common/KeyboardLayout";
 import InnerLayout from "@/components/common/InnerLayout";
+import HeadingDescription from "@/components/onboarding/HeadingDescription";
 
 export default function PhoneScreen({ navigation }) {
   const { t } = useTranslation("onboarding");
@@ -37,13 +38,14 @@ export default function PhoneScreen({ navigation }) {
       <KeyboardLayout bottomButton={nextButton}>
         <InnerLayout>
           <Heading>{t("phone.title")}</Heading>
+          <HeadingDescription>{t("phone.titleDescription")}</HeadingDescription>
           <TextInput
             value={phone}
             onChangeText={handlePhoneChange}
             keyboardType="number-pad"
             maxLength={11}
             placeholder={t("phone.placeholder")}
-            className="px-6 py-4 w-[70%] text-xl tracking-wide border border-gray-400 rounded-xl"
+            className="mt-12 px-6 py-3 w-[70%] text-xl tracking-wide border border-gray-400 rounded-xl"
             placeholderTextColor="#999"
             autoFocus
           />
