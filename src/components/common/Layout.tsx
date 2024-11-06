@@ -1,5 +1,5 @@
 import React, { ReactNode } from "react";
-import { SafeAreaView, StatusBar } from "react-native";
+import { SafeAreaView, StatusBar, View } from "react-native";
 import Header from "./Header";
 
 interface LayoutProps {
