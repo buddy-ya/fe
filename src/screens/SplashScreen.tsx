@@ -1,28 +1,33 @@
 import React, { useEffect } from "react";
-import { View, Text, ActivityIndicator } from "react-native";
+import { View, Text, ActivityIndicator, Image } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function SplashScreen({ navigation }) {
   useEffect(() => {
-    const timer = setTimeout(async () => {
-      const isLoggedIn = await getLoginStatus();
-      if (isLoggedIn) {
-        navigation.replace("Main");
-      } else {
-        navigation.replace("Onboarding");
-      }
-    }, 2000);
+    initializeApp();
+  }, []);
 
-    return () => clearTimeout(timer);
-  }, [navigation]);
+  const initializeApp = async () => {
+    try {
+      const token = await AsyncStorage.getItem("userToken");
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+      if (token) {
+        navigation.navigate("Main");
+      } else {
+        navigation.navigate("Onboarding");
+      }
+    } catch (error) {
+      console.error("App initialization failed:", error);
+    }
+  };
 
   return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <ActivityIndicator size="large" />
-      <Text>Splash</Text>
+    <View className="flex-1 justify-center items-center bg-white">
+      <Image
+        className="w-[100px] h-[123px]"
+        source={require("@assets/images/splash.png")}
+      />
+      <ActivityIndicator size="large" color="#007AFF" />
     </View>
   );
 }
-
-const getLoginStatus = async () => {
-  return false;
-};

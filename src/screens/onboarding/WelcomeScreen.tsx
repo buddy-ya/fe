@@ -3,15 +3,18 @@ import {
   View,
   Text,
   Image,
-  StatusBar,
   SafeAreaView,
   TouchableOpacity,
 } from "react-native";
 import { useTranslation } from "react-i18next";
 import "@/../global.css";
 
-export default function WelcomeScreen() {
+export default function WelcomeScreen({ navigation }) {
   const { t } = useTranslation("onboarding");
+
+  const handleButton = () => {
+    navigation.navigate("OnboardingPhone");
+  };
 
   return (
     <SafeAreaView className="flex-1 bg-white">
@@ -24,23 +27,30 @@ export default function WelcomeScreen() {
         </View>
         <View className="mt-5">
           <Text className="text-center text-2xl">
-            <Text className="text-primary font-bold">버디야</Text>
-            에서 만나는
+            <Text className="text-primary font-bold">
+              {t("intro.title-primary")}
+            </Text>
+            {t("intro.title")}
           </Text>
           <Text className="text-center mt-2 text-2xl">
-            즐거운 대학생활의{" "}
-            <Text className="text-primary font-bold">버디</Text>
+            {t("intro.subTitle")}
+            <Text className="text-primary font-bold">
+              {t("intro.subTitle-primary")}
+            </Text>
           </Text>
         </View>
-        <View className="mt-14 mb-[47px]">
+        <View className="mt-14">
           <Image
             source={require("@assets/images/onboarding/han-gang.png")}
             className="w-full h-[344px]"
           />
         </View>
-        <TouchableOpacity className="py-5 items-center bg-primary rounded-[20px]">
-          <Text className="text-white text-base text-[16px] font-semibold">
-            전화번호로 시작하기
+        <TouchableOpacity
+          className="mt-16 py-5 items-center bg-primary rounded-[20px]"
+          onPress={handleButton}
+        >
+          <Text className="text-white text-lg font-bold">
+            {t("intro.button")}
           </Text>
         </TouchableOpacity>
       </View>

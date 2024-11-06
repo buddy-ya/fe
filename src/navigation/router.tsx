@@ -11,6 +11,7 @@ import MatchingScreen from "@screens/matching/MatchingScreen";
 import ChatScreen from "@screens/chat/ChatScreen";
 import FeedScreen from "@screens/feed/FeedScreen";
 import MyPageScreen from "@screens/mypage/MyPageScreen";
+import PhoneScreen from "@/screens/onboarding/PhoneScreen";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -30,11 +31,13 @@ function TabNavigator() {
 
 function OnboardingNavigator() {
   return (
-    <OnboardingStack.Navigator screenOptions={{ headerShown: false }}>
+    <OnboardingStack.Navigator>
       <OnboardingStack.Screen
         name="OnboardingWelcome"
         component={WelcomeScreen}
+        options={{ headerShown: false }}
       />
+      <OnboardingStack.Screen name="OnboardingPhone" component={PhoneScreen} />
     </OnboardingStack.Navigator>
   );
 }
