@@ -5,5 +5,15 @@
     "subTitle": "즐거운 대학생활의",
     "subTitle-primary": " 버디",
     "button": "전화번호로 시작하기"
+  },
+  "phone": {
+    "title": "전화번호를 입력해 주세요.",
+    "placeholder": "01012345678",
+    "description": "-없이 숫자만 입력해 주세요."
+  },
+  "verification": {
+    "title": "방금 인증코드를 보내드렸어요!",
+    "notReceived": "인증코드를 받지 못하셨나요?",
+    "resend": "인증코드 재발송"
   }
 }

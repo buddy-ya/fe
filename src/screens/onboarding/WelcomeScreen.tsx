@@ -19,7 +19,7 @@ export default function WelcomeScreen({ navigation }) {
 
   return (
     <SafeAreaView className="flex-1 bg-white">
-      <View className="flex-1 px-4">
+      <View className="flex-1 px-5">
         <View className="items-center mt-[60px]">
           <Image
             source={require("@assets/images/onboarding/logo.png")}
@@ -46,7 +46,7 @@ export default function WelcomeScreen({ navigation }) {
             className="w-full h-[344px]"
           />
         </View>
-        <Button className="mt-16 bg-primary" onPress={handleButton}>
+        <Button className="mt-16" onPress={handleButton}>
           <Text className="text-white text-lg font-bold">
             {t("intro.button")}
           </Text>

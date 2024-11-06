@@ -5,5 +5,10 @@
     "subTitle": "Buddy for enjoyable ",
     "subTitle-primary": "college life",
     "button": "Start with phone number"
+  },
+  "phone": {
+    "title": "Please enter your phone number",
+    "placeholder": "01012345678",
+    "description": "Numbers only, without dashes"
   }
 }
