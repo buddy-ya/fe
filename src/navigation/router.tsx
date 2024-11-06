@@ -4,15 +4,18 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
-import OnboardingScreen from "../screens/onboarding/OnboardingScreen";
+import WelcomeScreen from "../screens/onboarding/WelcomeScreen";
+import SplashScreen from "@/screens/SplashScreen";
 import HomeScreen from "@screens/home/HomeScreen";
 import MatchingScreen from "@screens/matching/MatchingScreen";
 import ChatScreen from "@screens/chat/ChatScreen";
 import FeedScreen from "@screens/feed/FeedScreen";
 import MyPageScreen from "@screens/mypage/MyPageScreen";
+import PhoneScreen from "@/screens/onboarding/PhoneScreen";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
+const OnboardingStack = createNativeStackNavigator();
 
 function TabNavigator() {
   return (
@@ -26,17 +29,26 @@ function TabNavigator() {
   );
 }
 
-export default function Router() {
-  let isLoggedIn = false;
+function OnboardingNavigator() {
+  return (
+    <OnboardingStack.Navigator>
+      <OnboardingStack.Screen
+        name="OnboardingWelcome"
+        component={WelcomeScreen}
+        options={{ headerShown: false }}
+      />
+      <OnboardingStack.Screen name="OnboardingPhone" component={PhoneScreen} />
+    </OnboardingStack.Navigator>
+  );
+}
 
+export default function Router() {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
-        {!isLoggedIn ? (
-          <Stack.Screen name="Onboarding" component={OnboardingScreen} />
-        ) : (
-          <Stack.Screen name="Main" component={TabNavigator} />
-        )}
+        <Stack.Screen name="Splash" component={SplashScreen} />
+        <Stack.Screen name="Onboarding" component={OnboardingNavigator} />
+        <Stack.Screen name="Main" component={TabNavigator} />
       </Stack.Navigator>
     </NavigationContainer>
   );
