@@ -35,13 +35,13 @@ export default function WelcomeScreen({ navigation }) {
             </Text>
           </Text>
         </View>
-        <View className="mt-14">
+        <View className="flex-1 mt-14">
           <Image
             source={require("@assets/images/onboarding/han-gang.png")}
             className="w-full h-[344px]"
           />
         </View>
-        <Button className="mt-16" onPress={handleNavigateButton}>
+        <Button className="w-full bottom-8" onPress={handleNavigateButton}>
           <Text className="text-white text-lg font-bold">
             {t("intro.button")}
           </Text>

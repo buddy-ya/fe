@@ -10,11 +10,13 @@ export default function SplashScreen({ navigation }) {
   const initializeApp = async () => {
     try {
       const token = await AsyncStorage.getItem("userToken");
-      await new Promise((resolve) => setTimeout(resolve, 2000));
+      await new Promise((resolve) => setTimeout(resolve, 1000));
       if (token) {
         navigation.navigate("Main");
       } else {
-        navigation.navigate("Onboarding");
+        navigation.navigate("Onboarding", {
+          screen: "OnboardingUniversitySelect",
+        });
       }
     } catch (error) {
       console.error("App initialization failed:", error);

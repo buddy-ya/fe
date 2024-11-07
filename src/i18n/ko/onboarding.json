@@ -18,5 +18,41 @@
     "notReceived": "제한 시간 안에 인증코드를 입력해주세요.",
     "expired": "인증 시간이 만료되었습니다",
     "resend": "인증코드 재발송"
+  },
+  "notification": {
+    "title1": "새로운 친구와 빠르게 얘기하도록",
+    "title2": "버디야가 알려드릴까요?",
+    "description1": "알림을 허용하면 버디야 사용을",
+    "description2": "더 편리하게 도와드릴게요!",
+    "allow": "허용"
+  },
+  "studentInfo": {
+    "title1": "버디야 만의 학생증을",
+    "title2": "제작해 드릴게요!",
+    "description1": "학생증에 입력될 개인정보는 버디야에서 서로를 확인하는",
+    "description2": "용도로 사용되기 때문에 정확한 정보를 입력해야 합니다!"
+  },
+  "universitySelect": {
+    "title": "세종대학교 재학생인가요?",
+    "universities": {
+      "sejong": "세종대학교"
+    }
+  },
+  "studentType": {
+    "title": "학생 유형을 선택해 주세요.",
+    "korean": "한국인 학생",
+    "foreign": "외국인 학생"
+  },
+  "gender": {
+    "title": "성별을 선택해 주세요.",
+    "male": "남성",
+    "female": "여성",
+    "preferNotToSay": "밝히고 싶지 않음"
+  },
+  "name": {
+    "title": "이름을 입력해 주세요.",
+    "description": "버디야에서는 영어 이름을 사용해주세요.",
+    "placeholder": "",
+    "footer": "여기서 작성한 이름을 학생증에 넣어드려요."
   }
 }

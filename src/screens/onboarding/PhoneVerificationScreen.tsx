@@ -72,8 +72,8 @@ export default function PhoneVerificationScreen({ navigation, route }) {
     <Layout showHeader onBack={() => navigation.goBack()}>
       <KeyboardLayout footer={footer}>
         <InnerLayout>
-          <Heading>{t("verification.title")}</Heading>
-          <HeadingDescription className="mb-12">
+          <Heading className="mt-8">{t("verification.title")}</Heading>
+          <HeadingDescription className="mb-10">
             {`${phoneNumber}으로 전송된 코드를 입력하세요.`}
           </HeadingDescription>
           <OTPInput value={code} onChange={setCode} length={6} />

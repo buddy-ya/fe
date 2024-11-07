@@ -12,7 +12,8 @@ export default function KeyboardLayout({
 }: KeyboardLayoutProps) {
   return (
     <KeyboardAvoidingView
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      behavior={Platform.OS === "ios" ? "padding" : undefined}
+      keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 20}
       className="flex-1"
     >
       <View className="flex-1">
