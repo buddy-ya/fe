@@ -34,9 +34,19 @@
   },
   "universitySelect": {
     "title": "세종대학교 재학생인가요?",
-    "schoolName": "세종대학교",
-    "schools": {
+    "universities": {
       "sejong": "세종대학교"
     }
+  },
+  "studentType": {
+    "title": "학생 유형을 선택해 주세요.",
+    "korean": "한국인 학생",
+    "foreign": "외국인 학생"
+  },
+  "gender": {
+    "title": "성별을 선택해 주세요.",
+    "male": "남성",
+    "female": "여성",
+    "preferNotToSay": "밝히고 싶지 않음"
   }
 }

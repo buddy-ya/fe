@@ -29,7 +29,7 @@ export default function StudentInfoScreen({ navigation }) {
           />
         </View>
         <Button
-          className="absolute bottom-8 right-8"
+          className="absolute bottom-14 right-8"
           type="circle"
           onPress={handleNavigate}
         >

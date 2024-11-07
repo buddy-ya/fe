@@ -16,6 +16,8 @@ import PhoneVerificationScreen from "@/screens/onboarding/PhoneVerificationScree
 import NotificationScreen from "@/screens/onboarding/NotificationScreen";
 import StudentInfo from "@/screens/onboarding/StudentInfoScreen";
 import UniversitySelectScreen from "@/screens/onboarding/UniversitySelectScreen";
+import StudentTypeSelectScreen from "@/screens/onboarding/StudentTypeSelectScreen";
+import GenderSelectScreen from "@/screens/onboarding/GenderSelectScreen";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -56,6 +58,14 @@ function OnboardingNavigator() {
       <OnboardingStack.Screen
         name="OnboardingUniversitySelect"
         component={UniversitySelectScreen}
+      />
+      <OnboardingStack.Screen
+        name="OnboardingStudentTypeSelect"
+        component={StudentTypeSelectScreen}
+      />
+      <OnboardingStack.Screen
+        name="OnboardingGenderSelect"
+        component={GenderSelectScreen}
       />
     </OnboardingStack.Navigator>
   );

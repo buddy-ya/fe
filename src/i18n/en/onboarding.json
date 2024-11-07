@@ -30,5 +30,16 @@
     "schools": {
       "sejong": "Sejong University"
     }
+  },
+  "studentType": {
+    "title": "Please select your student type.",
+    "korean": "Korean Student",
+    "foreign": "International Student"
+  },
+  "gender": {
+    "title": "Please select your gender.",
+    "male": "Male",
+    "female": "Female",
+    "preferNotToSay": "Prefer not to say"
   }
 }
