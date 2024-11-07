@@ -14,7 +14,7 @@ export default function GenderScreen({ navigation }) {
   const [selectedGender, setSelectedGender] = useState<Gender>(null);
   const { t } = useTranslation("onboarding");
 
-  const handleNavigateButton = () => {
+  const handleNavigate = () => {
     navigation.navigate("OnboardingName");
   };
 
@@ -29,14 +29,12 @@ export default function GenderScreen({ navigation }) {
           >
             <Text>{t("gender.male")}</Text>
           </SelectItem>
-
           <SelectItem
             selected={selectedGender === "female"}
             onPress={() => setSelectedGender("female")}
           >
             <Text>{t("gender.female")}</Text>
           </SelectItem>
-
           <SelectItem
             selected={selectedGender === "preferNotToSay"}
             onPress={() => setSelectedGender("preferNotToSay")}
@@ -48,7 +46,7 @@ export default function GenderScreen({ navigation }) {
         <Button
           className="absolute bottom-12 right-8"
           type="circle"
-          onPress={handleNavigateButton}
+          onPress={handleNavigate}
           disabled={!selectedGender}
         >
           <ChevronRight strokeWidth={2} size={32} color="white" />

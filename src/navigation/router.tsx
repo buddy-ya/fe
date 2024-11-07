@@ -18,6 +18,8 @@ import StudentInfo from "@/screens/onboarding/StudentInfoScreen";
 import UniversitySelectScreen from "@/screens/onboarding/UniversitySelectScreen";
 import StudentTypeSelectScreen from "@/screens/onboarding/StudentTypeSelectScreen";
 import GenderSelectScreen from "@/screens/onboarding/GenderSelectScreen";
+import NameScreen from "@/screens/onboarding/NameScreen";
+import LanguageSelectScreen from "@/screens/onboarding/LanguageSelectScreen";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -67,6 +69,11 @@ function OnboardingNavigator() {
         name="OnboardingGenderSelect"
         component={GenderSelectScreen}
       />
+      <OnboardingStack.Screen
+        name="OnboardingLanguageSelect"
+        component={LanguageSelectScreen}
+      />
+      <OnboardingStack.Screen name="OnboardingName" component={NameScreen} />
     </OnboardingStack.Navigator>
   );
 }

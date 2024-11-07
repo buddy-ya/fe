@@ -41,5 +41,10 @@
     "male": "Male",
     "female": "Female",
     "preferNotToSay": "Prefer not to say"
+  },
+  "name": {
+    "title": "Please enter your name.",
+    "description": "English names are used in Buddyya.",
+    "placeholder": "Name"
   }
 }

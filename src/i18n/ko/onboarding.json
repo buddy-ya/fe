@@ -48,5 +48,11 @@
     "male": "남성",
     "female": "여성",
     "preferNotToSay": "밝히고 싶지 않음"
+  },
+  "name": {
+    "title": "이름을 입력해 주세요.",
+    "description": "버디야에서는 영어 이름을 사용해주세요.",
+    "placeholder": "",
+    "footer": "여기서 작성한 이름을 학생증에 넣어드려요."
   }
 }
