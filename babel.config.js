@@ -23,6 +23,7 @@ module.exports = function (api) {
             "@assets": "./assets",
           },
         },
+        "react-native-reanimated/plugin",
       ],
     ],
   };

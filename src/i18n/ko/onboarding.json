@@ -54,5 +54,15 @@
     "description": "버디야에서는 영어 이름을 사용해주세요.",
     "placeholder": "",
     "footer": "여기서 작성한 이름을 학생증에 넣어드려요."
+  },
+  "language": {
+    "multiSelect": {
+      "title": "어떤 언어를 구사하세요?",
+      "description": "회원님의 프로필에 표시하고 같은 언어를 구사하는 멋진 짝을 찾아드릴게요.",
+      "maxSelect": "최대 5개 선택",
+      "searchPlaceholder": "언어 검색",
+      "submit": "저장하기",
+      "cancel": "취소"
+    }
   }
 }
