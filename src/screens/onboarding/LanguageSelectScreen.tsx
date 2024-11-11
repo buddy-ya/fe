@@ -37,7 +37,7 @@ export default function LanguageMultiSelectScreen({ navigation }) {
   );
 
   const handleNavigateButton = () => {
-    navigation.navigate("OnboardingNext");
+    navigation.navigate("OnboardingMajorSelect");
   };
 
   return (

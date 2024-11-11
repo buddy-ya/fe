@@ -64,5 +64,10 @@
       "submit": "저장하기",
       "cancel": "취소"
     }
+  },
+  "major": {
+    "title": "대학에서 어떤 공부를 하고 있나요?",
+    "placeholder": "선택",
+    "bottomSheetTitle": "전공 선택"
   }
 }

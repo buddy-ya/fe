@@ -35,7 +35,7 @@ export default function CustomBottomSheet({
 }: CustomBottomSheetProps) {
   const [searchQuery, setSearchQuery] = useState("");
   const bottomSheetRef = useRef<BottomSheet>(null);
-  const snapPoints = useMemo(() => ["90%"], []);
+  const snapPoints = useMemo(() => ["50%", "70%"], []);
 
   const handleClose = useCallback(() => {
     Keyboard.dismiss();
@@ -78,31 +78,31 @@ export default function CustomBottomSheet({
       keyboardBehavior="extend"
       keyboardBlurBehavior="restore"
     >
-      <TouchableWithoutFeedback onPress={dismissKeyboard}>
-        <BottomSheetView className="flex-1 pb-8">
-          <View className="px-4 py-4 flex-row items-center justify-between border-b border-gray-200">
-            {title && <Text className="text-lg font-bold">{title}</Text>}
-            <TouchableOpacity onPress={handleClose}>
-              <X size={24} color="black" />
-            </TouchableOpacity>
-          </View>
+      <BottomSheetView className="flex-1">
+        <View className="px-4 py-4 flex-row items-center justify-between border-b border-gray-200">
+          {title && <Text className="text-lg font-bold">{title}</Text>}
+          <TouchableOpacity onPress={handleClose}>
+            <X size={24} color="black" />
+          </TouchableOpacity>
+        </View>
 
-          {enableSearch && (
-            <View className="px-4 py-2 border-b border-gray-200">
-              <View className="flex-row items-center px-4 py-2 bg-gray-100 rounded-xl">
-                <Search size={20} color="gray" />
-                <TextInput
-                  value={searchQuery}
-                  onChangeText={setSearchQuery}
-                  placeholder="검색"
-                  className="flex-1 ml-2 text-base"
-                  autoCapitalize="none"
-                  clearButtonMode="while-editing"
-                />
-              </View>
+        {enableSearch && (
+          <View className="px-4 py-2 border-b border-gray-200">
+            <View className="flex-row items-center px-4 py-2 bg-gray-100 rounded-xl">
+              <Search size={20} color="gray" />
+              <TextInput
+                value={searchQuery}
+                onChangeText={setSearchQuery}
+                placeholder="검색"
+                className="flex-1 ml-2 text-base"
+                autoCapitalize="none"
+                clearButtonMode="while-editing"
+              />
             </View>
-          )}
+          </View>
+        )}
 
+        <View className="flex-1">
           <BottomSheetScrollView>
             {filteredOptions.map((option) => (
               <TouchableOpacity
@@ -130,8 +130,8 @@ export default function CustomBottomSheet({
               </TouchableOpacity>
             ))}
           </BottomSheetScrollView>
-        </BottomSheetView>
-      </TouchableWithoutFeedback>
+        </View>
+      </BottomSheetView>
     </BottomSheet>
   );
 }

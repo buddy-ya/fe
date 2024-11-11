@@ -46,5 +46,10 @@
     "title": "Please enter your name.",
     "description": "English names are used in Buddyya.",
     "placeholder": "Name"
+  },
+  "major": {
+    "title": "What are you studying at university?",
+    "placeholder": "Select",
+    "bottomSheetTitle": "Select Major"
   }
 }
