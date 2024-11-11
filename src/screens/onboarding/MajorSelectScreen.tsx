@@ -23,7 +23,7 @@ export default function MajorSelectScreen({ navigation }) {
   };
 
   const handleNavigateButton = () => {
-    navigation.navigate("OnboardingNext");
+    navigation.navigate("OnboardingInterestSelect");
   };
 
   return (
