@@ -37,13 +37,17 @@ export default function MultiSelectItem({
             key={option.en}
             onPress={() => onToggleSelect(option)}
             disabled={!isSelected(option) && selectedValues.length >= maxSelect}
-            className="flex-row items-center justify-between py-4 border-b border-gray-200"
+            className="flex-row items-center justify-between py-4 border-b border-borderSelect"
           >
             <Text className="text-base">{option[currentLang]}</Text>
             <View
               className={`
                 w-6 h-6 items-center justify-center rounded-md
-                ${isSelected(option) ? "bg-primary" : "border border-gray-300"}
+                ${
+                  isSelected(option)
+                    ? "bg-primary"
+                    : "border border-borderCheckbox"
+                }
               `}
             >
               {isSelected(option) && <Check size={16} color="white" />}

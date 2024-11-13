@@ -87,8 +87,8 @@ export default function CustomBottomSheet({
         </View>
 
         {enableSearch && (
-          <View className="px-4 py-2 border-b border-gray-200">
-            <View className="flex-row items-center px-4 py-2 bg-gray-100 rounded-xl">
+          <View className="px-4 py-2 border-b border-borderSelect">
+            <View className="flex-row items-center px-4 py-2 border-borderBottom rounded-xl">
               <Search size={20} color="gray" />
               <TextInput
                 value={searchQuery}
@@ -113,8 +113,8 @@ export default function CustomBottomSheet({
                   handleClose();
                 }}
                 className={`
-                 flex-row items-center justify-between px-6 py-4 border-b border-gray-200
-                 ${option === selectedValue ? "bg-green-50" : ""}
+                 flex-row items-center justify-between px-6 py-4 border-b border-borderBottom
+                 ${option === selectedValue ? "bg-selectActive" : ""}
                `}
               >
                 <Text
@@ -124,9 +124,7 @@ export default function CustomBottomSheet({
                 >
                   {option}
                 </Text>
-                {option === selectedValue && (
-                  <Check size={20} color="#34785B" />
-                )}
+                {option === selectedValue && <Check size={20} color="" />}
               </TouchableOpacity>
             ))}
           </BottomSheetScrollView>

@@ -24,12 +24,12 @@ export default function SearchInput({
   className,
 }: SearchInputProps) {
   const [isFocused, setIsFocused] = useState(false);
-  const { t } = useTranslation("common");
+  const { t } = useTranslation("onboarding");
 
   const DismissButton = ({ onPress }) => {
     return (
       <TouchableOpacity onPress={onPress}>
-        <Text>{t("cancel")}</Text>
+        <Text>{t("language.multiSelect.cancel")}</Text>
       </TouchableOpacity>
     );
   };
@@ -51,7 +51,9 @@ export default function SearchInput({
           placeholder={placeholder}
           className="flex-1 ml-2 text-base"
           onFocus={() => setIsFocused(true)}
-          onBlur={() => setIsFocused(false)}
+          onBlur={() => {
+            setIsFocused(false);
+          }}
         />
         <View>
           {isFocused && <DismissButton onPress={handleDismissButton} />}

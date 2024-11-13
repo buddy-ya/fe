@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Text, View } from "react-native";
+import { Keyboard, Text, TouchableWithoutFeedback, View } from "react-native";
 import { useTranslation } from "react-i18next";
 import Layout from "@/components/common/Layout";
 import InnerLayout from "@/components/common/InnerLayout";
@@ -41,49 +41,51 @@ export default function LanguageMultiSelectScreen({ navigation }) {
   };
 
   return (
-    <Layout showHeader onBack={() => navigation.goBack()}>
-      <InnerLayout>
-        <Heading className="mt-8">{t("language.multiSelect.title")}</Heading>
-        <HeadingDescription>
-          {t("language.multiSelect.description")}
-        </HeadingDescription>
-        <Text className="mt-3 text-gray-600">
-          {t("language.multiSelect.maxSelect", { count: MAX_SELECT })}
-        </Text>
+    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+      <Layout showHeader onBack={() => navigation.goBack()}>
+        <InnerLayout>
+          <Heading className="mt-8">{t("language.multiSelect.title")}</Heading>
+          <HeadingDescription>
+            {t("language.multiSelect.description")}
+          </HeadingDescription>
+          <Text className="mt-3 text-textDescription">
+            {t("language.multiSelect.maxSelect", { count: MAX_SELECT })}
+          </Text>
 
-        <SearchInput
-          value={searchQuery}
-          onChangeText={setSearchQuery}
-          placeholder={t("language.multiSelect.searchPlaceholder")}
-          className=""
-        />
+          <SearchInput
+            value={searchQuery}
+            onChangeText={setSearchQuery}
+            placeholder={t("language.multiSelect.searchPlaceholder")}
+            className=""
+          />
 
-        <MultiSelectItem
-          options={filteredOptions}
-          selectedValues={selectedLanguages}
-          onToggleSelect={handleToggleSelect}
-          maxSelect={MAX_SELECT}
-          className=""
-        />
+          <MultiSelectItem
+            options={filteredOptions}
+            selectedValues={selectedLanguages}
+            onToggleSelect={handleToggleSelect}
+            maxSelect={MAX_SELECT}
+            className=""
+          />
 
-        <Button
-          type="box"
-          onPress={handleNavigateButton}
-          disabled={selectedLanguages.length === 0}
-          className="flex-row items-center justify-center mt-5"
-        >
-          <View>
-            <Text className="text-white text-base font-semibold">
-              {t("language.multiSelect.submit")}
-            </Text>
-          </View>
-          <View className="ml-1">
-            <Text className="text-white text-base font-semibold">
-              {selectedLanguages.length + "/" + MAX_SELECT}
-            </Text>
-          </View>
-        </Button>
-      </InnerLayout>
-    </Layout>
+          <Button
+            type="box"
+            onPress={handleNavigateButton}
+            disabled={selectedLanguages.length === 0}
+            className="flex-row items-center justify-center mt-5"
+          >
+            <View>
+              <Text className="text-white text-base font-semibold">
+                {t("language.multiSelect.submit")}
+              </Text>
+            </View>
+            <View className="ml-1">
+              <Text className="text-white text-base font-semibold">
+                {selectedLanguages.length + "/" + MAX_SELECT}
+              </Text>
+            </View>
+          </Button>
+        </InnerLayout>
+      </Layout>
+    </TouchableWithoutFeedback>
   );
 }

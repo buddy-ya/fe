@@ -25,6 +25,7 @@ export default function NotificationScreen({ navigation }) {
       if (finalStatus === "granted") {
         navigation.replace("OnboardingStudentInfo");
       } else {
+        navigation.replace("OnboardingStudentInfo");
       }
     } catch (error) {
       console.error("Notification permission error:", error);

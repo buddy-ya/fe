@@ -15,6 +15,7 @@
   },
   "verification": {
     "title": "방금 인증코드를 보내드렸어요!",
+    "titleDescription": "{{phoneNumber}}으로 전송된 코드를 입력하세요.",
     "notReceived": "제한 시간 안에 인증코드를 입력해주세요.",
     "expired": "인증 시간이 만료되었습니다",
     "resend": "인증코드 재발송"
@@ -29,8 +30,8 @@
   "studentInfo": {
     "title1": "버디야 만의 학생증을",
     "title2": "제작해 드릴게요!",
-    "description1": "학생증에 입력될 개인정보는 버디야에서 서로를 확인하는",
-    "description2": "용도로 사용되기 때문에 정확한 정보를 입력해야 합니다!"
+    "description1": "학생증에 입력될 정보는 버디야에서 서로를 확인하는",
+    "description2": "용도로 사용되기 때문에 정확한 정보를 입력해주세요"
   },
   "universitySelect": {
     "title": "세종대학교 재학생인가요?",
@@ -53,7 +54,7 @@
     "title": "이름을 입력해 주세요.",
     "description": "버디야에서는 영어 이름을 사용해주세요.",
     "placeholder": "",
-    "footer": "여기서 작성한 이름을 학생증에 넣어드려요."
+    "footer": "버디야가 발급하는 학생증에 표시해 드릴게요."
   },
   "language": {
     "multiSelect": {

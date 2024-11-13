@@ -4,9 +4,8 @@ import Layout from "@/components/common/Layout";
 import Heading from "@/components/onboarding/Heading";
 import HeadingDescription from "@/components/onboarding/HeadingDescription";
 import React from "react";
-import { View, Text, Image } from "react-native";
+import { View, Image } from "react-native";
 import { useTranslation } from "react-i18next";
-import { ChevronRight } from "lucide-react-native";
 
 export default function StudentInfoScreen({ navigation }) {
   const { t } = useTranslation("onboarding");
@@ -32,9 +31,7 @@ export default function StudentInfoScreen({ navigation }) {
           className="absolute bottom-14 right-8"
           type="circle"
           onPress={handleNavigate}
-        >
-          <ChevronRight color={"white"} />
-        </Button>
+        />
       </InnerLayout>
     </Layout>
   );
