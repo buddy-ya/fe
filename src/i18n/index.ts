@@ -16,7 +16,7 @@ const resources = {
 
 i18n.use(initReactI18next).init({
   resources,
-  lng: Localization.locale.startsWith("ko") ? "ko" : "en",
+  lng: Localization.locale.startsWith("en") ? "ko" : "en",
   fallbackLng: "en",
   compatibilityJSON: "v3",
   react: {

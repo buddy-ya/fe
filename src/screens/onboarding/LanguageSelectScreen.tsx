@@ -21,7 +21,7 @@ export default function LanguageSelectScreen({ navigation }) {
   const [searchQuery, setSearchQuery] = useState("");
   const { t, i18n } = useTranslation("onboarding");
   const currentLang = i18n.language.startsWith("ko") ? "ko" : "en";
-  const MAX_SELECT = 5;
+  const MAX_SELECT = 3;
 
   const handleSelect = (language: Language) => {
     setSelectedLanguages((prev) => {

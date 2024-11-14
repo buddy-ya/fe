@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { View, Text, TextInput } from "react-native";
 import { useTranslation } from "react-i18next";
-import { ChevronRight } from "lucide-react-native";
 import Layout from "@/components/common/Layout";
 import InnerLayout from "@/components/common/InnerLayout";
 import Button from "@/components/common/Button";
@@ -12,9 +11,13 @@ import HeadingDescription from "@/components/onboarding/HeadingDescription";
 
 export default function NameScreen({ navigation }) {
   const [name, setName] = useState("");
-  const { t } = useTranslation("onboarding");
+  const { t, i18n } = useTranslation("onboarding");
+  const currentLang = i18n.language.startsWith("ko") ? "ko" : "en";
 
   const handleNavigation = () => {
+    if (currentLang == "en") {
+      return navigation.navigate("OnboardingCountrySelect");
+    }
     navigation.navigate("OnboardingLanguageSelect");
   };
 

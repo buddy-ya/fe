@@ -8,8 +8,17 @@
   },
   "phone": {
     "title": "Please enter your phone number",
+    "titleDescription": "We use your phone number only to verify all users in Buddy.",
     "placeholder": "01012345678",
-    "description": "Numbers only, without dashes"
+    "description": "Numbers only, without dashes",
+    "footer": "We do not share this information or display it on your profile."
+  },
+  "verification": {
+    "title": "We've just sent a verification code!",
+    "titleDescription": "Enter the code sent to {{phoneNumber}}.",
+    "notReceived": "Please enter the code within the time limit.",
+    "expired": "Verification time expired",
+    "resend": "Resend code"
   },
   "notification": {
     "title1": "Would you like Buddya to notify you",
@@ -26,8 +35,7 @@
   },
   "universitySelect": {
     "title": "Are you a Sejong University student?",
-    "schoolName": "Sejong University",
-    "schools": {
+    "universities": {
       "sejong": "Sejong University"
     }
   },
@@ -45,12 +53,8 @@
   "name": {
     "title": "Please enter your name.",
     "description": "English names are used in Buddyya.",
-    "placeholder": "Name"
-  },
-  "major": {
-    "title": "What are you studying at university?",
-    "placeholder": "Select",
-    "bottomSheetTitle": "Select Major"
+    "placeholder": "",
+    "footer": "Your name will be displayed on the Buddyya student ID."
   },
   "country": {
     "title": "Select your country",
@@ -62,6 +66,11 @@
     "description": "We'll display it on your profile and help you find great matches who speak the same languages",
     "maxSelect": "You can select up to {{count}} languages",
     "searchPlaceholder": "Search languages"
+  },
+  "major": {
+    "title": "What are you studying at university?",
+    "placeholder": "Select",
+    "bottomSheetTitle": "Select Major"
   },
   "interest": {
     "title": "Select your interests",

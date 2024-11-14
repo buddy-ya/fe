@@ -22,6 +22,7 @@ import NameScreen from "@/screens/onboarding/NameScreen";
 import LanguageSelectScreen from "@/screens/onboarding/LanguageSelectScreen";
 import MajorSelectScreen from "@/screens/onboarding/MajorSelectScreen";
 import InterestSelectScreen from "@/screens/onboarding/InterestSelectScreen";
+import CountrySelectScreen from "@/screens/onboarding/CountrySelectScreen";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -72,6 +73,10 @@ function OnboardingNavigator() {
         component={GenderSelectScreen}
       />
       <OnboardingStack.Screen name="OnboardingName" component={NameScreen} />
+      <OnboardingStack.Screen
+        name="OnboardingCountrySelect"
+        component={CountrySelectScreen}
+      />
       <OnboardingStack.Screen
         name="OnboardingLanguageSelect"
         component={LanguageSelectScreen}
