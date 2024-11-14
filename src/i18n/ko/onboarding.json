@@ -56,15 +56,17 @@
     "placeholder": "",
     "footer": "버디야가 발급하는 학생증에 표시해 드릴게요."
   },
+  "country": {
+    "title": "국가를 선택해 주세요.",
+    "description": "현재 거주하고 있는 국가를 선택해 주세요.",
+    "searchPlaceholder": "국가 검색"
+  },
+
   "language": {
-    "multiSelect": {
-      "title": "어떤 언어를 구사하세요?",
-      "description": "회원님의 프로필에 표시하고 같은 언어를 구사하는 멋진 짝을 찾아드릴게요.",
-      "maxSelect": "최대 5개 선택",
-      "searchPlaceholder": "언어 검색",
-      "submit": "저장하기",
-      "cancel": "취소"
-    }
+    "title": "어떤 언어를 구사하세요?",
+    "description": "회원님의 프로필에 표시하고 같은 언어를 구사하는 멋진 짝을 찾아드릴게요.",
+    "maxSelect": "최대 {{count}}개까지 선택할 수 있어요",
+    "searchPlaceholder": "언어 검색"
   },
   "major": {
     "title": "대학에서 어떤 공부를 하고 있나요?",
@@ -82,5 +84,13 @@
       "arts": "예술 및 창작 활동",
       "food": "음식 및 음료"
     }
+  },
+  "common": {
+    "next": "다음으로",
+    "back": "이전으로",
+    "cancel": "취소",
+    "search": "검색",
+    "select": "선택",
+    "selected": "선택됨"
   }
 }

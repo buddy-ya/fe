@@ -29,7 +29,7 @@ export default function SearchInput({
   const DismissButton = ({ onPress }) => {
     return (
       <TouchableOpacity onPress={onPress}>
-        <Text>{t("language.multiSelect.cancel")}</Text>
+        <Text>{t("common.cancel")}</Text>
       </TouchableOpacity>
     );
   };

@@ -3,43 +3,57 @@ import { View, Text, TouchableOpacity, ScrollView } from "react-native";
 import { Check } from "lucide-react-native";
 import { useTranslation } from "react-i18next";
 
-interface Language {
+interface SelectOption {
+  id: string;
   en: string;
   ko: string;
+  flag?: string;
 }
 
-interface MultiSelectListProps {
-  options: Language[];
-  selectedValues: Language[];
-  onToggleSelect: (value: Language) => void;
-  maxSelect: number;
+interface SelectItemProps {
+  options: SelectOption[];
+  selectedValues: SelectOption[];
+  onSelect: (value: SelectOption) => void;
+  maxSelect?: number;
+  multiple?: boolean;
   className?: string;
 }
 
-export default function MultiSelectItem({
+export default function SelectItem({
   options,
   selectedValues,
-  onToggleSelect,
-  maxSelect,
+  onSelect,
+  maxSelect = 1,
+  multiple = false,
   className,
-}: MultiSelectListProps) {
+}: SelectItemProps) {
   const { i18n } = useTranslation();
   const currentLang = i18n.language.startsWith("ko") ? "ko" : "en";
 
-  const isSelected = (option: Language) =>
-    selectedValues.some((selected) => selected.en === option.en);
+  const isSelected = (option: SelectOption) =>
+    selectedValues.some((selected) => selected.id === option.id);
+
+  const isDisabled = (option: SelectOption) =>
+    !multiple
+      ? false
+      : !isSelected(option) && selectedValues.length >= maxSelect;
 
   return (
-    <View className={`h-[400px] mt-4 ${className}`}>
+    <View className={`flex-1 mt-1 mb-5 ${className}`}>
       <ScrollView showsVerticalScrollIndicator={false}>
         {options.map((option) => (
           <TouchableOpacity
-            key={option.en}
-            onPress={() => onToggleSelect(option)}
-            disabled={!isSelected(option) && selectedValues.length >= maxSelect}
+            key={option.id}
+            onPress={() => onSelect(option)}
+            disabled={isDisabled(option)}
             className="flex-row items-center justify-between py-4 border-b border-borderSelect"
           >
-            <Text className="text-base">{option[currentLang]}</Text>
+            <View className="flex-row items-center">
+              {option.flag && (
+                <Text className="mr-3 text-base">{option.flag}</Text>
+              )}
+              <Text className="text-base">{option[currentLang]}</Text>
+            </View>
             <View
               className={`
                 w-6 h-6 items-center justify-center rounded-md

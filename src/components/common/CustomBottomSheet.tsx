@@ -5,7 +5,6 @@ import {
   TouchableOpacity,
   TextInput,
   Keyboard,
-  TouchableWithoutFeedback,
 } from "react-native";
 import BottomSheet, {
   BottomSheetView,

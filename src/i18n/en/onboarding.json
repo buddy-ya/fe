@@ -52,6 +52,17 @@
     "placeholder": "Select",
     "bottomSheetTitle": "Select Major"
   },
+  "country": {
+    "title": "Select your country",
+    "description": "Please select the country where you currently reside",
+    "searchPlaceholder": "Search countries"
+  },
+  "language": {
+    "title": "What languages do you speak?",
+    "description": "We'll display it on your profile and help you find great matches who speak the same languages",
+    "maxSelect": "You can select up to {{count}} languages",
+    "searchPlaceholder": "Search languages"
+  },
   "interest": {
     "title": "Select your interests",
     "description": "Choose your interests and meet awesome friends with similar hobbies!",
@@ -63,5 +74,13 @@
       "arts": "Arts & Creation",
       "food": "Food & Beverage"
     }
+  },
+  "common": {
+    "next": "Next",
+    "back": "Back",
+    "cancel": "Cancel",
+    "search": "Search",
+    "select": "Select",
+    "selected": "Selected"
   }
 }
