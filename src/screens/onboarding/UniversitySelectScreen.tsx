@@ -35,9 +35,7 @@ export default function UniversitySelectScreen({ navigation }) {
           className="absolute bottom-14 right-8"
           type="circle"
           onPress={handleNavigate}
-        >
-          <ChevronRight color={"white"} />
-        </Button>
+        />
       </InnerLayout>
     </Layout>
   );

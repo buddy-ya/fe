@@ -48,9 +48,7 @@ export default function GenderScreen({ navigation }) {
           type="circle"
           onPress={handleNavigate}
           disabled={!selectedGender}
-        >
-          <ChevronRight strokeWidth={2} size={32} color="white" />
-        </Button>
+        />
       </InnerLayout>
     </Layout>
   );

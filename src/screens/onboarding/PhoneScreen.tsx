@@ -35,9 +35,11 @@ export default function PhoneScreen({ navigation }) {
         <Lock strokeWidth={1} color={"black"} />
         <Text className="text-sm mx-4">{t("phone.footer")}</Text>
       </View>
-      <Button type="circle" onPress={handleNavigateButton} disabled={!isValid}>
-        <ChevronRight strokeWidth={2} size={32} color={"white"} />
-      </Button>
+      <Button
+        type="circle"
+        onPress={handleNavigateButton}
+        disabled={!isValid}
+      />
     </View>
   );
 
@@ -48,7 +50,7 @@ export default function PhoneScreen({ navigation }) {
           <Heading className="mt-8">{t("phone.title")}</Heading>
           <HeadingDescription>{t("phone.titleDescription")}</HeadingDescription>
           <View className="mt-12 flex-row items-center">
-            <View className="flex-row items-center mr-4 px-3 py-3 border rounded-lg border-gray-500">
+            <View className="flex-row items-center mr-4 px-3 py-3 border rounded-lg">
               <KoreaLogo />
               <Text className="ml-2 text-xl">+82</Text>
             </View>
@@ -58,12 +60,12 @@ export default function PhoneScreen({ navigation }) {
               keyboardType="number-pad"
               maxLength={11}
               placeholder={t("phone.placeholder")}
-              className="px-4 py-3 w-[60%] text-xl tracking-wide border border-gray-500 rounded-xl"
+              className="px-4 py-3 w-[60%] text-xl tracking-wide border rounded-xl border-inputBorder"
               placeholderTextColor="#999"
               autoFocus
             />
           </View>
-          <Text className="text-gray-400 text-[14px] ml-2 mt-4">
+          <Text className="text-textSub text-[14px] ml-2 mt-4">
             {t("phone.description")}
           </Text>
         </InnerLayout>

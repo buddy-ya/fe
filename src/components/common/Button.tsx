@@ -1,10 +1,11 @@
 // src/components/common/Button.tsx
+import { ChevronRight } from "lucide-react-native";
 import React, { ReactNode } from "react";
-import { TouchableOpacity, Text } from "react-native";
+import { TouchableOpacity } from "react-native";
 
 interface ButtonProps {
   onPress: () => void;
-  children: ReactNode;
+  children?: ReactNode;
   type?: "circle" | "box";
   disabled?: boolean;
   color?: "primary" | "secondary" | "disabled";
@@ -42,6 +43,9 @@ export default function Button({
         ${className}
       `}
     >
+      {type == "circle" && (
+        <ChevronRight strokeWidth={2} size={32} color={"white"} />
+      )}
       {children}
     </TouchableOpacity>
   );

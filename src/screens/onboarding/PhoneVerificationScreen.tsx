@@ -9,7 +9,7 @@ import LinkText from "@/components/common/LinkText";
 import KeyboardLayout from "@/components/common/KeyboardLayout";
 import InnerLayout from "@/components/common/InnerLayout";
 import useTimer from "@/hooks/useTimer";
-import { ChevronRight, MoveRight, Send } from "lucide-react-native";
+import { Send } from "lucide-react-native";
 import HeadingDescription from "@/components/onboarding/HeadingDescription";
 
 export default function PhoneVerificationScreen({ navigation, route }) {
@@ -18,7 +18,7 @@ export default function PhoneVerificationScreen({ navigation, route }) {
   const phoneNumber = route.params?.phone;
 
   const { timeLeft, isExpired, restart } = useTimer({
-    seconds: 5,
+    seconds: 60 * 3,
     onExpire: () => {},
   });
 
@@ -35,10 +35,10 @@ export default function PhoneVerificationScreen({ navigation, route }) {
     if (!isExpired) {
       return (
         <View>
-          <Text className="text-gray-500 mb-1">
+          <Text className="text-textSub mb-1">
             {t("verification.notReceived")}
           </Text>
-          <Text className="text-gray-500">{timeLeft}</Text>
+          <Text className="text-textSub">{timeLeft}</Text>
         </View>
       );
     }
@@ -61,10 +61,7 @@ export default function PhoneVerificationScreen({ navigation, route }) {
         type="circle"
         onPress={handleNavigateButton}
         disabled={code.length !== 6 || isExpired}
-      >
-        <ChevronRight strokeWidth={2} size={32} color={"white"} />
-        {/* <MoveRight strokeWidth={3} size={24} color={"white"} /> */}
-      </Button>
+      />
     </View>
   );
 
@@ -74,10 +71,9 @@ export default function PhoneVerificationScreen({ navigation, route }) {
         <InnerLayout>
           <Heading className="mt-8">{t("verification.title")}</Heading>
           <HeadingDescription className="mb-10">
-            {`${phoneNumber}으로 전송된 코드를 입력하세요.`}
+            {t("verification.titleDescription", { phoneNumber })}
           </HeadingDescription>
           <OTPInput value={code} onChange={setCode} length={6} />
-          {/* <View className="mt-12 items-center">{renderTimerContent()}</View> */}
         </InnerLayout>
       </KeyboardLayout>
     </Layout>

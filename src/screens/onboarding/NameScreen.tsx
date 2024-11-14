@@ -18,7 +18,7 @@ export default function NameScreen({ navigation }) {
     navigation.navigate("OnboardingLanguageSelect");
   };
 
-  const isValidName = /^[a-zA-Z\s]*$/.test(name) && name.trim().length > 0;
+  const isValidName = /^[a-zA-Z]*$/.test(name) && name.trim().length > 0;
 
   const footer = (
     <View className="w-full absolute flex-row items-center justify-between px-4 bottom-4">
@@ -26,9 +26,11 @@ export default function NameScreen({ navigation }) {
         <IdCard strokeWidth={1} color={"black"} />
         <Text className="text-sm mx-4">{t("name.footer")}</Text>
       </View>
-      <Button type="circle" onPress={handleNavigation} disabled={!isValidName}>
-        <ChevronRight strokeWidth={2} size={32} color={"white"} />
-      </Button>
+      <Button
+        type="circle"
+        onPress={handleNavigation}
+        disabled={!isValidName}
+      />
     </View>
   );
 
@@ -42,8 +44,8 @@ export default function NameScreen({ navigation }) {
             value={name}
             onChangeText={setName}
             placeholder={t("name.placeholder")}
-            className="mt-12 px-4 py-3 w-[60%] text-xl tracking-wide border border-gray-500 rounded-xl"
-            placeholderTextColor="#999"
+            className="mt-12 px-4 py-3 w-[60%] text-xl tracking-wide border border-inputBorder rounded-xl"
+            placeholderTextColor="placeholderPrimary"
             autoFocus
           />
         </InnerLayout>

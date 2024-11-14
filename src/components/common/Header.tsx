@@ -12,7 +12,7 @@ export default function Header({ onBack, showBackButton = true }: HeaderProps) {
     <View className="px-4 py-4 flex-row items-center">
       {showBackButton && (
         <TouchableOpacity onPress={onBack} className="flex-row items-center">
-          <ChevronLeft strokeWidth={2} size={24} color="#000000" />
+          <ChevronLeft strokeWidth={2} size={24} color={"black"} />
           <Text className="text-xl">뒤로</Text>
         </TouchableOpacity>
       )}

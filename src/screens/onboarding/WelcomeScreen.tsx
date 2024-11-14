@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import "@/../global.css";
 import Button from "@/components/common/Button";
 import InnerLayout from "@/components/common/InnerLayout";
+import Layout from "@/components/common/Layout";
 
 export default function WelcomeScreen({ navigation }) {
   const { t } = useTranslation("onboarding");
@@ -13,9 +14,9 @@ export default function WelcomeScreen({ navigation }) {
   };
 
   return (
-    <SafeAreaView className="flex-1 bg-white">
+    <Layout>
       <InnerLayout>
-        <View className="items-center mt-[60px]">
+        <View className="items-center mt-14">
           <Image
             source={require("@assets/images/onboarding/logo.png")}
             className="w-[225px] h-[65px]"
@@ -47,6 +48,6 @@ export default function WelcomeScreen({ navigation }) {
           </Text>
         </Button>
       </InnerLayout>
-    </SafeAreaView>
+    </Layout>
   );
 }

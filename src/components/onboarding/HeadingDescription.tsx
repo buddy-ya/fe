@@ -11,6 +11,8 @@ export default function HeadingDescription({
   className = "",
 }: HeadingDescriptionProps) {
   return (
-    <Text className={`text-lg text-gray-600 ${className}`}>{children}</Text>
+    <Text className={`text-lg text-textDescription ${className}`}>
+      {children}
+    </Text>
   );
 }

@@ -42,9 +42,7 @@ export default function StudentTypeScreen({ navigation }) {
           type="circle"
           onPress={handleNavigateButton}
           disabled={!selectedType}
-        >
-          <ChevronRight strokeWidth={2} size={32} color="white" />
-        </Button>
+        />
       </InnerLayout>
     </Layout>
   );

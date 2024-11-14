@@ -15,7 +15,7 @@ export default function SplashScreen({ navigation }) {
         navigation.navigate("Main");
       } else {
         navigation.navigate("Onboarding", {
-          screen: "OnboardingUniversitySelect",
+          screen: "OnboardingLanguageSelect",
         });
       }
     } catch (error) {
