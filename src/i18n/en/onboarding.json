@@ -51,5 +51,17 @@
     "title": "What are you studying at university?",
     "placeholder": "Select",
     "bottomSheetTitle": "Select Major"
+  },
+  "interest": {
+    "title": "Select your interests",
+    "description": "Choose your interests and meet awesome friends with similar hobbies!",
+    "maxSelect": "You can select up to {{count}}",
+    "submit": "Next",
+    "categories": {
+      "culture": "Cultural Life",
+      "sports": "Sports & Activities",
+      "arts": "Arts & Creation",
+      "food": "Food & Beverage"
+    }
   }
 }

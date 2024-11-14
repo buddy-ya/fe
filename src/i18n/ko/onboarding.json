@@ -70,5 +70,17 @@
     "title": "대학에서 어떤 공부를 하고 있나요?",
     "placeholder": "선택",
     "bottomSheetTitle": "전공 선택"
+  },
+  "interest": {
+    "title": "관심사를 선택해 주세요.",
+    "description": "관심사를 선택하고 취미가 비슷한 멋진 친구들을 만나보세요!",
+    "maxSelect": "최대 {{count}}개까지 선택할 수 있어요",
+    "submit": "다음으로",
+    "categories": {
+      "culture": "문화 생활",
+      "sports": "스포츠 및 액티비티",
+      "arts": "예술 및 창작 활동",
+      "food": "음식 및 음료"
+    }
   }
 }
