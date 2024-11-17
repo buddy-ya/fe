@@ -51,7 +51,7 @@ export default function SelectItem({
               {option.icon && (
                 <Text className="mr-3 text-base">{option.icon}</Text>
               )}
-              <Text className="text-base">
+              <Text className="text-base text-[#282828]">
                 {t(`${nameSpace}.${option.id}`)}
               </Text>
             </View>

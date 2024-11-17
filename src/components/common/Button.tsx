@@ -22,9 +22,9 @@ export default function Button({
   const getTypeStyles = () => {
     switch (type) {
       case "circle":
-        return "w-14 h-14 rounded-full items-center justify-center";
+        return "w-11 h-11 rounded-full items-center justify-center";
       case "box":
-        return "py-5 px-6 rounded-[20px] items-center";
+        return "py-5 rounded-[12px] items-center";
     }
   };
 

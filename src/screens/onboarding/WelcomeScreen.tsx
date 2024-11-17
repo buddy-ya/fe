@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, Image, SafeAreaView } from "react-native";
+import { Text, View, Image } from "react-native";
 import { useTranslation } from "react-i18next";
 import "@/../global.css";
 import Button from "@/components/common/Button";

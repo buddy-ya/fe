@@ -5,15 +5,16 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: "#10774A",
+        primary: "#00A176",
 
         buttonPrimary: "#10774A",
         buttonSecondary: "#4A90E2",
         buttonDisabled: "#D1D1D6",
 
-        textSub: "#9ca3af",
+        text: "#282828",
+        textSub: "#797979",
         textDescription: "#4b5563",
-        textDisabled: "#999999",
+        textDisabled: "#DFDFDF",
 
         placeholderPrimary: "#fff",
 
@@ -27,5 +28,18 @@ module.exports = {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    function ({ addComponents }) {
+      addComponents({
+        ".text-xs": { color: "#282828" },
+        ".text-sm": { color: "#282828" },
+        ".text-base": { color: "#282828" },
+        ".text-lg": { color: "#282828" },
+        ".text-xl": { color: "#282828" },
+        ".text-2xl": { color: "#282828" },
+        ".text-3xl": { color: "#282828" },
+        ".text-4xl": { color: "#282828" },
+      });
+    },
+  ],
 };
