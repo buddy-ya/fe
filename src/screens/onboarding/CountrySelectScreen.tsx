@@ -1,4 +1,3 @@
-// CountrySelectScreen.tsx
 import React, { useState } from "react";
 import { Keyboard, Text, TouchableWithoutFeedback } from "react-native";
 import { useTranslation } from "react-i18next";
@@ -28,14 +27,10 @@ export default function CountrySelectScreen({ navigation }) {
     setSelectedCountry(country);
   };
 
-  const countryOptions = COUNTRIES.map((country) => ({
-    id: country.id,
-    icon: country.icon,
-    name: t(`countries:countries.${country.id}`),
-  }));
-
-  const filteredOptions = countryOptions.filter((option) =>
-    option.name.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredOptions = COUNTRIES.filter((option) =>
+    t(`countries:countries.${option.id}`)
+      .toLowerCase()
+      .includes(searchQuery.toLowerCase())
   );
 
   const handleNavigateButton = () => {
@@ -46,7 +41,7 @@ export default function CountrySelectScreen({ navigation }) {
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <Layout showHeader onBack={() => navigation.goBack()}>
         <InnerLayout>
-          <Heading className="mt-8">{t("onboarding:country.title")}</Heading>
+          <Heading>{t("onboarding:country.title")}</Heading>
           <HeadingDescription>
             {t("onboarding:country.description")}
           </HeadingDescription>
@@ -55,14 +50,16 @@ export default function CountrySelectScreen({ navigation }) {
             value={searchQuery}
             onChangeText={setSearchQuery}
             placeholder={t("onboarding:country.searchPlaceholder")}
+            className="mt-6"
           />
 
           <SelectItem
-            options={COUNTRIES}
+            options={filteredOptions}
             selectedValues={selectedCountry ? [selectedCountry] : []}
             onSelect={handleSelect}
             multiple={false}
             nameSpace="countries"
+            className="mt-4"
           />
 
           <Button

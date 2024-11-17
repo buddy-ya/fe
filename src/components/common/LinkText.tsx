@@ -14,7 +14,9 @@ export default function LinkText({
 }: LinkTextProps) {
   return (
     <TouchableOpacity onPress={onPress}>
-      <Text className={`text-primary underline ${className}`}>{children}</Text>
+      <Text className={`text-primary text-sm underline ${className}`}>
+        {children}
+      </Text>
     </TouchableOpacity>
   );
 }

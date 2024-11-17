@@ -14,13 +14,13 @@ export function Chip({ icon, label, selected, onPress, className }: ChipProps) {
     <TouchableOpacity onPress={onPress}>
       <View
         className={`flex-row items-center px-4 py-2 rounded-full border
-          ${selected ? "border-primary bg-selectActive" : "border-borderSelect"}
+          ${selected ? "border-chipBorder bg-chipActive" : "border-border"}
           ${className || ""}`}
       >
         {icon && <Text className="mr-2">{icon}</Text>}
         <Text
           className={`text-sm ${
-            selected ? "text-primary" : "text-textDescription"
+            selected ? "text-active" : "text-textDescription"
           }`}
         >
           {label}

@@ -38,10 +38,12 @@ export default function MajorSelectScreen({ navigation }) {
   return (
     <Layout showHeader onBack={() => navigation.goBack()}>
       <InnerLayout>
-        <Heading className="mt-8">{t("onboarding:major.title")}</Heading>
+        <Heading>{t("onboarding:major.title")}</Heading>
         {/* <HeadingDescription /> */}
         {/* <Text className="text-textDescription mt-2"></Text> */}
-
+        <Text className="mt-3 text-textDescription">
+          {t("language.maxSelect", { count: MAX_SELECT })}
+        </Text>
         <SelectItem
           options={MAJORS}
           selectedValues={selectedMajors}

@@ -7,6 +7,8 @@ import InnerLayout from "@/components/common/InnerLayout";
 import Button from "@/components/common/Button";
 import Heading from "@/components/onboarding/Heading";
 import SelectItem from "@/components/onboarding/SelectItem";
+import HeadingDescription from "@/components/onboarding/HeadingDescription";
+import Label from "@/components/onboarding/Label";
 
 type Gender = "male" | "female" | "preferNotToSay" | null;
 
@@ -18,37 +20,34 @@ export default function GenderScreen({ navigation }) {
     navigation.navigate("OnboardingName");
   };
 
+  const GENDER_OPTIONS = [
+    { id: "male", label: "gender.male" },
+    { id: "female", label: "gender.female" },
+    { id: "preferNotToSay", label: "gender.preferNotToSay" },
+  ] as const;
+
   return (
     <Layout showHeader onBack={() => navigation.goBack()}>
       <InnerLayout>
-        <Heading className="mt-8">{t("gender.title")}</Heading>
-        <View className="mt-12">
-          <SelectItem
-            selected={selectedGender === "male"}
-            onPress={() => setSelectedGender("male")}
-          >
-            <Text>{t("gender.male")}</Text>
-          </SelectItem>
-          <SelectItem
-            selected={selectedGender === "female"}
-            onPress={() => setSelectedGender("female")}
-          >
-            <Text>{t("gender.female")}</Text>
-          </SelectItem>
-          <SelectItem
-            selected={selectedGender === "preferNotToSay"}
-            onPress={() => setSelectedGender("preferNotToSay")}
-          >
-            <Text>{t("gender.preferNotToSay")}</Text>
-          </SelectItem>
+        <View className="flex-1">
+          <Heading>{t("gender.title")}</Heading>
+          <HeadingDescription>{t("gender.title")}</HeadingDescription>
+          <Label>{t("gender.label")}</Label>
+          {GENDER_OPTIONS.map((item) => (
+            <SelectItem
+              key={item.id}
+              selected={selectedGender === item.id}
+              onPress={() => setSelectedGender(item.id)}
+            >
+              <Text className="text-base">{t(item.label)}</Text>
+            </SelectItem>
+          ))}
         </View>
-
-        <Button
-          className="absolute bottom-12 right-8"
-          type="circle"
-          onPress={handleNavigate}
-          disabled={!selectedGender}
-        />
+        <Button onPress={handleNavigate} disabled={!selectedGender}>
+          <Text className="text-white text-lg font-semibold">
+            {t("common.next")}
+          </Text>
+        </Button>
       </InnerLayout>
     </Layout>
   );

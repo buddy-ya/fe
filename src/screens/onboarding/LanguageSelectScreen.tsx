@@ -44,8 +44,8 @@ export default function LanguageSelectScreen({ navigation }) {
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <Layout showHeader onBack={() => navigation.goBack()}>
         <InnerLayout>
-          <Heading className="mt-8">{t("language.title")}</Heading>
-          <HeadingDescription>{t("language.description")}</HeadingDescription>
+          <Heading>{t("language.title")}</Heading>
+          {/* <HeadingDescription>{t("language.description")}</HeadingDescription> */}
           <Text className="mt-3 text-textDescription">
             {t("language.maxSelect", { count: MAX_SELECT })}
           </Text>

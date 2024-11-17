@@ -37,17 +37,19 @@ export default function PhoneVerificationScreen({ navigation, route }) {
     if (!isExpired) {
       return (
         <View>
-          <Text className="text-textSub mb-1">
+          <Text className="text-textDescription text-sm">
             {t("verification.notReceived")}
           </Text>
-          <Text className="text-textSub">{timeLeft}</Text>
+          <Text className="text-textDescription text-sm">{timeLeft}</Text>
         </View>
       );
     }
 
     return (
       <View>
-        <Text className="text-gray-500 mb-1">{t("verification.expired")}</Text>
+        <Text className="text-textDescription text-sm">
+          {t("verification.expired")}
+        </Text>
         <LinkText onPress={handleResend}>{t("verification.resend")}</LinkText>
       </View>
     );

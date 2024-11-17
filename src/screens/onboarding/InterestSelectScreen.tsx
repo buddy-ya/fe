@@ -37,45 +37,46 @@ export default function InterestSelectScreen({ navigation }) {
   return (
     <Layout showHeader onBack={() => navigation.goBack()}>
       <InnerLayout>
-        <ScrollView showsVerticalScrollIndicator={false}>
-          <View className="py-6">
-            <Heading>{t("onboarding:interest.title")}</Heading>
-            <HeadingDescription>
-              {t("onboarding:interest.description")}
-            </HeadingDescription>
-            <Text className="text-textDescription mt-2">
-              {t("onboarding:interest.maxSelect", { count: MAX_SELECT })}
-            </Text>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          contentContainerClassName="pb-12"
+        >
+          <Heading>{t("onboarding:interest.title")}</Heading>
+          {/* <HeadingDescription>
+            {t("onboarding:interest.description")}
+          </HeadingDescription> */}
+          <Text className="text-textDescription mt-3">
+            {t("onboarding:interest.maxSelect", { count: MAX_SELECT })}
+          </Text>
 
-            {INTEREST_CATEGORIES.map((category) => (
-              <View key={category.id} className="mt-8">
-                <Text className="text-lg font-semibold mb-4">
-                  {t(`interests:categories.${category.id}`)}
-                </Text>
-                <View className="flex-row flex-wrap">
-                  {category.interests.map((interest) => (
-                    <Chip
-                      key={interest.id}
-                      icon={interest.icon}
-                      label={t(`interests:interests.${interest.id}`)}
-                      selected={selectedInterests.some(
-                        (i) => i.id === interest.id
-                      )}
-                      onPress={() => handleToggleSelect(interest)}
-                      className="mr-2 mb-2"
-                    />
-                  ))}
-                </View>
+          {INTEREST_CATEGORIES.map((category) => (
+            <View key={category.id} className="mt-8">
+              <Text className="text-[14px] text-text font-semibold mb-4">
+                {t(`interests:categories.${category.id}`)}
+              </Text>
+              <View className="flex-row flex-wrap">
+                {category.interests.map((interest) => (
+                  <Chip
+                    key={interest.id}
+                    icon={interest.icon}
+                    label={t(`interests:interests.${interest.id}`)}
+                    selected={selectedInterests.some(
+                      (i) => i.id === interest.id
+                    )}
+                    onPress={() => handleToggleSelect(interest)}
+                    className="mr-2 mb-2"
+                  />
+                ))}
               </View>
-            ))}
-          </View>
+            </View>
+          ))}
         </ScrollView>
 
         <Button
           type="box"
           onPress={handleNavigateButton}
           disabled={selectedInterests.length === 0}
-          className="flex-row items-center justify-center mt-5 mb-4"
+          className="flex-row items-center justify-center"
         >
           <View>
             <Text className="text-white text-base font-semibold">

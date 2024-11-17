@@ -37,12 +37,11 @@ export default function StudentTypeScreen({ navigation }) {
             <Text>{t("studentType.foreign")}</Text>
           </SelectItem>
         </View>
-        <Button
-          className="absolute bottom-14 right-8"
-          type="circle"
-          onPress={handleNavigateButton}
-          disabled={!selectedType}
-        />
+        <Button onPress={handleNavigateButton}>
+          <Text className="text-white text-lg font-semibold">
+            {t("common.next")}
+          </Text>
+        </Button>
       </InnerLayout>
     </Layout>
   );

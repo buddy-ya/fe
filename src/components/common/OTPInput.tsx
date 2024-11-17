@@ -39,7 +39,7 @@ export default function OTPInput({
             `}
           >
             <Text
-              className={`text-lg ${
+              className={`text-[18px] text-text ${
                 value[index] || "font-extralight text-textDescription"
               }`}
             >

@@ -5,14 +5,15 @@ module.exports = {
     extend: {
       colors: {
         primary: "#00A176",
-        buttonPrimary: "#10774A",
-        buttonSecondary: "#4A90E2",
+        active: "#004D39",
+
+        buttonPrimary: "#00A176",
         buttonDisabled: "#DFDFDF",
+
         text: "#282828",
-        textSub: "#797979",
         textDescription: "#797977",
-        textDisabled: "#DFDFDF",
         textWarning: "#FF7657",
+
         placeholderPrimary: "#fff",
         background: "#FFFFFF",
         border: "#CBCBCB",
@@ -22,6 +23,10 @@ module.exports = {
         borderCheckbox: "#d1d5db",
         borderFooter: "#E8E9EB",
         footerBackground: "#FCFCFC",
+
+        chipBorder: "#A6CFC4",
+        chipActive: "#F6FFFD",
+
         headerBottom: "#E8E9EB",
         selectActive: "#f0fdf4",
       },

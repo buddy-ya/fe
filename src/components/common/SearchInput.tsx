@@ -29,7 +29,7 @@ export default function SearchInput({
   const DismissButton = ({ onPress }) => {
     return (
       <TouchableOpacity onPress={onPress}>
-        <Text>{t("common.cancel")}</Text>
+        <Text className=" text-textDescription">{t("common.cancel")}</Text>
       </TouchableOpacity>
     );
   };
@@ -42,14 +42,14 @@ export default function SearchInput({
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View
-        className={`flex-row justify-between items-center mt-3 px-4 py-3 bg-gray-100 rounded-xl ${className}`}
+        className={`flex-row justify-between items-center mt-6 px-4 py-3 border border-border rounded-xl ${className}`}
       >
         <Search size={20} color="gray" />
         <TextInput
           value={value}
           onChangeText={onChangeText}
           placeholder={placeholder}
-          className="flex-1 ml-2 text-base"
+          className="flex-1 ml-2"
           onFocus={() => setIsFocused(true)}
           onBlur={() => {
             setIsFocused(false);

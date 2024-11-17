@@ -43,7 +43,7 @@ export default function WelcomeScreen({ navigation }) {
           />
         </View>
         <Button onPress={handleNavigateButton}>
-          <Text className="text-white text-lg font-bold">
+          <Text className="text-white text-lg font-semibold">
             {t("intro.button")}
           </Text>
         </Button>

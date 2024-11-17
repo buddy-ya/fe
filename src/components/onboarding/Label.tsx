@@ -8,7 +8,7 @@ interface LabelProps {
 
 export default function Label({ children, className }: LabelProps) {
   return (
-    <View className={`mt-10 mb-2 ${className}`}>
+    <View className={`mt-10 mb-3 ${className}`}>
       <Text className="font-semibold text-base">{children}</Text>
     </View>
   );

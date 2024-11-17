@@ -12,7 +12,6 @@ export const LANGUAGE_IDS = [
   "es", // 스페인어
   "it", // 이탈리아어
   "ru", // 러시아어
-
   // 동남아시아 언어
   "vi", // 베트남어
   "th", // 태국어
@@ -20,7 +19,6 @@ export const LANGUAGE_IDS = [
   "ms", // 말레이어
   "tl", // 타갈로그어
   "km", // 캄보디아어
-
   // 동아시아 언어
   "yue", // 광동어 (Cantonese)
   // 그 외 아시아 언어

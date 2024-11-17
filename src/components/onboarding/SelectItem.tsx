@@ -21,12 +21,15 @@ export default function SelectItem({
       onPress={onPress}
       disabled={disabled}
       className={`
-       flex-row items-center justify-between px-6 py-5 border rounded-3xl mb-4
-       ${selected ? "bg-green-50 border-primary" : "border-gray-200"}
+        w-[262px] h-[52px] flex-row items-center px-4 py-4 border rounded-xl mb-3
+       ${
+         selected
+           ? "bg-chipActive border-[1.5px] border-chipBorder"
+           : "border-border"
+       }
      `}
     >
       {children}
-      {selected && <Check className={"border"} size={20} color={"black"} />}
     </TouchableOpacity>
   );
 }

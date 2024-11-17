@@ -8,20 +8,24 @@ import Button from "@/components/common/Button";
 import Heading from "@/components/onboarding/Heading";
 import SelectItem from "@/components/onboarding/SelectItem";
 import SejongLogo from "@assets/icons/universities/sejong.svg";
+import Label from "@/components/onboarding/Label";
+import HeadingDescription from "@/components/onboarding/HeadingDescription";
 
 export default function UniversitySelectScreen({ navigation }) {
   const [selected, setSelected] = useState(true);
   const { t } = useTranslation("onboarding");
 
   const handleNavigate = () => {
-    navigation.navigate("OnboardingStudentTypeSelect");
+    navigation.navigate("OnboardingGenderSelect");
   };
 
   return (
-    <Layout>
+    <Layout preserveHeader>
       <InnerLayout>
-        <Heading className="mt-[82px]">{t("universitySelect.title")}</Heading>
-        <View className="mt-12">
+        <View className="flex-1">
+          <Heading>{t("universitySelect.title")}</Heading>
+          <HeadingDescription>{t("universitySelect.title")}</HeadingDescription>
+          <Label>{t("universitySelect.label")}</Label>
           <SelectItem selected={selected} disabled={true} onPress={() => {}}>
             <View className="flex-row items-center">
               <SejongLogo width={24} height={24} />
@@ -31,11 +35,11 @@ export default function UniversitySelectScreen({ navigation }) {
             </View>
           </SelectItem>
         </View>
-        <Button
-          className="absolute bottom-14 right-8"
-          type="circle"
-          onPress={handleNavigate}
-        />
+        <Button onPress={handleNavigate}>
+          <Text className="text-white text-lg font-semibold">
+            {t("common.next")}
+          </Text>
+        </Button>
       </InnerLayout>
     </Layout>
   );

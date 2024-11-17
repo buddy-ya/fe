@@ -38,7 +38,7 @@ export default function SelectItem({
       : !isSelected(option) && selectedValues.length >= maxSelect;
 
   return (
-    <View className={`flex-1 mt-1 mb-5 ${className}`}>
+    <View className={`flex-1 mt-4 mb-5 ${className}`}>
       <ScrollView showsVerticalScrollIndicator={false}>
         {options.map((option) => (
           <TouchableOpacity
@@ -51,7 +51,7 @@ export default function SelectItem({
               {option.icon && (
                 <Text className="mr-3 text-base">{option.icon}</Text>
               )}
-              <Text className="text-base text-[#282828]">
+              <Text className="text-base">
                 {t(`${nameSpace}.${option.id}`)}
               </Text>
             </View>

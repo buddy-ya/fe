@@ -12,7 +12,6 @@ import HeadingDescription from "@/components/onboarding/HeadingDescription";
 export default function NameScreen({ navigation }) {
   const [name, setName] = useState("");
   const { t, i18n } = useTranslation("onboarding");
-  const currentLang = i18n.language.startsWith("ko") ? "ko" : "en";
 
   const handleNavigation = () => {
     navigation.navigate("OnboardingCountrySelect");
@@ -44,7 +43,8 @@ export default function NameScreen({ navigation }) {
             value={name}
             onChangeText={setName}
             placeholder={t("name.placeholder")}
-            className="mt-12 px-4 py-3 w-[60%] text-xl tracking-wide border border-inputBorder rounded-xl"
+            className="mt-12 px-4 py-3 w-[262px] text-xl tracking-wide border border-inputBorder rounded-xl"
+            keyboardType="ascii-capable"
             placeholderTextColor="placeholderPrimary"
             autoFocus
           />

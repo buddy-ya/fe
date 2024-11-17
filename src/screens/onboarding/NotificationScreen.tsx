@@ -33,16 +33,10 @@ export default function NotificationScreen({ navigation }) {
   };
 
   return (
-    <Layout>
+    <Layout preserveHeader>
       <InnerLayout>
-        <Heading className="mt-20">{t("notification.title1")}</Heading>
-        <Heading>{t("notification.title2")}</Heading>
-        <HeadingDescription className="mt-5">
-          {t("notification.description1")}
-        </HeadingDescription>
-        <HeadingDescription>
-          {t("notification.description2")}
-        </HeadingDescription>
+        <Heading>{t("notification.title")}</Heading>
+        <HeadingDescription>{t("notification.description")}</HeadingDescription>
         <View className="flex-1">
           <Image
             className="w-[344px] h-[344px]"
@@ -50,7 +44,7 @@ export default function NotificationScreen({ navigation }) {
           />
         </View>
         <Button
-          className="w-full bottom-8"
+          className="w-full"
           type="box"
           onPress={requestNotificationPermission}
         >
