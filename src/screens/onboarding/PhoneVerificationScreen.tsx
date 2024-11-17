@@ -11,6 +11,8 @@ import InnerLayout from "@/components/common/InnerLayout";
 import useTimer from "@/hooks/useTimer";
 import { Send } from "lucide-react-native";
 import HeadingDescription from "@/components/onboarding/HeadingDescription";
+import FooterLayout from "@/components/common/FooterLayout";
+import Label from "@/components/onboarding/Label";
 
 export default function PhoneVerificationScreen({ navigation, route }) {
   const { t } = useTranslation("onboarding");
@@ -52,27 +54,27 @@ export default function PhoneVerificationScreen({ navigation, route }) {
   };
 
   const footer = (
-    <View className="w-full absolute flex-row items-center justify-between px-4 bottom-4">
-      <View className="flex-1 flex-row items-center mr-2">
-        <Send strokeWidth={1} color={"black"} />
-        <Text className="text-sm mx-4">{renderTimerContent()}</Text>
-      </View>
-      <Button
-        type="circle"
-        onPress={handleNavigateButton}
-        disabled={code.length !== 6 || isExpired}
-      />
-    </View>
+    <FooterLayout
+      icon={<Send strokeWidth={1} width={20} height={20} color="black" />}
+      content={
+        <Text className="text-sm text-textDescription mx-3">
+          {renderTimerContent()}
+        </Text>
+      }
+      onPress={handleNavigateButton}
+      disabled={code.length !== 6 || isExpired}
+    />
   );
 
   return (
     <Layout showHeader onBack={() => navigation.goBack()}>
       <KeyboardLayout footer={footer}>
         <InnerLayout>
-          <Heading className="mt-8">{t("verification.title")}</Heading>
-          <HeadingDescription className="mb-10">
+          <Heading>{t("verification.title")}</Heading>
+          <HeadingDescription>
             {t("verification.titleDescription", { phoneNumber })}
           </HeadingDescription>
+          <Label>{t("verification.label")}</Label>
           <OTPInput value={code} onChange={setCode} length={6} />
         </InnerLayout>
       </KeyboardLayout>

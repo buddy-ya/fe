@@ -9,13 +9,15 @@
   "phone": {
     "title": "Please enter your phone number",
     "titleDescription": "We use your phone number only to verify all users in Buddy.",
-    "placeholder": "01012345678",
-    "description": "Numbers only, without dashes",
+    "label": "phone number",
+    "placeholder": "010-1234-5678",
+    "warning": "The phone number must start with 010",
     "footer": "We do not share this information or display it on your profile."
   },
   "verification": {
     "title": "We've just sent a verification code!",
     "titleDescription": "Enter the code sent to {{phoneNumber}}.",
+    "label": "Verification code",
     "notReceived": "Please enter the code within the time limit.",
     "expired": "Verification time expired",
     "resend": "Resend code"

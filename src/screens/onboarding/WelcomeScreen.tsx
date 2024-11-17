@@ -42,7 +42,7 @@ export default function WelcomeScreen({ navigation }) {
             className="w-full h-[344px]"
           />
         </View>
-        <Button className="w-full bottom-8" onPress={handleNavigateButton}>
+        <Button onPress={handleNavigateButton}>
           <Text className="text-white text-lg font-bold">
             {t("intro.button")}
           </Text>

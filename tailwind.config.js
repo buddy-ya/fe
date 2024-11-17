@@ -1,4 +1,3 @@
-/** @type {import('tailwindcss').Config} */
 module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
   presets: [require("nativewind/preset")],
@@ -6,31 +5,54 @@ module.exports = {
     extend: {
       colors: {
         primary: "#00A176",
-
         buttonPrimary: "#10774A",
         buttonSecondary: "#4A90E2",
-        buttonDisabled: "#D1D1D6",
-
+        buttonDisabled: "#DFDFDF",
         text: "#282828",
         textSub: "#797979",
-        textDescription: "#4b5563",
+        textDescription: "#797977",
         textDisabled: "#DFDFDF",
-
+        textWarning: "#FF7657",
         placeholderPrimary: "#fff",
-
         background: "#FFFFFF",
-
+        border: "#CBCBCB",
         borderInput: "#6b7280",
         borderSelect: "#e5e7eb",
         borderBottom: "#f3f4f6",
         borderCheckbox: "#d1d5db",
+        borderFooter: "#E8E9EB",
+        footerBackground: "#FCFCFC",
+        headerBottom: "#E8E9EB",
         selectActive: "#f0fdf4",
+      },
+      fontFamily: {
+        sans: ["Pretendard-Regular"],
+        thin: ["Pretendard-Thin"],
+        extralight: ["Pretendard-ExtraLight"],
+        light: ["Pretendard-Light"],
+        medium: ["Pretendard-Medium"],
+        semibold: ["Pretendard-SemiBold"],
+        bold: ["Pretendard-Bold"],
+        extrabold: ["Pretendard-ExtraBold"],
+        black: ["Pretendard-Black"],
+      },
+      fontWeight: {
+        thin: undefined,
+        extralight: undefined,
+        light: undefined,
+        normal: undefined,
+        medium: undefined,
+        semibold: undefined,
+        bold: undefined,
+        extrabold: undefined,
+        black: undefined,
       },
     },
   },
   plugins: [
     function ({ addComponents }) {
       addComponents({
+        ".text": { color: "#282828" },
         ".text-xs": { color: "#282828" },
         ".text-sm": { color: "#282828" },
         ".text-base": { color: "#282828" },
