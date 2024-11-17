@@ -1,74 +1,91 @@
-export const LANGUAGES = [
-  { id: "af", en: "Afrikaans", ko: "아프리칸스어" },
-  { id: "sq", en: "Albanian", ko: "알바니아어" },
-  { id: "am", en: "Amharic", ko: "암하라어" },
-  { id: "ar", en: "Arabic", ko: "아랍어" },
-  { id: "hy", en: "Armenian", ko: "아르메니아어" },
-  { id: "az", en: "Azerbaijani", ko: "아제르바이잔어" },
-  { id: "eu", en: "Basque", ko: "바스크어" },
-  { id: "bn", en: "Bengali", ko: "벵골어" },
-  { id: "bs", en: "Bosnian", ko: "보스니아어" },
-  { id: "bg", en: "Bulgarian", ko: "불가리아어" },
-  { id: "ca", en: "Catalan", ko: "카탈로니아어" },
-  { id: "yue", en: "Cantonese", ko: "광동어" },
-  { id: "zh", en: "Chinese", ko: "중국어" },
-  { id: "hr", en: "Croatian", ko: "크로아티아어" },
-  { id: "cs", en: "Czech", ko: "체코어" },
-  { id: "da", en: "Danish", ko: "덴마크어" },
-  { id: "nl", en: "Dutch", ko: "네덜란드어" },
-  { id: "en", en: "English", ko: "영어" },
-  { id: "et", en: "Estonian", ko: "에스토니아어" },
-  { id: "fi", en: "Finnish", ko: "핀란드어" },
-  { id: "fr", en: "French", ko: "프랑스어" },
-  { id: "gl", en: "Galician", ko: "갈리시아어" },
-  { id: "ka", en: "Georgian", ko: "조지아어" },
-  { id: "de", en: "German", ko: "독일어" },
-  { id: "el", en: "Greek", ko: "그리스어" },
-  { id: "gu", en: "Gujarati", ko: "구자라트어" },
-  { id: "ht", en: "Haitian Creole", ko: "아이티 크리올어" },
-  { id: "he", en: "Hebrew", ko: "히브리어" },
-  { id: "hi", en: "Hindi", ko: "힌디어" },
-  { id: "hu", en: "Hungarian", ko: "헝가리어" },
-  { id: "is", en: "Icelandic", ko: "아이슬란드어" },
-  { id: "id", en: "Indonesian", ko: "인도네시아어" },
-  { id: "it", en: "Italian", ko: "이탈리아어" },
-  { id: "ja", en: "Japanese", ko: "일본어" },
-  { id: "kn", en: "Kannada", ko: "칸나다어" },
-  { id: "kk", en: "Kazakh", ko: "카자흐어" },
-  { id: "km", en: "Khmer", ko: "크메르어" },
-  { id: "ko", en: "Korean", ko: "한국어" },
-  { id: "ku", en: "Kurdish", ko: "쿠르드어" },
-  { id: "lv", en: "Latvian", ko: "라트비아어" },
-  { id: "lt", en: "Lithuanian", ko: "리투아니아어" },
-  { id: "mk", en: "Macedonian", ko: "마케도니아어" },
-  { id: "ms", en: "Malay", ko: "말레이어" },
-  { id: "ml", en: "Malayalam", ko: "말라얄람어" },
-  { id: "mr", en: "Marathi", ko: "마라티어" },
-  { id: "mn", en: "Mongolian", ko: "몽골어" },
-  { id: "ne", en: "Nepali", ko: "네팔어" },
-  { id: "no", en: "Norwegian", ko: "노르웨이어" },
-  { id: "ps", en: "Pashto", ko: "파슈토어" },
-  { id: "fa", en: "Persian", ko: "페르시아어" },
-  { id: "pl", en: "Polish", ko: "폴란드어" },
-  { id: "pt", en: "Portuguese", ko: "포르투갈어" },
-  { id: "pa", en: "Punjabi", ko: "펀자브어" },
-  { id: "ro", en: "Romanian", ko: "루마니아어" },
-  { id: "ru", en: "Russian", ko: "러시아어" },
-  { id: "sr", en: "Serbian", ko: "세르비아어" },
-  { id: "sk", en: "Slovak", ko: "슬로바키아어" },
-  { id: "sl", en: "Slovenian", ko: "슬로베니아어" },
-  { id: "so", en: "Somali", ko: "소말리어" },
-  { id: "es", en: "Spanish", ko: "스페인어" },
-  { id: "sw", en: "Swahili", ko: "스와힐리어" },
-  { id: "sv", en: "Swedish", ko: "스웨덴어" },
-  { id: "tl", en: "Tagalog", ko: "타갈로그어" },
-  { id: "ta", en: "Tamil", ko: "타밀어" },
-  { id: "te", en: "Telugu", ko: "텔루구어" },
-  { id: "th", en: "Thai", ko: "태국어" },
-  { id: "tr", en: "Turkish", ko: "터키어" },
-  { id: "uk", en: "Ukrainian", ko: "우크라이나어" },
-  { id: "ur", en: "Urdu", ko: "우르두어" },
-  { id: "vi", en: "Vietense", ko: "베트남어" },
-  { id: "xh", en: "Xhosa", ko: "코사어" },
-  { id: "zu", en: "Zulu", ko: "줄루어" },
-].sort((a, b) => a.en.localeCompare(b.en));
+// constants/languages.ts
+export const LANGUAGE_IDS = [
+  // 한국어
+  "ko",
+  // 영어, 중국어, 일본어 (주요 언어)
+  "en",
+  "zh",
+  "ja",
+  // 유럽 주요 언어
+  "fr", // 프랑스어
+  "de", // 독일어
+  "es", // 스페인어
+  "it", // 이탈리아어
+  "ru", // 러시아어
+
+  // 동남아시아 언어
+  "vi", // 베트남어
+  "th", // 태국어
+  "id", // 인도네시아어
+  "ms", // 말레이어
+  "tl", // 타갈로그어
+  "km", // 캄보디아어
+
+  // 동아시아 언어
+  "yue", // 광동어 (Cantonese)
+  // 그 외 아시아 언어
+  "hi", // 힌디어
+  "bn", // 벵골어
+  "ur", // 우르두어
+  "fa", // 페르시아어
+  "ar", // 아랍어
+  "he", // 히브리어
+  // 기타 유럽 언어
+  "nl", // 네덜란드어
+  "pl", // 폴란드어
+  "tr", // 터키어
+  "uk", // 우크라이나어
+  "cs", // 체코어
+  "sv", // 스웨덴어
+  "hu", // 헝가리어
+  "el", // 그리스어
+  "da", // 덴마크어
+  "fi", // 핀란드어
+  "no", // 노르웨이어
+  "ro", // 루마니아어
+  "sk", // 슬로바키아어
+  "hr", // 크로아티아어
+  "sr", // 세르비아어
+  "sl", // 슬로베니아어
+  "bg", // 불가리아어
+  "lt", // 리투아니아어
+  "lv", // 라트비아어
+  "et", // 에스토니아어
+  "is", // 아이슬란드어
+  // 기타 언어
+  "af", // 아프리칸스어
+  "sq", // 알바니아어
+  "am", // 암하라어
+  "hy", // 아르메니아어
+  "az", // 아제르바이잔어
+  "eu", // 바스크어
+  "bs", // 보스니아어
+  "ca", // 카탈로니아어
+  "gl", // 갈리시아어
+  "ka", // 조지아어
+  "gu", // 구자라트어
+  "ht", // 아이티 크리올어
+  "kn", // 칸나다어
+  "kk", // 카자흐어
+  "ku", // 쿠르드어
+  "mk", // 마케도니아어
+  "ml", // 말라얄람어
+  "mr", // 마라티어
+  "mn", // 몽골어
+  "ne", // 네팔어
+  "ps", // 파슈토어
+  "pt", // 포르투갈어
+  "pa", // 펀자브어
+  "so", // 소말리아어
+  "sw", // 스와힐리어
+  "ta", // 타밀어
+  "te", // 텔루구어
+  "xh", // 코사어
+  "zu", // 줄루어
+] as const;
+
+export type LanguageID = (typeof LANGUAGE_IDS)[number];
+
+export const LANGUAGES = LANGUAGE_IDS.map((id) => ({
+  id,
+}));

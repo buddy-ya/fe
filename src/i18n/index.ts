@@ -4,19 +4,36 @@ import * as Localization from "expo-localization";
 
 import ko_onboarding from "./ko/onboarding.json";
 import en_onboarding from "./en/onboarding.json";
+import ko_countries from "./ko/countries.json";
+import en_countries from "./en/countries.json";
+import ko_languages from "./ko/languages.json";
+import en_languages from "./en/languages.json";
+import ko_interests from "./ko/interests.json";
+import en_interests from "./en/interests.json";
+
+import ko_majors from "./ko/majors.json";
+import en_majors from "./en/majors.json";
 
 const resources = {
   ko: {
     onboarding: ko_onboarding,
+    majors: ko_majors,
+    countries: ko_countries,
+    languages: ko_languages,
+    interests: ko_interests,
   },
   en: {
     onboarding: en_onboarding,
+    majors: en_majors,
+    countries: en_countries,
+    languages: en_languages,
+    interests: en_interests,
   },
 };
 
 i18n.use(initReactI18next).init({
   resources,
-  lng: Localization.locale.startsWith("en") ? "ko" : "en",
+  lng: Localization.locale.startsWith("ko") ? "ko" : "en",
   fallbackLng: "en",
   compatibilityJSON: "v3",
   react: {

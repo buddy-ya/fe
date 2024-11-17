@@ -12,15 +12,12 @@ import { LANGUAGES } from "@/utils/constants/languages";
 
 interface Language {
   id: string;
-  en: string;
-  ko: string;
 }
 
 export default function LanguageSelectScreen({ navigation }) {
   const [selectedLanguages, setSelectedLanguages] = useState<Language[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
-  const { t, i18n } = useTranslation("onboarding");
-  const currentLang = i18n.language.startsWith("ko") ? "ko" : "en";
+  const { t } = useTranslation("onboarding");
   const MAX_SELECT = 3;
 
   const handleSelect = (language: Language) => {
@@ -34,7 +31,9 @@ export default function LanguageSelectScreen({ navigation }) {
   };
 
   const filteredOptions = LANGUAGES.filter((option) =>
-    option[currentLang].toLowerCase().includes(searchQuery.toLowerCase())
+    t(`languages:languages.${option.id}`)
+      .toLowerCase()
+      .includes(searchQuery.toLowerCase())
   );
 
   const handleNavigateButton = () => {
@@ -63,6 +62,7 @@ export default function LanguageSelectScreen({ navigation }) {
             onSelect={handleSelect}
             maxSelect={MAX_SELECT}
             multiple={true}
+            nameSpace="languages"
           />
 
           <Button

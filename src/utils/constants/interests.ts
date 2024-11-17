@@ -1,78 +1,115 @@
-export const INTEREST_CATEGORIES = [
-  {
-    id: "culture",
-    en: "Cultural Life",
-    ko: "문화 생활",
-    interests: [
-      { id: "kpop", icon: "🎤", en: "K-POP", ko: "K-POP" },
-      {
-        id: "performance",
-        icon: "🎭",
-        en: "Performance & Exhibition",
-        ko: "공연 & 전시회 관람",
-      },
-      { id: "reading", icon: "📚", en: "Reading", ko: "독서" },
-      { id: "movie", icon: "🎬", en: "Movie", ko: "영화" },
-      { id: "oneday", icon: "🎨", en: "One-day Class", ko: "원데이클래스" },
-      { id: "experience", icon: "🎯", en: "Experience Cafe", ko: "체험카페" },
-      { id: "cafe", icon: "☕️", en: "Cafe Tour", ko: "카페 투어" },
-    ],
-  },
-  {
-    id: "sports",
-    en: "Sports & Activities",
-    ko: "스포츠 및 액티비티",
-    interests: [
-      { id: "game", icon: "🎮", en: "Gaming", ko: "게임" },
-      { id: "basketball", icon: "🏀", en: "Basketball", ko: "농구" },
-      { id: "hiking", icon: "⛰️", en: "Hiking", ko: "등산" },
-      { id: "running", icon: "🏃", en: "Running", ko: "러닝" },
-      { id: "bowling", icon: "🎳", en: "Bowling", ko: "볼링" },
-      {
-        id: "sports",
-        icon: "📣",
-        en: "Sports Watching",
-        ko: "스포츠 경기 관람",
-      },
-      { id: "baseball", icon: "⚾️", en: "Baseball", ko: "야구" },
-      { id: "soccer", icon: "⚽️", en: "Soccer", ko: "축구" },
-      { id: "tennis", icon: "🎾", en: "Tennis", ko: "테니스" },
-      { id: "fitness", icon: "💪", en: "Fitness", ko: "헬스" },
-    ],
-  },
-  {
-    id: "arts",
-    en: "Arts & Creation",
-    ko: "예술 및 창작 활동",
-    interests: [
-      { id: "singing", icon: "🎤", en: "Singing", ko: "노래" },
-      { id: "dance", icon: "💃", en: "Dancing", ko: "춤" },
-      { id: "crafts", icon: "🎨", en: "Crafts", ko: "공예" },
-      {
-        id: "instrument",
-        icon: "🎸",
-        en: "Musical Instrument",
-        ko: "악기 연주",
-      },
-      { id: "photo", icon: "📸", en: "Photography", ko: "사진 촬영" },
-      { id: "acting", icon: "🎭", en: "Acting", ko: "연기" },
-    ],
-  },
-  {
-    id: "food",
-    en: "Food & Beverage",
-    ko: "음식 및 음료",
-    interests: [
-      { id: "restaurant", icon: "🍜", en: "Restaurant Tour", ko: "맛집 투어" },
-      { id: "beer", icon: "🍺", en: "Beer", ko: "맥주" },
-      { id: "baking", icon: "🥖", en: "Baking", ko: "베이킹" },
-      { id: "cooking", icon: "👨‍🍳", en: "Cooking", ko: "요리" },
-      {
-        id: "food_experience",
-        icon: "🍱",
-        en: "Food Experience",
-        ko: "이색 음식 체험",
-      },
-    ],
-  },
-];
+export const INTEREST_CATEGORY_IDS = [
+  "culture",
+  "sports",
+  "arts",
+  "food",
+] as const;
+
+export type InterestCategoryID = (typeof INTEREST_CATEGORY_IDS)[number];
+
+export const INTEREST_IDS = [
+  // culture
+  "kpop",
+  "performance",
+  "reading",
+  "movie",
+  "oneday",
+  "experience",
+  "cafe",
+  // sports
+  "game",
+  "basketball",
+  "hiking",
+  "running",
+  "bowling",
+  "sports",
+  "baseball",
+  "soccer",
+  "tennis",
+  "fitness",
+  // arts
+  "singing",
+  "dance",
+  "crafts",
+  "instrument",
+  "photo",
+  "acting",
+  // food
+  "restaurant",
+  "beer",
+  "baking",
+  "cooking",
+  "food_experience",
+] as const;
+
+export type InterestID = (typeof INTEREST_IDS)[number];
+
+export const INTEREST_ICONS: Record<InterestID, string> = {
+  // culture
+  kpop: "🎤",
+  performance: "🎭",
+  reading: "📚",
+  movie: "🎬",
+  oneday: "🎨",
+  experience: "🎯",
+  cafe: "☕️",
+  // sports
+  game: "🎮",
+  basketball: "🏀",
+  hiking: "⛰️",
+  running: "🏃",
+  bowling: "🎳",
+  sports: "📣",
+  baseball: "⚾️",
+  soccer: "⚽️",
+  tennis: "🎾",
+  fitness: "💪",
+  // arts
+  singing: "🎤",
+  dance: "💃",
+  crafts: "🎨",
+  instrument: "🎸",
+  photo: "📸",
+  acting: "🎭",
+  // food
+  restaurant: "🍜",
+  beer: "🍺",
+  baking: "🥖",
+  cooking: "👨‍🍳",
+  food_experience: "🍱",
+};
+
+export const CATEGORY_INTERESTS: Record<InterestCategoryID, InterestID[]> = {
+  culture: [
+    "kpop",
+    "performance",
+    "reading",
+    "movie",
+    "oneday",
+    "experience",
+    "cafe",
+  ],
+  sports: [
+    "game",
+    "basketball",
+    "hiking",
+    "running",
+    "bowling",
+    "sports",
+    "baseball",
+    "soccer",
+    "tennis",
+    "fitness",
+  ],
+  arts: ["singing", "dance", "crafts", "instrument", "photo", "acting"],
+  food: ["restaurant", "beer", "baking", "cooking", "food_experience"],
+};
+
+// 화면에서 사용할 데이터 구조
+export const INTEREST_CATEGORIES = INTEREST_CATEGORY_IDS.map((categoryId) => ({
+  id: categoryId,
+  interests: CATEGORY_INTERESTS[categoryId].map((interestId) => ({
+    id: interestId,
+    icon: INTEREST_ICONS[interestId],
+  })),
+}));

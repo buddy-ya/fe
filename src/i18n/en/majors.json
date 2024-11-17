@@ -1,0 +1,16 @@
+{
+  "majors": {
+    "humanities": "Humanities",
+    "social_sciences": "Social Sciences",
+    "business": "Business",
+    "education": "Education",
+    "natural_sciences": "Natural Sciences",
+    "it": "IT",
+    "engineering": "Engineering",
+    "arts_sports": "Arts and Physical Education",
+    "nursing": "Nursing",
+    "pharmacy": "Pharmacy",
+    "veterinary": "Veterinary Medicine",
+    "medicine": "Medicine"
+  }
+}

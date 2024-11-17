@@ -1,0 +1,38 @@
+{
+  "categories": {
+    "culture": "Cultural Life",
+    "sports": "Sports & Activities",
+    "arts": "Arts & Creation",
+    "food": "Food & Beverage"
+  },
+  "interests": {
+    "kpop": "K-POP",
+    "performance": "Performance & Exhibition",
+    "reading": "Reading",
+    "movie": "Movie",
+    "oneday": "One-day Class",
+    "experience": "Experience Cafe",
+    "cafe": "Cafe Tour",
+    "game": "Gaming",
+    "basketball": "Basketball",
+    "hiking": "Hiking",
+    "running": "Running",
+    "bowling": "Bowling",
+    "sports": "Sports Watching",
+    "baseball": "Baseball",
+    "soccer": "Soccer",
+    "tennis": "Tennis",
+    "fitness": "Fitness",
+    "singing": "Singing",
+    "dance": "Dancing",
+    "crafts": "Crafts",
+    "instrument": "Musical Instrument",
+    "photo": "Photography",
+    "acting": "Acting",
+    "restaurant": "Restaurant Tour",
+    "beer": "Beer",
+    "baking": "Baking",
+    "cooking": "Cooking",
+    "food_experience": "Food Experience"
+  }
+}

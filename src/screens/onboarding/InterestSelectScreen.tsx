@@ -6,20 +6,18 @@ import InnerLayout from "@/components/common/InnerLayout";
 import Button from "@/components/common/Button";
 import Heading from "@/components/onboarding/Heading";
 import HeadingDescription from "@/components/onboarding/HeadingDescription";
-import { INTEREST_CATEGORIES } from "@/utils/constants/interests";
 import { Chip } from "@/components/common/Chip";
+import { INTEREST_CATEGORIES } from "@/utils/constants/interests";
+import type { InterestID } from "@/utils/constants/interests";
 
 interface Interest {
-  id: string;
+  id: InterestID;
   icon: string;
-  en: string;
-  ko: string;
 }
 
 export default function InterestSelectScreen({ navigation }) {
   const [selectedInterests, setSelectedInterests] = useState<Interest[]>([]);
-  const { t, i18n } = useTranslation("onboarding");
-  const currentLang = i18n.language.startsWith("ko") ? "ko" : "en";
+  const { t } = useTranslation(["onboarding", "interests"]);
   const MAX_SELECT = 5;
 
   const handleToggleSelect = (interest: Interest) => {
@@ -41,23 +39,25 @@ export default function InterestSelectScreen({ navigation }) {
       <InnerLayout>
         <ScrollView showsVerticalScrollIndicator={false}>
           <View className="py-6">
-            <Heading>{t("interest.title")}</Heading>
-            <HeadingDescription>{t("interest.description")}</HeadingDescription>
+            <Heading>{t("onboarding:interest.title")}</Heading>
+            <HeadingDescription>
+              {t("onboarding:interest.description")}
+            </HeadingDescription>
             <Text className="text-textDescription mt-2">
-              {t("interest.maxSelect", { count: MAX_SELECT })}
+              {t("onboarding:interest.maxSelect", { count: MAX_SELECT })}
             </Text>
 
             {INTEREST_CATEGORIES.map((category) => (
               <View key={category.id} className="mt-8">
                 <Text className="text-lg font-semibold mb-4">
-                  {category[currentLang]}
+                  {t(`interests:categories.${category.id}`)}
                 </Text>
                 <View className="flex-row flex-wrap">
                   {category.interests.map((interest) => (
                     <Chip
                       key={interest.id}
                       icon={interest.icon}
-                      label={interest[currentLang]}
+                      label={t(`interests:interests.${interest.id}`)}
                       selected={selectedInterests.some(
                         (i) => i.id === interest.id
                       )}
@@ -79,12 +79,12 @@ export default function InterestSelectScreen({ navigation }) {
         >
           <View>
             <Text className="text-white text-base font-semibold">
-              {t("interest.submit")}
+              {t("onboarding:interest.submit")}
             </Text>
           </View>
           <View className="ml-1">
             <Text className="text-white text-base font-semibold">
-              {selectedInterests.length + "/" + MAX_SELECT}
+              {selectedInterests.length}/{MAX_SELECT}
             </Text>
           </View>
         </Button>

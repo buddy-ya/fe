@@ -15,10 +15,7 @@ export default function NameScreen({ navigation }) {
   const currentLang = i18n.language.startsWith("ko") ? "ko" : "en";
 
   const handleNavigation = () => {
-    if (currentLang == "en") {
-      return navigation.navigate("OnboardingCountrySelect");
-    }
-    navigation.navigate("OnboardingLanguageSelect");
+    navigation.navigate("OnboardingCountrySelect");
   };
 
   const isValidName = /^[a-zA-Z]*$/.test(name) && name.trim().length > 0;

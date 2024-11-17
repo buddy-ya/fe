@@ -5,9 +5,7 @@ import { useTranslation } from "react-i18next";
 
 interface SelectOption {
   id: string;
-  en: string;
-  ko: string;
-  flag?: string;
+  icon?: string;
 }
 
 interface SelectItemProps {
@@ -16,6 +14,7 @@ interface SelectItemProps {
   onSelect: (value: SelectOption) => void;
   maxSelect?: number;
   multiple?: boolean;
+  nameSpace: string;
   className?: string;
 }
 
@@ -25,10 +24,10 @@ export default function SelectItem({
   onSelect,
   maxSelect = 1,
   multiple = false,
+  nameSpace,
   className,
 }: SelectItemProps) {
-  const { i18n } = useTranslation();
-  const currentLang = i18n.language.startsWith("ko") ? "ko" : "en";
+  const { t } = useTranslation(nameSpace);
 
   const isSelected = (option: SelectOption) =>
     selectedValues.some((selected) => selected.id === option.id);
@@ -49,20 +48,22 @@ export default function SelectItem({
             className="flex-row items-center justify-between py-4 border-b border-borderSelect"
           >
             <View className="flex-row items-center">
-              {option.flag && (
-                <Text className="mr-3 text-base">{option.flag}</Text>
+              {option.icon && (
+                <Text className="mr-3 text-base">{option.icon}</Text>
               )}
-              <Text className="text-base">{option[currentLang]}</Text>
+              <Text className="text-base">
+                {t(`${nameSpace}.${option.id}`)}
+              </Text>
             </View>
             <View
               className={`
-                w-6 h-6 items-center justify-center rounded-md
-                ${
-                  isSelected(option)
-                    ? "bg-primary"
-                    : "border border-borderCheckbox"
-                }
-              `}
+               w-6 h-6 items-center justify-center rounded-md
+               ${
+                 isSelected(option)
+                   ? "bg-primary"
+                   : "border border-borderCheckbox"
+               }
+             `}
             >
               {isSelected(option) && <Check size={16} color="white" />}
             </View>
