@@ -10,6 +10,7 @@ import { IdCard } from "lucide-react-native";
 import HeadingDescription from "@/components/onboarding/HeadingDescription";
 import ErrorMessage from "@/components/onboarding/ErrorMessage";
 import { useOnboardingStore } from "@/store/onboarding";
+import Label from "@/components/onboarding/Label";
 
 const MIN_NAME_LENGTH = 2;
 const MAX_NAME_LENGTH = 15;
@@ -61,13 +62,14 @@ export default function NameScreen({ navigation }) {
     <Layout showHeader onBack={() => navigation.goBack()}>
       <KeyboardLayout footer={footer}>
         <InnerLayout>
-          <Heading className="mt-8">{t("name.title")}</Heading>
+          <Heading>{t("name.title")}</Heading>
           <HeadingDescription>{t("name.description")}</HeadingDescription>
+          <Label>{t("name.label")}</Label>
           <TextInput
             value={name}
             onChangeText={handleNameChange}
             placeholder={t("name.placeholder")}
-            className={`mt-12 px-4 py-3 w-[262px] text-xl tracking-wide border border-inputBorder rounded-xl mb-5`}
+            className={`px-4 py-3 w-[262px] h-[50px] text-[18px] text-text tracking-wide border border-inputBorder rounded-xl mb-4`}
             keyboardType="ascii-capable"
             placeholderTextColor="placeholderPrimary"
             autoFocus
