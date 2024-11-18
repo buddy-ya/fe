@@ -13,16 +13,18 @@ import { Send } from "lucide-react-native";
 import HeadingDescription from "@/components/onboarding/HeadingDescription";
 import FooterLayout from "@/components/common/FooterLayout";
 import Label from "@/components/onboarding/Label";
+import { useOnboardingStore } from "@/store/onboarding";
 
 export default function PhoneVerificationScreen({ navigation, route }) {
   const { t } = useTranslation("onboarding");
   const [code, setCode] = useState("");
   const phoneNumber = route.params?.phone;
-
   const { timeLeft, isExpired, restart } = useTimer({
     seconds: 60 * 3,
     onExpire: () => {},
   });
+
+  const { updateOnboardingData } = useOnboardingStore();
 
   const handleResend = () => {
     restart();
@@ -30,11 +32,14 @@ export default function PhoneVerificationScreen({ navigation, route }) {
   };
 
   const handleNavigateButton = () => {
+    updateOnboardingData({
+      phoneNumber: phoneNumber.replace(/-/g, ""),
+    });
+
     navigation.reset({
       index: 0,
       routes: [{ name: "OnboardingNotification" }],
     });
-    // navigation.replace("OnboardingNotification");
   };
 
   const renderTimerContent = () => {

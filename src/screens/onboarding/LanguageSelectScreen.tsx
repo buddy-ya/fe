@@ -9,6 +9,7 @@ import HeadingDescription from "@/components/onboarding/HeadingDescription";
 import SearchInput from "@/components/common/SearchInput";
 import SelectItem from "@/components/common/SelectItem";
 import { LANGUAGES } from "@/utils/constants/languages";
+import { useOnboardingStore } from "@/store/onboarding";
 
 interface Language {
   id: string;
@@ -18,6 +19,7 @@ export default function LanguageSelectScreen({ navigation }) {
   const [selectedLanguages, setSelectedLanguages] = useState<Language[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
   const { t } = useTranslation("onboarding");
+  const { updateOnboardingData } = useOnboardingStore();
   const MAX_SELECT = 3;
 
   const handleSelect = (language: Language) => {
@@ -37,6 +39,9 @@ export default function LanguageSelectScreen({ navigation }) {
   );
 
   const handleNavigateButton = () => {
+    updateOnboardingData({
+      languages: selectedLanguages.map((lang) => lang.id),
+    });
     navigation.navigate("OnboardingMajorSelect");
   };
 

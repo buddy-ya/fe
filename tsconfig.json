@@ -10,7 +10,7 @@
       "@screens/*": ["src/screens/*"],
       "@navigation/*": ["src/navigation/*"],
       "@hooks/*": ["src/hooks/*"],
-      "@store/*": ["src/store/*"],
+      "@api/*": ["src/api/*"],
       "@utils/*": ["src/utils/*"],
       "@assets/*": ["assets/*"],
       "@styles/*": ["src/styles/*"],

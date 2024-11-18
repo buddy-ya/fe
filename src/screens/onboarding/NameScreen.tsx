@@ -18,7 +18,7 @@ export default function NameScreen({ navigation }) {
   const [name, setName] = useState("");
   const [isNonEnglish, setIsNonEnglish] = useState(false);
   const { t } = useTranslation("onboarding");
-  const setStoreName = useOnboardingStore((state) => state.setName);
+  const { updateOnboardingData } = useOnboardingStore();
 
   const handleNameChange = (text) => {
     setName(text);
@@ -37,7 +37,9 @@ export default function NameScreen({ navigation }) {
   const isWarning = isNonEnglish || isInvalidLength;
 
   const handleNavigation = () => {
-    setStoreName(name.trim());
+    updateOnboardingData({
+      name: name.trim(),
+    });
     navigation.navigate("OnboardingCountrySelect");
   };
 

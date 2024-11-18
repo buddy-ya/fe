@@ -23,7 +23,7 @@ export default function CountrySelectScreen({ navigation }) {
   const [selectedCountry, setSelectedCountry] = useState<Country | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const { t } = useTranslation(["onboarding", "countries"]);
-  const { setCountry, setIsKorean } = useOnboardingStore();
+  const { updateOnboardingData } = useOnboardingStore();
 
   const handleSelect = (country: Country) => {
     setSelectedCountry(country);
@@ -37,8 +37,10 @@ export default function CountrySelectScreen({ navigation }) {
 
   const handleNavigateButton = () => {
     if (selectedCountry) {
-      setCountry(selectedCountry.id);
-      setIsKorean(selectedCountry.id === "ko");
+      updateOnboardingData({
+        country: selectedCountry.id,
+        korean: selectedCountry.id === "ko",
+      });
       navigation.navigate("OnboardingLanguageSelect");
     }
   };

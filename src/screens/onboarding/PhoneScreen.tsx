@@ -81,7 +81,7 @@ export default function PhoneScreen({ navigation }) {
           <HeadingDescription>{t("phone.titleDescription")}</HeadingDescription>
           <Label className="text-base">{t("phone.label")}</Label>
           <View>
-            <View className="flex-row items-center">
+            <View className="flex-row items-center mb-4">
               <View className="flex-row items-center mr-2 px-[14px] h-[52px] border border-border rounded-xl">
                 <Text className="text-xl text-textDescription">🇰🇷 +82</Text>
               </View>
@@ -90,7 +90,7 @@ export default function PhoneScreen({ navigation }) {
                 onChangeText={handlePhoneChange}
                 keyboardType="number-pad"
                 placeholder="010-1234-5678"
-                className="px-[14px] text-[18px] text-text w-[172px] border border-border rounded-xl h-[52px] mb-5"
+                className="px-[14px] text-[18px] text-text w-[172px] border border-border rounded-xl h-[52px]"
                 placeholderTextColor="#DFDFDF"
                 textAlignVertical="center"
                 autoFocus

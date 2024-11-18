@@ -7,9 +7,11 @@ import React from "react";
 import { View, Text, Image } from "react-native";
 import { useTranslation } from "react-i18next";
 import * as Notifications from "expo-notifications";
+import { useOnboardingStore } from "@/store/onboarding";
 
 export default function NotificationScreen({ navigation }) {
   const { t } = useTranslation("onboarding");
+  const { updateOnboardingData } = useOnboardingStore();
 
   const requestNotificationPermission = async () => {
     try {
@@ -22,11 +24,11 @@ export default function NotificationScreen({ navigation }) {
         finalStatus = status;
       }
 
-      if (finalStatus === "granted") {
-        navigation.replace("OnboardingUniversitySelect");
-      } else {
-        navigation.replace("OnboardingUniversitySelect");
-      }
+      updateOnboardingData({
+        notificationEnabled: finalStatus === "granted",
+      });
+
+      navigation.replace("OnboardingUniversitySelect");
     } catch (error) {
       console.error("Notification permission error:", error);
     }

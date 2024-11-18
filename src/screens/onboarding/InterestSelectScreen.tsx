@@ -9,6 +9,9 @@ import HeadingDescription from "@/components/onboarding/HeadingDescription";
 import { Chip } from "@/components/common/Chip";
 import { INTEREST_CATEGORIES } from "@/utils/constants/interests";
 import type { InterestID } from "@/utils/constants/interests";
+import { useOnboardingStore } from "@/store/onboarding";
+import { useMutation } from "@tanstack/react-query";
+import { postOnboardingInfo } from "@/api/onboarding";
 
 interface Interest {
   id: InterestID;
@@ -18,7 +21,18 @@ interface Interest {
 export default function InterestSelectScreen({ navigation }) {
   const [selectedInterests, setSelectedInterests] = useState<Interest[]>([]);
   const { t } = useTranslation(["onboarding", "interests"]);
-  const MAX_SELECT = 5;
+  const { updateOnboardingData, ...onboardingData } = useOnboardingStore();
+  const MAX_SELECT = 8;
+
+  const { mutate: submitOnboarding, isPending } = useMutation({
+    mutationFn: postOnboardingInfo,
+    onSuccess: () => {
+      navigation.navigate("#");
+    },
+    onError: (error) => {
+      console.error("Onboarding submission error:", error);
+    },
+  });
 
   const handleToggleSelect = (interest: Interest) => {
     setSelectedInterests((prev) => {
@@ -31,6 +45,13 @@ export default function InterestSelectScreen({ navigation }) {
   };
 
   const handleNavigateButton = () => {
+    const interests = selectedInterests.map((interest) => interest.id);
+    updateOnboardingData({ interests });
+
+    submitOnboarding({
+      ...onboardingData,
+      interests,
+    });
     navigation.navigate("#");
   };
 

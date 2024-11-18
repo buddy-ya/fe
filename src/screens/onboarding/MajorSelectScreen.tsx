@@ -10,6 +10,7 @@ import HeadingDescription from "@/components/onboarding/HeadingDescription";
 import SelectItem from "@/components/common/SelectItem";
 import { MAJORS } from "@/utils/constants/majors";
 import type { MajorID } from "@/utils/constants/majors";
+import { useOnboardingStore } from "@/store/onboarding";
 
 interface Major {
   id: MajorID;
@@ -19,6 +20,7 @@ interface Major {
 export default function MajorSelectScreen({ navigation }) {
   const [selectedMajors, setSelectedMajors] = useState<Major[]>([]);
   const { t } = useTranslation(["onboarding", "majors"]);
+  const { updateOnboardingData } = useOnboardingStore();
   const MAX_SELECT = 2;
 
   const handleSelect = (major: Major) => {
@@ -32,9 +34,11 @@ export default function MajorSelectScreen({ navigation }) {
   };
 
   const handleNavigateButton = () => {
+    updateOnboardingData({
+      major: selectedMajors.map((major) => major.id),
+    });
     navigation.navigate("OnboardingInterestSelect");
   };
-
   return (
     <Layout showHeader onBack={() => navigation.goBack()}>
       <InnerLayout>
