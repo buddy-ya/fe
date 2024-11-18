@@ -6,5 +6,5 @@ interface ErrorMessageProps {
 }
 
 export default function ErrorMessage({ children }: ErrorMessageProps) {
-  return <Text className="text-textWarning text-sm mt-2">{children}</Text>;
+  return <Text className={`text-textWarning text-sm mb-2`}>{children}</Text>;
 }

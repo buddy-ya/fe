@@ -24,7 +24,7 @@ export default function SelectItem({
         w-[262px] h-[52px] flex-row items-center px-4 py-4 border rounded-xl mb-3
        ${
          selected
-           ? "bg-chipActive border-[1.5px] border-chipBorder"
+           ? "bg-chipActive border-[1px] border-primary"
            : "border-border"
        }
      `}

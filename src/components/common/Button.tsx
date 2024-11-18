@@ -23,7 +23,7 @@ export default function Button({
       case "circle":
         return "w-12 h-12 rounded-full items-center justify-center";
       case "box":
-        return "w-full fixed bottom-4 py-5 rounded-[12px] items-center";
+        return "w-full fixed bottom-8 py-5 rounded-[12px] items-center";
     }
   };
 

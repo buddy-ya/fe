@@ -8,16 +8,38 @@ import Heading from "@/components/onboarding/Heading";
 import KeyboardLayout from "@/components/common/KeyboardLayout";
 import { IdCard } from "lucide-react-native";
 import HeadingDescription from "@/components/onboarding/HeadingDescription";
+import ErrorMessage from "@/components/onboarding/ErrorMessage";
+import { useOnboardingStore } from "@/store/onboarding";
+
+const MIN_NAME_LENGTH = 2;
+const MAX_NAME_LENGTH = 15;
 
 export default function NameScreen({ navigation }) {
   const [name, setName] = useState("");
-  const { t, i18n } = useTranslation("onboarding");
+  const [isNonEnglish, setIsNonEnglish] = useState(false);
+  const { t } = useTranslation("onboarding");
+  const setStoreName = useOnboardingStore((state) => state.setName);
 
-  const handleNavigation = () => {
-    navigation.navigate("OnboardingCountrySelect");
+  const handleNameChange = (text) => {
+    setName(text);
+    setIsNonEnglish(/[^\x00-\x7F\s]/.test(text));
   };
 
-  const isValidName = /^[a-zA-Z]*$/.test(name) && name.trim().length > 0;
+  const nameLength = name.trim().length;
+  const isValidName =
+    nameLength >= MIN_NAME_LENGTH &&
+    nameLength <= MAX_NAME_LENGTH &&
+    !isNonEnglish;
+  const isInvalidLength =
+    nameLength > 0 &&
+    (nameLength < MIN_NAME_LENGTH || nameLength > MAX_NAME_LENGTH);
+
+  const isWarning = isNonEnglish || isInvalidLength;
+
+  const handleNavigation = () => {
+    setStoreName(name.trim());
+    navigation.navigate("OnboardingCountrySelect");
+  };
 
   const footer = (
     <View className="w-full absolute flex-row items-center justify-between px-4 bottom-4">
@@ -41,13 +63,22 @@ export default function NameScreen({ navigation }) {
           <HeadingDescription>{t("name.description")}</HeadingDescription>
           <TextInput
             value={name}
-            onChangeText={setName}
+            onChangeText={handleNameChange}
             placeholder={t("name.placeholder")}
-            className="mt-12 px-4 py-3 w-[262px] text-xl tracking-wide border border-inputBorder rounded-xl"
+            className={`mt-12 px-4 py-3 w-[262px] text-xl tracking-wide border border-inputBorder rounded-xl mb-5`}
             keyboardType="ascii-capable"
             placeholderTextColor="placeholderPrimary"
             autoFocus
           />
+          {isNonEnglish && <ErrorMessage>{t("name.warning")}</ErrorMessage>}
+          {isInvalidLength && (
+            <ErrorMessage>
+              {t("name.warningLength", {
+                min: MIN_NAME_LENGTH,
+                max: MAX_NAME_LENGTH,
+              })}
+            </ErrorMessage>
+          )}
         </InnerLayout>
       </KeyboardLayout>
     </Layout>

@@ -23,9 +23,9 @@ export default function NotificationScreen({ navigation }) {
       }
 
       if (finalStatus === "granted") {
-        navigation.replace("OnboardingStudentInfo");
+        navigation.replace("OnboardingUniversitySelect");
       } else {
-        navigation.replace("OnboardingStudentInfo");
+        navigation.replace("OnboardingUniversitySelect");
       }
     } catch (error) {
       console.error("Notification permission error:", error);

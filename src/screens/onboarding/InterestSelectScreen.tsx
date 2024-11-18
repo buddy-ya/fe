@@ -39,7 +39,7 @@ export default function InterestSelectScreen({ navigation }) {
       <InnerLayout>
         <ScrollView
           showsVerticalScrollIndicator={false}
-          contentContainerClassName="pb-12"
+          contentContainerStyle={{ paddingBottom: 50 }}
         >
           <Heading>{t("onboarding:interest.title")}</Heading>
           {/* <HeadingDescription>

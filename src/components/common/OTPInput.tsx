@@ -38,13 +38,7 @@ export default function OTPInput({
               mr-2
             `}
           >
-            <Text
-              className={`text-[18px] text-text ${
-                value[index] || "font-extralight text-textDescription"
-              }`}
-            >
-              {value[index] || index + 1}
-            </Text>
+            <Text className={`text-[18px] text-text`}>{value[index]}</Text>
           </View>
         ))}
       </View>

@@ -30,7 +30,11 @@ export default function PhoneVerificationScreen({ navigation, route }) {
   };
 
   const handleNavigateButton = () => {
-    navigation.replace("OnboardingNotification");
+    navigation.reset({
+      index: 0,
+      routes: [{ name: "OnboardingNotification" }],
+    });
+    // navigation.replace("OnboardingNotification");
   };
 
   const renderTimerContent = () => {

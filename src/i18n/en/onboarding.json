@@ -54,7 +54,9 @@
     "title": "Please enter your name.",
     "description": "English names are used in Buddyya.",
     "placeholder": "",
-    "footer": "Your name will be displayed on the Buddyya student ID."
+    "footer": "Your name will be displayed on the Buddyya student ID.",
+    "warning": "Please Enter your name in English ",
+    "warningLength": "Name should be {{min}}-{{max}} characters long"
   },
   "country": {
     "title": "Select your country",

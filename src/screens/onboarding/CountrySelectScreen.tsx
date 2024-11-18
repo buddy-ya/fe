@@ -9,6 +9,7 @@ import HeadingDescription from "@/components/onboarding/HeadingDescription";
 import SearchInput from "@/components/common/SearchInput";
 import SelectItem from "@/components/common/SelectItem";
 import { COUNTRIES } from "@/utils/constants/countries";
+import { useOnboardingStore } from "@/store/onboarding";
 
 type CountryID = (typeof COUNTRIES)[number]["id"];
 
@@ -22,6 +23,7 @@ export default function CountrySelectScreen({ navigation }) {
   const [selectedCountry, setSelectedCountry] = useState<Country | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const { t } = useTranslation(["onboarding", "countries"]);
+  const { setCountry, setIsKorean } = useOnboardingStore();
 
   const handleSelect = (country: Country) => {
     setSelectedCountry(country);
@@ -34,7 +36,11 @@ export default function CountrySelectScreen({ navigation }) {
   );
 
   const handleNavigateButton = () => {
-    navigation.navigate("OnboardingLanguageSelect");
+    if (selectedCountry) {
+      setCountry(selectedCountry.id);
+      setIsKorean(selectedCountry.id === "ko");
+      navigation.navigate("OnboardingLanguageSelect");
+    }
   };
 
   return (
@@ -50,7 +56,6 @@ export default function CountrySelectScreen({ navigation }) {
             value={searchQuery}
             onChangeText={setSearchQuery}
             placeholder={t("onboarding:country.searchPlaceholder")}
-            className="mt-6"
           />
 
           <SelectItem
@@ -59,7 +64,6 @@ export default function CountrySelectScreen({ navigation }) {
             onSelect={handleSelect}
             multiple={false}
             nameSpace="countries"
-            className="mt-4"
           />
 
           <Button

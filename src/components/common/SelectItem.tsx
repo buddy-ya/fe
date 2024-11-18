@@ -39,7 +39,10 @@ export default function SelectItem({
 
   return (
     <View className={`flex-1 mt-4 mb-5 ${className}`}>
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ paddingBottom: 20 }}
+      >
         {options.map((option) => (
           <TouchableOpacity
             key={option.id}

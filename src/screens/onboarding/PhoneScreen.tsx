@@ -90,7 +90,7 @@ export default function PhoneScreen({ navigation }) {
                 onChangeText={handlePhoneChange}
                 keyboardType="number-pad"
                 placeholder="010-1234-5678"
-                className="px-[14px] text-[18px] text-text w-[172px] border border-border rounded-xl h-[52px]"
+                className="px-[14px] text-[18px] text-text w-[172px] border border-border rounded-xl h-[52px] mb-5"
                 placeholderTextColor="#DFDFDF"
                 textAlignVertical="center"
                 autoFocus
