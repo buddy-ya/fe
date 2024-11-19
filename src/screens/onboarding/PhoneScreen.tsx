@@ -12,7 +12,7 @@ import Label from "@/components/onboarding/Label";
 import ErrorMessage from "@/components/onboarding/ErrorMessage";
 import FooterLayout from "@/components/common/FooterLayout";
 import { useMutation } from "@tanstack/react-query";
-import { postPhoneVerification } from "@/api/onboarding";
+import { postPhoneVerification } from "@/api/auth/phone";
 
 export default function PhoneScreen({ navigation }) {
   const { t } = useTranslation("onboarding");

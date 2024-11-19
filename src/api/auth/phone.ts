@@ -1,4 +1,4 @@
-import { apiClient } from "./index";
+import { apiClient } from "../apiClient";
 
 interface PhoneVerificationRequest {
   phoneNumber: string;
@@ -24,23 +24,4 @@ export const postPhoneVerifyCode = async (
   data: VerificationCodeRequest
 ): Promise<PhoneVerifyResponse> => {
   return await apiClient.post("/phone-auth/verify-code", data);
-};
-
-type Gender = "male" | "female" | "unknown";
-
-interface OnboardingRequest {
-  name: string;
-  major: string;
-  country: string;
-  isKorean: boolean;
-  isNotificationEnabled: boolean;
-  phoneNumber: string;
-  gender: Gender;
-  university: string;
-  languages: string[];
-  interests: string[];
-}
-
-export const postOnboardingInfo = async (data: OnboardingRequest) => {
-  return await apiClient.post("/onboarding", data);
 };

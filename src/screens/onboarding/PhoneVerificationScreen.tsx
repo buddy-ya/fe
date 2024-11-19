@@ -19,7 +19,7 @@ import {
   PhoneVerifyResponse,
   postPhoneVerification,
   postPhoneVerifyCode,
-} from "@/api/onboarding";
+} from "@/api/auth/phone";
 import { saveTokens } from "@/utils/service/auth";
 import ErrorMessage from "@/components/onboarding/ErrorMessage";
 

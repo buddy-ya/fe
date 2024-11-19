@@ -11,7 +11,7 @@ import { INTEREST_CATEGORIES } from "@/utils/constants/interests";
 import type { InterestID } from "@/utils/constants/interests";
 import { useOnboardingStore } from "@/store/onboarding";
 import { useMutation } from "@tanstack/react-query";
-import { postOnboardingInfo } from "@/api/onboarding";
+import { postOnboardingInfo } from "@/api/onboarding/join";
 
 interface Interest {
   id: InterestID;
