@@ -39,7 +39,7 @@ export default function CountrySelectScreen({ navigation }) {
     if (selectedCountry) {
       updateOnboardingData({
         country: selectedCountry.id,
-        korean: selectedCountry.id === "ko",
+        isKorean: selectedCountry.id === "ko",
       });
       navigation.navigate("OnboardingLanguageSelect");
     }

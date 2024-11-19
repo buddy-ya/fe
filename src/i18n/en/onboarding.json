@@ -20,6 +20,7 @@
     "label": "Verification code",
     "notReceived": "Please enter the code within the time limit.",
     "expired": "Verification time expired",
+    "warning": "Invalid verification code. Please try again.",
     "resend": "Resend code"
   },
   "notification": {

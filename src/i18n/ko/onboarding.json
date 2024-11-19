@@ -20,6 +20,7 @@
     "label": "인증코드",
     "notReceived": "제한 시간 안에 인증코드를 입력해주세요.",
     "expired": "인증 시간이 만료되었습니다",
+    "warning": "잘못된 인증번호 입니다.",
     "resend": "인증코드 재발송"
   },
   "notification": {

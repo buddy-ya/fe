@@ -10,12 +10,17 @@ import SelectItem from "@/components/onboarding/SelectItem";
 import SejongLogo from "@assets/icons/universities/sejong.svg";
 import Label from "@/components/onboarding/Label";
 import HeadingDescription from "@/components/onboarding/HeadingDescription";
+import { useOnboardingStore } from "@/store/onboarding";
 
 export default function UniversitySelectScreen({ navigation }) {
   const [selected, setSelected] = useState(true);
   const { t } = useTranslation("onboarding");
+  const { updateOnboardingData } = useOnboardingStore();
 
-  const handleNavigate = () => {
+  const handleNavigateButton = () => {
+    updateOnboardingData({
+      university: "sju",
+    });
     navigation.navigate("OnboardingGenderSelect");
   };
 
@@ -35,7 +40,7 @@ export default function UniversitySelectScreen({ navigation }) {
             </View>
           </SelectItem>
         </View>
-        <Button onPress={handleNavigate}>
+        <Button onPress={handleNavigateButton}>
           <Text className="text-white text-lg font-semibold">
             {t("common.next")}
           </Text>

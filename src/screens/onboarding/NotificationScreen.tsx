@@ -25,7 +25,7 @@ export default function NotificationScreen({ navigation }) {
       }
 
       updateOnboardingData({
-        notificationEnabled: finalStatus === "granted",
+        isNotificationEnabled: finalStatus === "granted",
       });
 
       navigation.replace("OnboardingUniversitySelect");

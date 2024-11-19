@@ -11,12 +11,28 @@ import { Lock } from "lucide-react-native";
 import Label from "@/components/onboarding/Label";
 import ErrorMessage from "@/components/onboarding/ErrorMessage";
 import FooterLayout from "@/components/common/FooterLayout";
+import { useMutation } from "@tanstack/react-query";
+import { postPhoneVerification } from "@/api/onboarding";
 
 export default function PhoneScreen({ navigation }) {
   const { t } = useTranslation("onboarding");
   const [phone, setPhone] = useState("");
   const [isValid, setIsValid] = useState(false);
   const [showError, setShowError] = useState(false);
+
+  const formattedPhone = phone.replace(/[^0-9]/g, "");
+
+  const { mutate: sendVerification } = useMutation({
+    mutationFn: postPhoneVerification,
+    onSuccess: () => {
+      navigation.navigate("OnboardingPhoneVerification", {
+        phone: formatPhoneNumber(phone),
+      });
+    },
+    onError: (error) => {
+      console.error("Phone verification error:", error.message);
+    },
+  });
 
   const validatePhoneNumber = (phoneNumber: string) => {
     const phoneRegex = /^010\d{8}$/;
@@ -44,8 +60,8 @@ export default function PhoneScreen({ navigation }) {
   };
 
   useEffect(() => {
-    handlePhoneValidation(phone);
-  }, [phone]);
+    handlePhoneValidation(formattedPhone);
+  }, [formattedPhone]);
 
   const handlePhoneChange = (text: string) => {
     const newValue = text.replace(/[^0-9]/g, "");
@@ -55,9 +71,7 @@ export default function PhoneScreen({ navigation }) {
   };
 
   const handleNavigateButton = () => {
-    navigation.navigate("OnboardingPhoneVerification", {
-      phone: formatPhoneNumber(phone),
-    });
+    sendVerification({ phoneNumber: formattedPhone });
   };
 
   const footer = (

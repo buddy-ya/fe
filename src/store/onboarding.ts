@@ -1,13 +1,16 @@
+// store/onboarding.ts
 import { create } from "zustand";
+
+type Gender = "male" | "female" | "unknown";
 
 interface OnboardingStore {
   name: string;
   major: string[];
   country: string;
-  korean: boolean;
-  notificationEnabled: boolean;
+  isKorean: boolean;
+  isNotificationEnabled: boolean;
   phoneNumber: string;
-  gender: string;
+  gender: Gender;
   university: string;
   languages: string[];
   interests: string[];
@@ -20,10 +23,10 @@ export const useOnboardingStore = create<OnboardingStore>((set) => ({
   name: "",
   major: [],
   country: "",
-  korean: false,
-  notificationEnabled: false,
+  isKorean: false,
+  isNotificationEnabled: false,
   phoneNumber: "",
-  gender: "",
+  gender: "unknown",
   university: "",
   languages: [],
   interests: [],

@@ -27,10 +27,13 @@ export default function InterestSelectScreen({ navigation }) {
   const { mutate: submitOnboarding, isPending } = useMutation({
     mutationFn: postOnboardingInfo,
     onSuccess: () => {
-      navigation.navigate("#");
+      navigation.reset({
+        index: 0,
+        routes: [{ name: "OnboardingInterestSelect" }],
+      });
     },
     onError: (error) => {
-      console.error("Onboarding submission error:", error);
+      console.log(error?.response?.data?.message);
     },
   });
 
@@ -47,12 +50,21 @@ export default function InterestSelectScreen({ navigation }) {
   const handleNavigateButton = () => {
     const interests = selectedInterests.map((interest) => interest.id);
     updateOnboardingData({ interests });
-
+    const onboardingMockData = {
+      name: "John",
+      major: "humanities",
+      country: "us",
+      isKorean: false,
+      isNotificationEnabled: true,
+      phoneNumber: "01012345678",
+      gender: "male" as const,
+      university: "sju",
+      languages: ["ko", "en"],
+      interests: ["kpop", "movie"],
+    };
     submitOnboarding({
-      ...onboardingData,
-      interests,
+      ...onboardingMockData,
     });
-    navigation.navigate("#");
   };
 
   return (
