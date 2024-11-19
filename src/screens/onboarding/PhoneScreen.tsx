@@ -13,6 +13,7 @@ import ErrorMessage from "@/components/onboarding/ErrorMessage";
 import FooterLayout from "@/components/common/FooterLayout";
 import { useMutation } from "@tanstack/react-query";
 import { postPhoneVerification } from "@/api/auth/phone";
+import { logError } from "@/utils/service/error";
 
 export default function PhoneScreen({ navigation }) {
   const { t } = useTranslation("onboarding");
@@ -29,9 +30,7 @@ export default function PhoneScreen({ navigation }) {
         phone: formatPhoneNumber(phone),
       });
     },
-    onError: (error) => {
-      console.error("Phone verification error:", error.message);
-    },
+    onError: logError,
   });
 
   const validatePhoneNumber = (phoneNumber: string) => {
@@ -71,12 +70,15 @@ export default function PhoneScreen({ navigation }) {
   };
 
   const handleNavigateButton = () => {
-    sendVerification({ phoneNumber: formattedPhone });
+    // sendVerification({ phoneNumber: formattedPhone });
+    navigation.navigate("OnboardingPhoneVerification", {
+      phone: formatPhoneNumber(phone),
+    });
   };
 
   const footer = (
     <FooterLayout
-      icon={<Lock strokeWidth={1} width={20} height={20} color="black" />}
+      icon={<Lock strokeWidth={1} size={23} color={"#797979"} />}
       content={
         <Text className="text-sm text-textDescription mx-3">
           {t("phone.footer")}

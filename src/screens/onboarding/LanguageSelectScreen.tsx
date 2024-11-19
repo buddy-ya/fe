@@ -20,7 +20,7 @@ export default function LanguageSelectScreen({ navigation }) {
   const [searchQuery, setSearchQuery] = useState("");
   const { t } = useTranslation("onboarding");
   const { updateOnboardingData } = useOnboardingStore();
-  const MAX_SELECT = 3;
+  const MAX_SELECT = 4;
 
   const handleSelect = (language: Language) => {
     setSelectedLanguages((prev) => {

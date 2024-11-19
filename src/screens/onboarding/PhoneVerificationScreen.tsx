@@ -22,6 +22,7 @@ import {
 } from "@/api/auth/phone";
 import { saveTokens } from "@/utils/service/auth";
 import ErrorMessage from "@/components/onboarding/ErrorMessage";
+import { logError } from "@/utils/service/error";
 
 export default function PhoneVerificationScreen({ navigation, route }) {
   const { t } = useTranslation("onboarding");
@@ -29,7 +30,7 @@ export default function PhoneVerificationScreen({ navigation, route }) {
   const [code, setCode] = useState("");
   const [verificationError, setVerificationError] = useState(false);
   const phoneNumber = route.params?.phone;
-  const VERIFICATION_EXPIRE_SECONDS = 60 * 3;
+  const VERIFICATION_EXPIRE_SECONDS = 5;
 
   const formattedPhone = phoneNumber.replace(/-/g, "");
 
@@ -70,7 +71,7 @@ export default function PhoneVerificationScreen({ navigation, route }) {
       }
     },
     onError: (error) => {
-      console.error("Code verification error:", error);
+      logError(error);
       setVerificationError(true);
       setCode("");
     },
@@ -78,12 +79,18 @@ export default function PhoneVerificationScreen({ navigation, route }) {
 
   const handleResend = () => {
     resendVerification({ phoneNumber: formattedPhone });
+    setCode("");
+    restart();
   };
 
   const handleNavigateButton = () => {
-    verifyCode({
-      phoneNumber: formattedPhone,
-      code,
+    // verifyCode({
+    //   phoneNumber: formattedPhone,
+    //   code,
+    // });
+    navigation.reset({
+      index: 0,
+      routes: [{ name: "OnboardingNotification" }],
     });
   };
 
@@ -111,7 +118,7 @@ export default function PhoneVerificationScreen({ navigation, route }) {
 
   const footer = (
     <FooterLayout
-      icon={<Send strokeWidth={1} width={20} height={20} color="black" />}
+      icon={<Send strokeWidth={1} size={23} color="#797979" />}
       content={<View className="mx-3">{renderTimerContent()}</View>}
       onPress={handleNavigateButton}
       disabled={code.length !== 6 || isExpired}

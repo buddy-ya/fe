@@ -16,7 +16,7 @@ export default function FooterLayout({
   disabled = false,
 }: FooterLayoutProps) {
   return (
-    <View className="w-full flex-row items-center justify-between px-4 py-4 border-[0.3px] border-borderFooter bg-footerBackground rounded-t-3xl">
+    <View className="w-full flex-row items-center justify-between px-4 py-4 border-[0.3px] border-b-0 border-borderFooter bg-footerBackground rounded-t-3xl">
       <View className="flex-1 flex-row items-center mr-4">
         {icon}
         {content}

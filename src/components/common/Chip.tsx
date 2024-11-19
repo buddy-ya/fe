@@ -11,7 +11,7 @@ interface ChipProps {
 
 export function Chip({ icon, label, selected, onPress, className }: ChipProps) {
   return (
-    <TouchableOpacity onPress={onPress}>
+    <TouchableOpacity onPress={onPress} className="mb-[0.5px]">
       <View
         className={`flex-row items-center px-4 py-2 rounded-full border
           ${selected ? "border-primary bg-chipActive" : "border-border"}

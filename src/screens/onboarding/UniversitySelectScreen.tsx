@@ -34,7 +34,7 @@ export default function UniversitySelectScreen({ navigation }) {
           <SelectItem selected={selected} disabled={true} onPress={() => {}}>
             <View className="flex-row items-center">
               <SejongLogo width={24} height={24} />
-              <Text className="ml-4">
+              <Text className="ml-3 text-active">
                 {t("universitySelect.universities.sejong")}
               </Text>
             </View>

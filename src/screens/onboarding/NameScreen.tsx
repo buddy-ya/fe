@@ -11,6 +11,7 @@ import HeadingDescription from "@/components/onboarding/HeadingDescription";
 import ErrorMessage from "@/components/onboarding/ErrorMessage";
 import { useOnboardingStore } from "@/store/onboarding";
 import Label from "@/components/onboarding/Label";
+import FooterLayout from "@/components/common/FooterLayout";
 
 const MIN_NAME_LENGTH = 2;
 const MAX_NAME_LENGTH = 15;
@@ -45,17 +46,16 @@ export default function NameScreen({ navigation }) {
   };
 
   const footer = (
-    <View className="w-full absolute flex-row items-center justify-between px-4 bottom-4">
-      <View className="flex-1 flex-row items-center mr-4">
-        <IdCard strokeWidth={1} color={"black"} />
-        <Text className="text-sm mx-4">{t("name.footer")}</Text>
-      </View>
-      <Button
-        type="circle"
-        onPress={handleNavigation}
-        disabled={!isValidName}
-      />
-    </View>
+    <FooterLayout
+      icon={<IdCard strokeWidth={1} size={28} color="#797979" />}
+      content={
+        <Text className="text-sm text-textDescription mx-3">
+          {t("name.footer")}
+        </Text>
+      }
+      onPress={handleNavigation}
+      disabled={!isValidName}
+    />
   );
 
   return (

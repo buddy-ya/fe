@@ -42,9 +42,8 @@ export default function GenderScreen({ navigation }) {
               key={item.id}
               selected={selectedGender === item.id}
               onPress={() => setSelectedGender(item.id)}
-            >
-              <Text className="text-base">{t(item.label)}</Text>
-            </SelectItem>
+              item={t(item.label)}
+            />
           ))}
         </View>
         <Button onPress={handleNavigate} disabled={!selectedGender}>

@@ -1,19 +1,20 @@
-// src/components/onboarding/SelectItem.tsx
 import React from "react";
-import { TouchableOpacity, View } from "react-native";
+import { TouchableOpacity, View, Text } from "react-native";
 import { Check } from "lucide-react-native";
 
 interface SelectItemProps {
   selected?: boolean;
   disabled?: boolean;
   onPress: () => void;
-  children: React.ReactNode;
+  item?: string;
+  children?: React.ReactNode;
 }
 
 export default function SelectItem({
   selected,
   disabled,
   onPress,
+  item,
   children,
 }: SelectItemProps) {
   return (
@@ -29,6 +30,7 @@ export default function SelectItem({
        }
      `}
     >
+      <Text className={`text-base ${selected && "text-active"}`}>{item}</Text>
       {children}
     </TouchableOpacity>
   );

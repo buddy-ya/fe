@@ -11,7 +11,7 @@ module.exports = {
         buttonDisabled: "#DFDFDF",
 
         text: "#282828",
-        textDescription: "#797977",
+        textDescription: "#797979",
         textWarning: "#FF7657",
 
         placeholderPrimary: "#fff",

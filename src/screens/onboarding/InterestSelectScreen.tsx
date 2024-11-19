@@ -12,6 +12,7 @@ import type { InterestID } from "@/utils/constants/interests";
 import { useOnboardingStore } from "@/store/onboarding";
 import { useMutation } from "@tanstack/react-query";
 import { postOnboardingInfo } from "@/api/onboarding/join";
+import { logError } from "@/utils/service/error";
 
 interface Interest {
   id: InterestID;
@@ -32,9 +33,7 @@ export default function InterestSelectScreen({ navigation }) {
         routes: [{ name: "OnboardingInterestSelect" }],
       });
     },
-    onError: (error) => {
-      console.log(error?.response?.data?.message);
-    },
+    onError: logError,
   });
 
   const handleToggleSelect = (interest: Interest) => {
