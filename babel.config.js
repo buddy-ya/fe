@@ -1,4 +1,3 @@
-// babel.config.js
 module.exports = function (api) {
   api.cache(true);
   return {
@@ -8,23 +7,39 @@ module.exports = function (api) {
     ],
     plugins: [
       [
+        "module:react-native-dotenv",
+        {
+          moduleName: "@env",
+          path: ".env",
+          blacklist: null,
+          whitelist: null,
+          safe: false,
+          allowUndefined: true,
+        },
+      ],
+      [
         "module-resolver",
         {
           root: ["./src"],
           extensions: [".ios.js", ".android.js", ".js", ".ts", ".tsx", ".json"],
           alias: {
             "@": "./src",
-            "@screens": "./src/screens",
             "@components": "./src/components",
+            "@screens": "./src/screens",
             "@navigation": "./src/navigation",
             "@hooks": "./src/hooks",
-            "@store": "./src/store",
+            "@api": "./src/api",
             "@utils": "./src/utils",
             "@assets": "./assets",
+            "@styles": "./src/styles",
+            "@types": "./src/types",
+            "@services": "./src/services",
+            "@i18n": "./src/i18n",
+            "@store": "./src/store",
           },
         },
-        "react-native-reanimated/plugin",
       ],
+      "react-native-reanimated/plugin",
     ],
   };
 };

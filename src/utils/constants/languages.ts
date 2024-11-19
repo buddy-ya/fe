@@ -1,74 +1,89 @@
-export const LANGUAGE_OPTIONS = [
-  { en: "Afrikaans", ko: "아프리칸스어" },
-  { en: "Albanian", ko: "알바니아어" },
-  { en: "Amharic", ko: "암하라어" },
-  { en: "Arabic", ko: "아랍어" },
-  { en: "Armenian", ko: "아르메니아어" },
-  { en: "Azerbaijani", ko: "아제르바이잔어" },
-  { en: "Basque", ko: "바스크어" },
-  { en: "Bengali", ko: "벵골어" },
-  { en: "Bosnian", ko: "보스니아어" },
-  { en: "Bulgarian", ko: "불가리아어" },
-  { en: "Catalan", ko: "카탈로니아어" },
-  { en: "Cantonese", ko: "광동어" },
-  { en: "Chinese", ko: "중국어" },
-  { en: "Croatian", ko: "크로아티아어" },
-  { en: "Czech", ko: "체코어" },
-  { en: "Danish", ko: "덴마크어" },
-  { en: "Dutch", ko: "네덜란드어" },
-  { en: "English", ko: "영어" },
-  { en: "Estonian", ko: "에스토니아어" },
-  { en: "Finnish", ko: "핀란드어" },
-  { en: "French", ko: "프랑스어" },
-  { en: "Galician", ko: "갈리시아어" },
-  { en: "Georgian", ko: "조지아어" },
-  { en: "German", ko: "독일어" },
-  { en: "Greek", ko: "그리스어" },
-  { en: "Gujarati", ko: "구자라트어" },
-  { en: "Haitian Creole", ko: "아이티 크리올어" },
-  { en: "Hebrew", ko: "히브리어" },
-  { en: "Hindi", ko: "힌디어" },
-  { en: "Hungarian", ko: "헝가리어" },
-  { en: "Icelandic", ko: "아이슬란드어" },
-  { en: "Indonesian", ko: "인도네시아어" },
-  { en: "Italian", ko: "이탈리아어" },
-  { en: "Japanese", ko: "일본어" },
-  { en: "Kannada", ko: "칸나다어" },
-  { en: "Kazakh", ko: "카자흐어" },
-  { en: "Khmer", ko: "크메르어" },
-  { en: "Korean", ko: "한국어" },
-  { en: "Kurdish", ko: "쿠르드어" },
-  { en: "Latvian", ko: "라트비아어" },
-  { en: "Lithuanian", ko: "리투아니아어" },
-  { en: "Macedonian", ko: "마케도니아어" },
-  { en: "Malay", ko: "말레이어" },
-  { en: "Malayalam", ko: "말라얄람어" },
-  { en: "Marathi", ko: "마라티어" },
-  { en: "Mongolian", ko: "몽골어" },
-  { en: "Nepali", ko: "네팔어" },
-  { en: "Norwegian", ko: "노르웨이어" },
-  { en: "Pashto", ko: "파슈토어" },
-  { en: "Persian", ko: "페르시아어" },
-  { en: "Polish", ko: "폴란드어" },
-  { en: "Portuguese", ko: "포르투갈어" },
-  { en: "Punjabi", ko: "펀자브어" },
-  { en: "Romanian", ko: "루마니아어" },
-  { en: "Russian", ko: "러시아어" },
-  { en: "Serbian", ko: "세르비아어" },
-  { en: "Slovak", ko: "슬로바키아어" },
-  { en: "Slovenian", ko: "슬로베니아어" },
-  { en: "Somali", ko: "소말리어" },
-  { en: "Spanish", ko: "스페인어" },
-  { en: "Swahili", ko: "스와힐리어" },
-  { en: "Swedish", ko: "스웨덴어" },
-  { en: "Tagalog", ko: "타갈로그어" },
-  { en: "Tamil", ko: "타밀어" },
-  { en: "Telugu", ko: "텔루구어" },
-  { en: "Thai", ko: "태국어" },
-  { en: "Turkish", ko: "터키어" },
-  { en: "Ukrainian", ko: "우크라이나어" },
-  { en: "Urdu", ko: "우르두어" },
-  { en: "Vietnamese", ko: "베트남어" },
-  { en: "Xhosa", ko: "코사어" },
-  { en: "Zulu", ko: "줄루어" },
-];
+// constants/languages.ts
+export const LANGUAGE_IDS = [
+  // 한국어
+  "ko",
+  // 영어, 중국어, 일본어 (주요 언어)
+  "en",
+  "zh",
+  "ja",
+  // 유럽 주요 언어
+  "fr", // 프랑스어
+  "de", // 독일어
+  "es", // 스페인어
+  "it", // 이탈리아어
+  "ru", // 러시아어
+  // 동남아시아 언어
+  "vi", // 베트남어
+  "th", // 태국어
+  "id", // 인도네시아어
+  "ms", // 말레이어
+  "tl", // 타갈로그어
+  "km", // 캄보디아어
+  // 동아시아 언어
+  "yue", // 광동어 (Cantonese)
+  // 그 외 아시아 언어
+  "hi", // 힌디어
+  "bn", // 벵골어
+  "ur", // 우르두어
+  "fa", // 페르시아어
+  "ar", // 아랍어
+  "he", // 히브리어
+  // 기타 유럽 언어
+  "nl", // 네덜란드어
+  "pl", // 폴란드어
+  "tr", // 터키어
+  "uk", // 우크라이나어
+  "cs", // 체코어
+  "sv", // 스웨덴어
+  "hu", // 헝가리어
+  "el", // 그리스어
+  "da", // 덴마크어
+  "fi", // 핀란드어
+  "no", // 노르웨이어
+  "ro", // 루마니아어
+  "sk", // 슬로바키아어
+  "hr", // 크로아티아어
+  "sr", // 세르비아어
+  "sl", // 슬로베니아어
+  "bg", // 불가리아어
+  "lt", // 리투아니아어
+  "lv", // 라트비아어
+  "et", // 에스토니아어
+  "is", // 아이슬란드어
+  // 기타 언어
+  "af", // 아프리칸스어
+  "sq", // 알바니아어
+  "am", // 암하라어
+  "hy", // 아르메니아어
+  "az", // 아제르바이잔어
+  "eu", // 바스크어
+  "bs", // 보스니아어
+  "ca", // 카탈로니아어
+  "gl", // 갈리시아어
+  "ka", // 조지아어
+  "gu", // 구자라트어
+  "ht", // 아이티 크리올어
+  "kn", // 칸나다어
+  "kk", // 카자흐어
+  "ku", // 쿠르드어
+  "mk", // 마케도니아어
+  "ml", // 말라얄람어
+  "mr", // 마라티어
+  "mn", // 몽골어
+  "ne", // 네팔어
+  "ps", // 파슈토어
+  "pt", // 포르투갈어
+  "pa", // 펀자브어
+  "so", // 소말리아어
+  "sw", // 스와힐리어
+  "ta", // 타밀어
+  "te", // 텔루구어
+  "xh", // 코사어
+  "zu", // 줄루어
+] as const;
+
+export type LanguageID = (typeof LANGUAGE_IDS)[number];
+
+export const LANGUAGES = LANGUAGE_IDS.map((id) => ({
+  id,
+}));

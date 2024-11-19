@@ -8,28 +8,36 @@
   },
   "phone": {
     "title": "Please enter your phone number",
-    "placeholder": "01012345678",
-    "description": "Numbers only, without dashes"
+    "titleDescription": "We use your phone number only to verify all users in Buddy.",
+    "label": "phone number",
+    "placeholder": "010-1234-5678",
+    "warning": "The phone number must start with 010",
+    "footer": "We do not share this information or display it on your profile."
+  },
+  "verification": {
+    "title": "We've just sent a verification code!",
+    "titleDescription": "Enter the code sent to {{phoneNumber}}.",
+    "label": "Verification code",
+    "notReceived": "Please enter the code within the time limit.",
+    "expired": "Verification time expired",
+    "warning": "Invalid verification code. Please try again.",
+    "resend": "Resend code"
   },
   "notification": {
-    "title1": "Would you like Buddya to notify you",
-    "title2": "for quick chats with new friends?",
-    "description1": "Allow notifications to help you use",
-    "description2": "Buddya more conveniently!",
-    "allow": "Allow"
+    "title": "Would you like Buddya to notify you\nfor quick chats with new friends?",
+    "description": "Allow notifications to help you use Buddya more conveniently!",
+    "allow": "Allow Notification"
   },
   "studentInfo": {
-    "title1": "Let's create your unique",
-    "title2": "Buddya student ID!",
-    "description1": "The personal information on your student ID must be accurate",
-    "description2": "as it will be used to verify each other on Buddya!"
+    "title": "Let's create your unique Buddya student ID",
+    "description": "The personal information on your student ID must be accurate\nas it will be used to verify each other on Buddya!"
   },
   "universitySelect": {
     "title": "Are you a Sejong University student?",
-    "schoolName": "Sejong University",
-    "schools": {
+    "universities": {
       "sejong": "Sejong University"
-    }
+    },
+    "label": "University Select"
   },
   "studentType": {
     "title": "Please select your student type.",
@@ -40,16 +48,52 @@
     "title": "Please select your gender.",
     "male": "Male",
     "female": "Female",
+    "label": "gender",
     "preferNotToSay": "Prefer not to say"
   },
   "name": {
     "title": "Please enter your name.",
     "description": "English names are used in Buddyya.",
-    "placeholder": "Name"
+    "placeholder": "",
+    "label": "nickname",
+    "footer": "Your name will be displayed on the Buddyya student ID.",
+    "warning": "Please Enter your name in English ",
+    "warningLength": "Name should be {{min}}-{{max}} characters long"
+  },
+  "country": {
+    "title": "Select your country",
+    "description": "Please select the country where you currently reside",
+    "searchPlaceholder": "Search countries"
+  },
+  "language": {
+    "title": "What languages do you speak?",
+    "description": "We'll display it on your profile and help you find great matches who speak the same languages",
+    "maxSelect": "You can select up to {{count}} languages",
+    "searchPlaceholder": "Search languages"
   },
   "major": {
     "title": "What are you studying at university?",
     "placeholder": "Select",
     "bottomSheetTitle": "Select Major"
+  },
+  "interest": {
+    "title": "Select your interests",
+    "description": "Choose your interests and meet awesome friends with similar hobbies!",
+    "maxSelect": "You can select up to {{count}}",
+    "submit": "Next",
+    "categories": {
+      "culture": "Cultural Life",
+      "sports": "Sports & Activities",
+      "arts": "Arts & Creation",
+      "food": "Food & Beverage"
+    }
+  },
+  "common": {
+    "next": "Next",
+    "back": "Back",
+    "cancel": "Cancel",
+    "search": "Search",
+    "select": "Select",
+    "selected": "Selected"
   }
 }

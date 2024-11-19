@@ -22,6 +22,7 @@ import NameScreen from "@/screens/onboarding/NameScreen";
 import LanguageSelectScreen from "@/screens/onboarding/LanguageSelectScreen";
 import MajorSelectScreen from "@/screens/onboarding/MajorSelectScreen";
 import InterestSelectScreen from "@/screens/onboarding/InterestSelectScreen";
+import CountrySelectScreen from "@/screens/onboarding/CountrySelectScreen";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -73,6 +74,10 @@ function OnboardingNavigator() {
       />
       <OnboardingStack.Screen name="OnboardingName" component={NameScreen} />
       <OnboardingStack.Screen
+        name="OnboardingCountrySelect"
+        component={CountrySelectScreen}
+      />
+      <OnboardingStack.Screen
         name="OnboardingLanguageSelect"
         component={LanguageSelectScreen}
       />
@@ -91,7 +96,9 @@ function OnboardingNavigator() {
 export default function Router() {
   return (
     <NavigationContainer>
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Navigator
+        screenOptions={{ headerShown: false, gestureEnabled: false }}
+      >
         <Stack.Screen name="Splash" component={SplashScreen} />
         <Stack.Screen name="Onboarding" component={OnboardingNavigator} />
         <Stack.Screen name="Main" component={TabNavigator} />

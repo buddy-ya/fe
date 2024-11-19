@@ -8,7 +8,9 @@ interface HeadingProps {
 
 export default function Heading({ children, className = "" }: HeadingProps) {
   return (
-    <Text className={`text-[26px] font-bold mb-2 ${className}`}>
+    <Text
+      className={`text-[24px] leading-[1.4] font-semibold text-text mt-8 ${className} tracking-wide`}
+    >
       {children}
     </Text>
   );

@@ -1,57 +1,79 @@
+// screens/MajorSelectScreen.tsx
 import React, { useState } from "react";
-import { Text, TouchableOpacity, View } from "react-native";
+import { Text, View } from "react-native";
 import { useTranslation } from "react-i18next";
-import { ChevronDown, ChevronRight } from "lucide-react-native";
 import Layout from "@/components/common/Layout";
 import InnerLayout from "@/components/common/InnerLayout";
 import Button from "@/components/common/Button";
 import Heading from "@/components/onboarding/Heading";
-import CustomBottomSheet from "@/components/common/CustomBottomSheet";
-import { MAJOR_OPTIONS } from "@/utils/constants/majors";
+import HeadingDescription from "@/components/onboarding/HeadingDescription";
+import SelectItem from "@/components/common/SelectItem";
+import { MAJORS } from "@/utils/constants/majors";
+import type { MajorID } from "@/utils/constants/majors";
+import { useOnboardingStore } from "@/store/onboarding";
+
+interface Major {
+  id: MajorID;
+  icon: string;
+}
 
 export default function MajorSelectScreen({ navigation }) {
-  const [isBottomSheetVisible, setIsBottomSheetVisible] = useState(false);
-  const [selectedMajor, setSelectedMajor] = useState("");
-  const { t, i18n } = useTranslation("onboarding");
-  const currentLang = i18n.language.startsWith("ko") ? "ko" : "en";
-  const majorOptions = MAJOR_OPTIONS.map((major) => major[currentLang]);
+  const [selectedMajors, setSelectedMajors] = useState<Major[]>([]);
+  const { t } = useTranslation(["onboarding", "majors"]);
+  const { updateOnboardingData } = useOnboardingStore();
+  const MAX_SELECT = 2;
 
-  const getMajorLabel = () => {
-    if (!selectedMajor) return t("major.placeholder");
-    return selectedMajor;
+  const handleSelect = (major: Major) => {
+    setSelectedMajors((prev) => {
+      if (prev.some((m) => m.id === major.id)) {
+        return prev.filter((m) => m.id !== major.id);
+      }
+      if (prev.length >= MAX_SELECT) return prev;
+      return [...prev, major];
+    });
   };
 
   const handleNavigateButton = () => {
+    updateOnboardingData({
+      major: selectedMajors.map((major) => major.id),
+    });
     navigation.navigate("OnboardingInterestSelect");
   };
-
   return (
     <Layout showHeader onBack={() => navigation.goBack()}>
       <InnerLayout>
-        <Heading className="mt-8">{t("major.title")}</Heading>
-        <TouchableOpacity
-          onPress={() => setIsBottomSheetVisible(true)}
-          className="mt-4 flex-row items-center justify-between px-4 py-3 border border-borderSelect rounded-xl"
-        >
-          <Text className="text-base">{getMajorLabel()}</Text>
-          <ChevronDown size={20} color="black" />
-        </TouchableOpacity>
+        <Heading>{t("onboarding:major.title")}</Heading>
+        {/* <HeadingDescription /> */}
+        {/* <Text className="text-textDescription mt-2"></Text> */}
+        <Text className="mt-3 text-textDescription">
+          {t("language.maxSelect", { count: MAX_SELECT })}
+        </Text>
+        <SelectItem
+          options={MAJORS}
+          selectedValues={selectedMajors}
+          onSelect={handleSelect}
+          maxSelect={MAX_SELECT}
+          multiple={true}
+          nameSpace="majors"
+        />
 
         <Button
-          type="circle"
+          type="box"
           onPress={handleNavigateButton}
-          disabled={!selectedMajor}
-          className="absolute bottom-8 right-5"
-        />
-
-        <CustomBottomSheet
-          isVisible={isBottomSheetVisible}
-          onClose={() => setIsBottomSheetVisible(false)}
-          options={majorOptions}
-          selectedValue={selectedMajor}
-          onSelect={setSelectedMajor}
-          title={t("major.bottomSheetTitle")}
-        />
+          disabled={selectedMajors.length === 0}
+          className="flex-row items-center justify-center mt-5"
+        >
+          <View>
+            <Text className="text-white text-base font-semibold">
+              {t("onboarding:common.selected")}
+            </Text>
+          </View>
+          <View className="ml-1">
+            <Text className="text-white text-base font-semibold">
+              {selectedMajors.length}/{MAX_SELECT}
+            </Text>
+          </View>
+        </Button>
       </InnerLayout>
     </Layout>
   );

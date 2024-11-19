@@ -26,26 +26,19 @@ export default function OTPInput({
   };
 
   return (
-    <View className="relative">
-      <View className="w-[80%] flex-row justify-between px-2">
+    <View>
+      <View className="w-[80%] flex-row justify-between">
         {[...Array(length)].map((_, index) => (
           <View
             key={index}
             className={`
-              w-[38px] h-[50px] 
-              border rounded-lg 
+              w-[41px] h-[50px] 
+              border border-border rounded-xl 
               items-center justify-center
-              mr-3
+              mr-2
             `}
-            // ${value[index] ? "border-primary" : "border-gray-600"}
           >
-            <Text
-              className={`text-lg ${
-                value[index] || "font-extralight color-gray-500"
-              }`}
-            >
-              {value[index] || index + 1}
-            </Text>
+            <Text className={`text-[18px] text-text`}>{value[index]}</Text>
           </View>
         ))}
       </View>

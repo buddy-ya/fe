@@ -1,0 +1,16 @@
+{
+  "majors": {
+    "humanities": "인문",
+    "social_sciences": "사회과학",
+    "business": "경영",
+    "education": "사범",
+    "natural_sciences": "자연과학",
+    "it": "IT",
+    "engineering": "공과",
+    "arts_sports": "예체능",
+    "nursing": "간호",
+    "pharmacy": "약학",
+    "veterinary": "수의",
+    "medicine": "의과"
+  }
+}

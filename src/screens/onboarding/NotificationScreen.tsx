@@ -7,9 +7,11 @@ import React from "react";
 import { View, Text, Image } from "react-native";
 import { useTranslation } from "react-i18next";
 import * as Notifications from "expo-notifications";
+import { useOnboardingStore } from "@/store/onboarding";
 
 export default function NotificationScreen({ navigation }) {
   const { t } = useTranslation("onboarding");
+  const { updateOnboardingData } = useOnboardingStore();
 
   const requestNotificationPermission = async () => {
     try {
@@ -22,27 +24,21 @@ export default function NotificationScreen({ navigation }) {
         finalStatus = status;
       }
 
-      if (finalStatus === "granted") {
-        navigation.replace("OnboardingStudentInfo");
-      } else {
-        navigation.replace("OnboardingStudentInfo");
-      }
+      updateOnboardingData({
+        isNotificationEnabled: finalStatus === "granted",
+      });
+
+      navigation.replace("OnboardingUniversitySelect");
     } catch (error) {
       console.error("Notification permission error:", error);
     }
   };
 
   return (
-    <Layout>
+    <Layout preserveHeader>
       <InnerLayout>
-        <Heading className="mt-20">{t("notification.title1")}</Heading>
-        <Heading>{t("notification.title2")}</Heading>
-        <HeadingDescription className="mt-5">
-          {t("notification.description1")}
-        </HeadingDescription>
-        <HeadingDescription>
-          {t("notification.description2")}
-        </HeadingDescription>
+        <Heading>{t("notification.title")}</Heading>
+        <HeadingDescription>{t("notification.description")}</HeadingDescription>
         <View className="flex-1">
           <Image
             className="w-[344px] h-[344px]"
@@ -50,7 +46,7 @@ export default function NotificationScreen({ navigation }) {
           />
         </View>
         <Button
-          className="w-full bottom-8"
+          className="w-full"
           type="box"
           onPress={requestNotificationPermission}
         >

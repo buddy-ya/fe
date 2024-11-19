@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, TextInput } from "react-native";
 import { useTranslation } from "react-i18next";
 import Button from "@/components/common/Button";
@@ -7,67 +7,113 @@ import Heading from "@/components/onboarding/Heading";
 import KeyboardLayout from "@/components/common/KeyboardLayout";
 import InnerLayout from "@/components/common/InnerLayout";
 import HeadingDescription from "@/components/onboarding/HeadingDescription";
-import { ChevronRight, Lock } from "lucide-react-native";
-import KoreaLogo from "@assets/icons/korea.svg";
+import { Lock } from "lucide-react-native";
+import Label from "@/components/onboarding/Label";
+import ErrorMessage from "@/components/onboarding/ErrorMessage";
+import FooterLayout from "@/components/common/FooterLayout";
+import { useMutation } from "@tanstack/react-query";
+import { postPhoneVerification } from "@/api/auth/phone";
+import { logError } from "@/utils/service/error";
 
 export default function PhoneScreen({ navigation }) {
   const { t } = useTranslation("onboarding");
   const [phone, setPhone] = useState("");
   const [isValid, setIsValid] = useState(false);
+  const [showError, setShowError] = useState(false);
+
+  const formattedPhone = phone.replace(/[^0-9]/g, "");
+
+  const { mutate: sendVerification } = useMutation({
+    mutationFn: postPhoneVerification,
+    onSuccess: () => {
+      navigation.navigate("OnboardingPhoneVerification", {
+        phone: formatPhoneNumber(phone),
+      });
+    },
+    onError: logError,
+  });
+
+  const validatePhoneNumber = (phoneNumber: string) => {
+    const phoneRegex = /^010\d{8}$/;
+    return phoneRegex.test(phoneNumber);
+  };
+
+  const checkStartWithValidPrefix = (phoneNumber: string) => {
+    return phoneNumber.length > 2 && !phoneNumber.startsWith("010");
+  };
+
+  const formatPhoneNumber = (phoneNumber: string) => {
+    const cleaned = phoneNumber.replace(/\D/g, "");
+    const match = cleaned.match(/^(\d{3})(\d{0,4})(\d{0,4})$/);
+    if (match) {
+      const groups = match.slice(1).filter(Boolean);
+      return groups.join("-");
+    }
+    return phoneNumber;
+  };
+
+  const handlePhoneValidation = (phoneNumber: string) => {
+    const isValidPhone = validatePhoneNumber(phoneNumber);
+    setIsValid(isValidPhone);
+    setShowError(checkStartWithValidPrefix(phoneNumber));
+  };
 
   useEffect(() => {
-    const phoneRegex = /^010\d{8}$/;
-    setIsValid(phoneRegex.test(phone));
-  }, [phone]);
+    handlePhoneValidation(formattedPhone);
+  }, [formattedPhone]);
 
   const handlePhoneChange = (text: string) => {
-    const numericValue = text.replace(/[^0-9]/g, "");
-    setPhone(numericValue);
+    const newValue = text.replace(/[^0-9]/g, "");
+    if (newValue.length <= 11) {
+      setPhone(newValue);
+    }
   };
 
   const handleNavigateButton = () => {
-    navigation.navigate("OnboardingPhoneVerification", { phone });
+    // sendVerification({ phoneNumber: formattedPhone });
+    navigation.navigate("OnboardingPhoneVerification", {
+      phone: formatPhoneNumber(phone),
+    });
   };
 
   const footer = (
-    <View className="w-full absolute flex-row items-center justify-between px-4 bottom-4">
-      <View className="flex-1 flex-row items-center mr-4">
-        <Lock strokeWidth={1} color={"black"} />
-        <Text className="text-sm mx-4">{t("phone.footer")}</Text>
-      </View>
-      <Button
-        type="circle"
-        onPress={handleNavigateButton}
-        disabled={!isValid}
-      />
-    </View>
+    <FooterLayout
+      icon={<Lock strokeWidth={1} size={23} color={"#797979"} />}
+      content={
+        <Text className="text-sm text-textDescription mx-3">
+          {t("phone.footer")}
+        </Text>
+      }
+      onPress={handleNavigateButton}
+      disabled={!isValid}
+    />
   );
 
   return (
     <Layout showHeader onBack={() => navigation.goBack()}>
       <KeyboardLayout footer={footer}>
         <InnerLayout>
-          <Heading className="mt-8">{t("phone.title")}</Heading>
+          <Heading>{t("phone.title")}</Heading>
           <HeadingDescription>{t("phone.titleDescription")}</HeadingDescription>
-          <View className="mt-12 flex-row items-center">
-            <View className="flex-row items-center mr-4 px-3 py-3 border rounded-lg">
-              <KoreaLogo />
-              <Text className="ml-2 text-xl">+82</Text>
+          <Label className="text-base">{t("phone.label")}</Label>
+          <View>
+            <View className="flex-row items-center mb-4">
+              <View className="flex-row items-center mr-2 px-[14px] h-[52px] border border-border rounded-xl">
+                <Text className="text-xl text-textDescription">🇰🇷 +82</Text>
+              </View>
+              <TextInput
+                value={formatPhoneNumber(phone)}
+                onChangeText={handlePhoneChange}
+                keyboardType="number-pad"
+                placeholder="010-1234-5678"
+                className="px-[14px] text-[18px] text-text w-[172px] border border-border rounded-xl h-[52px]"
+                placeholderTextColor="#DFDFDF"
+                textAlignVertical="center"
+                autoFocus
+              />
             </View>
-            <TextInput
-              value={phone}
-              onChangeText={handlePhoneChange}
-              keyboardType="number-pad"
-              maxLength={11}
-              placeholder={t("phone.placeholder")}
-              className="px-4 py-3 w-[60%] text-xl tracking-wide border rounded-xl border-inputBorder"
-              placeholderTextColor="#999"
-              autoFocus
-            />
+            {showError && <ErrorMessage>{t("phone.warning")}</ErrorMessage>}
           </View>
-          <Text className="text-textSub text-[14px] ml-2 mt-4">
-            {t("phone.description")}
-          </Text>
         </InnerLayout>
       </KeyboardLayout>
     </Layout>

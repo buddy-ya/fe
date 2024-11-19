@@ -1,14 +1,38 @@
-export const MAJOR_OPTIONS = [
-  { en: "Humanities", ko: "인문" },
-  { en: "Social Sciences", ko: "사회과학" },
-  { en: "Business", ko: "경영" },
-  { en: "Education", ko: "사범" },
-  { en: "Natural Sciences", ko: "자연과학" },
-  { en: "IT", ko: "IT" },
-  { en: "Engineering", ko: "공과" },
-  { en: "Arts and Physical Education", ko: "예체능" },
-  { en: "Nursing", ko: "간호" },
-  { en: "Pharmacy", ko: "약학" },
-  { en: "Veterinary Medicine", ko: "수의" },
-  { en: "Medicine", ko: "의과" },
-];
+// constants/majors.ts
+export const MAJOR_IDS = [
+  "humanities",
+  "social_sciences",
+  "business",
+  "education",
+  "natural_sciences",
+  "it",
+  "engineering",
+  "arts_sports",
+  "nursing",
+  "pharmacy",
+  "veterinary",
+  "medicine",
+] as const;
+
+export type MajorID = (typeof MAJOR_IDS)[number];
+
+export const MAJOR_ICONS: Record<MajorID, string> = {
+  humanities: "📚",
+  social_sciences: "🌏",
+  business: "💼",
+  education: "👨‍🏫",
+  natural_sciences: "🔬",
+  it: "💻",
+  engineering: "⚙️",
+  arts_sports: "🎨",
+  nursing: "👨‍⚕️",
+  pharmacy: "💊",
+  veterinary: "🐾",
+  medicine: "🏥",
+};
+
+// 화면에서 사용할 데이터 구조
+export const MAJORS = MAJOR_IDS.map((id) => ({
+  id,
+  icon: MAJOR_ICONS[id],
+}));

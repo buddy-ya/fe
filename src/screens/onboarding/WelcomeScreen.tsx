@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, Image, SafeAreaView } from "react-native";
+import { Text, View, Image } from "react-native";
 import { useTranslation } from "react-i18next";
 import "@/../global.css";
 import Button from "@/components/common/Button";
@@ -42,8 +42,8 @@ export default function WelcomeScreen({ navigation }) {
             className="w-full h-[344px]"
           />
         </View>
-        <Button className="w-full bottom-8" onPress={handleNavigateButton}>
-          <Text className="text-white text-lg font-bold">
+        <Button onPress={handleNavigateButton}>
+          <Text className="text-white text-lg font-semibold">
             {t("intro.button")}
           </Text>
         </Button>

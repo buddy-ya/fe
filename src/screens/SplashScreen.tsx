@@ -1,21 +1,44 @@
 import React, { useEffect } from "react";
 import { View, Text, ActivityIndicator, Image } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as Font from "expo-font";
 
 export default function SplashScreen({ navigation }) {
   useEffect(() => {
     initializeApp();
   }, []);
 
+  const loadFonts = async () => {
+    try {
+      await Font.loadAsync({
+        "Pretendard-Thin": require("@assets/fonts/Pretendard-Thin.otf"),
+        "Pretendard-ExtraLight": require("@assets/fonts/Pretendard-ExtraLight.otf"),
+        "Pretendard-Light": require("@assets/fonts/Pretendard-Light.otf"),
+        "Pretendard-Regular": require("@assets/fonts/Pretendard-Regular.otf"),
+        "Pretendard-Medium": require("@assets/fonts/Pretendard-Medium.otf"),
+        "Pretendard-SemiBold": require("@assets/fonts/Pretendard-SemiBold.otf"),
+        "Pretendard-Bold": require("@assets/fonts/Pretendard-Bold.otf"),
+        "Pretendard-ExtraBold": require("@assets/fonts/Pretendard-ExtraBold.otf"),
+        "Pretendard-Black": require("@assets/fonts/Pretendard-Black.otf"),
+      });
+    } catch (error) {
+      console.error("Font loading failed:", error);
+    }
+  };
+
   const initializeApp = async () => {
     try {
-      const token = await AsyncStorage.getItem("userToken");
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      const [token] = await Promise.all([
+        AsyncStorage.getItem("userToken"),
+        loadFonts(),
+        new Promise((resolve) => setTimeout(resolve, 1000)),
+      ]);
+
       if (token) {
         navigation.navigate("Main");
       } else {
         navigation.navigate("Onboarding", {
-          screen: "OnboardingLanguageSelect",
+          screen: "OnboardingWelcome",
         });
       }
     } catch (error) {

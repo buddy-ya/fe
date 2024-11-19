@@ -5,5 +5,5 @@ interface InnerLayoutProps {
   children: ReactNode;
 }
 export default function InnerLayout({ children }: InnerLayoutProps) {
-  return <View className="flex-1 px-6">{children}</View>;
+  return <View className="flex-1 px-5">{children}</View>;
 }

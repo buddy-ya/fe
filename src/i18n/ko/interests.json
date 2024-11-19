@@ -1,0 +1,38 @@
+{
+  "categories": {
+    "culture": "문화 생활",
+    "sports": "스포츠 및 액티비티",
+    "arts": "예술 및 창작 활동",
+    "food": "음식 및 음료"
+  },
+  "interests": {
+    "kpop": "K-POP",
+    "performance": "공연 & 전시회 관람",
+    "reading": "독서",
+    "movie": "영화",
+    "oneday": "원데이클래스",
+    "experience": "체험카페",
+    "cafe": "카페 투어",
+    "game": "게임",
+    "basketball": "농구",
+    "hiking": "등산",
+    "running": "러닝",
+    "bowling": "볼링",
+    "sports": "스포츠 경기 관람",
+    "baseball": "야구",
+    "soccer": "축구",
+    "tennis": "테니스",
+    "fitness": "헬스",
+    "singing": "노래",
+    "dance": "춤",
+    "crafts": "공예",
+    "instrument": "악기 연주",
+    "photo": "사진 촬영",
+    "acting": "연기",
+    "restaurant": "맛집 투어",
+    "beer": "맥주",
+    "baking": "베이킹",
+    "cooking": "요리",
+    "food_experience": "이색 음식 체험"
+  }
+}

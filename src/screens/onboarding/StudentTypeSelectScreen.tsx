@@ -26,23 +26,19 @@ export default function StudentTypeScreen({ navigation }) {
           <SelectItem
             selected={selectedType === "korean"}
             onPress={() => setSelectedType("korean")}
-          >
-            <Text>{t("studentType.korean")}</Text>
-          </SelectItem>
-
+            item={t("studentType.korean")}
+          />
           <SelectItem
             selected={selectedType === "foreign"}
             onPress={() => setSelectedType("foreign")}
-          >
-            <Text>{t("studentType.foreign")}</Text>
-          </SelectItem>
+            item={t("studentType.foreign")}
+          />
         </View>
-        <Button
-          className="absolute bottom-14 right-8"
-          type="circle"
-          onPress={handleNavigateButton}
-          disabled={!selectedType}
-        />
+        <Button onPress={handleNavigateButton}>
+          <Text className="text-white text-lg font-semibold">
+            {t("common.next")}
+          </Text>
+        </Button>
       </InnerLayout>
     </Layout>
   );
