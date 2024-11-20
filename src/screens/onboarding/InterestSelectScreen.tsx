@@ -14,6 +14,7 @@ import { useMutation } from "@tanstack/react-query";
 import { postOnboardingInfo } from "@/api/onboarding/join";
 import { logError } from "@/utils/service/error";
 import MyText from "@/components/common/MyText";
+import { saveTokens } from "@/utils/service/auth";
 
 interface Interest {
   id: InterestID;
@@ -28,7 +29,10 @@ export default function InterestSelectScreen({ navigation }) {
 
   const { mutate: submitOnboarding, isPending } = useMutation({
     mutationFn: postOnboardingInfo,
-    onSuccess: () => {
+    onSuccess: async (response) => {
+      const { accessToken, refreshToken } = response.data;
+      await saveTokens(accessToken, refreshToken);
+      console.log(accessToken, refreshToken);
       navigation.reset({
         index: 0,
         routes: [{ name: "OnboardingInterestSelect" }],
@@ -50,20 +54,10 @@ export default function InterestSelectScreen({ navigation }) {
   const handleNavigateButton = () => {
     const interests = selectedInterests.map((interest) => interest.id);
     updateOnboardingData({ interests });
-    const onboardingMockData = {
-      name: "John",
-      major: "humanities",
-      country: "us",
-      isKorean: false,
-      isNotificationEnabled: true,
-      phoneNumber: "01012345678",
-      gender: "male" as const,
-      university: "sju",
-      languages: ["ko", "en"],
-      interests: ["kpop", "movie"],
-    };
+
     submitOnboarding({
-      ...onboardingMockData,
+      ...onboardingData,
+      interests,
     });
   };
 

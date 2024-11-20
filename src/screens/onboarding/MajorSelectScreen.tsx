@@ -35,7 +35,7 @@ export default function MajorSelectScreen({ navigation }) {
 
   const handleNavigateButton = () => {
     updateOnboardingData({
-      major: selectedMajors.map((major) => major.id),
+      majors: selectedMajors.map((major) => major.id),
     });
     navigation.navigate("OnboardingInterestSelect");
   };

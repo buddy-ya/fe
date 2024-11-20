@@ -15,7 +15,7 @@ import Label from "@/components/onboarding/Label";
 import { useOnboardingStore } from "@/store/onboarding";
 import { useMutation } from "@tanstack/react-query";
 import MyText from "@/components/common/MyText";
-
+import { formatPhone } from "@/utils/service/phone";
 import {
   PhoneVerifyResponse,
   postPhoneVerification,
@@ -25,51 +25,46 @@ import { saveTokens } from "@/utils/service/auth";
 import ErrorMessage from "@/components/onboarding/ErrorMessage";
 import { logError } from "@/utils/service/error";
 
+const VERIFICATION_EXPIRE_SECONDS = 10;
+
 export default function PhoneVerificationScreen({ navigation, route }) {
   const { t } = useTranslation("onboarding");
   const { updateOnboardingData } = useOnboardingStore();
   const [code, setCode] = useState("");
   const [verificationError, setVerificationError] = useState(false);
-  const phoneNumber = route.params?.phone;
-  const VERIFICATION_EXPIRE_SECONDS = 5;
-
-  const formattedPhone = phoneNumber.replace(/-/g, "");
+  const phone = route.params?.phone;
+  const plainPhoneNumber = formatPhone.removeHyphen(phone);
 
   const { timeLeft, isExpired, restart } = useTimer({
     seconds: VERIFICATION_EXPIRE_SECONDS,
     onExpire: () => {},
   });
 
+  const resetVerification = () => {
+    setCode("");
+    restart();
+    setVerificationError(false);
+  };
+
   const { mutate: resendVerification } = useMutation({
     mutationFn: postPhoneVerification,
-    onSuccess: () => {
-      setCode("");
-      restart();
-      setVerificationError(false);
-    },
-    onError: (error) => {
-      console.error("Resend verification error:", error);
-    },
+    onSuccess: resetVerification,
+    onError: logError,
   });
 
   const { mutate: verifyCode } = useMutation({
     mutationFn: postPhoneVerifyCode,
     onSuccess: async (response: PhoneVerifyResponse) => {
       setVerificationError(false);
-      updateOnboardingData({ phoneNumber: formattedPhone });
+      updateOnboardingData({ phoneNumber: plainPhoneNumber });
 
       if (response.status === "EXISTING_MEMBER") {
         await saveTokens(response.accessToken, response.refreshToken);
-        navigation.reset({
-          index: 0,
-          routes: [{ name: "Main" }],
-        });
-      } else {
-        navigation.reset({
-          index: 0,
-          routes: [{ name: "OnboardingNotification" }],
-        });
       }
+      navigation.reset({
+        index: 0,
+        routes: [{ name: "OnboardingNotification" }],
+      });
     },
     onError: (error) => {
       logError(error);
@@ -79,19 +74,13 @@ export default function PhoneVerificationScreen({ navigation, route }) {
   });
 
   const handleResend = () => {
-    resendVerification({ phoneNumber: formattedPhone });
-    setCode("");
-    restart();
+    resendVerification({ phoneNumber: plainPhoneNumber });
   };
 
   const handleNavigateButton = () => {
-    // verifyCode({
-    //   phoneNumber: formattedPhone,
-    //   code,
-    // });
-    navigation.reset({
-      index: 0,
-      routes: [{ name: "OnboardingNotification" }],
+    verifyCode({
+      phoneNumber: plainPhoneNumber,
+      code,
     });
   };
 
@@ -134,7 +123,7 @@ export default function PhoneVerificationScreen({ navigation, route }) {
         <InnerLayout>
           <Heading>{t("verification.title")}</Heading>
           <HeadingDescription>
-            {t("verification.titleDescription", { phoneNumber })}
+            {t("verification.titleDescription", { phoneNumber: phone })}
           </HeadingDescription>
           <Label>{t("verification.label")}</Label>
           <OTPInput value={code} onChange={setCode} length={6} />
