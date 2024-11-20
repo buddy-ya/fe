@@ -57,15 +57,22 @@ export default function PhoneVerificationScreen({ navigation, route }) {
     onSuccess: async (response: PhoneVerifyResponse) => {
       setVerificationError(false);
       updateOnboardingData({ phoneNumber: plainPhoneNumber });
-
       if (response.status === "EXISTING_MEMBER") {
         await saveTokens(response.accessToken, response.refreshToken);
       }
       navigation.reset({
         index: 0,
-        routes: [{ name: "OnboardingNotification" }],
+        routes: [
+          {
+            name: "OnboardingNotification",
+            params: {
+              isExistingMember: response.status === "EXISTING_MEMBER",
+            },
+          },
+        ],
       });
     },
+
     onError: (error) => {
       logError(error);
       setVerificationError(true);
