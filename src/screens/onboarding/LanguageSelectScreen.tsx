@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Keyboard, Text, TouchableWithoutFeedback, View } from "react-native";
+import { Keyboard, View, TouchableWithoutFeedback } from "react-native";
 import { useTranslation } from "react-i18next";
 import Layout from "@/components/common/Layout";
 import InnerLayout from "@/components/common/InnerLayout";
@@ -10,6 +10,7 @@ import SearchInput from "@/components/common/SearchInput";
 import SelectItem from "@/components/common/SelectItem";
 import { LANGUAGES } from "@/utils/constants/languages";
 import { useOnboardingStore } from "@/store/onboarding";
+import MyText from "@/components/common/MyText";
 
 interface Language {
   id: string;
@@ -50,10 +51,9 @@ export default function LanguageSelectScreen({ navigation }) {
       <Layout showHeader onBack={() => navigation.goBack()}>
         <InnerLayout>
           <Heading>{t("language.title")}</Heading>
-          {/* <HeadingDescription>{t("language.description")}</HeadingDescription> */}
-          <Text className="mt-3 text-textDescription">
+          <HeadingDescription>
             {t("language.maxSelect", { count: MAX_SELECT })}
-          </Text>
+          </HeadingDescription>
 
           <SearchInput
             value={searchQuery}
@@ -77,14 +77,22 @@ export default function LanguageSelectScreen({ navigation }) {
             className="flex-row items-center justify-center"
           >
             <View>
-              <Text className="text-white text-base font-semibold">
+              <MyText
+                size="text-base"
+                color="text-white"
+                className="font-semibold"
+              >
                 {t("common.selected")}
-              </Text>
+              </MyText>
             </View>
             <View className="ml-1">
-              <Text className="text-white text-base font-semibold">
+              <MyText
+                size="text-base"
+                color="text-white"
+                className="font-semibold"
+              >
                 {selectedLanguages.length}/{MAX_SELECT}
-              </Text>
+              </MyText>
             </View>
           </Button>
         </InnerLayout>

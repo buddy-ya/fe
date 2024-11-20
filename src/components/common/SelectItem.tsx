@@ -2,6 +2,7 @@ import React from "react";
 import { View, Text, TouchableOpacity, ScrollView } from "react-native";
 import { Check } from "lucide-react-native";
 import { useTranslation } from "react-i18next";
+import MyText from "./MyText";
 
 interface SelectOption {
   id: string;
@@ -54,9 +55,7 @@ export default function SelectItem({
               {option.icon && (
                 <Text className="mr-3 text-base">{option.icon}</Text>
               )}
-              <Text className="text-base">
-                {t(`${nameSpace}.${option.id}`)}
-              </Text>
+              <MyText size="text-base">{t(`${nameSpace}.${option.id}`)}</MyText>
             </View>
             <View
               className={`

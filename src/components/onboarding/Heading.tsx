@@ -1,5 +1,5 @@
 import React from "react";
-import { Text } from "react-native";
+import MyText from "@/components/common/MyText";
 
 interface HeadingProps {
   children: React.ReactNode;
@@ -8,10 +8,11 @@ interface HeadingProps {
 
 export default function Heading({ children, className = "" }: HeadingProps) {
   return (
-    <Text
-      className={`text-[24px] leading-[1.4] font-semibold text-text mt-8 ${className} tracking-wide`}
+    <MyText
+      size="text-[24px]"
+      className={`font-semibold mt-8 ${className} tracking-wide`}
     >
       {children}
-    </Text>
+    </MyText>
   );
 }

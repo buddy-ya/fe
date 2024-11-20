@@ -1,6 +1,5 @@
-// screens/MajorSelectScreen.tsx
 import React, { useState } from "react";
-import { Text, View } from "react-native";
+import { View } from "react-native";
 import { useTranslation } from "react-i18next";
 import Layout from "@/components/common/Layout";
 import InnerLayout from "@/components/common/InnerLayout";
@@ -11,6 +10,7 @@ import SelectItem from "@/components/common/SelectItem";
 import { MAJORS } from "@/utils/constants/majors";
 import type { MajorID } from "@/utils/constants/majors";
 import { useOnboardingStore } from "@/store/onboarding";
+import MyText from "@/components/common/MyText";
 
 interface Major {
   id: MajorID;
@@ -45,9 +45,9 @@ export default function MajorSelectScreen({ navigation }) {
         <Heading>{t("onboarding:major.title")}</Heading>
         {/* <HeadingDescription /> */}
         {/* <Text className="text-textDescription mt-2"></Text> */}
-        <Text className="mt-3 text-textDescription">
+        <MyText size="text-base" color="text-textDescription" className="mt-3">
           {t("language.maxSelect", { count: MAX_SELECT })}
-        </Text>
+        </MyText>
         <SelectItem
           options={MAJORS}
           selectedValues={selectedMajors}
@@ -55,6 +55,7 @@ export default function MajorSelectScreen({ navigation }) {
           maxSelect={MAX_SELECT}
           multiple={true}
           nameSpace="majors"
+          className="mt-5"
         />
 
         <Button
@@ -64,14 +65,22 @@ export default function MajorSelectScreen({ navigation }) {
           className="flex-row items-center justify-center mt-5"
         >
           <View>
-            <Text className="text-white text-base font-semibold">
+            <MyText
+              size="text-base"
+              color="text-white"
+              className="font-semibold"
+            >
               {t("onboarding:common.selected")}
-            </Text>
+            </MyText>
           </View>
           <View className="ml-1">
-            <Text className="text-white text-base font-semibold">
+            <MyText
+              size="text-base"
+              color="text-white"
+              className="font-semibold"
+            >
               {selectedMajors.length}/{MAX_SELECT}
-            </Text>
+            </MyText>
           </View>
         </Button>
       </InnerLayout>

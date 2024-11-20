@@ -1,6 +1,7 @@
 import React from "react";
 import { TouchableOpacity, View, Text } from "react-native";
 import { Check } from "lucide-react-native";
+import MyText from "../common/MyText";
 
 interface SelectItemProps {
   selected?: boolean;
@@ -30,7 +31,9 @@ export default function SelectItem({
        }
      `}
     >
-      <Text className={`text-base ${selected && "text-active"}`}>{item}</Text>
+      <MyText size="text-base" color={selected ? "text-active" : undefined}>
+        {item}
+      </MyText>
       {children}
     </TouchableOpacity>
   );

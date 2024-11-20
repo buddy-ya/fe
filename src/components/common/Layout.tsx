@@ -21,7 +21,7 @@ export default function Layout({
       {showHeader ? (
         <Header onBack={onBack} />
       ) : (
-        preserveHeader && <View className="h-[52px]" />
+        preserveHeader && <View className="h-[48px]" />
       )}
       {children}
     </SafeAreaView>

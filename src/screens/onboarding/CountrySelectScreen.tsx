@@ -10,6 +10,7 @@ import SearchInput from "@/components/common/SearchInput";
 import SelectItem from "@/components/common/SelectItem";
 import { COUNTRIES } from "@/utils/constants/countries";
 import { useOnboardingStore } from "@/store/onboarding";
+import MyText from "@/components/common/MyText";
 
 type CountryID = (typeof COUNTRIES)[number]["id"];
 
@@ -22,7 +23,7 @@ interface Country {
 export default function CountrySelectScreen({ navigation }) {
   const [selectedCountry, setSelectedCountry] = useState<Country | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
-  const { t } = useTranslation(["onboarding", "countries"]);
+  const { t } = useTranslation("onboarding");
   const { updateOnboardingData } = useOnboardingStore();
 
   const handleSelect = (country: Country) => {
@@ -49,15 +50,13 @@ export default function CountrySelectScreen({ navigation }) {
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <Layout showHeader onBack={() => navigation.goBack()}>
         <InnerLayout>
-          <Heading>{t("onboarding:country.title")}</Heading>
-          <HeadingDescription>
-            {t("onboarding:country.description")}
-          </HeadingDescription>
+          <Heading>{t("country.title")}</Heading>
+          <HeadingDescription>{t("country.description")}</HeadingDescription>
 
           <SearchInput
             value={searchQuery}
             onChangeText={setSearchQuery}
-            placeholder={t("onboarding:country.searchPlaceholder")}
+            placeholder={t("country.searchPlaceholder")}
           />
 
           <SelectItem
@@ -74,9 +73,13 @@ export default function CountrySelectScreen({ navigation }) {
             disabled={!selectedCountry}
             className="flex-row items-center justify-center mt-5"
           >
-            <Text className="text-white text-base font-semibold">
-              {t("onboarding:common.next")}
-            </Text>
+            <MyText
+              size="text-base"
+              color="text-white"
+              className="font-semibold"
+            >
+              {t("common.next")}
+            </MyText>
           </Button>
         </InnerLayout>
       </Layout>

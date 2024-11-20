@@ -1,9 +1,8 @@
 import React, { useState } from "react";
-import { View, Text, TextInput } from "react-native";
+import { TextInput } from "react-native";
 import { useTranslation } from "react-i18next";
 import Layout from "@/components/common/Layout";
 import InnerLayout from "@/components/common/InnerLayout";
-import Button from "@/components/common/Button";
 import Heading from "@/components/onboarding/Heading";
 import KeyboardLayout from "@/components/common/KeyboardLayout";
 import { IdCard } from "lucide-react-native";
@@ -12,6 +11,7 @@ import ErrorMessage from "@/components/onboarding/ErrorMessage";
 import { useOnboardingStore } from "@/store/onboarding";
 import Label from "@/components/onboarding/Label";
 import FooterLayout from "@/components/common/FooterLayout";
+import MyText from "@/components/common/MyText";
 
 const MIN_NAME_LENGTH = 2;
 const MAX_NAME_LENGTH = 15;
@@ -49,9 +49,9 @@ export default function NameScreen({ navigation }) {
     <FooterLayout
       icon={<IdCard strokeWidth={1} size={28} color="#797979" />}
       content={
-        <Text className="text-sm text-textDescription mx-3">
+        <MyText size="text-sm" color="text-textDescription" className="mx-3">
           {t("name.footer")}
-        </Text>
+        </MyText>
       }
       onPress={handleNavigation}
       disabled={!isValidName}

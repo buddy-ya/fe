@@ -3,8 +3,9 @@ import InnerLayout from "@/components/common/InnerLayout";
 import Layout from "@/components/common/Layout";
 import Heading from "@/components/onboarding/Heading";
 import HeadingDescription from "@/components/onboarding/HeadingDescription";
+import MyText from "@/components/common/MyText";
 import React from "react";
-import { View, Text, Image } from "react-native";
+import { View, Image } from "react-native";
 import { useTranslation } from "react-i18next";
 import * as Notifications from "expo-notifications";
 import { useOnboardingStore } from "@/store/onboarding";
@@ -50,9 +51,9 @@ export default function NotificationScreen({ navigation }) {
           type="box"
           onPress={requestNotificationPermission}
         >
-          <Text className="text-white text-lg font-bold">
+          <MyText size="text-lg" color="text-white" className="font-semibold">
             {t("notification.allow")}
-          </Text>
+          </MyText>
         </Button>
       </InnerLayout>
     </Layout>

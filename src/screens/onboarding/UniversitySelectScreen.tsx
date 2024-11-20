@@ -1,7 +1,6 @@
 import React, { useState } from "react";
-import { View, Text } from "react-native";
+import { View } from "react-native";
 import { useTranslation } from "react-i18next";
-import { ChevronRight } from "lucide-react-native";
 import Layout from "@/components/common/Layout";
 import InnerLayout from "@/components/common/InnerLayout";
 import Button from "@/components/common/Button";
@@ -11,6 +10,7 @@ import SejongLogo from "@assets/icons/universities/sejong.svg";
 import Label from "@/components/onboarding/Label";
 import HeadingDescription from "@/components/onboarding/HeadingDescription";
 import { useOnboardingStore } from "@/store/onboarding";
+import MyText from "@/components/common/MyText";
 
 export default function UniversitySelectScreen({ navigation }) {
   const [selected, setSelected] = useState(true);
@@ -34,16 +34,16 @@ export default function UniversitySelectScreen({ navigation }) {
           <SelectItem selected={selected} disabled={true} onPress={() => {}}>
             <View className="flex-row items-center">
               <SejongLogo width={24} height={24} />
-              <Text className="ml-3 text-active">
+              <MyText size="text-base" color="text-active" className="ml-3">
                 {t("universitySelect.universities.sejong")}
-              </Text>
+              </MyText>
             </View>
           </SelectItem>
         </View>
         <Button onPress={handleNavigateButton}>
-          <Text className="text-white text-lg font-semibold">
+          <MyText size="text-lg" color="text-white" className="font-semibold">
             {t("common.next")}
-          </Text>
+          </MyText>
         </Button>
       </InnerLayout>
     </Layout>

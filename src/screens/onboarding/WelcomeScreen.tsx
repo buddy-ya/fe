@@ -1,10 +1,11 @@
 import React from "react";
-import { Text, View, Image } from "react-native";
+import { View, Image } from "react-native";
 import { useTranslation } from "react-i18next";
 import "@/../global.css";
 import Button from "@/components/common/Button";
 import InnerLayout from "@/components/common/InnerLayout";
 import Layout from "@/components/common/Layout";
+import MyText from "@/components/common/MyText";
 
 export default function WelcomeScreen({ navigation }) {
   const { t } = useTranslation("onboarding");
@@ -23,18 +24,18 @@ export default function WelcomeScreen({ navigation }) {
           />
         </View>
         <View className="mt-5">
-          <Text className="text-center text-2xl">
-            <Text className="text-primary font-bold">
+          <MyText size="text-2xl" className="text-center">
+            <MyText size="text-2xl" color="text-primary" className="font-bold">
               {t("intro.title-primary")}
-            </Text>
+            </MyText>
             {t("intro.title")}
-          </Text>
-          <Text className="text-center mt-2 text-2xl">
+          </MyText>
+          <MyText size="text-2xl" className="text-center mt-2">
             {t("intro.subTitle")}
-            <Text className="text-primary font-bold">
+            <MyText size="text-2xl" color="text-primary" className="font-bold">
               {t("intro.subTitle-primary")}
-            </Text>
-          </Text>
+            </MyText>
+          </MyText>
         </View>
         <View className="flex-1 mt-14">
           <Image
@@ -43,9 +44,9 @@ export default function WelcomeScreen({ navigation }) {
           />
         </View>
         <Button onPress={handleNavigateButton}>
-          <Text className="text-white text-lg font-semibold">
+          <MyText size="text-lg" color="text-white" className="font-semibold">
             {t("intro.button")}
-          </Text>
+          </MyText>
         </Button>
       </InnerLayout>
     </Layout>
