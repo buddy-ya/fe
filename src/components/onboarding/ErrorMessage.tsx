@@ -1,5 +1,6 @@
 import React from "react";
 import { Text } from "react-native";
+import MyText from "../common/MyText";
 
 interface ErrorMessageProps {
   children: React.ReactNode;
@@ -11,8 +12,12 @@ export default function ErrorMessage({
   className,
 }: ErrorMessageProps) {
   return (
-    <Text className={`text-textWarning text-sm mb-1 ${className}`}>
+    <MyText
+      size="text-sm"
+      color="text-textWarning"
+      className={`mb-1 ${className}`}
+    >
       {children}
-    </Text>
+    </MyText>
   );
 }

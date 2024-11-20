@@ -42,14 +42,14 @@ export default function SearchInput({
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View
-        className={`flex-row justify-between px-4 items-center mt-8 border border-border rounded-xl ${className}`}
+        className={`flex-row justify-between px-4 items-center mt-7 border border-border rounded-xl ${className}`}
       >
         <Search size={20} color="gray" />
         <TextInput
           value={value}
           onChangeText={onChangeText}
           placeholder={placeholder}
-          className="flex-1 ml-[6px] py-[12px]"
+          className="flex-1 ml-[7px] py-[12px] text-text"
           onFocus={() => setIsFocused(true)}
           onBlur={() => {
             setIsFocused(false);

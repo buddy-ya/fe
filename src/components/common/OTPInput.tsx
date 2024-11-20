@@ -6,6 +6,7 @@ import {
   KeyboardAvoidingView,
   Platform,
 } from "react-native";
+import MyText from "./MyText";
 
 interface OTPInputProps {
   value: string;
@@ -38,7 +39,7 @@ export default function OTPInput({
               mr-2
             `}
           >
-            <Text className={`text-[18px] text-text`}>{value[index]}</Text>
+            <MyText size="text-[18px]">{value[index]}</MyText>
           </View>
         ))}
       </View>

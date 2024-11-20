@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, ScrollView } from "react-native";
+import { View, ScrollView } from "react-native";
 import { useTranslation } from "react-i18next";
 import Layout from "@/components/common/Layout";
 import InnerLayout from "@/components/common/InnerLayout";
@@ -13,6 +13,7 @@ import { useOnboardingStore } from "@/store/onboarding";
 import { useMutation } from "@tanstack/react-query";
 import { postOnboardingInfo } from "@/api/onboarding/join";
 import { logError } from "@/utils/service/error";
+import MyText from "@/components/common/MyText";
 
 interface Interest {
   id: InterestID;
@@ -77,15 +78,19 @@ export default function InterestSelectScreen({ navigation }) {
           {/* <HeadingDescription>
             {t("onboarding:interest.description")}
           </HeadingDescription> */}
-          <Text className="text-textDescription mt-3">
+          <MyText
+            size="text-base"
+            color="text-textDescription"
+            className="mt-3"
+          >
             {t("onboarding:interest.maxSelect", { count: MAX_SELECT })}
-          </Text>
+          </MyText>
 
           {INTEREST_CATEGORIES.map((category) => (
             <View key={category.id} className="mt-8">
-              <Text className="text-[14px] text-text font-semibold mb-4">
+              <MyText size="text-[14px]" className="font-semibold mb-4">
                 {t(`interests:categories.${category.id}`)}
-              </Text>
+              </MyText>
               <View className="flex-row flex-wrap">
                 {category.interests.map((interest) => (
                   <Chip
@@ -111,14 +116,22 @@ export default function InterestSelectScreen({ navigation }) {
           className="flex-row items-center justify-center"
         >
           <View>
-            <Text className="text-white text-base font-semibold">
+            <MyText
+              size="text-base"
+              color="text-white"
+              className="font-semibold"
+            >
               {t("onboarding:interest.submit")}
-            </Text>
+            </MyText>
           </View>
           <View className="ml-1">
-            <Text className="text-white text-base font-semibold">
-              {selectedInterests.length}/{MAX_SELECT}
-            </Text>
+            <MyText
+              size="text-base"
+              color="text-white"
+              className="font-semibold"
+            >
+              {`${selectedInterests.length}/${MAX_SELECT}`}
+            </MyText>
           </View>
         </Button>
       </InnerLayout>

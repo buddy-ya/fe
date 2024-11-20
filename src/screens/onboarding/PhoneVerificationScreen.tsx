@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text } from "react-native";
+import { View } from "react-native";
 import { useTranslation } from "react-i18next";
 import Layout from "@/components/common/Layout";
 import Heading from "@/components/onboarding/Heading";
@@ -14,6 +14,7 @@ import FooterLayout from "@/components/common/FooterLayout";
 import Label from "@/components/onboarding/Label";
 import { useOnboardingStore } from "@/store/onboarding";
 import { useMutation } from "@tanstack/react-query";
+import MyText from "@/components/common/MyText";
 
 import {
   PhoneVerifyResponse,
@@ -98,19 +99,21 @@ export default function PhoneVerificationScreen({ navigation, route }) {
     if (!isExpired) {
       return (
         <View>
-          <Text className="text-textDescription text-sm">
+          <MyText size="text-sm" color="text-textDescription">
             {t("verification.notReceived")}
-          </Text>
-          <Text className="text-textDescription text-sm">{timeLeft}</Text>
+          </MyText>
+          <MyText size="text-sm" color="text-textDescription">
+            {timeLeft}
+          </MyText>
         </View>
       );
     }
 
     return (
       <View>
-        <Text className="text-textDescription text-sm">
+        <MyText size="text-sm" color="text-textDescription">
           {t("verification.expired")}
-        </Text>
+        </MyText>
         <LinkText onPress={handleResend}>{t("verification.resend")}</LinkText>
       </View>
     );

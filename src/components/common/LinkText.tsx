@@ -1,5 +1,6 @@
 import React from "react";
-import { Text, TouchableOpacity } from "react-native";
+import { TouchableOpacity } from "react-native";
+import MyText from "@/components/common/MyText";
 
 interface LinkTextProps {
   onPress: () => void;
@@ -14,9 +15,13 @@ export default function LinkText({
 }: LinkTextProps) {
   return (
     <TouchableOpacity onPress={onPress}>
-      <Text className={`text-primary text-sm underline ${className}`}>
+      <MyText
+        size="text-sm"
+        color="text-primary"
+        className={`underline ${className}`}
+      >
         {children}
-      </Text>
+      </MyText>
     </TouchableOpacity>
   );
 }

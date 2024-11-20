@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text } from "react-native";
+import { View } from "react-native";
 import { useTranslation } from "react-i18next";
 import Layout from "@/components/common/Layout";
 import InnerLayout from "@/components/common/InnerLayout";
@@ -9,6 +9,7 @@ import SelectItem from "@/components/onboarding/SelectItem";
 import HeadingDescription from "@/components/onboarding/HeadingDescription";
 import Label from "@/components/onboarding/Label";
 import { useOnboardingStore } from "@/store/onboarding";
+import MyText from "@/components/common/MyText";
 
 type Gender = "male" | "female" | "unknown" | null;
 
@@ -47,9 +48,9 @@ export default function GenderScreen({ navigation }) {
           ))}
         </View>
         <Button onPress={handleNavigate} disabled={!selectedGender}>
-          <Text className="text-white text-lg font-semibold">
+          <MyText size="text-lg" color="text-white" className="font-semibold">
             {t("common.next")}
-          </Text>
+          </MyText>
         </Button>
       </InnerLayout>
     </Layout>

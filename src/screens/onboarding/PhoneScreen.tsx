@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, TextInput } from "react-native";
+import { View, TextInput } from "react-native";
 import { useTranslation } from "react-i18next";
-import Button from "@/components/common/Button";
 import Layout from "@/components/common/Layout";
 import Heading from "@/components/onboarding/Heading";
 import KeyboardLayout from "@/components/common/KeyboardLayout";
@@ -14,6 +13,7 @@ import FooterLayout from "@/components/common/FooterLayout";
 import { useMutation } from "@tanstack/react-query";
 import { postPhoneVerification } from "@/api/auth/phone";
 import { logError } from "@/utils/service/error";
+import MyText from "@/components/common/MyText";
 
 export default function PhoneScreen({ navigation }) {
   const { t } = useTranslation("onboarding");
@@ -80,9 +80,9 @@ export default function PhoneScreen({ navigation }) {
     <FooterLayout
       icon={<Lock strokeWidth={1} size={23} color={"#797979"} />}
       content={
-        <Text className="text-sm text-textDescription mx-3">
+        <MyText size="text-sm" color="text-textDescription" className="mx-3">
           {t("phone.footer")}
-        </Text>
+        </MyText>
       }
       onPress={handleNavigateButton}
       disabled={!isValid}
@@ -95,11 +95,13 @@ export default function PhoneScreen({ navigation }) {
         <InnerLayout>
           <Heading>{t("phone.title")}</Heading>
           <HeadingDescription>{t("phone.titleDescription")}</HeadingDescription>
-          <Label className="text-base">{t("phone.label")}</Label>
+          <Label>{t("phone.label")}</Label>
           <View>
             <View className="flex-row items-center mb-4">
               <View className="flex-row items-center mr-2 px-[14px] h-[52px] border border-border rounded-xl">
-                <Text className="text-xl text-textDescription">🇰🇷 +82</Text>
+                <MyText size="text-xl" color="text-textDescription">
+                  🇰🇷 +82
+                </MyText>
               </View>
               <TextInput
                 value={formatPhoneNumber(phone)}
