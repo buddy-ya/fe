@@ -72,7 +72,6 @@ export default function PhoneVerificationScreen({ navigation, route }) {
         ],
       });
     },
-
     onError: (error) => {
       logError(error);
       setVerificationError(true);

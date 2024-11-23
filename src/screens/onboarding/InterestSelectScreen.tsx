@@ -32,10 +32,9 @@ export default function InterestSelectScreen({ navigation }) {
     onSuccess: async (response) => {
       const { accessToken, refreshToken } = response.data;
       await saveTokens(accessToken, refreshToken);
-      console.log(accessToken, refreshToken);
       navigation.reset({
         index: 0,
-        routes: [{ name: "OnboardingInterestSelect" }],
+        routes: [{ name: "Main" }],
       });
     },
     onError: logError,
