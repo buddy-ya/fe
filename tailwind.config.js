@@ -52,6 +52,9 @@ module.exports = {
         extrabold: undefined,
         black: undefined,
       },
+      lineHeight: {
+        none: "1",
+      },
     },
   },
   plugins: [

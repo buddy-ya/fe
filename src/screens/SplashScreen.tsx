@@ -37,8 +37,8 @@ export default function SplashScreen({ navigation }) {
       if (token) {
         navigation.navigate("Main");
       } else {
-        navigation.navigate("Onboarding", {
-          screen: "OnboardingWelcome",
+        navigation.navigate("Main", {
+          // screen: "OnboardingWelcome",
         });
       }
     } catch (error) {

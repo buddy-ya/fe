@@ -11,8 +11,6 @@ import WelcomeScreen from "../screens/onboarding/WelcomeScreen";
 import SplashScreen from "@/screens/SplashScreen";
 import HomeScreen from "@screens/home/HomeScreen";
 import MatchingScreen from "@screens/matching/MatchingScreen";
-import ChatScreen from "@screens/chat/ChatScreen";
-import FeedScreen from "@screens/feed/FeedScreen";
 import MyPageScreen from "@screens/mypage/MyPageScreen";
 import PhoneScreen from "@/screens/onboarding/PhoneScreen";
 import PhoneVerificationScreen from "@/screens/onboarding/PhoneVerificationScreen";
@@ -26,6 +24,9 @@ import LanguageSelectScreen from "@/screens/onboarding/LanguageSelectScreen";
 import MajorSelectScreen from "@/screens/onboarding/MajorSelectScreen";
 import InterestSelectScreen from "@/screens/onboarding/InterestSelectScreen";
 import CountrySelectScreen from "@/screens/onboarding/CountrySelectScreen";
+import { useTranslation } from "react-i18next";
+import { Home, User, Users } from "lucide-react-native";
+import { getTabScreenOptions, tabScreenOptions } from "./TabBar";
 
 export const navigationRef = createNavigationContainerRef();
 
@@ -43,13 +44,34 @@ const Tab = createBottomTabNavigator();
 const OnboardingStack = createNativeStackNavigator();
 
 function TabNavigator() {
+  const { t } = useTranslation("common");
+
   return (
-    <Tab.Navigator>
-      <Tab.Screen name="Home" component={HomeScreen} />
-      <Tab.Screen name="Matching" component={MatchingScreen} />
-      <Tab.Screen name="Chat" component={ChatScreen} />
-      <Tab.Screen name="Feed" component={FeedScreen} />
-      <Tab.Screen name="MyPage" component={MyPageScreen} />
+    <Tab.Navigator screenOptions={tabScreenOptions}>
+      <Tab.Screen
+        name="Home"
+        component={HomeScreen}
+        options={() => ({
+          ...getTabScreenOptions("Home"),
+          tabBarLabel: t("tab.home"),
+        })}
+      />
+      <Tab.Screen
+        name="Matching"
+        component={MatchingScreen}
+        options={() => ({
+          ...getTabScreenOptions("Matching"),
+          tabBarLabel: t("tab.matching"),
+        })}
+      />
+      <Tab.Screen
+        name="MyPage"
+        component={MyPageScreen}
+        options={() => ({
+          ...getTabScreenOptions("MyPage"),
+          tabBarLabel: t("tab.my"),
+        })}
+      />
     </Tab.Navigator>
   );
 }
