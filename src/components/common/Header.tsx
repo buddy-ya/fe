@@ -1,21 +1,33 @@
-import React from "react";
-import { View, TouchableOpacity, Text } from "react-native";
+import React, { ReactNode } from "react";
+import { View, TouchableOpacity } from "react-native";
 import { ChevronLeft } from "lucide-react-native";
 
 interface HeaderProps {
-  onBack?: () => void;
-  showBackButton?: boolean;
+  leftContent?: ReactNode;
+  centerContent?: ReactNode;
+  rightContent?: ReactNode;
+  className?: string;
 }
 
-export default function Header({ onBack, showBackButton = true }: HeaderProps) {
+export const BackButton = ({ onPress }: { onPress?: () => void }) => (
+  <TouchableOpacity onPress={onPress} className="flex-row items-center">
+    <ChevronLeft strokeWidth={2} size={30} color="#282828" />
+  </TouchableOpacity>
+);
+
+export default function Header({
+  leftContent,
+  centerContent,
+  rightContent,
+  className = "",
+}: HeaderProps) {
   return (
-    <View className="px-4 h-14 flex-row items-center border-b-[0.3px] border-b-headerBottom">
-      {showBackButton && (
-        <TouchableOpacity onPress={onBack} className="flex-row items-center">
-          <ChevronLeft strokeWidth={2} size={24} color={"black"} />
-          <Text className="text-lg">뒤로</Text>
-        </TouchableOpacity>
-      )}
+    <View
+      className={`px-[16px] h-11 flex-row items-center justify-between ${className}`}
+    >
+      <View className="flex-1">{leftContent}</View>
+      <View className="flex-1 items-center">{centerContent}</View>
+      <View className="flex-1 items-end">{rightContent}</View>
     </View>
   );
 }

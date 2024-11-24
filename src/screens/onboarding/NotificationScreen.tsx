@@ -41,7 +41,7 @@ export default function NotificationScreen({ navigation, route }) {
   };
 
   return (
-    <Layout preserveHeader>
+    <Layout>
       <InnerLayout>
         <Heading>{t("notification.title")}</Heading>
         <HeadingDescription>{t("notification.description")}</HeadingDescription>

@@ -11,7 +11,7 @@ module.exports = {
         buttonDisabled: "#DFDFDF",
 
         text: "#282828",
-        textDescription: "#797979",
+        textDescription: "#797977",
         textWarning: "#FF7657",
 
         placeholderPrimary: "#fff",
@@ -27,6 +27,7 @@ module.exports = {
         chipBorder: "#A6CFC4",
         chipActive: "#F6FFFD",
 
+        iconBorder: "#797977",
         headerBottom: "#E8E9EB",
         selectActive: "#f0fdf4",
       },

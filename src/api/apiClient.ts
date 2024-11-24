@@ -4,6 +4,7 @@ import {
   getRefreshToken,
   saveTokens,
   removeTokens,
+  getAccessToken,
 } from "@/utils/service/auth";
 import { resetToOnboarding } from "@/navigation/router";
 import { logError } from "@/utils/service/error";
@@ -14,6 +15,20 @@ export const apiClient = axios.create({
     "Content-Type": "application/json",
   },
 });
+
+apiClient.interceptors.request.use(
+  async (config) => {
+    const accessToken = await getAccessToken();
+    if (accessToken) {
+      console.log(accessToken);
+      config.headers.Authorization = `Bearer ${accessToken}`;
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
 
 const reissueTokens = async (refreshToken: string) => {
   const response = await axios.post(

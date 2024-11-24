@@ -26,9 +26,9 @@ export default function CategoryPager() {
 
   const handlePageSelected = (page: number) => {
     setActiveIndex(page);
-    // Chip이 스크롤 뷰 안에서 보이도록 스크롤 조정
+    const chipWidth = 75;
     scrollViewRef.current?.scrollTo({
-      x: page * 100, // 대략적인 Chip의 너비
+      x: page * chipWidth,
       animated: true,
     });
   };
@@ -39,17 +39,20 @@ export default function CategoryPager() {
   };
 
   return (
-    <View className="h-full">
-      {/* Chips ScrollView */}
+    <View className="flex-1">
       <ScrollView
         ref={scrollViewRef}
         horizontal
         showsHorizontalScrollIndicator={false}
-        className="px-5"
+        className="flex-none mt-3"
+        contentContainerStyle={{
+          alignItems: "center",
+        }}
       >
         {CATEGORIES.map((category, index) => (
           <Chip
             key={category.id}
+            icon={category.icon}
             label={t(category.label)}
             selected={activeIndex === index}
             onPress={() => handleChipPress(index)}
@@ -57,9 +60,6 @@ export default function CategoryPager() {
           />
         ))}
       </ScrollView>
-
-      {/* Content PagerView */}
-
       <PagerView
         ref={pagerRef}
         initialPage={0}
@@ -67,7 +67,7 @@ export default function CategoryPager() {
         style={{ flex: 1 }}
       >
         {CATEGORIES.map((category) => (
-          <View key={category.id} className="bg-white p-4">
+          <View key={category.id} className="bg-white mt-4">
             <MyText size="text-lg">{category.id} 페이지</MyText>
           </View>
         ))}

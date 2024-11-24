@@ -61,7 +61,7 @@ export default function InterestSelectScreen({ navigation }) {
   };
 
   return (
-    <Layout showHeader onBack={() => navigation.goBack()}>
+    <Layout showHeader>
       <InnerLayout>
         <ScrollView
           showsVerticalScrollIndicator={false}

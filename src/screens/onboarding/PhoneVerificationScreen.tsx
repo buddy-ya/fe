@@ -25,7 +25,7 @@ import { saveTokens } from "@/utils/service/auth";
 import ErrorMessage from "@/components/onboarding/ErrorMessage";
 import { logError } from "@/utils/service/error";
 
-const VERIFICATION_EXPIRE_SECONDS = 10;
+const VERIFICATION_EXPIRE_SECONDS = 20;
 
 export default function PhoneVerificationScreen({ navigation, route }) {
   const { t } = useTranslation("onboarding");
