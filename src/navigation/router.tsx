@@ -1,6 +1,9 @@
 // navigation/router.tsx
 import React from "react";
-import { NavigationContainer } from "@react-navigation/native";
+import {
+  createNavigationContainerRef,
+  NavigationContainer,
+} from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
@@ -23,6 +26,17 @@ import LanguageSelectScreen from "@/screens/onboarding/LanguageSelectScreen";
 import MajorSelectScreen from "@/screens/onboarding/MajorSelectScreen";
 import InterestSelectScreen from "@/screens/onboarding/InterestSelectScreen";
 import CountrySelectScreen from "@/screens/onboarding/CountrySelectScreen";
+
+export const navigationRef = createNavigationContainerRef();
+
+export const resetToOnboarding = () => {
+  if (navigationRef.isReady()) {
+    navigationRef.reset({
+      index: 0,
+      routes: [{ name: "Onboarding" }],
+    });
+  }
+};
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -95,7 +109,7 @@ function OnboardingNavigator() {
 
 export default function Router() {
   return (
-    <NavigationContainer>
+    <NavigationContainer ref={navigationRef}>
       <Stack.Navigator
         screenOptions={{ headerShown: false, gestureEnabled: false }}
       >

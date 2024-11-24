@@ -14,6 +14,7 @@ import { useMutation } from "@tanstack/react-query";
 import { postPhoneVerification } from "@/api/auth/phone";
 import { logError } from "@/utils/service/error";
 import MyText from "@/components/common/MyText";
+import { formatPhone } from "@/utils/service/phone";
 
 export default function PhoneScreen({ navigation }) {
   const { t } = useTranslation("onboarding");
@@ -21,59 +22,30 @@ export default function PhoneScreen({ navigation }) {
   const [isValid, setIsValid] = useState(false);
   const [showError, setShowError] = useState(false);
 
-  const formattedPhone = phone.replace(/[^0-9]/g, "");
-
   const { mutate: sendVerification } = useMutation({
     mutationFn: postPhoneVerification,
     onSuccess: () => {
       navigation.navigate("OnboardingPhoneVerification", {
-        phone: formatPhoneNumber(phone),
+        phone: formatPhone.addHyphen(phone),
       });
     },
     onError: logError,
   });
 
-  const validatePhoneNumber = (phoneNumber: string) => {
-    const phoneRegex = /^010\d{8}$/;
-    return phoneRegex.test(phoneNumber);
-  };
-
-  const checkStartWithValidPrefix = (phoneNumber: string) => {
-    return phoneNumber.length > 2 && !phoneNumber.startsWith("010");
-  };
-
-  const formatPhoneNumber = (phoneNumber: string) => {
-    const cleaned = phoneNumber.replace(/\D/g, "");
-    const match = cleaned.match(/^(\d{3})(\d{0,4})(\d{0,4})$/);
-    if (match) {
-      const groups = match.slice(1).filter(Boolean);
-      return groups.join("-");
-    }
-    return phoneNumber;
-  };
-
-  const handlePhoneValidation = (phoneNumber: string) => {
-    const isValidPhone = validatePhoneNumber(phoneNumber);
-    setIsValid(isValidPhone);
-    setShowError(checkStartWithValidPrefix(phoneNumber));
-  };
-
   useEffect(() => {
-    handlePhoneValidation(formattedPhone);
-  }, [formattedPhone]);
+    setIsValid(formatPhone.validate(phone));
+    setShowError(formatPhone.checkPrefix(phone));
+  }, [phone]);
 
   const handlePhoneChange = (text: string) => {
-    const newValue = text.replace(/[^0-9]/g, "");
+    const newValue = formatPhone.removeHyphen(text);
     if (newValue.length <= 11) {
       setPhone(newValue);
     }
   };
 
   const handleNavigateButton = () => {
-    // sendVerification({ phoneNumber: formattedPhone });
-    navigation.navigate("OnboardingPhoneVerification", {
-      phone: formatPhoneNumber(phone),
-    });
+    sendVerification({ phoneNumber: phone });
   };
 
   const footer = (
@@ -104,7 +76,7 @@ export default function PhoneScreen({ navigation }) {
                 </MyText>
               </View>
               <TextInput
-                value={formatPhoneNumber(phone)}
+                value={formatPhone.addHyphen(phone)}
                 onChangeText={handlePhoneChange}
                 keyboardType="number-pad"
                 placeholder="010-1234-5678"

@@ -5,13 +5,13 @@ type Gender = "male" | "female" | "unknown";
 
 interface OnboardingStore {
   name: string;
-  major: string[];
   country: string;
   isKorean: boolean;
   isNotificationEnabled: boolean;
   phoneNumber: string;
   gender: Gender;
   university: string;
+  majors: string[];
   languages: string[];
   interests: string[];
   updateOnboardingData: (
@@ -21,13 +21,13 @@ interface OnboardingStore {
 
 export const useOnboardingStore = create<OnboardingStore>((set) => ({
   name: "",
-  major: [],
   country: "",
   isKorean: false,
   isNotificationEnabled: false,
   phoneNumber: "",
   gender: "unknown",
   university: "",
+  majors: [],
   languages: [],
   interests: [],
   updateOnboardingData: (data) => set((state) => ({ ...state, ...data })),

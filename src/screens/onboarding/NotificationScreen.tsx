@@ -10,9 +10,10 @@ import { useTranslation } from "react-i18next";
 import * as Notifications from "expo-notifications";
 import { useOnboardingStore } from "@/store/onboarding";
 
-export default function NotificationScreen({ navigation }) {
+export default function NotificationScreen({ navigation, route }) {
   const { t } = useTranslation("onboarding");
   const { updateOnboardingData } = useOnboardingStore();
+  const isExistingMember = route.params?.isExistingMember;
 
   const requestNotificationPermission = async () => {
     try {
@@ -29,7 +30,11 @@ export default function NotificationScreen({ navigation }) {
         isNotificationEnabled: finalStatus === "granted",
       });
 
-      navigation.replace("OnboardingUniversitySelect");
+      if (isExistingMember) {
+        navigation.replace("Main");
+      } else {
+        navigation.replace("OnboardingUniversitySelect");
+      }
     } catch (error) {
       console.error("Notification permission error:", error);
     }
