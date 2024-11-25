@@ -1,3 +1,5 @@
+import { ReactNode } from "react";
+
 export interface Feed {
   id: number;
   name: string;
@@ -30,4 +32,11 @@ export interface CommentType {
   createdDate: string;
   isFeedOwner: boolean;
   isCommentOwner: boolean;
+}
+
+export interface ModalOption {
+  label: string;
+  onPress: () => void;
+  color?: string;
+  icon?: ReactNode | JSX.Element;
 }

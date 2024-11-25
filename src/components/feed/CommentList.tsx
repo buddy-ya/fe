@@ -88,7 +88,7 @@ export default function CommentList({
             <View className="flex-row items-center">
               {item.isCommentOwner && (
                 <TouchableOpacity onPress={() => onCommentOptions(item)}>
-                  <MoreVertical size={16} color="#797977" />
+                  <MoreVertical size={20} color="#797977" />
                 </TouchableOpacity>
               )}
             </View>

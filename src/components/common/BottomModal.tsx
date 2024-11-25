@@ -1,12 +1,7 @@
-import React, { ReactNode } from "react";
+import React from "react";
 import { Modal, TouchableOpacity, View } from "react-native";
 import MyText from "./MyText";
-
-interface ModalOption {
-  label: string;
-  onPress: () => void;
-  color?: string;
-}
+import { ModalOption } from "@/screens/home/types";
 
 interface BottomModalProps {
   visible: boolean;
@@ -36,20 +31,23 @@ export default function BottomModal({
             <TouchableOpacity
               key={index}
               className={`py-6 ${
-                index != 0 && "border-t"
+                index !== 0 && "border-t"
               } border-modalBorderBottom`}
               onPress={() => {
                 onClose();
                 option.onPress();
               }}
             >
-              <MyText
-                size="text-[16px]"
-                className="text-center"
-                color={option.color ? option.color : "text-[#282828]"}
-              >
-                {option.label}
-              </MyText>
+              <View className="flex-row items-center justify-center">
+                {option.icon && <View className="mr-2">{option.icon}</View>}
+                <MyText
+                  size="text-[16px]"
+                  className="text-center"
+                  color={option.color ? option.color : "text-[#282828]"}
+                >
+                  {option.label}
+                </MyText>
+              </View>
             </TouchableOpacity>
           ))}
         </View>

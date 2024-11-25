@@ -1,6 +1,6 @@
-import React, { useRef, useState } from "react";
-import { View, TouchableOpacity, ScrollView, TextInput } from "react-native";
-import { ChevronLeft, MoreVertical } from "lucide-react-native";
+import React, { useState } from "react";
+import { TouchableOpacity, ScrollView } from "react-native";
+import { MoreVertical } from "lucide-react-native";
 import Layout from "@/components/common/Layout";
 import { CommentType, Feed } from "./types";
 import { mockFeeds } from "./mock/feedData";
@@ -9,8 +9,9 @@ import KeyboardLayout from "@/components/common/KeyboardLayout";
 import BottomModal from "@/components/common/BottomModal";
 import { mockComments } from "./mock/commentData";
 import CommentList from "@/components/feed/CommentList";
-import { useModals } from "@/hooks/useModals";
 import { CommentInput } from "@/components/feed/CommentInput";
+import { useModal } from "@/hooks/useModal";
+import { createModalOptions } from "@/utils/constants/modalOptions";
 
 interface FeedDetailScreenProps {
   route: {
@@ -21,36 +22,59 @@ interface FeedDetailScreenProps {
   navigation: any;
 }
 
-const fetchFeedDetail = async (feedId: number): Promise<Feed> => {
-  const feed = mockFeeds.feeds.find((feed) => feed.id === feedId);
-  if (!feed) throw new Error("Feed not found");
-  return feed;
-};
-
 export default function FeedDetailScreen({
   navigation,
   route,
 }: FeedDetailScreenProps) {
   const { feedId } = route.params;
   const [comment, setComment] = useState("");
+  const [selectedComment, setSelectedComment] = useState<CommentType | null>(
+    null
+  );
   const feed = mockFeeds.feeds.find((feed) => feed.id === feedId);
 
-  const {
-    isMoreModalVisible,
-    isCommentModalVisible,
-    setIsMoreModalVisible,
-    setIsCommentModalVisible,
-    setSelectedComment,
-    getFeedModalOptions,
-    getCommentModalOptions,
-  } = useModals(feed);
+  const feedModal = useModal();
+  const commentModal = useModal();
 
   const handleLike = (id: number) => console.log("Like:", id);
   const handleBookmark = (id: number) => console.log("Bookmark:", id);
   const handleComment = (id: number) => console.log("Comment:", id);
+
+  const handleMorePress = () => {
+    const options = feed?.isFeedOwner
+      ? [
+          createModalOptions.edit(() => console.log("edit feed")),
+          createModalOptions.delete(() => console.log("delete feed")),
+          createModalOptions.cancel(feedModal.closeModal),
+        ]
+      : [
+          // createModalOptions.report(() => console.log("report feed")),
+          createModalOptions.cancel(feedModal.closeModal),
+        ];
+
+    feedModal.openModal(options);
+  };
+
   const handleCommentOptions = (comment: CommentType) => {
     setSelectedComment(comment);
-    setIsCommentModalVisible(true);
+    const options = comment.isCommentOwner
+      ? [
+          createModalOptions.edit(() => console.log("edit comment")),
+          createModalOptions.delete(() => console.log("delete comment")),
+          createModalOptions.cancel(() => {
+            commentModal.closeModal();
+            setSelectedComment(null);
+          }),
+        ]
+      : [
+          createModalOptions.report(() => console.log("report comment")),
+          createModalOptions.cancel(() => {
+            commentModal.closeModal();
+            setSelectedComment(null);
+          }),
+        ];
+
+    commentModal.openModal(options);
   };
 
   return (
@@ -58,7 +82,7 @@ export default function FeedDetailScreen({
       showHeader
       onBack={() => navigation.goBack()}
       headerRight={
-        <TouchableOpacity onPress={() => setIsMoreModalVisible(true)}>
+        <TouchableOpacity onPress={handleMorePress}>
           <MoreVertical size={24} color="#797979" />
         </TouchableOpacity>
       }
@@ -87,15 +111,15 @@ export default function FeedDetailScreen({
       </KeyboardLayout>
 
       <BottomModal
-        visible={isMoreModalVisible}
-        onClose={() => setIsMoreModalVisible(false)}
-        options={getFeedModalOptions()}
+        visible={feedModal.visible}
+        onClose={feedModal.closeModal}
+        options={feedModal.options}
       />
 
       <BottomModal
-        visible={isCommentModalVisible}
-        onClose={() => setIsCommentModalVisible(false)}
-        options={getCommentModalOptions()}
+        visible={commentModal.visible}
+        onClose={commentModal.closeModal}
+        options={commentModal.options}
       />
     </Layout>
   );
