@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { View, Text, ActivityIndicator, Image } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as Font from "expo-font";
+import { getAccessToken, removeTokens } from "@/utils/service/auth";
 
 export default function SplashScreen({ navigation }) {
   useEffect(() => {
@@ -28,17 +29,16 @@ export default function SplashScreen({ navigation }) {
 
   const initializeApp = async () => {
     try {
-      const [token] = await Promise.all([
-        AsyncStorage.getItem("userToken"),
+      const [accessToken] = await Promise.all([
+        getAccessToken(),
         loadFonts(),
         new Promise((resolve) => setTimeout(resolve, 1000)),
       ]);
-
-      if (token) {
+      if (true) {
         navigation.navigate("Main");
       } else {
-        navigation.navigate("Main", {
-          // screen: "OnboardingMajorSelect",
+        navigation.navigate("Onboarding", {
+          screen: "OnboardingWelcome",
         });
       }
     } catch (error) {

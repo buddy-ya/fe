@@ -15,7 +15,7 @@ export default function HeadingDescription({
     <MyText
       size="text-[14px]"
       color="text-textDescription"
-      className={`mt-3 ${className}`}
+      className={`mt-[9px] ${className} leading-[1.4]`}
     >
       {children}
     </MyText>

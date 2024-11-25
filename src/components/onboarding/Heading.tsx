@@ -10,7 +10,7 @@ export default function Heading({ children, className = "" }: HeadingProps) {
   return (
     <MyText
       size="text-[24px]"
-      className={`font-semibold mt-7 ${className} tracking-wide`}
+      className={`font-semibold mt-4 ${className} tracking-wide leading-[1.4]`}
     >
       {children}
     </MyText>

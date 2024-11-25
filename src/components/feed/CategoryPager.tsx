@@ -1,24 +1,26 @@
-// components/home/CategoryPager.tsx
 import React, { useState, useRef } from "react";
-import { View, ScrollView, Text } from "react-native";
+import { View, ScrollView } from "react-native";
 import PagerView from "react-native-pager-view";
 import { Chip } from "@/components/common/Chip";
 import { useTranslation } from "react-i18next";
-import MyText from "../common/MyText";
 
-interface Category {
+export interface Category {
   id: string;
   label: string;
   icon: string;
 }
 
-const CATEGORIES: Category[] = [
-  { id: "popular", label: "category.popular", icon: "🔥" },
-  { id: "free", label: "category.free", icon: "💭" },
-  { id: "info", label: "category.info", icon: "📢" },
-];
+interface CategoryPagerProps {
+  categories: Category[];
+  onPageChange?: (page: number) => void;
+  children: React.ReactNode;
+}
 
-export default function CategoryPager() {
+export default function CategoryPager({
+  categories,
+  onPageChange,
+  children,
+}: CategoryPagerProps) {
   const { t } = useTranslation("feed");
   const [activeIndex, setActiveIndex] = useState(0);
   const pagerRef = useRef<PagerView>(null);
@@ -26,11 +28,11 @@ export default function CategoryPager() {
 
   const handlePageSelected = (page: number) => {
     setActiveIndex(page);
-    const chipWidth = 75;
     scrollViewRef.current?.scrollTo({
-      x: page * chipWidth,
+      x: page * 100,
       animated: true,
     });
+    onPageChange?.(page);
   };
 
   const handleChipPress = (index: number) => {
@@ -44,12 +46,9 @@ export default function CategoryPager() {
         ref={scrollViewRef}
         horizontal
         showsHorizontalScrollIndicator={false}
-        className="flex-none mt-3"
-        contentContainerStyle={{
-          alignItems: "center",
-        }}
+        className="py-2 flex-none"
       >
-        {CATEGORIES.map((category, index) => (
+        {categories.map((category, index) => (
           <Chip
             key={category.id}
             icon={category.icon}
@@ -60,17 +59,14 @@ export default function CategoryPager() {
           />
         ))}
       </ScrollView>
+
       <PagerView
         ref={pagerRef}
         initialPage={0}
         onPageSelected={(e) => handlePageSelected(e.nativeEvent.position)}
         style={{ flex: 1 }}
       >
-        {CATEGORIES.map((category) => (
-          <View key={category.id} className="bg-white mt-4">
-            <MyText size="text-lg">{category.id} 페이지</MyText>
-          </View>
-        ))}
+        {children}
       </PagerView>
     </View>
   );

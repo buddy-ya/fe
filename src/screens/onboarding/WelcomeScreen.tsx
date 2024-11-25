@@ -15,7 +15,7 @@ export default function WelcomeScreen({ navigation }) {
   };
 
   return (
-    <Layout>
+    <Layout showHeader={false}>
       <InnerLayout>
         <View className="items-center mt-14">
           <Image

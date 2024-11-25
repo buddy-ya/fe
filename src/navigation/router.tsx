@@ -9,7 +9,6 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 import WelcomeScreen from "../screens/onboarding/WelcomeScreen";
 import SplashScreen from "@/screens/SplashScreen";
-import HomeScreen from "@screens/home/HomeScreen";
 import MatchingScreen from "@screens/matching/MatchingScreen";
 import MyPageScreen from "@screens/mypage/MyPageScreen";
 import PhoneScreen from "@/screens/onboarding/PhoneScreen";
@@ -25,8 +24,10 @@ import MajorSelectScreen from "@/screens/onboarding/MajorSelectScreen";
 import InterestSelectScreen from "@/screens/onboarding/InterestSelectScreen";
 import CountrySelectScreen from "@/screens/onboarding/CountrySelectScreen";
 import { useTranslation } from "react-i18next";
-import { Home, User, Users } from "lucide-react-native";
 import { getTabScreenOptions, tabScreenOptions } from "./TabBar";
+import HomeScreen from "@/screens/home/HomeScreen";
+import WriteScreen from "@/screens/home/WriteScreen";
+import FeedDetailScreen from "@/screens/home/FeedDetailScreen";
 
 export const navigationRef = createNavigationContainerRef();
 
@@ -42,6 +43,7 @@ export const resetToOnboarding = () => {
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 const OnboardingStack = createNativeStackNavigator();
+const FeedStack = createNativeStackNavigator();
 
 function TabNavigator() {
   const { t } = useTranslation("common");
@@ -50,7 +52,7 @@ function TabNavigator() {
     <Tab.Navigator screenOptions={tabScreenOptions}>
       <Tab.Screen
         name="Home"
-        component={HomeScreen}
+        component={FeedNavigator}
         options={() => ({
           ...getTabScreenOptions("Home"),
           tabBarLabel: t("tab.home"),
@@ -126,6 +128,16 @@ function OnboardingNavigator() {
         component={InterestSelectScreen}
       />
     </OnboardingStack.Navigator>
+  );
+}
+
+function FeedNavigator() {
+  return (
+    <FeedStack.Navigator screenOptions={{ headerShown: false }}>
+      <FeedStack.Screen name="Home" component={HomeScreen} />
+      <FeedStack.Screen name="FeedWrite" component={WriteScreen} />
+      <FeedStack.Screen name="FeedDetail" component={FeedDetailScreen} />
+    </FeedStack.Navigator>
   );
 }
 
