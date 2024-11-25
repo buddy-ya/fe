@@ -31,7 +31,7 @@ export default function NotificationScreen({ navigation, route }) {
       });
 
       if (isExistingMember) {
-        navigation.replace("Main");
+        navigation.replace("Home");
       } else {
         navigation.replace("OnboardingUniversitySelect");
       }
@@ -41,7 +41,12 @@ export default function NotificationScreen({ navigation, route }) {
   };
 
   return (
-    <Layout>
+    <Layout
+      showHeader
+      onBack={() => {
+        navigation.goBack();
+      }}
+    >
       <InnerLayout>
         <Heading>{t("notification.title")}</Heading>
         <HeadingDescription>{t("notification.description")}</HeadingDescription>

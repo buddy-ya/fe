@@ -15,12 +15,10 @@ import { ko, enUS } from "date-fns/locale";
 import * as Localization from "expo-localization";
 import { getTimeAgo } from "@/utils/service/date";
 
-// components/feed/FeedItem.tsx
 interface FeedItemProps {
   feed: Feed;
   onLike: (id: number) => void;
   onBookmark: (id: number) => void;
-  onComment: (id: number) => void;
   onPress?: (id: number) => void;
   showAllContent?: boolean;
   disablePress?: boolean;
@@ -30,7 +28,6 @@ export default function FeedItem({
   feed,
   onLike,
   onBookmark,
-  onComment,
   onPress,
   showAllContent = false,
   disablePress = false,
@@ -50,6 +47,7 @@ export default function FeedItem({
     createdDate,
   } = feed;
 
+  const handleComment = (id: number) => {};
   const renderContent = () => (
     <View className="mb-5 p-4 border-[0.3px] border-borderFeed rounded-[12px]">
       {/* Header */}
@@ -144,7 +142,7 @@ export default function FeedItem({
           </MyText>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => onComment(id)}
+          onPress={() => handleComment(id)}
           className="flex-row items-center"
         >
           <MessageSquare size={20} color="#797979" strokeWidth={1} />

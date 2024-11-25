@@ -1,27 +1,12 @@
 import { apiClient } from "../apiClient";
 
-interface PhoneVerificationRequest {
-  phoneNumber: string;
-}
-
-export const postPhoneVerification = async (data: PhoneVerificationRequest) => {
-  return await apiClient.post("/phone-auth/send-code", data);
+export const postPhoneVerification = async (phoneNumber: string) => {
+  return await apiClient.post("/phone-auth/send-code", { phoneNumber });
 };
 
-interface VerificationCodeRequest {
-  phoneNumber: string;
-  code: string;
-}
-
-export interface PhoneVerifyResponse {
-  phoneNumber: string;
-  status: "EXISTING_MEMBER" | "NEW_MEMBER";
-  accessToken: string | null;
-  refreshToken: string | null;
-}
-
 export const postPhoneVerifyCode = async (
-  data: VerificationCodeRequest
-): Promise<PhoneVerifyResponse> => {
-  return await apiClient.post("/phone-auth/verify-code", data);
+  phoneNumber: string,
+  code: string
+) => {
+  return await apiClient.post("/phone-auth/verify-code", { phoneNumber, code });
 };

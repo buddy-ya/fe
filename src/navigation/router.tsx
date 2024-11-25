@@ -26,7 +26,6 @@ import CountrySelectScreen from "@/screens/onboarding/CountrySelectScreen";
 import { useTranslation } from "react-i18next";
 import { getTabScreenOptions, tabScreenOptions } from "./TabBar";
 import HomeScreen from "@/screens/home/HomeScreen";
-import WriteScreen from "@/screens/home/WriteScreen";
 import FeedDetailScreen from "@/screens/home/FeedDetailScreen";
 import FeedWriteScreen from "@/screens/home/FeedWriteScreen";
 
@@ -135,7 +134,7 @@ function OnboardingNavigator() {
 function FeedNavigator() {
   return (
     <FeedStack.Navigator screenOptions={{ headerShown: false }}>
-      <FeedStack.Screen name="Home" component={HomeScreen} />
+      <FeedStack.Screen name="FeedHome" component={HomeScreen} />
       <FeedStack.Screen name="FeedWrite" component={FeedWriteScreen} />
       <FeedStack.Screen name="FeedDetail" component={FeedDetailScreen} />
     </FeedStack.Navigator>
@@ -150,7 +149,7 @@ export default function Router() {
       >
         <Stack.Screen name="Splash" component={SplashScreen} />
         <Stack.Screen name="Onboarding" component={OnboardingNavigator} />
-        <Stack.Screen name="Main" component={TabNavigator} />
+        <Stack.Screen name="Home" component={TabNavigator} />
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -1,16 +1,14 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { View, ScrollView } from "react-native";
 import { useTranslation } from "react-i18next";
 import Layout from "@/components/common/Layout";
 import InnerLayout from "@/components/common/InnerLayout";
 import Button from "@/components/common/Button";
 import Heading from "@/components/onboarding/Heading";
-import HeadingDescription from "@/components/onboarding/HeadingDescription";
 import { Chip } from "@/components/common/Chip";
 import { INTEREST_CATEGORIES } from "@/utils/constants/interests";
 import type { InterestID } from "@/utils/constants/interests";
 import { useOnboardingStore } from "@/store/onboarding";
-import { useMutation } from "@tanstack/react-query";
 import { postOnboardingInfo } from "@/api/onboarding/join";
 import { logError } from "@/utils/service/error";
 import MyText from "@/components/common/MyText";
@@ -27,19 +25,6 @@ export default function InterestSelectScreen({ navigation }) {
   const { updateOnboardingData, ...onboardingData } = useOnboardingStore();
   const MAX_SELECT = 8;
 
-  const { mutate: submitOnboarding, isPending } = useMutation({
-    mutationFn: postOnboardingInfo,
-    onSuccess: async (response) => {
-      const { accessToken, refreshToken } = response.data;
-      await saveTokens(accessToken, refreshToken);
-      navigation.reset({
-        index: 0,
-        routes: [{ name: "Main" }],
-      });
-    },
-    onError: logError,
-  });
-
   const handleToggleSelect = (interest: Interest) => {
     setSelectedInterests((prev) => {
       if (prev.some((i) => i.id === interest.id)) {
@@ -50,27 +35,33 @@ export default function InterestSelectScreen({ navigation }) {
     });
   };
 
-  const handleNavigateButton = () => {
-    const interests = selectedInterests.map((interest) => interest.id);
-    updateOnboardingData({ interests });
+  const handleNavigateButton = async () => {
+    try {
+      const interests = selectedInterests.map((interest) => interest.id);
+      updateOnboardingData({ interests });
 
-    submitOnboarding({
-      ...onboardingData,
-      interests,
-    });
+      const { data } = await postOnboardingInfo({
+        ...onboardingData,
+        interests,
+      });
+      await saveTokens(data.accessToken, data.refreshToken);
+      navigation.reset({
+        index: 0,
+        routes: [{ name: "Home" }],
+      });
+    } catch (error) {
+      logError(error);
+    }
   };
 
   return (
-    <Layout showHeader>
+    <Layout showHeader onBack={() => navigation.goBack()}>
       <InnerLayout>
         <ScrollView
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{ paddingBottom: 50 }}
         >
           <Heading>{t("onboarding:interest.title")}</Heading>
-          {/* <HeadingDescription>
-            {t("onboarding:interest.description")}
-          </HeadingDescription> */}
           <MyText
             size="text-base"
             color="text-textDescription"

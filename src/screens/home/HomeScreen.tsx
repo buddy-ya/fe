@@ -1,24 +1,111 @@
 import React, { useState } from "react";
 import { TouchableOpacity, View } from "react-native";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import Layout from "@/components/common/Layout";
 import CategoryPager from "@/components/feed/CategoryPager";
-import { Bell, Search } from "lucide-react-native";
+import { Bell, Plus, Search } from "lucide-react-native";
 import LogoIcon from "@assets/icons/logo.svg";
 import FeedList from "@/components/feed/FeedList";
-import { mockFeeds } from "./mock/feedData";
 import InnerLayout from "@/components/common/InnerLayout";
 import Button from "@/components/common/Button";
-import { getFeeds } from "@/api/feed/getFeeds";
-import { getAccessToken, removeTokens } from "@/utils/service/auth";
-
-const CATEGORIES = [
-  { id: "popular", label: "category.popular", icon: "🔥" },
-  { id: "free", label: "category.free", icon: "💭" },
-  { id: "info", label: "category.info", icon: "📢" },
-];
+import { getFeeds, toggleBookmark, toggleLike } from "@/api/feed/getFeeds";
+import { CATEGORIES } from "@/utils/constants/categories";
+import { logError } from "@/utils/service/error";
 
 export default function HomeScreen({ navigation }) {
   const [activeCategory, setActiveCategory] = useState(CATEGORIES[0].id);
+  const [page, setPage] = useState(0);
+  const queryClient = useQueryClient();
+
+  const { data, isLoading } = useQuery({
+    queryKey: ["feeds", activeCategory, page],
+    queryFn: () =>
+      getFeeds({
+        category: activeCategory,
+        page: page,
+        size: 10,
+      }),
+  });
+
+  const likeMutation = useMutation({
+    mutationFn: toggleLike,
+    onMutate: async (feedId) => {
+      queryClient.setQueryData(
+        ["feeds", activeCategory, page],
+        (oldData: any) => {
+          if (!oldData) return oldData;
+          return {
+            ...oldData,
+            feeds: oldData.feeds.map((feed) =>
+              feed.id === feedId
+                ? {
+                    ...feed,
+                    isLiked: !feed.isLiked,
+                    likeCount: feed.isLiked
+                      ? feed.likeCount - 1
+                      : feed.likeCount + 1,
+                  }
+                : feed
+            ),
+          };
+        }
+      );
+    },
+    onSuccess: (data, feedId) => {
+      queryClient.setQueryData(
+        ["feeds", activeCategory, page],
+        (oldData: any) => {
+          if (!oldData) return oldData;
+
+          return {
+            ...oldData,
+            feeds: oldData.feeds.map((feed) =>
+              feed.id === feedId ? { ...feed, likeCount: data.likeCount } : feed
+            ),
+          };
+        }
+      );
+    },
+    onError: (error) => {
+      logError(error);
+    },
+  });
+
+  const bookmarkMutation = useMutation({
+    mutationFn: toggleBookmark,
+    onMutate: async (feedId) => {
+      queryClient.setQueryData(
+        ["feeds", activeCategory, page],
+        (oldData: any) => {
+          if (!oldData) return oldData;
+
+          return {
+            ...oldData,
+            feeds: oldData.feeds.map((feed) =>
+              feed.id === feedId
+                ? { ...feed, isBookmarked: !feed.isBookmarked }
+                : feed
+            ),
+          };
+        }
+      );
+    },
+    onError: (error) => {
+      logError(error);
+    },
+  });
+
+  const handleLoadMore = () => {
+    if (data?.hasNext) {
+      setPage((prev) => prev + 1);
+    }
+  };
+
+  const handlePageChange = (index: number) => {
+    setPage(0);
+    setActiveCategory(CATEGORIES[index].id);
+  };
+
   const handleSearch = () => {
     console.log("Search pressed");
   };
@@ -28,28 +115,15 @@ export default function HomeScreen({ navigation }) {
   };
 
   const handleLike = (id: number) => {
-    console.log("Like:", id);
+    likeMutation.mutate(id);
   };
 
   const handleBookmark = (id: number) => {
-    console.log("Bookmark:", id);
-  };
-
-  const handleComment = (id: number) => {
-    console.log("Comment:", id);
-  };
-
-  const handleLoadMore = () => {
-    console.log("Load more feeds");
+    bookmarkMutation.mutate(id);
   };
 
   const handleWriteButton = () => {
     navigation.navigate("FeedWrite");
-    console.log(getFeeds());
-  };
-
-  const handlePageChange = (index: number) => {
-    setActiveCategory(CATEGORIES[index].id);
   };
 
   const handlePressFeed = (feedId: number) => {
@@ -77,11 +151,13 @@ export default function HomeScreen({ navigation }) {
             <View key={category.id} className="flex-1">
               {category.id === activeCategory && (
                 <FeedList
-                  feeds={mockFeeds.feeds}
+                  feeds={data?.feeds || []}
                   onLike={handleLike}
                   onBookmark={handleBookmark}
-                  onComment={handleComment}
                   onPress={handlePressFeed}
+                  isLoading={isLoading}
+                  onLoadMore={handleLoadMore}
+                  hasMore={data?.hasNext}
                 />
               )}
             </View>
@@ -91,6 +167,7 @@ export default function HomeScreen({ navigation }) {
           type="circle"
           onPress={handleWriteButton}
           className="absolute bottom-5 right-0"
+          icon={Plus}
         />
       </InnerLayout>
     </Layout>

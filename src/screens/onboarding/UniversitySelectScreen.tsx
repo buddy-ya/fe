@@ -25,7 +25,7 @@ export default function UniversitySelectScreen({ navigation }) {
   };
 
   return (
-    <Layout>
+    <Layout preserveHeader>
       <InnerLayout>
         <View className="flex-1">
           <Heading>{t("universitySelect.title")}</Heading>

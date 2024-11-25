@@ -16,6 +16,16 @@ export const apiClient = axios.create({
   },
 });
 
+const reissueTokens = async (refreshToken: string) => {
+  const response = await axios({
+    method: "post",
+    url: `${BASE_URL}/auth/reissue`,
+    data: { refreshToken },
+    headers: { "Content-Type": "application/json" },
+  });
+  return response.data;
+};
+
 apiClient.interceptors.request.use(
   async (config) => {
     const accessToken = await getAccessToken();
@@ -24,51 +34,27 @@ apiClient.interceptors.request.use(
     }
     return config;
   },
-  (error) => {
-    return Promise.reject(error);
-  }
+  (error) => Promise.reject(error)
 );
-
-const reissueTokens = async (refreshToken: string) => {
-  const response = await axios.post(
-    `${BASE_URL}/auth/reissue`,
-    { refreshToken },
-    {
-      headers: { "Content-Type": "application/json" },
-    }
-  );
-  return response.data;
-};
 
 apiClient.interceptors.response.use(
   (response) => response,
   async (error) => {
-    logError(error);
-    const originalRequest = error.config;
-    if (error.response?.status === 401 && !originalRequest._retry) {
-      originalRequest._retry = true;
+    if (error.response?.status === 401 && !error.config._retry) {
+      error.config._retry = true;
       try {
         const refreshToken = await getRefreshToken();
         if (!refreshToken) {
-          throw {
-            response: {
-              data: {
-                code: 401,
-                message: "리프레시 토큰이 없습니다.",
-              },
-            },
-          };
+          throw new Error("Refresh token not found");
         }
+
         const { accessToken, refreshToken: newRefreshToken } =
           await reissueTokens(refreshToken);
-
         await saveTokens(accessToken, newRefreshToken || refreshToken);
-        console.log("어세스토큰 재발급 성공!");
-        originalRequest.headers.Authorization = `Bearer ${accessToken}`;
-        return apiClient(originalRequest);
+        error.config.headers.Authorization = `Bearer ${accessToken}`;
+        return apiClient(error.config);
       } catch (reissueError) {
         await removeTokens();
-        console.log("리프레시 토큰 만료 -> 로그아웃 됩니다!");
         resetToOnboarding();
         logError(reissueError);
         return Promise.reject(reissueError);

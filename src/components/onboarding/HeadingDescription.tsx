@@ -1,5 +1,4 @@
 import React from "react";
-import { Text } from "react-native";
 import MyText from "../common/MyText";
 
 interface HeadingDescriptionProps {

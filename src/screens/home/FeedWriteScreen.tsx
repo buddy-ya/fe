@@ -61,23 +61,42 @@ export default function FeedWriteScreen({ navigation }: FeedWriteScreenProps) {
   };
 
   const pickImage = async () => {
-    const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsMultipleSelection: true,
-      quality: 1,
-    });
+    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
 
-    if (!result.canceled) {
-      const newImages = result.assets.map((asset) => ({
-        uri: asset.uri,
-        type: "image/jpeg",
-        fileName: asset.uri.split("/").pop() || "image.jpg",
-      }));
+    if (status !== "granted") {
+      return;
+    }
 
-      setImages((prev) => {
-        const updatedImages = [...prev, ...newImages];
-        return updatedImages.slice(0, 5);
+    try {
+      const result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: "images",
+        allowsMultipleSelection: true,
+        quality: 1,
+        selectionLimit: 5,
       });
+
+      if (!result.canceled) {
+        const newImages = result.assets.map((asset) => ({
+          uri: asset.uri,
+          type: "image/jpeg",
+          fileName: asset.uri.split("/").pop() || "image.jpg",
+        }));
+
+        setImages((prev) => {
+          const updatedImages = [...prev, ...newImages];
+          return updatedImages.slice(0, 5);
+        });
+      }
+    } catch (error) {
+      console.error("ImagePicker Error:", error);
+    }
+  };
+
+  const takePhoto = async () => {
+    const { status } = await ImagePicker.requestCameraPermissionsAsync();
+
+    if (status !== "granted") {
+      return;
     }
   };
 
@@ -136,10 +155,9 @@ export default function FeedWriteScreen({ navigation }: FeedWriteScreenProps) {
                 </TouchableOpacity>
               </View>
               <View className="flex-row items-center">
-                <MyText
-                  color="text-textDescription"
-                  className="font-semibold"
-                >{`${images.length}/5`}</MyText>
+                <MyText color="text-textDescription" className="font-semibold">
+                  {images.length > 0 && `${images.length}/5`}
+                </MyText>
               </View>
             </View>
           </View>

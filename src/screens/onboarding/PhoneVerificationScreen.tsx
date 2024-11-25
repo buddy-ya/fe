@@ -13,17 +13,12 @@ import HeadingDescription from "@/components/onboarding/HeadingDescription";
 import FooterLayout from "@/components/common/FooterLayout";
 import Label from "@/components/onboarding/Label";
 import { useOnboardingStore } from "@/store/onboarding";
-import { useMutation } from "@tanstack/react-query";
 import MyText from "@/components/common/MyText";
 import { formatPhone } from "@/utils/service/phone";
-import {
-  PhoneVerifyResponse,
-  postPhoneVerification,
-  postPhoneVerifyCode,
-} from "@/api/auth/phone";
 import { saveTokens } from "@/utils/service/auth";
 import ErrorMessage from "@/components/onboarding/ErrorMessage";
 import { logError } from "@/utils/service/error";
+import { postPhoneVerification, postPhoneVerifyCode } from "@/api/auth/phone";
 
 const VERIFICATION_EXPIRE_SECONDS = 20;
 
@@ -46,48 +41,33 @@ export default function PhoneVerificationScreen({ navigation, route }) {
     setVerificationError(false);
   };
 
-  const { mutate: resendVerification } = useMutation({
-    mutationFn: postPhoneVerification,
-    onSuccess: resetVerification,
-    onError: logError,
-  });
+  const handleResend = async () => {
+    try {
+      await postPhoneVerification(plainPhoneNumber);
+      resetVerification();
+    } catch (error) {
+      logError(error);
+    }
+  };
 
-  const { mutate: verifyCode } = useMutation({
-    mutationFn: postPhoneVerifyCode,
-    onSuccess: async (response: PhoneVerifyResponse) => {
+  const handleNavigateButton = async () => {
+    try {
+      const { data } = await postPhoneVerifyCode(plainPhoneNumber, code);
       setVerificationError(false);
       updateOnboardingData({ phoneNumber: plainPhoneNumber });
-      if (response.status === "EXISTING_MEMBER") {
-        await saveTokens(response.accessToken, response.refreshToken);
+
+      if (data.status === "EXISTING_MEMBER") {
+        await saveTokens(data.accessToken, data.refreshToken);
       }
-      navigation.reset({
-        index: 0,
-        routes: [
-          {
-            name: "OnboardingNotification",
-            params: {
-              isExistingMember: response.status === "EXISTING_MEMBER",
-            },
-          },
-        ],
+
+      navigation.navigate("OnboardingNotification", {
+        isExistingMember: data.status === "EXISTING_MEMBER",
       });
-    },
-    onError: (error) => {
+    } catch (error) {
       logError(error);
       setVerificationError(true);
       setCode("");
-    },
-  });
-
-  const handleResend = () => {
-    resendVerification({ phoneNumber: plainPhoneNumber });
-  };
-
-  const handleNavigateButton = () => {
-    verifyCode({
-      phoneNumber: plainPhoneNumber,
-      code,
-    });
+    }
   };
 
   const renderTimerContent = () => {

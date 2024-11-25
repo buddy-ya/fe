@@ -1,6 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export const TOKEN_KEYS = {
+const TOKEN_KEYS = {
   ACCESS: "accessToken",
   REFRESH: "refreshToken",
 } as const;
@@ -11,8 +11,7 @@ export const saveTokens = async (
 ) => {
   try {
     await AsyncStorage.setItem(TOKEN_KEYS.ACCESS, accessToken);
-
-    if (refreshToken !== null) {
+    if (refreshToken) {
       await AsyncStorage.setItem(TOKEN_KEYS.REFRESH, refreshToken);
     }
   } catch (error) {
@@ -22,8 +21,7 @@ export const saveTokens = async (
 
 export const getAccessToken = async () => {
   try {
-    const token = await AsyncStorage.getItem(TOKEN_KEYS.ACCESS);
-    return token;
+    return await AsyncStorage.getItem(TOKEN_KEYS.ACCESS);
   } catch (error) {
     console.error("Error getting access token:", error);
     return null;
@@ -32,57 +30,29 @@ export const getAccessToken = async () => {
 
 export const getRefreshToken = async () => {
   try {
-    const token = await AsyncStorage.getItem(TOKEN_KEYS.REFRESH);
-    return token;
+    return await AsyncStorage.getItem(TOKEN_KEYS.REFRESH);
   } catch (error) {
     console.error("Error getting refresh token:", error);
     return null;
   }
 };
 
-export const isTokenPresent = async () => {
+export const removeTokens = async () => {
   try {
-    const [accessToken, refreshToken] = await AsyncStorage.multiGet([
-      TOKEN_KEYS.ACCESS,
-      TOKEN_KEYS.REFRESH,
-    ]);
-
-    return (
-      accessToken[1] != null &&
-      accessToken[1] !== "" &&
-      refreshToken[1] != null &&
-      refreshToken[1] !== ""
-    );
+    await AsyncStorage.removeItem(TOKEN_KEYS.ACCESS);
+    await AsyncStorage.removeItem(TOKEN_KEYS.REFRESH);
   } catch (error) {
-    console.error("Error checking tokens:", error);
-    return false;
+    console.error("Error removing tokens:", error);
   }
 };
 
-export const removeTokens = async () => {
+export const isTokenPresent = async () => {
   try {
-    await AsyncStorage.multiRemove([TOKEN_KEYS.ACCESS, TOKEN_KEYS.REFRESH]);
-
-    const [accessToken, refreshToken] = await AsyncStorage.multiGet([
-      TOKEN_KEYS.ACCESS,
-      TOKEN_KEYS.REFRESH,
-    ]);
-
-    if (accessToken[1] !== null || refreshToken[1] !== null) {
-      await AsyncStorage.multiSet([
-        [TOKEN_KEYS.ACCESS, ""],
-        [TOKEN_KEYS.REFRESH, ""],
-      ]);
-    }
-
-    const keys = await AsyncStorage.getAllKeys();
-    const tokenKeys = keys.filter(
-      (key) => key.includes("token") || key.includes("Token")
-    );
-    if (tokenKeys.length > 0) {
-      await AsyncStorage.multiRemove(tokenKeys);
-    }
+    const accessToken = await getAccessToken();
+    const refreshToken = await getRefreshToken();
+    return Boolean(accessToken && refreshToken);
   } catch (error) {
-    console.error("Error removing tokens:", error);
+    console.error("Error checking tokens:", error);
+    return false;
   }
 };

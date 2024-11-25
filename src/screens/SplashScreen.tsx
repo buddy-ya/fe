@@ -2,7 +2,11 @@ import React, { useEffect } from "react";
 import { View, Text, ActivityIndicator, Image } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as Font from "expo-font";
-import { getAccessToken, removeTokens } from "@/utils/service/auth";
+import {
+  getAccessToken,
+  isTokenPresent,
+  removeTokens,
+} from "@/utils/service/auth";
 
 export default function SplashScreen({ navigation }) {
   useEffect(() => {
@@ -34,8 +38,8 @@ export default function SplashScreen({ navigation }) {
         loadFonts(),
         new Promise((resolve) => setTimeout(resolve, 1000)),
       ]);
-      if (true) {
-        navigation.navigate("Main");
+      if (accessToken) {
+        navigation.navigate("Home");
       } else {
         navigation.navigate("Onboarding", {
           screen: "OnboardingWelcome",
