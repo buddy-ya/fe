@@ -28,6 +28,7 @@ import { getTabScreenOptions, tabScreenOptions } from "./TabBar";
 import HomeScreen from "@/screens/home/HomeScreen";
 import WriteScreen from "@/screens/home/WriteScreen";
 import FeedDetailScreen from "@/screens/home/FeedDetailScreen";
+import FeedWriteScreen from "@/screens/home/FeedWriteScreen";
 
 export const navigationRef = createNavigationContainerRef();
 
@@ -135,7 +136,7 @@ function FeedNavigator() {
   return (
     <FeedStack.Navigator screenOptions={{ headerShown: false }}>
       <FeedStack.Screen name="Home" component={HomeScreen} />
-      <FeedStack.Screen name="FeedWrite" component={WriteScreen} />
+      <FeedStack.Screen name="FeedWrite" component={FeedWriteScreen} />
       <FeedStack.Screen name="FeedDetail" component={FeedDetailScreen} />
     </FeedStack.Navigator>
   );

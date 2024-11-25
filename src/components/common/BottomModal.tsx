@@ -1,4 +1,5 @@
-import React from "react";
+// components/common/BottomModal.tsx
+import React, { ReactNode } from "react";
 import { Modal, TouchableOpacity, View } from "react-native";
 import MyText from "./MyText";
 import { ModalOption } from "@/screens/home/types";
@@ -6,13 +7,15 @@ import { ModalOption } from "@/screens/home/types";
 interface BottomModalProps {
   visible: boolean;
   onClose: () => void;
-  options: ModalOption[];
+  options?: ModalOption[];
+  children?: ReactNode;
 }
 
 export default function BottomModal({
   visible,
   onClose,
-  options,
+  options = [],
+  children,
 }: BottomModalProps) {
   return (
     <Modal
@@ -26,30 +29,31 @@ export default function BottomModal({
         activeOpacity={1}
         onPress={onClose}
       >
-        <View className="absolute bottom-8 left-5 right-5 bg-white py-0 rounded-[20px]">
-          {options.map((option, index) => (
-            <TouchableOpacity
-              key={index}
-              className={`py-6 ${
-                index !== 0 && "border-t"
-              } border-modalBorderBottom`}
-              onPress={() => {
-                onClose();
-                option.onPress();
-              }}
-            >
-              <View className="flex-row items-center justify-center">
-                {option.icon && <View className="mr-2">{option.icon}</View>}
-                <MyText
-                  size="text-[16px]"
-                  className="text-center"
-                  color={option.color ? option.color : "text-[#282828]"}
-                >
-                  {option.label}
-                </MyText>
-              </View>
-            </TouchableOpacity>
-          ))}
+        <View className="absolute bottom-8 left-5 right-5 bg-white rounded-[20px] py-0">
+          {children ||
+            options.map((option, index) => (
+              <TouchableOpacity
+                key={index}
+                className={`py-6 ${
+                  index !== 0 && "border-t"
+                } border-modalBorderBottom`}
+                onPress={() => {
+                  onClose();
+                  option.onPress();
+                }}
+              >
+                <View className="flex-row items-center justify-center">
+                  {option.icon && <View className="mr-2">{option.icon}</View>}
+                  <MyText
+                    size="text-[16px]"
+                    className="text-center"
+                    color={option.color || "text-[#282828]"}
+                  >
+                    {option.label}
+                  </MyText>
+                </View>
+              </TouchableOpacity>
+            ))}
         </View>
       </TouchableOpacity>
     </Modal>

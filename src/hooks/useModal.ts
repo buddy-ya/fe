@@ -1,11 +1,10 @@
-import { ModalOption } from "@/screens/home/types";
 import { useState } from "react";
 
 export const useModal = () => {
   const [visible, setVisible] = useState(false);
-  const [options, setOptions] = useState<ModalOption[]>([]);
+  const [options, setOptions] = useState([]);
 
-  const openModal = (newOptions: ModalOption[]) => {
+  const openModal = (newOptions) => {
     setOptions(newOptions);
     setVisible(true);
   };
