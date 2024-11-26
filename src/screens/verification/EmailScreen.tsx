@@ -12,22 +12,32 @@ import { useOnboardingStore } from "@/store/onboarding";
 import Label from "@/components/onboarding/Label";
 import FooterLayout from "@/components/common/FooterLayout";
 import MyText from "@/components/common/MyText";
+import { sendEmail } from "@/api/certification/certification";
 
-const EMAIL_DOMAIN = "@sju.ac.kr";
-const EMAIL_REGEX = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+const EMAIL_REGEX = /^[A-Za-z0-9]+$/;
 
 export default function EmailScreen({ navigation }) {
   const [email, setEmail] = useState("");
-  const { t } = useTranslation("onboarding");
+  const { t } = useTranslation("certification");
 
   const handleEmailChange = (text: string) => {
     setEmail(text);
   };
 
-  const isValidEmail = EMAIL_REGEX.test(email + EMAIL_DOMAIN);
+  const isValidEmail = email.length > 0 && EMAIL_REGEX.test(email);
 
-  const handleNavigation = () => {
-    navigation.navigate("OnboardingNextScreen");
+  const handleNavigation = async () => {
+    const fullEmail = email + "@sju.ac.kr";
+    const univName = "세종대학교";
+    const requestBody = {
+      email: fullEmail,
+      univName,
+    };
+    await sendEmail(requestBody);
+    navigation.navigate("EmailVerificationCode", {
+      email: fullEmail,
+      univName,
+    });
   };
 
   const footer = (
@@ -63,7 +73,7 @@ export default function EmailScreen({ navigation }) {
               />
               <View className="ml-2 px-4 py-3 h-[50px] border border-inputBorder rounded-xl justify-center">
                 <MyText size="text-lg" color="text-textDescription">
-                  {EMAIL_DOMAIN}
+                  {t(`email.domain.${"sju"}`)}
                 </MyText>
               </View>
             </View>

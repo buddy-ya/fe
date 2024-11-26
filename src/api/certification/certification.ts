@@ -9,3 +9,18 @@ export const getIsCertificated = async () => {
     logError(error);
   }
 };
+
+export const sendEmail = async (requestBody) => {
+  const url = "/certification/email/send";
+  try {
+    await apiClient.post(url, requestBody);
+  } catch (error) {
+    logError(error);
+  }
+};
+
+export const verifyEmailCode = async (requestBody) => {
+  const url = "/certification/email/verify-code";
+  const { data } = await apiClient.post(url, requestBody);
+  return data;
+};

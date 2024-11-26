@@ -27,12 +27,18 @@
     "warning": "Please enter a valid email."
   },
   "verification": {
-    "title": "Please enter the verification code.",
-    "description": "We sent a verification code to your email.",
-    "notReceived": "Haven't received the code?",
-    "expired": "Verification code has expired.",
-    "resend": "Resend",
-    "warning": "Invalid verification code."
+    "title": "Enter verification code",
+    "titleDescription": "We've sent a verification code to\n{email}",
+    "label": "Verification Code",
+    "timer": {
+      "notReceived": "Haven't received the code?",
+      "expired": "Verification code has expired.",
+      "resend": "Resend",
+      "timeLeft": "{{minutes}}:{{seconds}}"
+    },
+    "error": {
+      "invalidCode": "Invalid verification code"
+    }
   },
   "complete": {
     "title": "Verification Complete",

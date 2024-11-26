@@ -127,8 +127,11 @@ export default function HomeScreen({ navigation }) {
 
   const handleWriteButton = async () => {
     try {
-      const { isCertificated, isKorean, isStudentIdCardRequested } =
+      let { isCertificated, isKorean, isStudentIdCardRequested } =
         await getIsCertificated();
+
+      isCertificated = false;
+      isKorean = false;
 
       if (isCertificated) {
         navigation.navigate("FeedWrite");

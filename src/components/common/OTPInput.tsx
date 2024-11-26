@@ -28,13 +28,13 @@ export default function OTPInput({
 
   return (
     <View>
-      <View className="w-[80%] flex-row justify-between">
+      <View className="w-[80%] flex-row gap-1">
         {[...Array(length)].map((_, index) => (
           <View
             key={index}
             className={`
               w-[41px] h-[50px] 
-              border border-border rounded-xl 
+              border border-border rounded-[12px] 
               items-center justify-center
               mr-2
             `}

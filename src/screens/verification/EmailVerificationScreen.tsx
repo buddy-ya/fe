@@ -7,7 +7,6 @@ import OTPInput from "@/components/common/OTPInput";
 import LinkText from "@/components/common/LinkText";
 import KeyboardLayout from "@/components/common/KeyboardLayout";
 import InnerLayout from "@/components/common/InnerLayout";
-import useTimer from "@/hooks/useTimer";
 import { Send } from "lucide-react-native";
 import HeadingDescription from "@/components/onboarding/HeadingDescription";
 import FooterLayout from "@/components/common/FooterLayout";
@@ -15,72 +14,51 @@ import Label from "@/components/onboarding/Label";
 import MyText from "@/components/common/MyText";
 import ErrorMessage from "@/components/onboarding/ErrorMessage";
 import { logError } from "@/utils/service/error";
-import { saveTokens } from "@/utils/service/auth";
-
-const VERIFICATION_EXPIRE_SECONDS = 180;
+import { verifyEmailCode, sendEmail } from "@/api/certification/certification";
 
 export default function EmailVerificationScreen({ navigation, route }) {
-  const { t } = useTranslation("onboarding");
+  const { t } = useTranslation("certification");
   const [code, setCode] = useState("");
   const [verificationError, setVerificationError] = useState(false);
   const email = route.params?.email;
-
-  const { timeLeft, isExpired, restart } = useTimer({
-    seconds: VERIFICATION_EXPIRE_SECONDS,
-    onExpire: () => {},
-  });
-
-  const resetVerification = () => {
-    setCode("");
-    restart();
-    setVerificationError(false);
-  };
+  const univName = route.params?.univName;
 
   const handleResend = async () => {
     try {
-      //   await postEmailVerification(email);
-      resetVerification();
+      await sendEmail({ email, univName });
+      setCode("");
+      setVerificationError(false);
     } catch (error) {
       logError(error);
     }
   };
 
   const handleNavigateButton = async () => {
-    // try {
-    //   const { data } = await postEmailVerifyCode(email, code);
-    //   setVerificationError(false);
-    //   if (data.status === "EXISTING_MEMBER") {
-    //     await saveTokens(data.accessToken, data.refreshToken);
-    //   }
-    //   navigation.navigate("OnboardingNextScreen", {
-    //     isExistingMember: data.status === "EXISTING_MEMBER",
-    //   });
-    // } catch (error) {
-    //   logError(error);
-    //   setVerificationError(true);
-    //   setCode("");
-    // }
-    // }
+    try {
+      const { success } = await verifyEmailCode({
+        email,
+        univName,
+        code,
+      });
+      if (success) {
+        setVerificationError(false);
+        navigation.navigate("EmailComplete");
+      } else {
+        setVerificationError(true);
+        setCode("");
+      }
+    } catch (error) {
+      logError(error);
+      setVerificationError(true);
+      setCode("");
+    }
   };
 
-  const renderTimerContent = () => {
-    if (!isExpired) {
-      return (
-        <View>
-          <MyText size="text-sm" color="text-textDescription">
-            {t("verification.notReceived")}
-          </MyText>
-          <MyText size="text-sm" color="text-textDescription">
-            {timeLeft}
-          </MyText>
-        </View>
-      );
-    }
-
+  const renderFooterContent = () => {
     return (
       <View>
         <MyText size="text-sm" color="text-textDescription">
-          {t("verification.expired")}
+          {t("verification.checkSpam")}
         </MyText>
         <LinkText onPress={handleResend}>{t("verification.resend")}</LinkText>
       </View>
@@ -90,9 +68,9 @@ export default function EmailVerificationScreen({ navigation, route }) {
   const footer = (
     <FooterLayout
       icon={<Send strokeWidth={1} size={23} color="#797979" />}
-      content={<View className="mx-3">{renderTimerContent()}</View>}
+      content={<View className="mx-3">{renderFooterContent()}</View>}
       onPress={handleNavigateButton}
-      disabled={code.length !== 4 || isExpired}
+      disabled={code.length !== 4}
     />
   );
 

@@ -5,16 +5,17 @@ import Layout from "@/components/common/Layout";
 import Heading from "@/components/onboarding/Heading";
 import HeadingDescription from "@/components/onboarding/HeadingDescription";
 import Button from "@/components/common/Button";
+import MyText from "@/components/common/MyText";
 
 export default function EmailCompleteScreen({ navigation }) {
-  const { t } = useTranslation("onboarding");
+  const { t } = useTranslation("certification");
 
-  const handleStartBuddya = () => {
-    navigation.navigate("MainTab");
+  const handleNavigateButton = () => {
+    navigation.navigate("Home");
   };
 
   return (
-    <Layout showHeader onBack={() => navigation.goBack()}>
+    <Layout preserveHeader>
       <View className="flex-1 px-5">
         <View>
           <Heading>{t("verificationComplete.title")}</Heading>
@@ -33,8 +34,8 @@ export default function EmailCompleteScreen({ navigation }) {
           />
         </View>
 
-        <Button onPress={handleStartBuddya} className="mb-8">
-          {t("verificationComplete.start")}
+        <Button onPress={handleNavigateButton}>
+          <MyText color="text-white">{t("verificationComplete.start")}</MyText>
         </Button>
       </View>
     </Layout>
