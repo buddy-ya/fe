@@ -1,0 +1,37 @@
+{
+  "banner": {
+    "default": {
+      "title": "학생 인증을 하면 버디야를 더 재밌게 이용할 수 있어요.",
+      "description": "버디야는 학생들을 위한 서비스입니다.",
+      "confirm": "인증하기",
+      "cancel": "취소"
+    },
+    "pending": {
+      "title": "학생 인증이 심사중입니다.",
+      "description": "개인정보는 승인 후 즉시 폐기됩니다.\n학생 인증은 평균 1~2일이 소요됩니다.",
+      "confirm": "학생증 상태 변경",
+      "cancel": "확인"
+    }
+  },
+  "studentId": {
+    "title": "재학생임을 증명해주세요.",
+    "description": "모바일 학생증을 업로드해주세요.",
+    "uploadButton": "학생증 이미지 선택하기",
+    "submitButton": "인증 요청하기"
+  },
+  "email": {
+    "title": "재학생임을 이메일로 증명주세요.",
+    "description": "학교 이메일로 인증해주세요.",
+    "placeholder": "이메일 입력",
+    "domain": "@sju.ac.kr",
+    "warning": "올바른 이메일을 입력해 주세요."
+  },
+  "verification": {
+    "title": "인증코드를 입력해 주세요.",
+    "description": "입력하신 이메일로 인증번호를 전송했습니다.",
+    "notReceived": "인증번호를 받지 못하셨나요?",
+    "expired": "인증번호가 만료되었습니다.",
+    "resend": "재전송하기",
+    "warning": "잘못된 인증번호입니다."
+  }
+}

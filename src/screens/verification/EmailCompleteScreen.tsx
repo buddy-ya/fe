@@ -6,7 +6,7 @@ import Heading from "@/components/onboarding/Heading";
 import HeadingDescription from "@/components/onboarding/HeadingDescription";
 import Button from "@/components/common/Button";
 
-export default function StudentVerificationCompleteScreen({ navigation }) {
+export default function EmailCompleteScreen({ navigation }) {
   const { t } = useTranslation("onboarding");
 
   const handleStartBuddya = () => {

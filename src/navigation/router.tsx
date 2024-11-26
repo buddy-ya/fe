@@ -29,6 +29,11 @@ import { getTabScreenOptions, tabScreenOptions } from "./TabBar";
 import HomeScreen from "@/screens/home/HomeScreen";
 import FeedDetailScreen from "@/screens/home/FeedDetailScreen";
 import FeedWriteScreen from "@/screens/home/FeedWriteScreen";
+import EmailScreen from "@/screens/verification/EmailScreen";
+import EmailVerificationScreen from "@/screens/verification/EmailVerificationScreen";
+import EmailCompleteScreen from "@/screens/verification/EmailCompleteScreen";
+import StudentIdUploadScreen from "@/screens/verification/StudentIdUploadScreen";
+import StudentIdCompleteScreen from "@/screens/verification/StudentIdCompleteScreen";
 
 export const navigationRef = createNavigationContainerRef();
 
@@ -135,7 +140,6 @@ function OnboardingNavigator() {
 function FeedNavigator({ navigation, route }) {
   React.useLayoutEffect(() => {
     const routeName = getFocusedRouteNameFromRoute(route);
-    console.log(routeName);
     if (routeName == "FeedHome" || routeName == undefined) {
       navigation.setOptions({ tabBarStyle: { display: "flex" } });
     } else {
@@ -147,6 +151,20 @@ function FeedNavigator({ navigation, route }) {
       <FeedStack.Screen name="FeedHome" component={HomeScreen} />
       <FeedStack.Screen name="FeedWrite" component={FeedWriteScreen} />
       <FeedStack.Screen name="FeedDetail" component={FeedDetailScreen} />
+      <FeedStack.Screen name="EmailVerification" component={EmailScreen} />
+      <FeedStack.Screen
+        name="EmailVerificationCode"
+        component={EmailVerificationScreen}
+      />
+      <FeedStack.Screen name="EmailComplete" component={EmailCompleteScreen} />
+      <FeedStack.Screen
+        name="StudentIdVerification"
+        component={StudentIdUploadScreen}
+      />
+      <FeedStack.Screen
+        name="StudentIdComplete"
+        component={StudentIdCompleteScreen}
+      />
     </FeedStack.Navigator>
   );
 }

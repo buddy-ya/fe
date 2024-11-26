@@ -1,12 +1,14 @@
 import React from "react";
 import { Modal, View, TouchableOpacity } from "react-native";
 import MyText from "./MyText";
+import Heading from "../onboarding/Heading";
 
 interface ConfirmModalProps {
   visible: boolean;
   onClose: () => void;
   onConfirm: () => void;
   title: string;
+  description: string;
   cancelText?: string;
   confirmText?: string;
 }
@@ -16,6 +18,7 @@ export default function ConfirmModal({
   onClose,
   onConfirm,
   title,
+  description,
   cancelText = "아니요",
   confirmText = "네",
 }: ConfirmModalProps) {
@@ -31,24 +34,39 @@ export default function ConfirmModal({
         activeOpacity={1}
         onPress={onClose}
       >
-        <View className="absolute bottom-8 left-5 right-5 bg-white rounded-[20px] py-0">
+        <View className="absolute bottom-8 left-5 right-5 bg-white rounded-[20px]">
           <View className="py-5 px-5">
-            <MyText className="text-center text-lg mb-5">{title}</MyText>
+            <View className="min-h-[180px]">
+              <MyText size="text-2xl" className="font-semibold mb-4">
+                {title}
+              </MyText>
+              <MyText size="text-[14px]" color="text-textDescription">
+                {description}
+              </MyText>
+            </View>
             <View className="flex-row">
               <TouchableOpacity
-                className="flex-1 bg-gray-100 rounded-xl py-3 mr-2"
+                className="flex-1 bg-[#DFDFDF] rounded-[12px] py-[16px] mr-3"
                 onPress={onClose}
               >
-                <MyText className="text-center">{cancelText}</MyText>
+                <MyText
+                  size="text-[16px]"
+                  className="text-center font-semibold text-white"
+                >
+                  {cancelText}
+                </MyText>
               </TouchableOpacity>
               <TouchableOpacity
-                className="flex-1 bg-primary rounded-xl py-3"
+                className="flex-1 bg-primary rounded-xl py-[16px]"
                 onPress={() => {
                   onClose();
                   onConfirm();
                 }}
               >
-                <MyText className="text-center text-white">
+                <MyText
+                  size="text-[16px]"
+                  className="text-center font-semibold text-white"
+                >
                   {confirmText}
                 </MyText>
               </TouchableOpacity>

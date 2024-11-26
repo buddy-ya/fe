@@ -10,14 +10,21 @@ import Button from "@/components/common/Button";
 import { getFeeds, toggleBookmark, toggleLike } from "@/api/feed/getFeeds";
 import { CATEGORIES } from "@/utils/constants/categories";
 import { logError } from "@/utils/service/error";
+import { getIsCertificated } from "@/api/certification/certification";
+import ConfirmModal from "@/components/common/ConfirmModal";
+import { useTranslation } from "react-i18next";
 
 export default function HomeScreen({ navigation }) {
+  const { t } = useTranslation("certification");
   const [activeCategory, setActiveCategory] = useState(CATEGORIES[0].id);
   const [page, setPage] = useState(0);
   const [feeds, setFeeds] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [hasNext, setHasNext] = useState(true);
+
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [currentModalTexts, setCurrentModalTexts] = useState(null);
 
   const fetchFeeds = async (
     pageNum: number,
@@ -118,8 +125,48 @@ export default function HomeScreen({ navigation }) {
     navigation.navigate("FeedDetail", { feedId });
   };
 
-  const handleWriteButton = () => {
-    navigation.navigate("FeedWrite");
+  const handleWriteButton = async () => {
+    try {
+      const { isCertificated, isKorean, isStudentIdCardRequested } =
+        await getIsCertificated();
+
+      if (isCertificated) {
+        navigation.navigate("FeedWrite");
+        return;
+      }
+
+      const modalTexts = getModalTexts(isKorean, isStudentIdCardRequested);
+      setCurrentModalTexts(modalTexts);
+      setIsModalVisible(true);
+    } catch (error) {
+      logError(error);
+    }
+  };
+
+  const getModalTexts = (
+    isKorean: boolean,
+    isStudentIdCardRequested: boolean
+  ) => {
+    if (isStudentIdCardRequested) {
+      return {
+        title: t("banner.pending.title"),
+        description: t("banner.pending.description"),
+        confirmText: t("banner.pending.confirm"),
+        cancelText: t("banner.pending.cancel"),
+        onConfirm: () => navigation.navigate("StudentIdComplete"),
+      };
+    }
+
+    return {
+      title: t("banner.default.title"),
+      description: t("banner.default.description"),
+      confirmText: t("banner.default.confirm"),
+      cancelText: t("banner.default.cancel"),
+      onConfirm: () =>
+        navigation.navigate(
+          isKorean ? "EmailVerification" : "StudentIdVerification"
+        ),
+    };
   };
 
   const handleSearch = () => {
@@ -179,6 +226,15 @@ export default function HomeScreen({ navigation }) {
           icon={Plus}
         />
       </InnerLayout>
+      <ConfirmModal
+        visible={isModalVisible}
+        onClose={() => setIsModalVisible(false)}
+        onConfirm={currentModalTexts?.onConfirm}
+        title={currentModalTexts?.title}
+        description={currentModalTexts?.description}
+        cancelText={currentModalTexts?.cancelText}
+        confirmText={currentModalTexts?.confirmText}
+      />
     </Layout>
   );
 }
