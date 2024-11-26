@@ -14,6 +14,7 @@ import { formatDistanceToNow } from "date-fns";
 import { ko, enUS } from "date-fns/locale";
 import * as Localization from "expo-localization";
 import { getTimeAgo } from "@/utils/service/date";
+import { useTranslation } from "react-i18next";
 
 interface FeedItemProps {
   feed: Feed;
@@ -48,20 +49,19 @@ export default function FeedItem({
   } = feed;
 
   const handleComment = (id: number) => {};
+  const { t } = useTranslation("feed");
   const renderContent = () => (
     <View className="mb-5 p-4 border-[0.3px] border-borderFeed rounded-[12px]">
       {/* Header */}
       <View className="flex-row justify-between items-center">
         <View className="flex-row items-center">
-          <View className="w-10 h-10 bg-gray-200 rounded-[12px] mr-2">
-            <Image />
-          </View>
+          <View className="w-10 h-10 bg-gray-200 rounded-[12px] mr-2"></View>
           <View>
             <MyText
               size="text-sm"
               className="font-semibold text-textDescription"
             >
-              {university}
+              {t(`profile.university.${university}`)}
             </MyText>
             <View className="flex-row items-center">
               <MyText size="text-sm" color="text-textDescription">
@@ -126,7 +126,7 @@ export default function FeedItem({
       )}
 
       {/* Actions */}
-      <View className="flex-row items-center justify-between px-[12px] mt-5">
+      <View className="flex-row items-center justify-between px-[12px] mt-7">
         <TouchableOpacity
           onPress={() => onLike(id)}
           className="flex-row items-center"

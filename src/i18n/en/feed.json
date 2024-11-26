@@ -3,5 +3,10 @@
     "popular": "popular",
     "free": "free",
     "info": "info"
+  },
+  "profile": {
+    "university": {
+      "sju": "Sejong"
+    }
   }
 }

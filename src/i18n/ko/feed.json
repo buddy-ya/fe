@@ -3,5 +3,10 @@
     "popular": "인기",
     "free": "자유",
     "info": "정보공유"
+  },
+  "profile": {
+    "university": {
+      "sju": "세종대학교"
+    }
   }
 }

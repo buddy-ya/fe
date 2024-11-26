@@ -3,10 +3,10 @@ import {
   View,
   TouchableOpacity,
   TextInput,
-  Image,
   ScrollView,
   Platform,
   Keyboard,
+  Alert,
 } from "react-native";
 import { X, ChevronDown, Camera, ImagePlus } from "lucide-react-native";
 import * as ImagePicker from "expo-image-picker";
@@ -19,6 +19,7 @@ import KeyboardLayout from "@/components/common/KeyboardLayout";
 import { CategorySelectModal } from "@/components/feed/CategorySelectModal";
 import { ImagePreview } from "@/components/feed/ImagePreview";
 import InnerLayout from "@/components/common/InnerLayout";
+import { createFeed } from "@/api/feed/crud";
 
 interface FeedWriteScreenProps {
   navigation: any;
@@ -26,15 +27,22 @@ interface FeedWriteScreenProps {
 
 interface ImageFile {
   uri: string;
-  type?: string;
+  type: string;
   fileName?: string;
 }
 
+const FILTERED_CATEGORIES = CATEGORIES.filter(
+  (category) => category.id !== "popular"
+);
+
 export default function FeedWriteScreen({ navigation }: FeedWriteScreenProps) {
-  const [selectedCategory, setSelectedCategory] = useState(CATEGORIES[0]);
+  const [selectedCategory, setSelectedCategory] = useState(
+    FILTERED_CATEGORIES[0]
+  );
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [images, setImages] = useState<ImageFile[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const categoryModal = useModal();
 
@@ -44,7 +52,7 @@ export default function FeedWriteScreen({ navigation }: FeedWriteScreenProps) {
   };
 
   const handleOpenCategoryModal = () => {
-    const options = CATEGORIES.map((category) => ({
+    const options = FILTERED_CATEGORIES.map((category) => ({
       label: `${category.icon} ${category.label}`,
       onPress: () => handleCategorySelect(category),
       color:
@@ -64,12 +72,13 @@ export default function FeedWriteScreen({ navigation }: FeedWriteScreenProps) {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
 
     if (status !== "granted") {
+      Alert.alert("권한 필요", "갤러리 접근 권한이 필요합니다.");
       return;
     }
 
     try {
       const result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: "images",
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
         allowsMultipleSelection: true,
         quality: 1,
         selectionLimit: 5,
@@ -89,6 +98,7 @@ export default function FeedWriteScreen({ navigation }: FeedWriteScreenProps) {
       }
     } catch (error) {
       console.error("ImagePicker Error:", error);
+      Alert.alert("오류", "이미지를 불러오는데 실패했습니다.");
     }
   };
 
@@ -96,7 +106,31 @@ export default function FeedWriteScreen({ navigation }: FeedWriteScreenProps) {
     const { status } = await ImagePicker.requestCameraPermissionsAsync();
 
     if (status !== "granted") {
+      Alert.alert("권한 필요", "카메라 접근 권한이 필요합니다.");
       return;
+    }
+
+    try {
+      const result = await ImagePicker.launchCameraAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        quality: 1,
+      });
+
+      if (!result.canceled) {
+        const newImage = {
+          uri: result.assets[0].uri,
+          type: "image/jpeg",
+          fileName: `camera_${Date.now()}.jpg`,
+        };
+
+        setImages((prev) => {
+          const updatedImages = [...prev, newImage];
+          return updatedImages.slice(0, 5);
+        });
+      }
+    } catch (error) {
+      console.error("Camera Error:", error);
+      Alert.alert("오류", "사진 촬영에 실패했습니다.");
     }
   };
 
@@ -104,13 +138,39 @@ export default function FeedWriteScreen({ navigation }: FeedWriteScreenProps) {
     setImages((prev) => prev.filter((_, i) => i !== index));
   };
 
-  const keyboardDismiss = () => (
-    <TouchableOpacity onPress={() => Keyboard.dismiss()}>
-      <MyText color="text-textDescription" className="font-semibold">
-        취소
-      </MyText>
-    </TouchableOpacity>
-  );
+  const validateForm = () => {
+    if (!title.trim()) {
+      Alert.alert("알림", "제목을 입력해주세요.");
+      return false;
+    }
+    return true;
+  };
+
+  const handleUpload = async () => {
+    if (!validateForm()) return;
+
+    try {
+      setIsLoading(true);
+      await createFeed(
+        title.trim(),
+        content.trim(),
+        selectedCategory.id,
+        images
+      );
+
+      Alert.alert("알림", "게시물이 등록되었습니다.", [
+        {
+          text: "확인",
+          onPress: () => navigation.goBack(),
+        },
+      ]);
+    } catch (error) {
+      console.error("Upload Error:", error);
+      Alert.alert("오류", "게시물 등록에 실패했습니다. 다시 시도해주세요.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <Layout
@@ -126,7 +186,6 @@ export default function FeedWriteScreen({ navigation }: FeedWriteScreenProps) {
           className="flex-row items-center"
         >
           <MyText size="text-xl" className="mr-[2px] font-semibold">
-            {/* {selectedCategory.icon}  */}
             {selectedCategory.label}
           </MyText>
           <ChevronDown size={24} color="#282828" />
@@ -134,10 +193,13 @@ export default function FeedWriteScreen({ navigation }: FeedWriteScreenProps) {
       }
       headerRight={
         <TouchableOpacity
-          className="bg-primary px-4 py-1.5 rounded-full"
-          onPress={() => console.log("게시")}
+          className={`px-4 py-1.5 rounded-full ${
+            isLoading ? "bg-gray-400" : "bg-primary"
+          }`}
+          onPress={handleUpload}
+          disabled={isLoading}
         >
-          <MyText color="text-white">게시</MyText>
+          <MyText color="text-white">{isLoading ? "게시중..." : "게시"}</MyText>
         </TouchableOpacity>
       }
     >
@@ -147,7 +209,7 @@ export default function FeedWriteScreen({ navigation }: FeedWriteScreenProps) {
             <ImagePreview images={images} onRemove={removeImage} />
             <View className="flex-row justify-between items-center py-2 px-4 border-t border-gray-200">
               <View className="flex-row items-center">
-                <TouchableOpacity onPress={pickImage} className="mr-3">
+                <TouchableOpacity onPress={takePhoto} className="mr-3">
                   <Camera size={24} color="#797979" />
                 </TouchableOpacity>
                 <TouchableOpacity onPress={pickImage}>
@@ -192,10 +254,7 @@ export default function FeedWriteScreen({ navigation }: FeedWriteScreenProps) {
       >
         <CategorySelectModal
           selectedCategory={selectedCategory}
-          onSelect={(category) => {
-            setSelectedCategory(category);
-            categoryModal.closeModal();
-          }}
+          onSelect={handleCategorySelect}
         />
       </BottomModal>
     </Layout>

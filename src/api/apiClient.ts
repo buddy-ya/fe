@@ -50,7 +50,9 @@ apiClient.interceptors.response.use(
 
         const { accessToken, refreshToken: newRefreshToken } =
           await reissueTokens(refreshToken);
-        await saveTokens(accessToken, newRefreshToken || refreshToken);
+
+        const finalRefreshToken = newRefreshToken || refreshToken;
+        await saveTokens(accessToken, finalRefreshToken);
         error.config.headers.Authorization = `Bearer ${accessToken}`;
         return apiClient(error.config);
       } catch (reissueError) {

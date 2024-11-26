@@ -2,11 +2,7 @@ import React, { useEffect } from "react";
 import { View, Text, ActivityIndicator, Image } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as Font from "expo-font";
-import {
-  getAccessToken,
-  isTokenPresent,
-  removeTokens,
-} from "@/utils/service/auth";
+import { getAccessToken } from "@/utils/service/auth";
 
 export default function SplashScreen({ navigation }) {
   useEffect(() => {

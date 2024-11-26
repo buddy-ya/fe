@@ -1,5 +1,5 @@
 import React from "react";
-import { FlatList } from "react-native";
+import { FlatList, RefreshControl, RefreshControlProps } from "react-native";
 import FeedItem from "./FeedItem";
 import { Feed } from "@/screens/home/types";
 
@@ -11,6 +11,7 @@ interface FeedListProps {
   isLoading: boolean;
   hasMore: boolean;
   onLoadMore: () => void;
+  refreshControl?: RefreshControlProps | null;
 }
 
 export default function FeedList({
@@ -19,6 +20,8 @@ export default function FeedList({
   onBookmark,
   onPress,
   onLoadMore,
+  refreshControl,
+  hasMore,
 }: FeedListProps) {
   return (
     <FlatList
@@ -33,9 +36,12 @@ export default function FeedList({
       )}
       className="mt-4"
       keyExtractor={(item) => item.id.toString()}
-      onEndReached={onLoadMore}
-      onEndReachedThreshold={0.5}
+      onEndReached={hasMore ? onLoadMore : undefined}
+      onEndReachedThreshold={0.8}
       showsVerticalScrollIndicator={false}
+      refreshControl={
+        refreshControl ? <RefreshControl {...refreshControl} /> : undefined
+      }
     />
   );
 }

@@ -2,6 +2,7 @@
 import React from "react";
 import {
   createNavigationContainerRef,
+  getFocusedRouteNameFromRoute,
   NavigationContainer,
 } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -131,7 +132,16 @@ function OnboardingNavigator() {
   );
 }
 
-function FeedNavigator() {
+function FeedNavigator({ navigation, route }) {
+  React.useLayoutEffect(() => {
+    const routeName = getFocusedRouteNameFromRoute(route);
+    console.log(routeName);
+    if (routeName == "FeedHome" || routeName == undefined) {
+      navigation.setOptions({ tabBarStyle: { display: "flex" } });
+    } else {
+      navigation.setOptions({ tabBarStyle: { display: "none" } });
+    }
+  });
   return (
     <FeedStack.Navigator screenOptions={{ headerShown: false }}>
       <FeedStack.Screen name="FeedHome" component={HomeScreen} />

@@ -1,7 +1,10 @@
 import { apiClient } from "../apiClient";
 
 export const createComment = async (feedId: number, content: string) => {
-  return await apiClient.post(`/feeds/${feedId}/comments`, { content });
+  const { data } = await apiClient.post(`/feeds/${feedId}/comments`, {
+    content,
+  });
+  return data;
 };
 
 export const updateComment = async (

@@ -14,7 +14,7 @@ export const mockFeeds: FeedResponse = {
       content:
         "잘 찍었지? 학냥이가 너무너무 좋아. 잔디밭에서 뒹구는 것 봐 ㅎㅎㅎ",
       imageUrls: [
-        "/api/placeholder/400/400", // 실제 이미지 URL 대신 placeholder 사용
+        "/api/placeholder/400/400",
         "/api/placeholder/400/400",
       ],
       likeCount: 6,

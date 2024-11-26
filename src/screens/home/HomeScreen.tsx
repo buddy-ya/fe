@@ -1,6 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import { TouchableOpacity, View } from "react-native";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import Layout from "@/components/common/Layout";
 import CategoryPager from "@/components/feed/CategoryPager";
 import { Bell, Plus, Search } from "lucide-react-native";
@@ -15,95 +14,112 @@ import { logError } from "@/utils/service/error";
 export default function HomeScreen({ navigation }) {
   const [activeCategory, setActiveCategory] = useState(CATEGORIES[0].id);
   const [page, setPage] = useState(0);
-  const queryClient = useQueryClient();
+  const [feeds, setFeeds] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isRefreshing, setIsRefreshing] = useState(false);
+  const [hasNext, setHasNext] = useState(true);
 
-  const { data, isLoading } = useQuery({
-    queryKey: ["feeds", activeCategory, page],
-    queryFn: () =>
-      getFeeds({
+  const fetchFeeds = async (
+    pageNum: number,
+    shouldRefresh: boolean = false
+  ) => {
+    if (isLoading) return;
+
+    try {
+      setIsLoading(true);
+      const response = await getFeeds({
         category: activeCategory,
-        page: page,
-        size: 10,
-      }),
-  });
+        page: pageNum,
+        size: 5,
+      });
 
-  const likeMutation = useMutation({
-    mutationFn: toggleLike,
-    onMutate: async (feedId) => {
-      queryClient.setQueryData(
-        ["feeds", activeCategory, page],
-        (oldData: any) => {
-          if (!oldData) return oldData;
-          return {
-            ...oldData,
-            feeds: oldData.feeds.map((feed) =>
-              feed.id === feedId
-                ? {
-                    ...feed,
-                    isLiked: !feed.isLiked,
-                    likeCount: feed.isLiked
-                      ? feed.likeCount - 1
-                      : feed.likeCount + 1,
-                  }
-                : feed
-            ),
-          };
-        }
+      setFeeds((prev) =>
+        shouldRefresh ? response.feeds : [...prev, ...response.feeds]
       );
-    },
-    onSuccess: (data, feedId) => {
-      queryClient.setQueryData(
-        ["feeds", activeCategory, page],
-        (oldData: any) => {
-          if (!oldData) return oldData;
-
-          return {
-            ...oldData,
-            feeds: oldData.feeds.map((feed) =>
-              feed.id === feedId ? { ...feed, likeCount: data.likeCount } : feed
-            ),
-          };
-        }
-      );
-    },
-    onError: (error) => {
+      setHasNext(response.hasNext);
+    } catch (error) {
       logError(error);
-    },
-  });
-
-  const bookmarkMutation = useMutation({
-    mutationFn: toggleBookmark,
-    onMutate: async (feedId) => {
-      queryClient.setQueryData(
-        ["feeds", activeCategory, page],
-        (oldData: any) => {
-          if (!oldData) return oldData;
-
-          return {
-            ...oldData,
-            feeds: oldData.feeds.map((feed) =>
-              feed.id === feedId
-                ? { ...feed, isBookmarked: !feed.isBookmarked }
-                : feed
-            ),
-          };
-        }
-      );
-    },
-    onError: (error) => {
-      logError(error);
-    },
-  });
-
-  const handleLoadMore = () => {
-    if (data?.hasNext) {
-      setPage((prev) => prev + 1);
+    } finally {
+      setIsLoading(false);
+      setIsRefreshing(false);
     }
   };
 
+  // 카테고리 변경 시
   const handlePageChange = (index: number) => {
+    setFeeds([]);
     setPage(0);
     setActiveCategory(CATEGORIES[index].id);
+  };
+
+  // 새로고침
+  const handleRefresh = async () => {
+    setIsRefreshing(true);
+    setPage(0);
+    await fetchFeeds(0, true);
+  };
+
+  // 추가 데이터 로드
+  const handleLoadMore = () => {
+    if (!isLoading && hasNext) {
+      const nextPage = page + 1;
+      setPage(nextPage);
+      fetchFeeds(nextPage);
+    }
+  };
+
+  // 좋아요 처리
+  const handleLike = async (id: number) => {
+    try {
+      setFeeds((prevFeeds) =>
+        prevFeeds.map((feed) =>
+          feed.id === id
+            ? {
+                ...feed,
+                isLiked: !feed.isLiked,
+                likeCount: feed.isLiked
+                  ? feed.likeCount - 1
+                  : feed.likeCount + 1,
+              }
+            : feed
+        )
+      );
+
+      const response = await toggleLike(id);
+
+      setFeeds((prevFeeds) =>
+        prevFeeds.map((feed) =>
+          feed.id === id ? { ...feed, likeCount: response.likeCount } : feed
+        )
+      );
+    } catch (error) {
+      logError(error);
+      fetchFeeds(page, true);
+    }
+  };
+
+  // 북마크 처리
+  const handleBookmark = async (id: number) => {
+    try {
+      setFeeds((prevFeeds) =>
+        prevFeeds.map((feed) =>
+          feed.id === id ? { ...feed, isBookmarked: !feed.isBookmarked } : feed
+        )
+      );
+
+      await toggleBookmark(id);
+    } catch (error) {
+      logError(error);
+      fetchFeeds(page, true);
+    }
+  };
+
+  const handlePressFeed = (feedId: number) => {
+    navigation.navigate("FeedDetail", { feedId });
+  };
+
+  const handleWriteButton = () => {
+    navigation.navigate("FeedWrite");
   };
 
   const handleSearch = () => {
@@ -114,21 +130,9 @@ export default function HomeScreen({ navigation }) {
     console.log("Notification pressed");
   };
 
-  const handleLike = (id: number) => {
-    likeMutation.mutate(id);
-  };
-
-  const handleBookmark = (id: number) => {
-    bookmarkMutation.mutate(id);
-  };
-
-  const handleWriteButton = () => {
-    navigation.navigate("FeedWrite");
-  };
-
-  const handlePressFeed = (feedId: number) => {
-    navigation.navigate("FeedDetail", { feedId });
-  };
+  React.useEffect(() => {
+    fetchFeeds(0, true);
+  }, [activeCategory]);
 
   return (
     <Layout
@@ -151,13 +155,18 @@ export default function HomeScreen({ navigation }) {
             <View key={category.id} className="flex-1">
               {category.id === activeCategory && (
                 <FeedList
-                  feeds={data?.feeds || []}
+                  feeds={feeds}
                   onLike={handleLike}
                   onBookmark={handleBookmark}
                   onPress={handlePressFeed}
                   isLoading={isLoading}
                   onLoadMore={handleLoadMore}
-                  hasMore={data?.hasNext}
+                  hasMore={hasNext}
+                  refreshControl={{
+                    refreshing: isRefreshing,
+                    onRefresh: handleRefresh,
+                    tintColor: "#4AA366",
+                  }}
                 />
               )}
             </View>

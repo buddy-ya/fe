@@ -12,23 +12,18 @@ import { Send } from "lucide-react-native";
 import HeadingDescription from "@/components/onboarding/HeadingDescription";
 import FooterLayout from "@/components/common/FooterLayout";
 import Label from "@/components/onboarding/Label";
-import { useOnboardingStore } from "@/store/onboarding";
 import MyText from "@/components/common/MyText";
-import { formatPhone } from "@/utils/service/phone";
-import { saveTokens } from "@/utils/service/auth";
 import ErrorMessage from "@/components/onboarding/ErrorMessage";
 import { logError } from "@/utils/service/error";
-import { postPhoneVerification, postPhoneVerifyCode } from "@/api/auth/phone";
+import { saveTokens } from "@/utils/service/auth";
 
 const VERIFICATION_EXPIRE_SECONDS = 180;
 
-export default function PhoneVerificationScreen({ navigation, route }) {
+export default function EmailVerificationScreen({ navigation, route }) {
   const { t } = useTranslation("onboarding");
-  const { updateOnboardingData } = useOnboardingStore();
   const [code, setCode] = useState("");
   const [verificationError, setVerificationError] = useState(false);
-  const phone = route.params?.phone;
-  const plainPhoneNumber = formatPhone.removeHyphen(phone);
+  const email = route.params?.email;
 
   const { timeLeft, isExpired, restart } = useTimer({
     seconds: VERIFICATION_EXPIRE_SECONDS,
@@ -43,7 +38,7 @@ export default function PhoneVerificationScreen({ navigation, route }) {
 
   const handleResend = async () => {
     try {
-      await postPhoneVerification(plainPhoneNumber);
+      //   await postEmailVerification(email);
       resetVerification();
     } catch (error) {
       logError(error);
@@ -51,23 +46,21 @@ export default function PhoneVerificationScreen({ navigation, route }) {
   };
 
   const handleNavigateButton = async () => {
-    try {
-      const { data } = await postPhoneVerifyCode(plainPhoneNumber, code);
-      setVerificationError(false);
-      updateOnboardingData({ phoneNumber: plainPhoneNumber });
-
-      if (data.status === "EXISTING_MEMBER") {
-        await saveTokens(data.accessToken, data.refreshToken);
-      }
-
-      navigation.navigate("OnboardingNotification", {
-        isExistingMember: data.status === "EXISTING_MEMBER",
-      });
-    } catch (error) {
-      logError(error);
-      setVerificationError(true);
-      setCode("");
-    }
+    // try {
+    //   const { data } = await postEmailVerifyCode(email, code);
+    //   setVerificationError(false);
+    //   if (data.status === "EXISTING_MEMBER") {
+    //     await saveTokens(data.accessToken, data.refreshToken);
+    //   }
+    //   navigation.navigate("OnboardingNextScreen", {
+    //     isExistingMember: data.status === "EXISTING_MEMBER",
+    //   });
+    // } catch (error) {
+    //   logError(error);
+    //   setVerificationError(true);
+    //   setCode("");
+    // }
+    // }
   };
 
   const renderTimerContent = () => {
@@ -99,7 +92,7 @@ export default function PhoneVerificationScreen({ navigation, route }) {
       icon={<Send strokeWidth={1} size={23} color="#797979" />}
       content={<View className="mx-3">{renderTimerContent()}</View>}
       onPress={handleNavigateButton}
-      disabled={code.length !== 6 || isExpired}
+      disabled={code.length !== 4 || isExpired}
     />
   );
 
@@ -109,10 +102,10 @@ export default function PhoneVerificationScreen({ navigation, route }) {
         <InnerLayout>
           <Heading>{t("verification.title")}</Heading>
           <HeadingDescription>
-            {t("verification.titleDescription", { phoneNumber: phone })}
+            {t("verification.titleDescription", { email })}
           </HeadingDescription>
           <Label>{t("verification.label")}</Label>
-          <OTPInput value={code} onChange={setCode} length={6} />
+          <OTPInput value={code} onChange={setCode} length={4} />
           {verificationError && (
             <ErrorMessage className="mt-2">
               {t("verification.warning")}

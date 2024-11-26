@@ -14,6 +14,7 @@ import { postPhoneVerification } from "@/api/auth/phone";
 import MyText from "@/components/common/MyText";
 import { formatPhone } from "@/utils/service/phone";
 import { logError } from "@/utils/service/error";
+import { getRefreshToken } from "@/utils/service/auth";
 
 export default function PhoneScreen({ navigation }) {
   const { t } = useTranslation("onboarding");

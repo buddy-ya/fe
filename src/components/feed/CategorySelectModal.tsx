@@ -3,21 +3,14 @@ import { Check } from "lucide-react-native";
 import { TouchableOpacity, View } from "react-native";
 import MyText from "../common/MyText";
 
-interface CategorySelectModalProps {
-  selectedCategory: (typeof CATEGORIES)[0];
-  onSelect: (category: (typeof CATEGORIES)[0]) => void;
-}
-
-export function CategorySelectModal({
-  selectedCategory,
-  onSelect,
-}: CategorySelectModalProps) {
+export function CategorySelectModal({ selectedCategory, onSelect }) {
+  const categories = CATEGORIES.filter((category) => category.id !== "popular");
   return (
     <View className="p-8 pb-6">
       <MyText size="text-xl" className="font-semibold mb-9">
         게시판을 선택하세요.
       </MyText>
-      {CATEGORIES.map((category) => (
+      {categories.map((category) => (
         <TouchableOpacity
           key={category.id}
           className="flex-row items-center justify-between py-3"

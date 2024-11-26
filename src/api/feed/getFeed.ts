@@ -1,7 +1,11 @@
+import { apiClient } from "../apiClient";
+
 export const getFeed = async (feedId: number) => {
-  return await apiClient.get(`/feeds/${feedId}`);
+  const { data } = await apiClient.get(`/feeds/${feedId}`);
+  return data;
 };
 
 export const getFeedComments = async (feedId: number) => {
-  return await apiClient.get(`/feeds/${feedId}/comments`);
+  const { data } = await apiClient.get(`/feeds/${feedId}/comments`);
+  return data;
 };
