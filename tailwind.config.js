@@ -34,7 +34,9 @@ module.exports = {
         iconBorder: "#797977",
         headerBottom: "#E8E9EB",
         selectActive: "#f0fdf4",
+
         mainBackground: "#F6F6F6",
+        grayBackground: "",
       },
       fontFamily: {
         sans: ["Pretendard-Regular"],

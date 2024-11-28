@@ -8,5 +8,10 @@
     "university": {
       "sju": "세종대학교"
     }
+  },
+  "action": {
+    "like": "공감",
+    "comment": "댓글",
+    "bookmark": "북마크"
   }
 }

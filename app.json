@@ -18,14 +18,17 @@
         }
       ],
       "expo-font",
-      "expo-localization"
+      "expo-localization",
+      "@react-native-firebase/app",
+      "@react-native-firebase/messaging"
     ],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.buddyya.app"
     },
     "android": {
-      "package": "com.buddyya.app"
+      "package": "com.buddyya.app",
+      "googleServicesFile": "./google-services.json"
     },
     "web": {
       "favicon": "./assets/favicon.png"

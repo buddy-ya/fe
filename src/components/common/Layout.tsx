@@ -4,6 +4,7 @@ import Header, { BackButton } from "./Header";
 
 interface LayoutProps {
   children: ReactNode;
+  className?: string;
   showHeader?: boolean;
   preserveHeader?: boolean;
   onBack?: () => void;
@@ -15,6 +16,7 @@ interface LayoutProps {
 
 export default function Layout({
   children,
+  className,
   showHeader,
   preserveHeader,
   onBack,
@@ -30,7 +32,7 @@ export default function Layout({
 
   return (
     <SafeAreaView
-      className={`flex-1 bg-white ${
+      className={`flex-1 ${className} bg-white ${
         hasTabBar ? `pb-[${TAB_BAR_HEIGHT}px]` : ""
       }`}
     >

@@ -55,7 +55,7 @@ export default function CategoryPager({
             label={t(category.label)}
             selected={activeIndex === index}
             onPress={() => handleChipPress(index)}
-            className="mr-2"
+            className="mr-2 bg-white"
           />
         ))}
       </ScrollView>

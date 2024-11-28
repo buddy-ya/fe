@@ -7,6 +7,7 @@ import {
   getRefreshToken,
   removeTokens,
 } from "@/utils/service/auth";
+import { useFCMToken } from "@/hooks/useFCMToken";
 
 export default function SplashScreen({ navigation }) {
   useEffect(() => {
@@ -33,6 +34,7 @@ export default function SplashScreen({ navigation }) {
 
   const initializeApp = async () => {
     try {
+      useFCMToken();
       const [accessToken] = await Promise.all([
         getAccessToken(),
         loadFonts(),

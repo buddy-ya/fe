@@ -8,5 +8,10 @@
     "university": {
       "sju": "Sejong"
     }
+  },
+  "action": {
+    "like": "like",
+    "comment": "comment",
+    "bookmark": "bookmark"
   }
 }

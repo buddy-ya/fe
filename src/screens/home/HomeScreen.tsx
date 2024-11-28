@@ -186,6 +186,7 @@ export default function HomeScreen({ navigation }) {
 
   return (
     <Layout
+      className="bg-black"
       hasTabBar={true}
       showHeader
       headerLeft={<LogoIcon width={27} height={30} />}

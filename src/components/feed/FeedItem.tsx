@@ -50,8 +50,31 @@ export default function FeedItem({
 
   const handleComment = (id: number) => {};
   const { t } = useTranslation("feed");
+
+  const actions = [
+    {
+      icon: ThumbsUp,
+      label: t("action.like"),
+      count: likeCount,
+      isActive: isLiked,
+      onPress: () => onLike(id),
+    },
+    {
+      icon: MessageSquare,
+      label: t("action.comment"),
+      count: commentCount,
+      onPress: () => handleComment(id),
+    },
+    {
+      icon: Bookmark,
+      label: t("action.bookmark"),
+      isActive: isBookmarked,
+      onPress: () => onBookmark(id),
+    },
+  ];
+
   const renderContent = () => (
-    <View className="mb-5 p-4 border-[0.3px] border-borderFeed rounded-[12px]">
+    <View className="mb-5 p-4 border-[0.3px] bg-white border-borderFeed rounded-[12px]">
       {/* Header */}
       <View className="flex-row justify-between items-center">
         <View className="flex-row items-center">
@@ -127,43 +150,27 @@ export default function FeedItem({
 
       {/* Actions */}
       <View className="flex-row items-center justify-between px-[12px] mt-7">
-        <TouchableOpacity
-          onPress={() => onLike(id)}
-          className="flex-row items-center"
-        >
-          <ThumbsUp
-            size={20}
-            color={isLiked ? "#00A176" : "#797979"}
-            fill={isLiked ? "#E3FFF7" : "transparent"}
-            strokeWidth={1}
-          />
-          <MyText size="text-sm" color="text-textDescription" className="ml-1">
-            공감 {likeCount > 0 && likeCount}
-          </MyText>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => handleComment(id)}
-          className="flex-row items-center"
-        >
-          <MessageSquare size={20} color="#797979" strokeWidth={1} />
-          <MyText size="text-sm" color="text-textDescription" className="ml-1">
-            댓글 {commentCount > 0 && commentCount}
-          </MyText>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => onBookmark(id)}
-          className="flex-row items-center"
-        >
-          <Bookmark
-            size={20}
-            color={isBookmarked ? "#00A176" : "#797979"}
-            fill={isBookmarked ? "#E3FFF7" : "transparent"}
-            strokeWidth={1}
-          />
-          <MyText size="text-sm" color="text-textDescription" className="ml-1">
-            북마크
-          </MyText>
-        </TouchableOpacity>
+        {actions.map(({ icon: Icon, label, count, isActive, onPress }) => (
+          <TouchableOpacity
+            key={label}
+            onPress={onPress}
+            className="flex-row items-center"
+          >
+            <Icon
+              size={20}
+              color={isActive ? "#00A176" : "#797979"}
+              fill={isActive ? "#E3FFF7" : "transparent"}
+              strokeWidth={1}
+            />
+            <MyText
+              size="text-sm"
+              color="text-textDescription"
+              className="ml-1 w-10"
+            >
+              {label} {count > 0 && count}
+            </MyText>
+          </TouchableOpacity>
+        ))}
       </View>
     </View>
   );

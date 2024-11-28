@@ -13,10 +13,9 @@ interface FeedListProps {
   hasMore: boolean;
   onLoadMore: () => void;
   refreshControl?: RefreshControlProps | null;
-  // MyPage에서 필요한 추가 props
-  emptyStateMessage?: string; // 데이터 없을 때 메시지
-  showBookmarkButton?: boolean; // 북마크 버튼 표시 여부
-  disableActions?: boolean; // 좋아요/북마크 액션 비활성화
+  emptyStateMessage?: string;
+  showBookmarkButton?: boolean;
+  disableActions?: boolean;
 }
 
 export default function FeedList({
