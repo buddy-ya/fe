@@ -237,6 +237,8 @@ export default function HomeScreen({ navigation }) {
         description={currentModalTexts?.description}
         cancelText={currentModalTexts?.cancelText}
         confirmText={currentModalTexts?.confirmText}
+        position="bottom"
+        size="default"
       />
     </Layout>
   );
