@@ -24,7 +24,12 @@ import MajorSelectScreen from "@/screens/onboarding/MajorSelectScreen";
 import InterestSelectScreen from "@/screens/onboarding/InterestSelectScreen";
 import CountrySelectScreen from "@/screens/onboarding/CountrySelectScreen";
 import { useTranslation } from "react-i18next";
-import { getTabScreenOptions, tabBarStyle, tabScreenOptions } from "./TabBar";
+import {
+  getTabScreenOptions,
+  tabBarStyle,
+  tabScreenOptions,
+  useTabBarAnimation,
+} from "./TabBar";
 import HomeScreen from "@/screens/home/HomeScreen";
 import FeedDetailScreen from "@/screens/home/FeedDetailScreen";
 import FeedWriteScreen from "@/screens/home/FeedWriteScreen";
@@ -143,23 +148,13 @@ function OnboardingNavigator() {
 }
 
 function FeedNavigator({ navigation, route }) {
-  const translateY = React.useRef(new Animated.Value(0)).current;
+  const { animateTabBar } = useTabBarAnimation();
 
   React.useLayoutEffect(() => {
     const routeName = getFocusedRouteNameFromRoute(route);
     const visible = routeName === "FeedHome" || routeName === undefined;
-
-    Animated.spring(translateY, {
-      toValue: visible ? 0 : 100,
-      useNativeDriver: true,
-      bounciness: 0,
-    }).start();
-
     navigation.setOptions({
-      tabBarStyle: {
-        ...tabBarStyle,
-        transform: [{ translateY }],
-      },
+      tabBarStyle: animateTabBar(visible),
     });
   }, [route]);
 
@@ -187,10 +182,15 @@ function FeedNavigator({ navigation, route }) {
 }
 
 function MyPageNavigator({ navigation, route }) {
+  const { animateTabBar } = useTabBarAnimation();
+
   React.useLayoutEffect(() => {
     const routeName = getFocusedRouteNameFromRoute(route);
     const visible = routeName === "MyPageHome" || routeName === undefined;
-  });
+    navigation.setOptions({
+      tabBarStyle: animateTabBar(visible),
+    });
+  }, [route]);
   return (
     <MyPageStack.Navigator screenOptions={{ headerShown: false }}>
       <MyPageStack.Screen name="MyPageHome" component={MyPageScreen} />

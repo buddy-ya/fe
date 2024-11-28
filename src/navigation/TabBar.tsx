@@ -20,7 +20,6 @@ const TAB_CONFIG = {
 
 export const tabBarStyle = StyleSheet.create({
   tabBar: {
-    position: "absolute",
     bottom: 0,
     left: 0,
     right: 0,
@@ -67,4 +66,27 @@ export const getTabScreenOptions = (routeName: keyof typeof TAB_CONFIG) => {
     ),
     tabBarLabel: translationKey,
   };
+};
+
+export const useTabBarAnimation = () => {
+  const translateY = React.useRef(new Animated.Value(0)).current;
+
+  const animateTabBar = (visible: boolean) => {
+    Animated.timing(translateY, {
+      toValue: visible ? 0 : 100,
+      duration: 200,
+      useNativeDriver: true,
+    }).start();
+
+    return {
+      ...tabBarStyle.tabBar,
+      transform: [
+        {
+          translateY: translateY,
+        },
+      ],
+    };
+  };
+
+  return { animateTabBar };
 };
