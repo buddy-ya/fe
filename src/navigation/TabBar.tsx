@@ -1,5 +1,7 @@
 import React from "react";
 import { Home, User, Users } from "lucide-react-native";
+import { BottomTabNavigationOptions } from "@react-navigation/bottom-tabs";
+import { Platform, StyleSheet, Animated } from "react-native";
 
 const TAB_CONFIG = {
   Home: {
@@ -16,23 +18,40 @@ const TAB_CONFIG = {
   },
 };
 
-export const tabScreenOptions = {
-  headerShown: false,
-  tabBarStyle: {
+export const tabBarStyle = StyleSheet.create({
+  tabBar: {
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    right: 0,
     paddingHorizontal: 10,
     height: 80,
     backgroundColor: "white",
     borderTopColor: "#E8E9EB",
     borderTopLeftRadius: 12,
     borderTopRightRadius: 12,
+    zIndex: 1,
   },
-  tabBarActiveTintColor: "#282828",
-  tabBarInactiveTintColor: "#797977",
-  tabBarLabelStyle: {
+  label: {
     fontSize: 12,
     fontFamily: "Pretendard-Medium",
     marginTop: -5,
   },
+  iconContainer: {
+    width: 24,
+    height: 24,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+});
+
+export const tabScreenOptions: BottomTabNavigationOptions = {
+  headerShown: false,
+  tabBarStyle: tabBarStyle.tabBar,
+  tabBarActiveTintColor: "#282828",
+  tabBarInactiveTintColor: "#797977",
+  tabBarLabelStyle: tabBarStyle.label,
+  tabBarIconStyle: tabBarStyle.iconContainer,
 };
 
 export const getTabScreenOptions = (routeName: keyof typeof TAB_CONFIG) => {

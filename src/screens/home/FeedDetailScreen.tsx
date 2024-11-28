@@ -143,13 +143,6 @@ export default function FeedDetailScreen({ navigation, route }) {
     },
   };
 
-  if (isLoading)
-    return (
-      <View>
-        <MyText>Loading..</MyText>
-      </View>
-    );
-
   return (
     <>
       <Layout

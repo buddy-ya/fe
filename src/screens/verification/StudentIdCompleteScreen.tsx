@@ -10,7 +10,7 @@ export default function StudentIdCardCompleteScreen({ navigation }) {
   const { t } = useTranslation("");
 
   const handleNavigationButton = () => {
-    navigation.popToTop(); // 또는 필요한 화면으로 이동
+    navigation.reset("Home");
   };
 
   return (

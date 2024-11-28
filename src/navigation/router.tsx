@@ -24,7 +24,7 @@ import MajorSelectScreen from "@/screens/onboarding/MajorSelectScreen";
 import InterestSelectScreen from "@/screens/onboarding/InterestSelectScreen";
 import CountrySelectScreen from "@/screens/onboarding/CountrySelectScreen";
 import { useTranslation } from "react-i18next";
-import { getTabScreenOptions, tabScreenOptions } from "./TabBar";
+import { getTabScreenOptions, tabBarStyle, tabScreenOptions } from "./TabBar";
 import HomeScreen from "@/screens/home/HomeScreen";
 import FeedDetailScreen from "@/screens/home/FeedDetailScreen";
 import FeedWriteScreen from "@/screens/home/FeedWriteScreen";
@@ -35,7 +35,7 @@ import StudentIdCardUploadScreen from "@/screens/verification/StudentIdUploadScr
 import StudentIdCardCompleteScreen from "@/screens/verification/StudentIdCompleteScreen";
 import BookmarkScreen from "@/screens/mypage/BookmarkScreen";
 import MyPostsScreen from "@/screens/mypage/MyPostsScreen";
-import ImageScreen from "@/screens/ImageScreen";
+import { Animated } from "react-native";
 
 export const navigationRef = createNavigationContainerRef();
 
@@ -53,25 +53,6 @@ const Tab = createBottomTabNavigator();
 const OnboardingStack = createNativeStackNavigator();
 const FeedStack = createNativeStackNavigator();
 const MyPageStack = createNativeStackNavigator();
-
-function MyPageNavigator({ navigation, route }) {
-  React.useLayoutEffect(() => {
-    const routeName = getFocusedRouteNameFromRoute(route);
-    if (routeName === "MyPage" || routeName === undefined) {
-      navigation.setOptions({ tabBarStyle: { display: "flex" } });
-    } else {
-      navigation.setOptions({ tabBarStyle: { display: "none" } });
-    }
-  });
-
-  return (
-    <MyPageStack.Navigator screenOptions={{ headerShown: false }}>
-      <MyPageStack.Screen name="MyPage" component={MyPageScreen} />
-      <MyPageStack.Screen name="Bookmark" component={BookmarkScreen} />
-      <MyPageStack.Screen name="MyPosts" component={MyPostsScreen} />
-    </MyPageStack.Navigator>
-  );
-}
 
 function TabNavigator() {
   const { t } = useTranslation("common");
@@ -162,14 +143,25 @@ function OnboardingNavigator() {
 }
 
 function FeedNavigator({ navigation, route }) {
+  const translateY = React.useRef(new Animated.Value(0)).current;
+
   React.useLayoutEffect(() => {
     const routeName = getFocusedRouteNameFromRoute(route);
-    if (routeName === "FeedHome" || routeName === undefined) {
-      navigation.setOptions({ tabBarStyle: { display: "flex" } });
-    } else {
-      navigation.setOptions({ tabBarStyle: { display: "none" } });
-    }
-  });
+    const visible = routeName === "FeedHome" || routeName === undefined;
+
+    Animated.spring(translateY, {
+      toValue: visible ? 0 : 100,
+      useNativeDriver: true,
+      bounciness: 0,
+    }).start();
+
+    navigation.setOptions({
+      tabBarStyle: {
+        ...tabBarStyle,
+        transform: [{ translateY }],
+      },
+    });
+  }, [route]);
 
   return (
     <FeedStack.Navigator screenOptions={{ headerShown: false }}>
@@ -194,6 +186,20 @@ function FeedNavigator({ navigation, route }) {
   );
 }
 
+function MyPageNavigator({ navigation, route }) {
+  React.useLayoutEffect(() => {
+    const routeName = getFocusedRouteNameFromRoute(route);
+    const visible = routeName === "MyPageHome" || routeName === undefined;
+  });
+  return (
+    <MyPageStack.Navigator screenOptions={{ headerShown: false }}>
+      <MyPageStack.Screen name="MyPageHome" component={MyPageScreen} />
+      <MyPageStack.Screen name="Bookmark" component={BookmarkScreen} />
+      <MyPageStack.Screen name="MyPosts" component={MyPostsScreen} />
+    </MyPageStack.Navigator>
+  );
+}
+
 export default function Router() {
   return (
     <NavigationContainer ref={navigationRef}>
@@ -202,8 +208,7 @@ export default function Router() {
       >
         <Stack.Screen name="Splash" component={SplashScreen} />
         <Stack.Screen name="Onboarding" component={OnboardingNavigator} />
-        <Stack.Screen name="Home" component={TabNavigator} />
-        <Stack.Screen name="Image" component={ImageScreen} />
+        <Stack.Screen name="Tab" component={TabNavigator} />
       </Stack.Navigator>
     </NavigationContainer>
   );

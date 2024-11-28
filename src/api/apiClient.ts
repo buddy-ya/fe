@@ -1,4 +1,5 @@
 import axios from "axios";
+import { Alert } from "react-native";
 import { BASE_URL } from "@env";
 import {
   getRefreshToken,
@@ -8,6 +9,7 @@ import {
 } from "@/utils/service/auth";
 import { resetToOnboarding } from "@/navigation/router";
 import { logError } from "@/utils/service/error";
+import i18n from "@/i18n";
 
 export const apiClient = axios.create({
   baseURL: BASE_URL,
@@ -21,6 +23,15 @@ const reissueTokens = async (refreshToken: string) => {
     headers: { "Content-Type": "application/json" },
   });
   return response.data;
+};
+
+const showErrorModal = (messageKey: string) => {
+  Alert.alert(
+    i18n.t("error:title"),
+    i18n.t(`error:${messageKey}`),
+    [{ text: i18n.t("common:confirm"), style: "default" }],
+    { cancelable: true }
+  );
 };
 
 apiClient.interceptors.request.use(
@@ -37,6 +48,11 @@ apiClient.interceptors.request.use(
 apiClient.interceptors.response.use(
   (response) => response,
   async (error) => {
+    if (!error.response) {
+      showErrorModal("network");
+      return Promise.reject(error);
+    }
+
     if (error.response?.status === 401 && !error.config._retry) {
       error.config._retry = true;
       try {
@@ -55,11 +71,42 @@ apiClient.interceptors.response.use(
       } catch (reissueError) {
         await removeTokens();
         resetToOnboarding();
-        logError(reissueError);
+        showErrorModal("tokenExpired");
         return Promise.reject(reissueError);
       }
     }
-    logError(error);
+
+    const serverErrorMessage = error.response.data?.message;
+    if (serverErrorMessage) {
+      Alert.alert(
+        i18n.t("error:title"),
+        serverErrorMessage,
+        [{ text: i18n.t("common:confirm"), style: "default" }],
+        { cancelable: true }
+      );
+      return Promise.reject(error);
+    }
+
+    switch (error.response.status) {
+      case 403:
+        showErrorModal("forbidden");
+        break;
+      case 404:
+        showErrorModal("notFound");
+        break;
+      case 500:
+        showErrorModal("server");
+        break;
+      default:
+        showErrorModal("default");
+    }
+
+    if (__DEV__) {
+      logError(error);
+    }
+
     return Promise.reject(error);
   }
 );
+
+export default apiClient;

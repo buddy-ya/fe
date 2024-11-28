@@ -47,7 +47,7 @@ export default function InterestSelectScreen({ navigation }) {
       await saveTokens(data.accessToken, data.refreshToken);
       navigation.reset({
         index: 0,
-        routes: [{ name: "Home" }],
+        routes: [{ name: "Tab" }],
       });
     } catch (error) {
       logError(error);

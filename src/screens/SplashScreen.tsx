@@ -39,13 +39,12 @@ export default function SplashScreen({ navigation }) {
         new Promise((resolve) => setTimeout(resolve, 1000)),
       ]);
       if (accessToken) {
-        navigation.navigate("Home");
+        navigation.navigate("Tab");
       } else {
         navigation.navigate("Onboarding", {
           screen: "OnboardingWelcome",
         });
       }
-      navigation.navigate("Image");
     } catch (error) {
       console.error("App initialization failed:", error);
     }

@@ -20,6 +20,8 @@ import ko_certification from "./ko/certification.json";
 import en_certification from "./en/certification.json";
 import ko_mypage from "./ko/mypage.json";
 import en_mypage from "./ko/mypage.json";
+import ko_error from "./ko/error.json";
+import en_error from "./en/error.json";
 
 const resources = {
   ko: {
@@ -32,6 +34,7 @@ const resources = {
     feed: ko_feed,
     certification: ko_certification,
     mypage: ko_mypage,
+    error: ko_error,
   },
   en: {
     onboarding: en_onboarding,
@@ -43,6 +46,7 @@ const resources = {
     feed: en_feed,
     certification: en_certification,
     mypage: en_mypage,
+    error: en_error,
   },
 };
 
