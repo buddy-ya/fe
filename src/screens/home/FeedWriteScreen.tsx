@@ -1,11 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   View,
   TouchableOpacity,
   TextInput,
   ScrollView,
-  Platform,
-  Keyboard,
   Alert,
 } from "react-native";
 import { X, ChevronDown, Camera, ImagePlus } from "lucide-react-native";
@@ -14,16 +12,12 @@ import Layout from "@/components/common/Layout";
 import MyText from "@/components/common/MyText";
 import BottomModal from "@/components/common/BottomModal";
 import { useModal } from "@/hooks/useModal";
-import { CATEGORIES, CategoryID } from "@/utils/constants/categories";
+import { CATEGORIES } from "@/utils/constants/categories";
 import KeyboardLayout from "@/components/common/KeyboardLayout";
 import { CategorySelectModal } from "@/components/feed/CategorySelectModal";
 import { ImagePreview } from "@/components/feed/ImagePreview";
 import InnerLayout from "@/components/common/InnerLayout";
-import { createFeed } from "@/api/feed/crud";
-
-interface FeedWriteScreenProps {
-  navigation: any;
-}
+import { createFeed, updateFeed } from "@/api/feed/feedAction";
 
 interface ImageFile {
   uri: string;
@@ -35,13 +29,25 @@ const FILTERED_CATEGORIES = CATEGORIES.filter(
   (category) => category.id !== "popular"
 );
 
-export default function FeedWriteScreen({ navigation }: FeedWriteScreenProps) {
+export default function FeedWriteScreen({ navigation, route }) {
+  const feed = route.params?.feed;
+  const isEdit = route.params?.isEdit;
+
   const [selectedCategory, setSelectedCategory] = useState(
-    FILTERED_CATEGORIES[0]
+    feed
+      ? FILTERED_CATEGORIES.find((c) => c.id === feed.category) ||
+          FILTERED_CATEGORIES[0]
+      : FILTERED_CATEGORIES[0]
   );
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
-  const [images, setImages] = useState<ImageFile[]>([]);
+  const [title, setTitle] = useState(feed?.title || "");
+  const [content, setContent] = useState(feed?.content || "");
+  const [images, setImages] = useState<ImageFile[]>(
+    feed?.imageUrls?.map((uri) => ({
+      uri,
+      type: "image/jpeg",
+      fileName: uri.split("/").pop() || "image.jpg",
+    })) || []
+  );
   const [isLoading, setIsLoading] = useState(false);
 
   const categoryModal = useModal();
@@ -49,23 +55,6 @@ export default function FeedWriteScreen({ navigation }: FeedWriteScreenProps) {
   const handleCategorySelect = (category: (typeof CATEGORIES)[0]) => {
     setSelectedCategory(category);
     categoryModal.closeModal();
-  };
-
-  const handleOpenCategoryModal = () => {
-    const options = FILTERED_CATEGORIES.map((category) => ({
-      label: `${category.icon} ${category.label}`,
-      onPress: () => handleCategorySelect(category),
-      color:
-        category.id === selectedCategory.id ? "text-textActive" : "#797979",
-      icon:
-        category.id === selectedCategory.id ? (
-          <View className="w-4 h-4 rounded-full bg-primary" />
-        ) : (
-          <View className="w-4 h-4 rounded-full border border-gray-300" />
-        ),
-    }));
-
-    categoryModal.openModal(options);
   };
 
   const pickImage = async () => {
@@ -134,6 +123,23 @@ export default function FeedWriteScreen({ navigation }: FeedWriteScreenProps) {
     }
   };
 
+  const handleOpenCategoryModal = () => {
+    const options = FILTERED_CATEGORIES.map((category) => ({
+      label: `${category.icon} ${category.label}`,
+      onPress: () => handleCategorySelect(category),
+      color:
+        category.id === selectedCategory.id ? "text-textActive" : "#797979",
+      icon:
+        category.id === selectedCategory.id ? (
+          <View className="w-4 h-4 rounded-full bg-primary" />
+        ) : (
+          <View className="w-4 h-4 rounded-full border border-gray-300" />
+        ),
+    }));
+
+    categoryModal.openModal(options);
+  };
+
   const removeImage = (index: number) => {
     setImages((prev) => prev.filter((_, i) => i !== index));
   };
@@ -151,22 +157,30 @@ export default function FeedWriteScreen({ navigation }: FeedWriteScreenProps) {
 
     try {
       setIsLoading(true);
-      await createFeed(
-        title.trim(),
-        content.trim(),
-        selectedCategory.id,
-        images
-      );
-
-      Alert.alert("알림", "게시물이 등록되었습니다.", [
-        {
-          text: "확인",
-          onPress: () => navigation.goBack(),
-        },
-      ]);
+      if (isEdit && feed) {
+        await updateFeed(feed.id, {
+          title: title.trim(),
+          content: content.trim(),
+          category: selectedCategory.id,
+          images,
+        });
+        Alert.alert("알림", "게시물이 수정되었습니다.", [
+          { text: "확인", onPress: () => navigation.goBack() },
+        ]);
+      } else {
+        await createFeed({
+          title: title.trim(),
+          content: content.trim(),
+          category: selectedCategory.id,
+          images,
+        });
+        Alert.alert("알림", "게시물이 등록되었습니다.", [
+          { text: "확인", onPress: () => navigation.goBack() },
+        ]);
+      }
     } catch (error) {
       console.error("Upload Error:", error);
-      Alert.alert("오류", "게시물 등록에 실패했습니다. 다시 시도해주세요.");
+      Alert.alert("오류", `게시물 ${isEdit ? "수정" : "등록"}에 실패했습니다.`);
     } finally {
       setIsLoading(false);
     }
@@ -186,7 +200,7 @@ export default function FeedWriteScreen({ navigation }: FeedWriteScreenProps) {
           className="flex-row items-center"
         >
           <MyText size="text-xl" className="mr-[2px] font-semibold">
-            {selectedCategory.label}
+            {selectedCategory.icon} {selectedCategory.label}
           </MyText>
           <ChevronDown size={24} color="#282828" />
         </TouchableOpacity>
@@ -199,7 +213,7 @@ export default function FeedWriteScreen({ navigation }: FeedWriteScreenProps) {
           onPress={handleUpload}
           disabled={isLoading}
         >
-          <MyText color="text-white">{isLoading ? "게시중..." : "게시"}</MyText>
+          <MyText color="text-white">{isLoading ? "처리중..." : "게시"}</MyText>
         </TouchableOpacity>
       }
     >

@@ -6,10 +6,10 @@ import Heading from "@/components/onboarding/Heading";
 import HeadingDescription from "@/components/onboarding/HeadingDescription";
 import Button from "@/components/common/Button";
 
-export default function StudentIdCompleteScreen({ navigation }) {
-  const { t } = useTranslation("onboarding");
+export default function StudentIdCardCompleteScreen({ navigation }) {
+  const { t } = useTranslation("");
 
-  const handleComplete = () => {
+  const handleNavigationButton = () => {
     navigation.popToTop(); // 또는 필요한 화면으로 이동
   };
 
@@ -19,13 +19,12 @@ export default function StudentIdCompleteScreen({ navigation }) {
         <Heading>{t("studentIdComplete.title")}</Heading>
         <HeadingDescription>
           {t("studentIdComplete.description1")}
-          {"\n"}
           {t("studentIdComplete.description2")}
         </HeadingDescription>
 
         <View className="flex-1" />
 
-        <Button onPress={handleComplete} className="mb-8">
+        <Button onPress={handleNavigationButton}>
           {t("studentIdComplete.complete")}
         </Button>
       </View>

@@ -2,7 +2,11 @@ import React, { useEffect } from "react";
 import { View, Text, ActivityIndicator, Image } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as Font from "expo-font";
-import { getAccessToken } from "@/utils/service/auth";
+import {
+  getAccessToken,
+  getRefreshToken,
+  removeTokens,
+} from "@/utils/service/auth";
 
 export default function SplashScreen({ navigation }) {
   useEffect(() => {
@@ -41,6 +45,7 @@ export default function SplashScreen({ navigation }) {
           screen: "OnboardingWelcome",
         });
       }
+      navigation.navigate("Image");
     } catch (error) {
       console.error("App initialization failed:", error);
     }

@@ -1,4 +1,3 @@
-// navigation/router.tsx
 import React from "react";
 import {
   createNavigationContainerRef,
@@ -32,8 +31,11 @@ import FeedWriteScreen from "@/screens/home/FeedWriteScreen";
 import EmailScreen from "@/screens/verification/EmailScreen";
 import EmailVerificationScreen from "@/screens/verification/EmailVerificationScreen";
 import EmailCompleteScreen from "@/screens/verification/EmailCompleteScreen";
-import StudentIdUploadScreen from "@/screens/verification/StudentIdUploadScreen";
-import StudentIdCompleteScreen from "@/screens/verification/StudentIdCompleteScreen";
+import StudentIdCardUploadScreen from "@/screens/verification/StudentIdUploadScreen";
+import StudentIdCardCompleteScreen from "@/screens/verification/StudentIdCompleteScreen";
+import BookmarkScreen from "@/screens/mypage/BookmarkScreen";
+import MyPostsScreen from "@/screens/mypage/MyPostsScreen";
+import ImageScreen from "@/screens/ImageScreen";
 
 export const navigationRef = createNavigationContainerRef();
 
@@ -50,6 +52,26 @@ const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 const OnboardingStack = createNativeStackNavigator();
 const FeedStack = createNativeStackNavigator();
+const MyPageStack = createNativeStackNavigator();
+
+function MyPageNavigator({ navigation, route }) {
+  React.useLayoutEffect(() => {
+    const routeName = getFocusedRouteNameFromRoute(route);
+    if (routeName === "MyPage" || routeName === undefined) {
+      navigation.setOptions({ tabBarStyle: { display: "flex" } });
+    } else {
+      navigation.setOptions({ tabBarStyle: { display: "none" } });
+    }
+  });
+
+  return (
+    <MyPageStack.Navigator screenOptions={{ headerShown: false }}>
+      <MyPageStack.Screen name="MyPage" component={MyPageScreen} />
+      <MyPageStack.Screen name="Bookmark" component={BookmarkScreen} />
+      <MyPageStack.Screen name="MyPosts" component={MyPostsScreen} />
+    </MyPageStack.Navigator>
+  );
+}
 
 function TabNavigator() {
   const { t } = useTranslation("common");
@@ -57,7 +79,7 @@ function TabNavigator() {
   return (
     <Tab.Navigator screenOptions={tabScreenOptions}>
       <Tab.Screen
-        name="Home"
+        name="FeedTab"
         component={FeedNavigator}
         options={() => ({
           ...getTabScreenOptions("Home"),
@@ -74,7 +96,7 @@ function TabNavigator() {
       />
       <Tab.Screen
         name="MyPage"
-        component={MyPageScreen}
+        component={MyPageNavigator}
         options={() => ({
           ...getTabScreenOptions("MyPage"),
           tabBarLabel: t("tab.my"),
@@ -86,7 +108,9 @@ function TabNavigator() {
 
 function OnboardingNavigator() {
   return (
-    <OnboardingStack.Navigator screenOptions={{ headerShown: false }}>
+    <OnboardingStack.Navigator
+      screenOptions={{ headerShown: false, gestureEnabled: false }}
+    >
       <OnboardingStack.Screen
         name="OnboardingWelcome"
         component={WelcomeScreen}
@@ -140,12 +164,13 @@ function OnboardingNavigator() {
 function FeedNavigator({ navigation, route }) {
   React.useLayoutEffect(() => {
     const routeName = getFocusedRouteNameFromRoute(route);
-    if (routeName == "FeedHome" || routeName == undefined) {
+    if (routeName === "FeedHome" || routeName === undefined) {
       navigation.setOptions({ tabBarStyle: { display: "flex" } });
     } else {
       navigation.setOptions({ tabBarStyle: { display: "none" } });
     }
   });
+
   return (
     <FeedStack.Navigator screenOptions={{ headerShown: false }}>
       <FeedStack.Screen name="FeedHome" component={HomeScreen} />
@@ -159,11 +184,11 @@ function FeedNavigator({ navigation, route }) {
       <FeedStack.Screen name="EmailComplete" component={EmailCompleteScreen} />
       <FeedStack.Screen
         name="StudentIdVerification"
-        component={StudentIdUploadScreen}
+        component={StudentIdCardUploadScreen}
       />
       <FeedStack.Screen
         name="StudentIdComplete"
-        component={StudentIdCompleteScreen}
+        component={StudentIdCardCompleteScreen}
       />
     </FeedStack.Navigator>
   );
@@ -178,6 +203,7 @@ export default function Router() {
         <Stack.Screen name="Splash" component={SplashScreen} />
         <Stack.Screen name="Onboarding" component={OnboardingNavigator} />
         <Stack.Screen name="Home" component={TabNavigator} />
+        <Stack.Screen name="Image" component={ImageScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -18,6 +18,8 @@ import ko_feed from "./ko/feed.json";
 import en_feed from "./en/feed.json";
 import ko_certification from "./ko/certification.json";
 import en_certification from "./en/certification.json";
+import ko_mypage from "./ko/mypage.json";
+import en_mypage from "./ko/mypage.json";
 
 const resources = {
   ko: {
@@ -29,6 +31,7 @@ const resources = {
     common: ko_common,
     feed: ko_feed,
     certification: ko_certification,
+    mypage: ko_mypage,
   },
   en: {
     onboarding: en_onboarding,
@@ -39,6 +42,7 @@ const resources = {
     common: en_common,
     feed: en_feed,
     certification: en_certification,
+    mypage: en_mypage,
   },
 };
 

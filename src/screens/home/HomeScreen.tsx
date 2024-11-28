@@ -131,8 +131,8 @@ export default function HomeScreen({ navigation }) {
         await getIsCertificated();
 
       isCertificated = false;
-      isKorean = false;
-
+      isKorean = true;
+      isStudentIdCardRequested = false;
       if (isCertificated) {
         navigation.navigate("FeedWrite");
         return;

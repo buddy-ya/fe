@@ -41,12 +41,7 @@ export default function NotificationScreen({ navigation, route }) {
   };
 
   return (
-    <Layout
-      showHeader
-      onBack={() => {
-        navigation.goBack();
-      }}
-    >
+    <Layout preserveHeader>
       <InnerLayout>
         <Heading>{t("notification.title")}</Heading>
         <HeadingDescription>{t("notification.description")}</HeadingDescription>

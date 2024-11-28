@@ -19,6 +19,7 @@ import {
 import { logError } from "@/utils/service/error";
 import MyText from "@/components/common/MyText";
 import { toggleBookmark, toggleLike } from "@/api/feed/getFeeds";
+import { deleteFeed } from "@/api/feed/feedAction";
 
 export default function FeedDetailScreen({ navigation, route }) {
   const { feedId } = route.params;
@@ -74,8 +75,16 @@ export default function FeedDetailScreen({ navigation, route }) {
     showOptions: () => {
       const options = feed?.isFeedOwner
         ? [
-            createModalOptions.edit(() => console.log("edit feed")),
-            createModalOptions.delete(() => feedModal.closeModal()),
+            createModalOptions.edit(() =>
+              navigation.navigate("FeedWrite", {
+                feed,
+                isEdit: true,
+              })
+            ),
+            createModalOptions.delete(() => {
+              deleteFeed(feedId);
+              feedModal.closeModal();
+            }),
             createModalOptions.cancel(feedModal.closeModal),
           ]
         : [createModalOptions.cancel(feedModal.closeModal)];

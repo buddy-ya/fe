@@ -46,58 +46,57 @@ export default function CommentList({
   const { t } = useTranslation("feed");
   return (
     <View className="mt-1">
-      {comments.length &&
-        comments.map((item) => (
-          <View
-            key={item.id}
-            className="mb-0 px-4 py-3 border-b border-borderBottom"
-          >
-            <View className="flex-row justify-between items-start mb-2">
-              <View className="flex-row">
-                <View className="w-10 h-10 bg-gray-200 rounded-[8] mr-2">
-                  <Image className="w-10 h-10 rounded-[12px]" />
-                </View>
-                <View>
-                  <View className="flex-row items-center">
-                    <MyText
-                      size="text-sm"
-                      className="font-semibold text-textDescription"
-                    >
-                      {t(`profile.university.${item.university}`)}
-                    </MyText>
-                    <MyText
-                      size="text-sm"
-                      color="text-textLight"
-                      className="ml-3 tracking-tight"
-                    >
-                      {getTimeAgo(item.createdDate)}
-                    </MyText>
-                  </View>
-                  <View className="flex-row items-center">
-                    <MyText size="text-sm" color="text-textDescription">
-                      {item.name}
-                    </MyText>
-                    <MyText size="text-sm" className="ml-[3px]">
-                      {getCountryFlag(item.country as any)}
-                    </MyText>
-                    <CommentLabel
-                      isFeedOwner={item.isFeedOwner}
-                      isCommentOwner={item.isCommentOwner}
-                    />
-                  </View>
-                  <MyText className="mt-2">{item.content}</MyText>
-                </View>
+      {comments?.map((item) => (
+        <View
+          key={item.id}
+          className="mb-0 px-4 py-3 border-b border-borderBottom"
+        >
+          <View className="flex-row justify-between items-start mb-2">
+            <View className="flex-row">
+              <View className="w-10 h-10 bg-gray-200 rounded-[8] mr-2">
+                <Image className="w-10 h-10 rounded-[12px]" />
               </View>
-              <View className="flex-row items-center">
-                {item.isCommentOwner && (
-                  <TouchableOpacity onPress={() => onCommentOptions(item)}>
-                    <MoreVertical size={20} color="#797977" />
-                  </TouchableOpacity>
-                )}
+              <View>
+                <View className="flex-row items-center">
+                  <MyText
+                    size="text-sm"
+                    className="font-semibold text-textDescription"
+                  >
+                    {t(`profile.university.${item.university}`)}
+                  </MyText>
+                  <MyText
+                    size="text-sm"
+                    color="text-textLight"
+                    className="ml-3 tracking-tight"
+                  >
+                    {getTimeAgo(item.createdDate)}
+                  </MyText>
+                </View>
+                <View className="flex-row items-center">
+                  <MyText size="text-sm" color="text-textDescription">
+                    {item.name}
+                  </MyText>
+                  <MyText size="text-sm" className="ml-[3px]">
+                    {getCountryFlag(item.country as any)}
+                  </MyText>
+                  <CommentLabel
+                    isFeedOwner={item.isFeedOwner}
+                    isCommentOwner={item.isCommentOwner}
+                  />
+                </View>
+                <MyText className="mt-2">{item.content}</MyText>
               </View>
             </View>
+            <View className="flex-row items-center">
+              {item.isCommentOwner && (
+                <TouchableOpacity onPress={() => onCommentOptions(item)}>
+                  <MoreVertical size={20} color="#797977" />
+                </TouchableOpacity>
+              )}
+            </View>
           </View>
-        ))}
+        </View>
+      ))}
     </View>
   );
 }

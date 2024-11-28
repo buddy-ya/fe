@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, TouchableOpacity, Image } from "react-native";
+import { View, TouchableOpacity, Image, Platform } from "react-native";
 import { useTranslation } from "react-i18next";
 import * as ImagePicker from "expo-image-picker";
 import Layout from "@/components/common/Layout";
@@ -9,27 +9,27 @@ import { Plus } from "lucide-react-native";
 import { logError } from "@/utils/service/error";
 import Button from "@/components/common/Button";
 import MyText from "@/components/common/MyText";
+import InnerLayout from "@/components/common/InnerLayout";
+import { postStudentIdVerification } from "@/api/certification/certification";
+import { getAccessToken, getRefreshToken } from "@/utils/service/auth";
 
-export default function StudentIdUploadScreen({ navigation }) {
-  const { t } = useTranslation("onboarding");
+export default function StudentIdCardUploadScreen({ navigation }) {
+  const { t } = useTranslation("certification");
   const [selectedImage, setSelectedImage] =
     useState<ImagePicker.ImagePickerAsset | null>(null);
 
   const handleImagePick = async () => {
     try {
-      // 권한 요청
       const { status } =
         await ImagePicker.requestMediaLibraryPermissionsAsync();
       if (status !== "granted") {
-        alert("이미지를 선택하기 위해서는 갤러리 접근 권한이 필요합니다.");
+        alert(t("studentId.permission.gallery"));
         return;
       }
 
       const result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
-        allowsEditing: true,
         quality: 1,
-        aspect: [3, 4],
       });
 
       if (!result.canceled) {
@@ -44,37 +44,32 @@ export default function StudentIdUploadScreen({ navigation }) {
     try {
       if (!selectedImage) return;
 
-      const formData = new FormData();
-      formData.append("image", {
-        uri: selectedImage.uri,
-        type: "image/jpeg",
-        name: "studentId.jpg",
-      } as any);
+      await postStudentIdVerification({
+        selectedImage,
+      });
 
-      // API call here
-      // await postStudentIdVerification(formData);
-
-      navigation.navigate("OnboardingNextScreen");
+      navigation.navigate("StudentIdComplete");
     } catch (error) {
       logError(error);
+      alert(t("studentId.error.upload"));
     }
   };
 
   return (
     <Layout showHeader onBack={() => navigation.goBack()}>
-      <View className="flex-1 px-5">
+      <InnerLayout>
         <Heading>{t("studentId.title")}</Heading>
         <HeadingDescription>{t("studentId.description")}</HeadingDescription>
 
         <View className="flex-1 justify-center items-center">
           <TouchableOpacity
             onPress={handleImagePick}
-            className="w-[280px] h-[500px] rounded-3xl border-2 border-dashed border-border justify-center items-center bg-background"
+            className="mb-10 w-[180px] h-[320px] rounded-[12px] border-[1px] border-border justify-center items-center bg-background"
           >
             {selectedImage ? (
               <Image
                 source={{ uri: selectedImage.uri }}
-                className="w-full h-full rounded-3xl"
+                className="w-full h-full rounded-[6px]"
                 resizeMode="cover"
               />
             ) : (
@@ -83,21 +78,16 @@ export default function StudentIdUploadScreen({ navigation }) {
                   <Plus size={24} color="white" />
                 </View>
                 <MyText color="text-textDescription">
-                  {t("studentId.selectImage")}
+                  {t("studentId.select")}
                 </MyText>
               </View>
             )}
           </TouchableOpacity>
         </View>
-
-        <Button
-          onPress={handleSubmit}
-          disabled={!selectedImage}
-          className="mb-8"
-        >
-          {t("studentId.submit")}
+        <Button onPress={handleSubmit} disabled={!selectedImage}>
+          <MyText color="text-white">{t("studentId.submit")}</MyText>
         </Button>
-      </View>
+      </InnerLayout>
     </Layout>
   );
 }

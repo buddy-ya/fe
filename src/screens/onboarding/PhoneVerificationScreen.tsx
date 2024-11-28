@@ -60,7 +60,7 @@ export default function PhoneVerificationScreen({ navigation, route }) {
         await saveTokens(data.accessToken, data.refreshToken);
       }
 
-      navigation.navigate("OnboardingNotification", {
+      navigation.replace("OnboardingNotification", {
         isExistingMember: data.status === "EXISTING_MEMBER",
       });
     } catch (error) {

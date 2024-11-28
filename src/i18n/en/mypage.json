@@ -1,0 +1,24 @@
+{
+  "title": "Settings",
+  "profile": {
+    "editProfile": "Edit Profile"
+  },
+  "bookmark": "Bookmark",
+  "myPosts": "My Posts",
+  "settings": "Settings",
+  "quickMenu": {
+    "bookmark": "Bookmark",
+    "myPosts": "My Posts",
+    "settings": "Settings"
+  },
+  "menuItems": {
+    "title": "Settings Layout",
+    "bookmark": "Bookmark",
+    "myPosts": "My Posts",
+    "notifications": "Notifications",
+    "language": "Language",
+    "privacy": "Privacy",
+    "terms": "Terms of Service",
+    "version": "App Version"
+  }
+}

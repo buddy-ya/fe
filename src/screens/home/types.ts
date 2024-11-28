@@ -40,3 +40,9 @@ export interface ModalOption {
   color?: string;
   icon?: ReactNode;
 }
+
+export interface ImageFile {
+  uri: string;
+  type?: string;
+  fileName?: string;
+}

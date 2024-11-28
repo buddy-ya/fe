@@ -14,10 +14,13 @@
     }
   },
   "studentId": {
-    "title": "Please prove you are a student.",
-    "description": "Please upload your captured mobile student ID.",
-    "uploadButton": "Select Student ID Image",
-    "submitButton": "Apply for certification"
+    "title": "Please upload your captured mobile student ID.",
+    "description": "The image is discarded immediately after the subscription is approved.",
+    "select": "Select image",
+    "submit": "Apply for certification",
+    "permission": {
+      "gallery": "Gallery permission is required to select images."
+    }
   },
   "email": {
     "title": "Please verify with your school email.",

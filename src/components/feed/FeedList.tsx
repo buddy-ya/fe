@@ -2,6 +2,7 @@ import React from "react";
 import { FlatList, RefreshControl, RefreshControlProps } from "react-native";
 import FeedItem from "./FeedItem";
 import { Feed } from "@/screens/home/types";
+import EmptyState from "@/components/common/EmptyState"; // 필요한 경우 생성
 
 interface FeedListProps {
   feeds: Feed[];
@@ -12,6 +13,10 @@ interface FeedListProps {
   hasMore: boolean;
   onLoadMore: () => void;
   refreshControl?: RefreshControlProps | null;
+  // MyPage에서 필요한 추가 props
+  emptyStateMessage?: string; // 데이터 없을 때 메시지
+  showBookmarkButton?: boolean; // 북마크 버튼 표시 여부
+  disableActions?: boolean; // 좋아요/북마크 액션 비활성화
 }
 
 export default function FeedList({
@@ -22,15 +27,24 @@ export default function FeedList({
   onLoadMore,
   refreshControl,
   hasMore,
+  emptyStateMessage,
+  showBookmarkButton = true, // 기본값은 true로 설정
+  disableActions = false,
 }: FeedListProps) {
+  if (feeds.length === 0) {
+    return <EmptyState message={emptyStateMessage || "게시글이 없습니다"} />;
+  }
+
   return (
     <FlatList
       data={feeds}
       renderItem={({ item }) => (
         <FeedItem
           feed={item}
-          onLike={onLike}
-          onBookmark={onBookmark}
+          onLike={disableActions ? undefined : onLike}
+          onBookmark={
+            disableActions || !showBookmarkButton ? undefined : onBookmark
+          }
           onPress={onPress}
         />
       )}

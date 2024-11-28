@@ -11,9 +11,6 @@ import { logError } from "@/utils/service/error";
 
 export const apiClient = axios.create({
   baseURL: BASE_URL,
-  headers: {
-    "Content-Type": "application/json",
-  },
 });
 
 const reissueTokens = async (refreshToken: string) => {
