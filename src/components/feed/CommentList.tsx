@@ -45,16 +45,19 @@ export default function CommentList({
 }: CommentListProps) {
   const { t } = useTranslation("feed");
   return (
-    <View className="mt-1">
+    <View className="mt-">
       {comments?.map((item) => (
         <View
           key={item.id}
-          className="mb-0 px-4 py-3 border-b border-borderBottom"
+          className="mb-0 px-4 py-3 border-b border-borderBottom bg-white"
         >
           <View className="flex-row justify-between items-start mb-2">
             <View className="flex-row">
-              <View className="w-10 h-10 bg-gray-200 rounded-[8] mr-2">
-                <Image className="w-10 h-10 rounded-[12px]" />
+              <View className="mr-2">
+                <Image
+                  className="w-9 h-9 rounded-[12px]"
+                  source={{ uri: item.profileImageUrl }}
+                />
               </View>
               <View>
                 <View className="flex-row items-center">

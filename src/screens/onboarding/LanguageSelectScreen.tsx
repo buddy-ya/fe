@@ -16,8 +16,11 @@ interface Language {
   id: string;
 }
 
-export default function LanguageSelectScreen({ navigation }) {
-  const [selectedLanguages, setSelectedLanguages] = useState<Language[]>([]);
+export default function LanguageSelectScreen({ navigation, route }) {
+  const { mode, initialLanguages, onComplete } = route.params || {};
+  const [selectedLanguages, setSelectedLanguages] = useState<Language[]>(
+    initialLanguages?.map((id) => ({ id })) || []
+  );
   const [searchQuery, setSearchQuery] = useState("");
   const { t } = useTranslation("onboarding");
   const { updateOnboardingData } = useOnboardingStore();
@@ -40,10 +43,13 @@ export default function LanguageSelectScreen({ navigation }) {
   );
 
   const handleNavigateButton = () => {
-    updateOnboardingData({
-      languages: selectedLanguages.map((lang) => lang.id),
-    });
-    navigation.navigate("OnboardingMajorSelect");
+    const languages = selectedLanguages.map((lang) => lang.id);
+    if (mode === "edit") {
+      onComplete?.(languages);
+    } else {
+      updateOnboardingData({ languages });
+      navigation.navigate("OnboardingMajorSelect");
+    }
   };
 
   return (

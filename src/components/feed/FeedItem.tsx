@@ -42,6 +42,7 @@ export default function FeedItem({
     title,
     content,
     imageUrls,
+    profileImageUrl,
     likeCount,
     commentCount,
     isLiked,
@@ -80,7 +81,12 @@ export default function FeedItem({
       {/* Header */}
       <View className="flex-row justify-between items-cente">
         <View className="flex-row items-center">
-          <View className="w-[40px] h-[40px] bg-gray-200 rounded-[12px] mr-3"></View>
+          <View className=" mr-3">
+            <Image
+              className="w-[40px] h-[40px] rounded-[12px]"
+              source={{ uri: profileImageUrl }}
+            />
+          </View>
           <View>
             <MyText
               size="text-sm"

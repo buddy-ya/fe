@@ -41,6 +41,7 @@ import StudentIdCardCompleteScreen from "@/screens/verification/StudentIdComplet
 import BookmarkScreen from "@/screens/mypage/BookmarkScreen";
 import MyPostsScreen from "@/screens/mypage/MyPostsScreen";
 import MyProfileScreen from "@/screens/mypage/MyProfileScreen";
+import EditProfileImageScreen from "@/screens/mypage/EditProfileImageScreen";
 
 export const navigationRef = createNavigationContainerRef();
 
@@ -207,6 +208,19 @@ function MyPageNavigator({ navigation, route }) {
     <MyPageStack.Navigator screenOptions={{ headerShown: false }}>
       <MyPageStack.Screen name="MyPageHome" component={MyPageScreen} />
       <MyPageStack.Screen name="MyProfile" component={MyProfileScreen} />
+      <MyPageStack.Screen
+        name="EditProfileImage"
+        component={EditProfileImageScreen}
+      />
+      <MyPageStack.Screen name="EditName" component={NameScreen} />
+      <MyPageStack.Screen
+        name="EditLanguage"
+        component={LanguageSelectScreen}
+      />
+      <MyPageStack.Screen
+        name="EditInterest"
+        component={InterestSelectScreen}
+      />
       <MyPageStack.Screen name="Bookmark" component={BookmarkScreen} />
       <MyPageStack.Screen name="MyPosts" component={MyPostsScreen} />
     </MyPageStack.Navigator>

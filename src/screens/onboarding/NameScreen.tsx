@@ -16,7 +16,8 @@ import MyText from "@/components/common/MyText";
 const MIN_NAME_LENGTH = 2;
 const MAX_NAME_LENGTH = 15;
 
-export default function NameScreen({ navigation }) {
+export default function NameScreen({ navigation, route }) {
+  const { mode, onComplete } = route.params || {};
   const [name, setName] = useState("");
   const [isNonEnglish, setIsNonEnglish] = useState(false);
   const { t } = useTranslation("onboarding");
@@ -39,10 +40,12 @@ export default function NameScreen({ navigation }) {
   const isWarning = isNonEnglish || isInvalidLength;
 
   const handleNavigation = () => {
-    updateOnboardingData({
-      name: name.trim(),
-    });
-    navigation.navigate("OnboardingCountrySelect");
+    if (mode === "edit") {
+      onComplete?.(name.trim());
+    } else {
+      updateOnboardingData({ name: name.trim() });
+      navigation.navigate("OnboardingCountrySelect");
+    }
   };
 
   const footer = (

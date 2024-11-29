@@ -186,7 +186,7 @@ export default function HomeScreen({ navigation }) {
       className="bg-gray-500"
       hasTabBar={true}
       showHeader
-      headerLeft={<LogoIcon width={92} height={37} />}
+      headerLeft={<LogoIcon />}
       headerRight={
         <View className="flex-row items-center">
           <TouchableOpacity onPress={handleSearch} className="mr-4">

@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { View, TouchableOpacity } from "react-native";
+import React, { useEffect } from "react";
+import { View, TouchableOpacity, Image } from "react-native";
 import Layout from "@/components/common/Layout";
 import MyText from "@/components/common/MyText";
 import { useTranslation } from "react-i18next";
@@ -9,12 +9,12 @@ import {
   ChevronRight,
   NotebookPen,
   Settings,
-  Settings2,
 } from "lucide-react-native";
 import LogoIcon from "@assets/icons/logo.svg";
 import InnerLayout from "@/components/common/InnerLayout";
 import { getProfile } from "@/api/mypage/mypage";
 import { getCountryFlag } from "@/utils/constants/countries";
+import { useProfileStore } from "@/store/profile";
 
 const SettingItem = ({ label, onPress }) => (
   <TouchableOpacity
@@ -27,16 +27,25 @@ const SettingItem = ({ label, onPress }) => (
 );
 
 export default function MyPageScreen({ navigation }) {
+  const { t } = useTranslation("mypage");
+  const { profile, setProfile } = useProfileStore();
+
+  const fetchMyProfile = async () => {
+    const profileData = await getProfile();
+    setProfile(profileData);
+  };
+
   useEffect(() => {
     fetchMyProfile();
   }, []);
-  const { t } = useTranslation("mypage");
-  const [profile, setProfile] = useState({});
 
-  const fetchMyProfile = async () => {
-    const profile = await getProfile();
-    setProfile(profile);
-  };
+  useEffect(() => {
+    const unsubscribe = navigation.addListener("focus", () => {
+      fetchMyProfile();
+    });
+
+    return unsubscribe;
+  }, [navigation]);
 
   const quickMenuItems = [
     {
@@ -69,13 +78,15 @@ export default function MyPageScreen({ navigation }) {
     { key: "version", label: t("version") },
   ];
 
-  const handleNotification = () => {};
+  const handleNotification = () => {
+    navigation.navigate("Notifications");
+  };
 
   return (
     <Layout
       showHeader
-      className="bg-gray-500"
-      headerLeft={<LogoIcon width={27} height={30} />}
+      className="bg-gray-700"
+      headerLeft={<LogoIcon />}
       headerRight={
         <View className="flex-row items-center">
           <TouchableOpacity onPress={handleNotification}>
@@ -87,23 +98,23 @@ export default function MyPageScreen({ navigation }) {
       <InnerLayout>
         <TouchableOpacity
           className="flex-row items-center mt-3 p-5 bg-white rounded-[20px]"
-          onPress={() => navigation.navigate("MyProfile", profile)}
+          onPress={() => navigation.navigate("MyProfile")}
         >
           <View className="flex-row items-center bg-white">
-            <View className="w-[54] h-[54] bg-gray-200 rounded-[12px] mr-3" />
+            <Image
+              source={{ uri: profile?.profileImageUrl }}
+              className="w-[54] h-[54] rounded-[12px] mr-3"
+            />
             <View className="flex-1">
-              <MyText
-                size="text-[16px]"
-                className="text-textDescription font-semibold"
-              >
+              <MyText className="text-textDescription font-semibold">
                 {t(`profile.university.${profile?.university}`)}
               </MyText>
               <View className="flex-row items-center">
-                <MyText size="text-lg" className="text-textDescription">
-                  {profile.name}
+                <MyText size="text-base" className="text-textDescription">
+                  {profile?.name}
                 </MyText>
-                <MyText size="text-lg" className="ml-2">
-                  {getCountryFlag(profile.country)}
+                <MyText size="text-lg" className="ml-1">
+                  {profile?.country && getCountryFlag(profile.country)}
                 </MyText>
               </View>
             </View>

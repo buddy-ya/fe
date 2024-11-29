@@ -13,14 +13,13 @@ import FooterLayout from "@/components/common/FooterLayout";
 import { postPhoneVerification } from "@/api/auth/phone";
 import MyText from "@/components/common/MyText";
 import { formatPhone } from "@/utils/service/phone";
-import { logError } from "@/utils/service/error";
-import { getRefreshToken } from "@/utils/service/auth";
 
 export default function PhoneScreen({ navigation }) {
   const { t } = useTranslation("onboarding");
   const [phone, setPhone] = useState("");
   const [isValid, setIsValid] = useState(false);
   const [showError, setShowError] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     setIsValid(formatPhone.validate(phone));
@@ -35,14 +34,13 @@ export default function PhoneScreen({ navigation }) {
   };
 
   const handleNavigateButton = async () => {
-    try {
-      await postPhoneVerification(phone);
-      navigation.navigate("OnboardingPhoneVerification", {
-        phone: formatPhone.addHyphen(phone),
-      });
-    } catch (error) {
-      logError(error);
-    }
+    if (isSubmitting) return;
+
+    setIsSubmitting(true);
+    await postPhoneVerification(phone);
+    navigation.navigate("OnboardingPhoneVerification", {
+      phone: formatPhone.addHyphen(phone),
+    });
   };
 
   const footer = (
@@ -54,7 +52,7 @@ export default function PhoneScreen({ navigation }) {
         </MyText>
       }
       onPress={handleNavigateButton}
-      disabled={!isValid}
+      disabled={!isValid || isSubmitting}
     />
   );
 

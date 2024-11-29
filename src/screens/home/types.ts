@@ -7,6 +7,7 @@ export interface Feed {
   country: string;
   title: string;
   content: string;
+  profileImageUrl: string;
   imageUrls: string[];
   likeCount: number;
   commentCount: number;
@@ -25,6 +26,7 @@ export interface FeedResponse {
 
 export interface CommentType {
   id: number;
+  profileImageUrl: string;
   content: string;
   name: string;
   country: string;

@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { View, ActivityIndicator, Image } from "react-native";
 import * as Font from "expo-font";
-import { getAccessToken } from "@/utils/service/auth";
+import { getAccessToken, removeTokens } from "@/utils/service/auth";
 
 export default function SplashScreen({ navigation }) {
   useEffect(() => {

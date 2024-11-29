@@ -6,7 +6,10 @@ import InnerLayout from "@/components/common/InnerLayout";
 import Button from "@/components/common/Button";
 import Heading from "@/components/onboarding/Heading";
 import { Chip } from "@/components/common/Chip";
-import { INTEREST_CATEGORIES } from "@/utils/constants/interests";
+import {
+  INTEREST_CATEGORIES,
+  INTEREST_ICONS,
+} from "@/utils/constants/interests";
 import type { InterestID } from "@/utils/constants/interests";
 import { useOnboardingStore } from "@/store/onboarding";
 import { postOnboardingInfo } from "@/api/onboarding/join";
@@ -19,8 +22,14 @@ interface Interest {
   icon: string;
 }
 
-export default function InterestSelectScreen({ navigation }) {
-  const [selectedInterests, setSelectedInterests] = useState<Interest[]>([]);
+export default function InterestSelectScreen({ navigation, route }) {
+  const { mode, initialInterests, onComplete } = route.params || {};
+  const [selectedInterests, setSelectedInterests] = useState<Interest[]>(
+    initialInterests?.map((id) => ({
+      id,
+      icon: INTEREST_ICONS[id],
+    })) || []
+  );
   const { t } = useTranslation(["onboarding", "interests"]);
   const { updateOnboardingData, ...onboardingData } = useOnboardingStore();
   const MAX_SELECT = 8;

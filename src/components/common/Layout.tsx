@@ -32,7 +32,7 @@ export default function Layout({
 
   return (
     <SafeAreaView
-      className={`flex-1 ${className} bg-white ${
+      className={`flex-1 ${className} bg-[#F6F6F6] ${
         hasTabBar ? `pb-[${TAB_BAR_HEIGHT}px]` : ""
       }`}
     >
