@@ -198,32 +198,37 @@ export default function HomeScreen({ navigation }) {
       }
     >
       <InnerLayout>
-        <CategoryPager categories={CATEGORIES} onPageChange={handlePageChange}>
-          {CATEGORIES.map((category) => (
-            <View key={category.id} className="flex-1">
-              {category.id === activeCategory && (
-                <FeedList
-                  feeds={feeds}
-                  onLike={handleLike}
-                  onBookmark={handleBookmark}
-                  onPress={handlePressFeed}
-                  isLoading={isLoading}
-                  onLoadMore={handleLoadMore}
-                  hasMore={hasNext}
-                  refreshControl={{
-                    refreshing: isRefreshing,
-                    onRefresh: handleRefresh,
-                    tintColor: "#4AA366",
-                  }}
-                />
-              )}
-            </View>
-          ))}
-        </CategoryPager>
+        <View className="flex-1">
+          <CategoryPager
+            categories={CATEGORIES}
+            onPageChange={handlePageChange}
+          >
+            {CATEGORIES.map((category) => (
+              <View key={category.id} className="flex-1">
+                {category.id === activeCategory && (
+                  <FeedList
+                    feeds={feeds}
+                    onLike={handleLike}
+                    onBookmark={handleBookmark}
+                    onPress={handlePressFeed}
+                    isLoading={isLoading}
+                    onLoadMore={handleLoadMore}
+                    hasMore={hasNext}
+                    refreshControl={{
+                      refreshing: isRefreshing,
+                      onRefresh: handleRefresh,
+                      tintColor: "#4AA366",
+                    }}
+                  />
+                )}
+              </View>
+            ))}
+          </CategoryPager>
+        </View>
         <Button
           type="circle"
           onPress={handleWriteButton}
-          className="absolute bottom-5 right-0"
+          className="absolute bottom-20 right-0"
           icon={Plus}
         />
       </InnerLayout>

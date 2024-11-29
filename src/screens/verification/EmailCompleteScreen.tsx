@@ -11,7 +11,7 @@ export default function EmailCompleteScreen({ navigation }) {
   const { t } = useTranslation("certification");
 
   const handleNavigateButton = () => {
-    navigation.navigate("Home");
+    navigation.navigate("FeedHome");
   };
 
   return (

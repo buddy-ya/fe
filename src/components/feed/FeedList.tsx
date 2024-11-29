@@ -27,7 +27,7 @@ export default function FeedList({
   refreshControl,
   hasMore,
   emptyStateMessage,
-  showBookmarkButton = true, // 기본값은 true로 설정
+  showBookmarkButton = true,
   disableActions = false,
 }: FeedListProps) {
   if (feeds.length === 0) {
@@ -39,6 +39,7 @@ export default function FeedList({
       data={feeds}
       renderItem={({ item }) => (
         <FeedItem
+          key={item.id}
           feed={item}
           onLike={disableActions ? undefined : onLike}
           onBookmark={
@@ -48,10 +49,15 @@ export default function FeedList({
         />
       )}
       className="mt-4"
-      keyExtractor={(item) => item.id.toString()}
+      contentContainerStyle={{ paddingBottom: 60 }}
+      keyExtractor={(item) => `feed-${item.id}`}
       onEndReached={hasMore ? onLoadMore : undefined}
       onEndReachedThreshold={0.8}
       showsVerticalScrollIndicator={false}
+      initialNumToRender={5}
+      maxToRenderPerBatch={5}
+      windowSize={5}
+      removeClippedSubviews={true}
       refreshControl={
         refreshControl ? <RefreshControl {...refreshControl} /> : undefined
       }

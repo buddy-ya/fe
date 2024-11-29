@@ -26,8 +26,8 @@ export const tabBarStyle = StyleSheet.create({
     height: 80,
     backgroundColor: "white",
     borderTopColor: "#E8E9EB",
-    borderTopLeftRadius: 12,
-    borderTopRightRadius: 12,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
     zIndex: 1,
   },
   label: {

@@ -1,21 +1,30 @@
-import React from "react";
-import { View, TouchableOpacity, Image } from "react-native";
-import {
-  Heart,
-  MessageCircle,
-  Bookmark,
-  ThumbsUp,
-  MessageSquare,
-} from "lucide-react-native";
+import React, { useState } from "react";
+import { View, TouchableOpacity, Image, Image as RNImage } from "react-native";
+import { Bookmark, ThumbsUp, MessageSquare } from "lucide-react-native";
 import MyText from "@/components/common/MyText";
 import { Feed } from "@/screens/home/types";
 import { getCountryFlag } from "@/utils/constants/countries";
-import { formatDistanceToNow } from "date-fns";
-import { ko, enUS } from "date-fns/locale";
-import * as Localization from "expo-localization";
 import { getTimeAgo } from "@/utils/service/date";
 import { useTranslation } from "react-i18next";
 import ThumbsUpActive from "@assets/icons/feed/like-active.svg";
+
+const IMAGE_CONFIG = {
+  single: {
+    aspectRatio: 1 / 1,
+    containerClass: "w-full aspect-[1/1]",
+    maxHeight: 150,
+  },
+  multiple: {
+    aspectRatio: 1 / 1,
+    containerClass: "w-[49%] aspect-[1/1]",
+    maxHeight: 150,
+  },
+  detail: {
+    aspectRatio: 3 / 4,
+    containerClass: "w-full aspect-[3/4]",
+    maxHeight: 350,
+  },
+};
 
 interface FeedItemProps {
   feed: Feed;
@@ -77,12 +86,12 @@ export default function FeedItem({
   ];
 
   const renderContent = () => (
-    <View className="mb-5 p-4 border-[0.3px] bg-white border-borderFeed rounded-[12px]">
-      <View className="flex-row justify-between items-cente">
+    <View className="p-4 border-[0.3px] border-b-[0px] bg-white border-borderFeed rounded-[12px] rounded-b-[0px]">
+      <View className="flex-row justify-between items-center">
         <View className="flex-row items-center">
-          <View className=" mr-3">
+          <View className="mr-3">
             <Image
-              className="w-[40px] h-[40px] rounded-[12px]"
+              className="w-10 h-10 rounded-[12px]"
               source={{ uri: profileImageUrl }}
             />
           </View>
@@ -103,17 +112,21 @@ export default function FeedItem({
             </View>
           </View>
         </View>
-        <MyText color="text-textLight" size="text-sm">
+        <MyText
+          color="text-textDescription"
+          size="text-sm"
+          className="tracking-tighter"
+        >
           {getTimeAgo(createdDate)}
         </MyText>
       </View>
 
-      {/* Content */}
       <View className="mt-4">
-        <MyText size="text-lg" className="font-semibold mb-3">
+        <MyText size="text-[16px]" className="font-semibold mb-3">
           {title}
         </MyText>
         <MyText
+          size="text-[14px]"
           color="text-textDescription"
           className="font-semibold"
           numberOfLines={showAllContent ? undefined : 3}
@@ -121,28 +134,49 @@ export default function FeedItem({
           {content}
         </MyText>
       </View>
-
       {imageUrls.length > 0 && (
         <View className="mt-4">
-          <View className="flex-row flex-wrap">
+          <View className="flex-row flex-wrap justify-between">
             {(showAllContent ? imageUrls : imageUrls.slice(0, 2)).map(
-              (url, index) => (
-                <Image
-                  key={index}
-                  source={{ uri: url }}
-                  className={`
-                  rounded-[12px] border
-                  ${
-                    showAllContent
-                      ? "w-full h-[250] mb-2"
-                      : imageUrls.length === 1
-                      ? "w-full h-[150]"
-                      : "w-[49%] h-[150] " + (index === 0 ? "mr-[2%]" : "")
+              (url, index) => {
+                const config = showAllContent
+                  ? IMAGE_CONFIG.detail
+                  : imageUrls.length === 1
+                  ? IMAGE_CONFIG.single
+                  : IMAGE_CONFIG.multiple;
+
+                const getBorderRadiusClass = () => {
+                  if (imageUrls.length === 2 && !showAllContent) {
+                    return index === 0
+                      ? "rounded-l-[12px] rounded-r-none"
+                      : "rounded-r-[12px] rounded-l-none";
                   }
-                `}
-                  resizeMode="cover"
-                />
-              )
+                  return "rounded-[12px]";
+                };
+
+                return (
+                  <View
+                    key={index}
+                    className={`
+              ${config.containerClass} 
+              ${getBorderRadiusClass()} 
+              mb-2 
+              overflow-hidden 
+              border 
+              border-borderFeed
+            `}
+                    style={{
+                      maxHeight: config.maxHeight,
+                    }}
+                  >
+                    <Image
+                      source={{ uri: url }}
+                      className="w-full h-full"
+                      resizeMode="cover"
+                    />
+                  </View>
+                );
+              }
             )}
           </View>
           {!showAllContent && imageUrls.length > 2 && (
@@ -155,7 +189,6 @@ export default function FeedItem({
         </View>
       )}
 
-      {/* Actions */}
       <View className="flex-row items-center justify-between px-[12px] mt-5">
         {actions.map(
           ({
@@ -181,7 +214,6 @@ export default function FeedItem({
                   strokeWidth={1}
                 />
               )}
-
               <MyText
                 size="text-sm"
                 color="text-textDescription"

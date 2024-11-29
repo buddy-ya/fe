@@ -85,7 +85,6 @@ export default function MyPageScreen({ navigation }) {
   return (
     <Layout
       showHeader
-      className="bg-gray-700"
       headerLeft={<LogoIcon />}
       headerRight={
         <View className="flex-row items-center">

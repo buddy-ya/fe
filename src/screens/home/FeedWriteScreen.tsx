@@ -23,11 +23,21 @@ interface ImageFile {
   uri: string;
   type: string;
   fileName?: string;
+  width?: number;
+  height?: number;
 }
 
 const FILTERED_CATEGORIES = CATEGORIES.filter(
   (category) => category.id !== "popular"
 );
+
+const IMAGE_PICKER_OPTIONS: ImagePicker.ImagePickerOptions = {
+  mediaTypes: ImagePicker.MediaTypeOptions.Images,
+  allowsEditing: false,
+  quality: 0.8,
+  allowsMultipleSelection: true,
+  selectionLimit: 5,
+};
 
 export default function FeedWriteScreen({ navigation, route }) {
   const feed = route.params?.feed;
@@ -67,10 +77,7 @@ export default function FeedWriteScreen({ navigation, route }) {
 
     try {
       const result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.Images,
-        allowsMultipleSelection: true,
-        quality: 1,
-        selectionLimit: 5,
+        ...IMAGE_PICKER_OPTIONS,
       });
 
       if (!result.canceled) {
@@ -78,6 +85,8 @@ export default function FeedWriteScreen({ navigation, route }) {
           uri: asset.uri,
           type: "image/jpeg",
           fileName: asset.uri.split("/").pop() || "image.jpg",
+          width: asset.width,
+          height: asset.height,
         }));
 
         setImages((prev) => {
@@ -101,8 +110,8 @@ export default function FeedWriteScreen({ navigation, route }) {
 
     try {
       const result = await ImagePicker.launchCameraAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.Images,
-        quality: 1,
+        ...IMAGE_PICKER_OPTIONS,
+        allowsMultipleSelection: false,
       });
 
       if (!result.canceled) {
@@ -110,6 +119,8 @@ export default function FeedWriteScreen({ navigation, route }) {
           uri: result.assets[0].uri,
           type: "image/jpeg",
           fileName: `camera_${Date.now()}.jpg`,
+          width: result.assets[0].width,
+          height: result.assets[0].height,
         };
 
         setImages((prev) => {

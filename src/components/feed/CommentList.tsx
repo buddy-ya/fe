@@ -45,7 +45,7 @@ export default function CommentList({
 }: CommentListProps) {
   const { t } = useTranslation("feed");
   return (
-    <View className="mt-">
+    <View>
       {comments?.map((item) => (
         <View
           key={item.id}
