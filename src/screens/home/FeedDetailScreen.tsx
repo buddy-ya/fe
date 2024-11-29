@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { TouchableOpacity, ScrollView, View } from "react-native";
+import { TouchableOpacity, ScrollView, View, Keyboard } from "react-native";
 import { MoreVertical } from "lucide-react-native";
 import Layout from "@/components/common/Layout";
 import { CommentType, Feed } from "./types";
@@ -30,8 +30,8 @@ export default function FeedDetailScreen({ navigation, route }) {
   const [comments, setComments] = useState([]);
   const [comment, setComment] = useState("");
   const [isLoading, setIsLoading] = useState(true);
+  const [inputFocused, setInputFocused] = useState(false);
 
-  // 데이터 로딩
   useEffect(() => {
     loadFeedData();
   }, [feedId]);
@@ -93,14 +93,14 @@ export default function FeedDetailScreen({ navigation, route }) {
     },
   };
 
-  // 댓글 관련 기능
   const handleCommentActions = {
     submit: async () => {
       if (!comment.trim()) return;
       try {
-        const newComment = await createComment(feedId, comment);
+        const newComment = await createComment(feedId, comment.trim());
         setComments((prev) => [...prev, newComment]);
         setComment("");
+        Keyboard.dismiss();
       } catch (error) {
         logError(error);
       }
@@ -147,10 +147,13 @@ export default function FeedDetailScreen({ navigation, route }) {
     <>
       <Layout
         showHeader
-        className="border-2"
+        disableBottomSafeArea
         onBack={navigation.goBack}
         headerRight={
-          <TouchableOpacity onPress={handleFeedActions.showOptions}>
+          <TouchableOpacity
+            onPress={handleFeedActions.showOptions}
+            hitSlop={{ bottom: 20, left: 20 }}
+          >
             <MoreVertical size={24} color="#797979" />
           </TouchableOpacity>
         }

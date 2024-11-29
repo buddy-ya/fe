@@ -36,7 +36,6 @@ module.exports = {
         selectActive: "#f0fdf4",
 
         mainBackground: "#F6F6F6",
-        grayBackground: "",
       },
       fontFamily: {
         sans: ["Pretendard-Regular"],

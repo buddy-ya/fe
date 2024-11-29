@@ -20,9 +20,8 @@ const TAB_CONFIG = {
 
 export const tabBarStyle = StyleSheet.create({
   tabBar: {
+    position: "absolute",
     bottom: 0,
-    left: 0,
-    right: 0,
     paddingHorizontal: 10,
     height: 80,
     backgroundColor: "white",
@@ -41,6 +40,9 @@ export const tabBarStyle = StyleSheet.create({
     height: 24,
     alignItems: "center",
     justifyContent: "center",
+  },
+  hidden: {
+    display: "none",
   },
 });
 
@@ -78,14 +80,12 @@ export const useTabBarAnimation = () => {
       useNativeDriver: true,
     }).start();
 
-    return {
-      ...tabBarStyle.tabBar,
-      transform: [
-        {
-          translateY: translateY,
-        },
-      ],
-    };
+    return visible
+      ? {
+          ...tabBarStyle.tabBar,
+          transform: [{ translateY }],
+        }
+      : tabBarStyle.hidden;
   };
 
   return { animateTabBar };

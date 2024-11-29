@@ -92,7 +92,10 @@ export default function CommentList({
             </View>
             <View className="flex-row items-center">
               {item.isCommentOwner && (
-                <TouchableOpacity onPress={() => onCommentOptions(item)}>
+                <TouchableOpacity
+                  onPress={() => onCommentOptions(item)}
+                  hitSlop={{ top: 10, bottom: 10, left: 20, right: 10 }}
+                >
                   <MoreVertical size={20} color="#797977" />
                 </TouchableOpacity>
               )}

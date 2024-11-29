@@ -153,7 +153,6 @@ function FeedNavigator({ navigation, route }) {
 
   React.useLayoutEffect(() => {
     const routeName = getFocusedRouteNameFromRoute(route);
-    console.log(routeName);
     const visible = routeName === "FeedHome" || routeName === undefined;
     navigation.setOptions({
       tabBarStyle: animateTabBar(visible),
@@ -165,11 +164,7 @@ function FeedNavigator({ navigation, route }) {
       <FeedStack.Screen name="FeedHome" component={HomeScreen} />
       <FeedStack.Screen name="FeedWrite" component={FeedWriteScreen} />
       <FeedStack.Screen name="FeedDetail" component={FeedDetailScreen} />
-      <FeedStack.Screen
-        name="EmailVerification"
-        component={EmailScreen}
-        options={{ gestureEnabled: false }}
-      />
+      <FeedStack.Screen name="EmailVerification" component={EmailScreen} />
       <FeedStack.Screen
         name="EmailVerificationCode"
         component={EmailVerificationScreen}
@@ -183,7 +178,6 @@ function FeedNavigator({ navigation, route }) {
       <FeedStack.Screen
         name="StudentIdVerification"
         component={StudentIdCardUploadScreen}
-        options={{ gestureEnabled: false }}
       />
       <FeedStack.Screen
         name="StudentIdComplete"

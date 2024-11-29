@@ -183,7 +183,6 @@ export default function HomeScreen({ navigation }) {
 
   return (
     <Layout
-      className="bg-gray-500"
       hasTabBar={true}
       showHeader
       headerLeft={<LogoIcon />}

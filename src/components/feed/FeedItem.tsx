@@ -78,7 +78,6 @@ export default function FeedItem({
 
   const renderContent = () => (
     <View className="mb-5 p-4 border-[0.3px] bg-white border-borderFeed rounded-[12px]">
-      {/* Header */}
       <View className="flex-row justify-between items-cente">
         <View className="flex-row items-center">
           <View className=" mr-3">

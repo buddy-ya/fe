@@ -1,5 +1,6 @@
 import React, { ReactNode } from "react";
-import { Platform, SafeAreaView, StatusBar, View } from "react-native";
+import { Platform, StatusBar, View } from "react-native";
+import { SafeAreaView, Edge } from "react-native-safe-area-context";
 import Header, { BackButton } from "./Header";
 
 interface LayoutProps {
@@ -12,6 +13,8 @@ interface LayoutProps {
   headerCenter?: ReactNode;
   headerRight?: ReactNode;
   hasTabBar?: boolean;
+  safeAreaEdges?: Edge[];
+  disableBottomSafeArea?: boolean;
 }
 
 export default function Layout({
@@ -24,17 +27,23 @@ export default function Layout({
   headerCenter,
   headerRight,
   hasTabBar,
+  safeAreaEdges,
+  disableBottomSafeArea,
 }: LayoutProps) {
   const TAB_BAR_HEIGHT = Platform.select({
     ios: 85,
     android: 65,
   });
 
+  const defaultEdges: Edge[] = ["top", "left", "right", "bottom"];
+  const edges =
+    safeAreaEdges ||
+    (disableBottomSafeArea ? ["top", "left", "right"] : defaultEdges);
+
   return (
     <SafeAreaView
-      className={`flex-1 ${className} bg-[#F6F6F6] ${
-        hasTabBar ? `pb-[${TAB_BAR_HEIGHT}px]` : ""
-      }`}
+      edges={edges}
+      className={`flex-1 bg-mainBackground ${className}`}
     >
       <StatusBar barStyle="dark-content" backgroundColor="white" />
       {showHeader && (
