@@ -147,6 +147,7 @@ export default function FeedDetailScreen({ navigation, route }) {
     <>
       <Layout
         showHeader
+        className="border-2"
         onBack={navigation.goBack}
         headerRight={
           <TouchableOpacity onPress={handleFeedActions.showOptions}>

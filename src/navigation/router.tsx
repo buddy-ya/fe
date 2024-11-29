@@ -40,7 +40,7 @@ import StudentIdCardUploadScreen from "@/screens/verification/StudentIdUploadScr
 import StudentIdCardCompleteScreen from "@/screens/verification/StudentIdCompleteScreen";
 import BookmarkScreen from "@/screens/mypage/BookmarkScreen";
 import MyPostsScreen from "@/screens/mypage/MyPostsScreen";
-import { Animated } from "react-native";
+import MyProfileScreen from "@/screens/mypage/MyProfileScreen";
 
 export const navigationRef = createNavigationContainerRef();
 
@@ -152,6 +152,7 @@ function FeedNavigator({ navigation, route }) {
 
   React.useLayoutEffect(() => {
     const routeName = getFocusedRouteNameFromRoute(route);
+    console.log(routeName);
     const visible = routeName === "FeedHome" || routeName === undefined;
     navigation.setOptions({
       tabBarStyle: animateTabBar(visible),
@@ -163,19 +164,30 @@ function FeedNavigator({ navigation, route }) {
       <FeedStack.Screen name="FeedHome" component={HomeScreen} />
       <FeedStack.Screen name="FeedWrite" component={FeedWriteScreen} />
       <FeedStack.Screen name="FeedDetail" component={FeedDetailScreen} />
-      <FeedStack.Screen name="EmailVerification" component={EmailScreen} />
+      <FeedStack.Screen
+        name="EmailVerification"
+        component={EmailScreen}
+        options={{ gestureEnabled: false }}
+      />
       <FeedStack.Screen
         name="EmailVerificationCode"
         component={EmailVerificationScreen}
+        options={{ gestureEnabled: false }}
       />
-      <FeedStack.Screen name="EmailComplete" component={EmailCompleteScreen} />
+      <FeedStack.Screen
+        name="EmailComplete"
+        component={EmailCompleteScreen}
+        options={{ gestureEnabled: false }}
+      />
       <FeedStack.Screen
         name="StudentIdVerification"
         component={StudentIdCardUploadScreen}
+        options={{ gestureEnabled: false }}
       />
       <FeedStack.Screen
         name="StudentIdComplete"
         component={StudentIdCardCompleteScreen}
+        options={{ gestureEnabled: false }}
       />
     </FeedStack.Navigator>
   );
@@ -194,6 +206,7 @@ function MyPageNavigator({ navigation, route }) {
   return (
     <MyPageStack.Navigator screenOptions={{ headerShown: false }}>
       <MyPageStack.Screen name="MyPageHome" component={MyPageScreen} />
+      <MyPageStack.Screen name="MyProfile" component={MyProfileScreen} />
       <MyPageStack.Screen name="Bookmark" component={BookmarkScreen} />
       <MyPageStack.Screen name="MyPosts" component={MyPostsScreen} />
     </MyPageStack.Navigator>

@@ -21,7 +21,7 @@ const processImageForUpload = (image: ImageFile) => {
     uri,
     name: image.fileName || image.uri.split("/").pop(),
     type: image.type || `image/${image.uri.split(".").pop()}`,
-  } as any; // FormData에 추가할 때 필요한 타입 캐스팅
+  } as any;
 };
 
 export const createFeed = async ({
@@ -40,7 +40,6 @@ export const createFeed = async ({
       formData.append("images", processImageForUpload(image));
     });
   } else {
-    formData.append("images", JSON.stringify([]));
   }
 
   return await apiClient.post("/feeds", formData, {
@@ -63,11 +62,9 @@ export const updateFeed = async (
     images.forEach((image) => {
       formData.append("images", processImageForUpload(image));
     });
-  } else {
-    formData.append("images", JSON.stringify([]));
   }
 
-  return await apiClient.put(`/feeds/${feedId}`, formData, {
+  return await apiClient.patch(`/feeds/${feedId}`, formData, {
     headers: {
       "Content-Type": "multipart/form-data",
     },

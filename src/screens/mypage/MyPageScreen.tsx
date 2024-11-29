@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { View, TouchableOpacity } from "react-native";
 import Layout from "@/components/common/Layout";
 import MyText from "@/components/common/MyText";
@@ -13,6 +13,8 @@ import {
 } from "lucide-react-native";
 import LogoIcon from "@assets/icons/logo.svg";
 import InnerLayout from "@/components/common/InnerLayout";
+import { getProfile } from "@/api/mypage/mypage";
+import { getCountryFlag } from "@/utils/constants/countries";
 
 const SettingItem = ({ label, onPress }) => (
   <TouchableOpacity
@@ -25,7 +27,16 @@ const SettingItem = ({ label, onPress }) => (
 );
 
 export default function MyPageScreen({ navigation }) {
+  useEffect(() => {
+    fetchMyProfile();
+  }, []);
   const { t } = useTranslation("mypage");
+  const [profile, setProfile] = useState({});
+
+  const fetchMyProfile = async () => {
+    const profile = await getProfile();
+    setProfile(profile);
+  };
 
   const quickMenuItems = [
     {
@@ -63,6 +74,7 @@ export default function MyPageScreen({ navigation }) {
   return (
     <Layout
       showHeader
+      className="bg-gray-500"
       headerLeft={<LogoIcon width={27} height={30} />}
       headerRight={
         <View className="flex-row items-center">
@@ -74,24 +86,24 @@ export default function MyPageScreen({ navigation }) {
     >
       <InnerLayout>
         <TouchableOpacity
-          className="flex-row items-center mt-3 p-4 py-5 bg-white rounded-[20px] border-2"
-          onPress={() => navigation.navigate("ProfileEdit")}
+          className="flex-row items-center mt-3 p-5 bg-white rounded-[20px]"
+          onPress={() => navigation.navigate("MyProfile", profile)}
         >
-          <View className="flex-row items-center">
+          <View className="flex-row items-center bg-white">
             <View className="w-[54] h-[54] bg-gray-200 rounded-[12px] mr-3" />
             <View className="flex-1">
               <MyText
                 size="text-[16px]"
                 className="text-textDescription font-semibold"
               >
-                세종대학교
+                {t(`profile.university.${profile?.university}`)}
               </MyText>
               <View className="flex-row items-center">
                 <MyText size="text-lg" className="text-textDescription">
-                  CatLove
+                  {profile.name}
                 </MyText>
                 <MyText size="text-lg" className="ml-2">
-                  🇺🇸
+                  {getCountryFlag(profile.country)}
                 </MyText>
               </View>
             </View>
@@ -99,35 +111,33 @@ export default function MyPageScreen({ navigation }) {
           </View>
         </TouchableOpacity>
 
-        <View className="mt-3">
-          <View className="flex-row justify-around py-5 bg-white rounded-[20px] border-2">
-            {quickMenuItems.map(({ key, label, icon: Icon, onPress }) => (
-              <TouchableOpacity
-                key={key}
-                className="items-center"
-                onPress={onPress}
-              >
-                <View className="mb-1">
-                  <Icon size={24} color="#282828" />
-                </View>
-                <MyText>{label}</MyText>
-              </TouchableOpacity>
-            ))}
-          </View>
+        <View className="mt-3 flex-row justify-around py-5 bg-white rounded-[20px]">
+          {quickMenuItems.map(({ key, label, icon: Icon, onPress }) => (
+            <TouchableOpacity
+              key={key}
+              className="items-center"
+              onPress={onPress}
+            >
+              <View className="mb-1">
+                <Icon size={24} color="#282828" />
+              </View>
+              <MyText>{label}</MyText>
+            </TouchableOpacity>
+          ))}
+        </View>
 
-          <View className="mt-4 bg-white">
-            {settingsItems.map((item, index) => (
-              <React.Fragment key={item.key}>
-                <SettingItem
-                  label={item.label}
-                  onPress={() => navigation.navigate(item.key)}
-                />
-                {index < settingsItems.length - 1 && (
-                  <View className="h-[1px] bg-gray-100 mx-4" />
-                )}
-              </React.Fragment>
-            ))}
-          </View>
+        <View className="mt-4 bg-white">
+          {settingsItems.map((item, index) => (
+            <React.Fragment key={item.key}>
+              <SettingItem
+                label={item.label}
+                onPress={() => navigation.navigate(item.key)}
+              />
+              {index < settingsItems.length - 1 && (
+                <View className="h-[1px] bg-gray-100 mx-4" />
+              )}
+            </React.Fragment>
+          ))}
         </View>
       </InnerLayout>
     </Layout>

@@ -14,7 +14,7 @@ export const BackButton = ({ onPress }: { onPress?: () => void }) => (
     onPress={onPress}
     className="relative right-2 flex-row items-center"
   >
-    <ChevronLeft strokeWidth={2} size={30} color="#797979" />
+    <ChevronLeft strokeWidth={2} size={30} color="#282828" />
   </TouchableOpacity>
 );
 

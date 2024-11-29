@@ -76,30 +76,30 @@ apiClient.interceptors.response.use(
       }
     }
 
-    const serverErrorMessage = error.response.data?.message;
-    if (serverErrorMessage) {
-      Alert.alert(
-        i18n.t("error:title"),
-        serverErrorMessage,
-        [{ text: i18n.t("common:confirm"), style: "default" }],
-        { cancelable: true }
-      );
-      return Promise.reject(error);
-    }
+    // const serverErrorMessage = error.response.data?.message;
+    // if (serverErrorMessage) {
+    //   Alert.alert(
+    //     i18n.t("error:title"),
+    //     serverErrorMessage,
+    //     [{ text: i18n.t("common:confirm"), style: "default" }],
+    //     { cancelable: true }
+    //   );
+    //   return Promise.reject(error);
+    // }
 
-    switch (error.response.status) {
-      case 403:
-        showErrorModal("forbidden");
-        break;
-      case 404:
-        showErrorModal("notFound");
-        break;
-      case 500:
-        showErrorModal("server");
-        break;
-      default:
-        showErrorModal("default");
-    }
+    // switch (error.response.status) {
+    //   case 403:
+    //     showErrorModal("forbidden");
+    //     break;
+    //   case 404:
+    //     showErrorModal("notFound");
+    //     break;
+    //   case 500:
+    //     showErrorModal("server");
+    //     break;
+    //   default:
+    //     showErrorModal("default");
+    // }
 
     if (__DEV__) {
       logError(error);

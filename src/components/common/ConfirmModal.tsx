@@ -25,8 +25,6 @@ export default function ConfirmModal({
   size = "default",
   position = "bottom",
 }: ConfirmModalProps) {
-  const windowHeight = Dimensions.get("window").height;
-
   const getPositionStyle = () => {
     if (position === "center") {
       return "top-1/2 -translate-y-1/2";

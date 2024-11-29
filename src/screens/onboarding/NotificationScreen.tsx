@@ -31,7 +31,10 @@ export default function NotificationScreen({ navigation, route }) {
       });
 
       if (isExistingMember) {
-        navigation.replace("Home");
+        navigation.reset({
+          index: 0,
+          routes: [{ name: "Tab" }],
+        });
       } else {
         navigation.replace("OnboardingUniversitySelect");
       }

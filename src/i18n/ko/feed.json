@@ -9,6 +9,9 @@
       "sju": "세종대학교"
     }
   },
+  "comment": {
+    "placeholder": "댓글을 입력해주세요."
+  },
   "action": {
     "like": "공감",
     "comment": "댓글",

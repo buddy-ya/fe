@@ -1,6 +1,10 @@
 {
   "title": "설정",
   "profile": {
+    "university": {
+      "sju": "세종대학교"
+    },
+
     "editProfile": "프로필 수정"
   },
   "bookmark": "북마크",

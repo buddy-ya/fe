@@ -130,9 +130,6 @@ export default function HomeScreen({ navigation }) {
       let { isCertificated, isKorean, isStudentIdCardRequested } =
         await getIsCertificated();
 
-      isCertificated = false;
-      isKorean = true;
-      isStudentIdCardRequested = false;
       if (isCertificated) {
         navigation.navigate("FeedWrite");
         return;
@@ -186,10 +183,10 @@ export default function HomeScreen({ navigation }) {
 
   return (
     <Layout
-      className="bg-black"
+      className="bg-gray-500"
       hasTabBar={true}
       showHeader
-      headerLeft={<LogoIcon width={27} height={30} />}
+      headerLeft={<LogoIcon width={92} height={37} />}
       headerRight={
         <View className="flex-row items-center">
           <TouchableOpacity onPress={handleSearch} className="mr-4">

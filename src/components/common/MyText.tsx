@@ -19,7 +19,7 @@ const MyText = ({
   return (
     <Text
       numberOfLines={numberOfLines}
-      className={`${size} ${color} ${className}`}
+      className={`${size} ${color} ${className} leading-[1.4]`}
     >
       {children}
     </Text>

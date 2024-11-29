@@ -41,7 +41,7 @@ export default function CategoryPager({
   };
 
   return (
-    <View className="flex-1">
+    <View className="flex-1 mt-1">
       <ScrollView
         ref={scrollViewRef}
         horizontal

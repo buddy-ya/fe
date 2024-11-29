@@ -15,6 +15,7 @@ import { ko, enUS } from "date-fns/locale";
 import * as Localization from "expo-localization";
 import { getTimeAgo } from "@/utils/service/date";
 import { useTranslation } from "react-i18next";
+import ThumbsUpActive from "@assets/icons/feed/like-active.svg";
 
 interface FeedItemProps {
   feed: Feed;
@@ -54,6 +55,7 @@ export default function FeedItem({
   const actions = [
     {
       icon: ThumbsUp,
+      activeIcon: ThumbsUpActive,
       label: t("action.like"),
       count: likeCount,
       isActive: isLiked,
@@ -76,9 +78,9 @@ export default function FeedItem({
   const renderContent = () => (
     <View className="mb-5 p-4 border-[0.3px] bg-white border-borderFeed rounded-[12px]">
       {/* Header */}
-      <View className="flex-row justify-between items-center">
+      <View className="flex-row justify-between items-cente">
         <View className="flex-row items-center">
-          <View className="w-10 h-10 bg-gray-200 rounded-[12px] mr-2"></View>
+          <View className="w-[40px] h-[40px] bg-gray-200 rounded-[12px] mr-3"></View>
           <View>
             <MyText
               size="text-sm"
@@ -149,28 +151,42 @@ export default function FeedItem({
       )}
 
       {/* Actions */}
-      <View className="flex-row items-center justify-between px-[12px] mt-7">
-        {actions.map(({ icon: Icon, label, count, isActive, onPress }) => (
-          <TouchableOpacity
-            key={label}
-            onPress={onPress}
-            className="flex-row items-center"
-          >
-            <Icon
-              size={20}
-              color={isActive ? "#00A176" : "#797979"}
-              fill={isActive ? "#E3FFF7" : "transparent"}
-              strokeWidth={1}
-            />
-            <MyText
-              size="text-sm"
-              color="text-textDescription"
-              className="ml-1 w-10"
+      <View className="flex-row items-center justify-between px-[12px] mt-5">
+        {actions.map(
+          ({
+            icon: Icon,
+            activeIcon: ActiveIcon,
+            label,
+            count,
+            isActive,
+            onPress,
+          }) => (
+            <TouchableOpacity
+              key={label}
+              onPress={onPress}
+              className="flex-row items-center"
             >
-              {label} {count > 0 && count}
-            </MyText>
-          </TouchableOpacity>
-        ))}
+              {isActive && ActiveIcon ? (
+                <ActiveIcon />
+              ) : (
+                <Icon
+                  size={20}
+                  color={isActive ? "#00A176" : "#797979"}
+                  fill={isActive ? "#E3FFF7" : "transparent"}
+                  strokeWidth={1}
+                />
+              )}
+
+              <MyText
+                size="text-sm"
+                color="text-textDescription"
+                className="ml-1 w-10"
+              >
+                {label} {count > 0 && count}
+              </MyText>
+            </TouchableOpacity>
+          )
+        )}
       </View>
     </View>
   );
