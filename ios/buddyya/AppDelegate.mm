@@ -1,5 +1,5 @@
 #import "AppDelegate.h"
-#import <Firebase.h>  // Firebase import 추가
+#import <Firebase/Firebase.h>
 
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTLinkingManager.h>
@@ -8,8 +8,9 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-  [FIRApp configure];  // Firebase 초기화 추가
-  
+// @generated begin @react-native-firebase/app-didFinishLaunchingWithOptions - expo prebuild (DO NOT MODIFY) sync-ecd111c37e49fdd1ed6354203cd6b1e2a38cccda
+[FIRApp configure];
+// @generated end @react-native-firebase/app-didFinishLaunchingWithOptions
   self.moduleName = @"main";
 
   // You can add your custom initial props in the dictionary below.
@@ -47,7 +48,6 @@
 // Explicitly define remote notification delegates to ensure compatibility with some third-party libraries
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
 {
-  [FIRMessaging messaging].APNSToken = deviceToken;  // Firebase 토큰 설정 추가
   return [super application:application didRegisterForRemoteNotificationsWithDeviceToken:deviceToken];
 }
 

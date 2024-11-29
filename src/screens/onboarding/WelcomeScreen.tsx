@@ -1,13 +1,45 @@
-import React from "react";
-import { View, Image } from "react-native";
+import React, { useEffect } from "react";
+import { View, Image, Platform } from "react-native";
 import { useTranslation } from "react-i18next";
 import "@/../global.css";
 import Button from "@/components/common/Button";
 import InnerLayout from "@/components/common/InnerLayout";
 import Layout from "@/components/common/Layout";
 import MyText from "@/components/common/MyText";
+import messaging from "@react-native-firebase/messaging";
 
 export default function WelcomeScreen({ navigation }) {
+  useEffect(() => {
+    const getFcmToken = async () => {
+      if (Platform.OS === "ios") {
+        try {
+          // 1. 먼저 원격 알림 등록
+          const isRegistered = await messaging()
+            .isDeviceRegisteredForRemoteMessages;
+          if (!isRegistered) {
+            await messaging().registerDeviceForRemoteMessages();
+          }
+
+          // 2. APNS 권한 요청
+          const authStatus = await messaging().requestPermission();
+          const enabled =
+            authStatus === messaging.AuthorizationStatus.AUTHORIZED;
+
+          if (enabled) {
+            // 3. FCM 토큰 받기
+            const token = await messaging().getAPNSToken();
+            console.log("APNS Token:", token);
+            const fcmToken = await messaging().getToken();
+            console.log("FCM Token:", fcmToken);
+          }
+        } catch (error) {
+          console.error("FCM Token Error:", error);
+        }
+      }
+    };
+
+    getFcmToken();
+  }, []);
   const { t } = useTranslation("onboarding");
 
   const handleNavigateButton = () => {

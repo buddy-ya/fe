@@ -64,7 +64,7 @@ android/gradlew
 android/gradlew.bat
 
 # Firebase specific
-google-services.json
+# google-services.json
 GoogleService-Info.plist
 
 # Testing

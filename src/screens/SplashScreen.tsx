@@ -1,18 +1,31 @@
 import React, { useEffect } from "react";
-import { View, Text, ActivityIndicator, Image } from "react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { View, ActivityIndicator, Image } from "react-native";
 import * as Font from "expo-font";
-import {
-  getAccessToken,
-  getRefreshToken,
-  removeTokens,
-} from "@/utils/service/auth";
-import { useFCMToken } from "@/hooks/useFCMToken";
+import { getAccessToken } from "@/utils/service/auth";
 
 export default function SplashScreen({ navigation }) {
   useEffect(() => {
     initializeApp();
   }, []);
+
+  const initializeApp = async () => {
+    try {
+      const [accessToken] = await Promise.all([
+        getAccessToken(),
+        loadFonts(),
+        new Promise((resolve) => setTimeout(resolve, 1000)),
+      ]);
+      if (accessToken) {
+        navigation.navigate("Tab");
+      } else {
+        navigation.navigate("Onboarding", {
+          screen: "OnboardingWelcome",
+        });
+      }
+    } catch (error) {
+      console.error("App initialization failed:", error);
+    }
+  };
 
   const loadFonts = async () => {
     try {
@@ -29,26 +42,6 @@ export default function SplashScreen({ navigation }) {
       });
     } catch (error) {
       console.error("Font loading failed:", error);
-    }
-  };
-
-  const initializeApp = async () => {
-    try {
-      useFCMToken();
-      const [accessToken] = await Promise.all([
-        getAccessToken(),
-        loadFonts(),
-        new Promise((resolve) => setTimeout(resolve, 1000)),
-      ]);
-      if (accessToken) {
-        navigation.navigate("Tab");
-      } else {
-        navigation.navigate("Onboarding", {
-          screen: "OnboardingWelcome",
-        });
-      }
-    } catch (error) {
-      console.error("App initialization failed:", error);
     }
   };
 

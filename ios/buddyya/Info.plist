@@ -44,15 +44,16 @@
       <key>NSAllowsLocalNetworking</key>
       <true/>
     </dict>
-    <!-- Firebase 푸시 알림 설정 시작 -->
+    <key>NSCameraUsageDescription</key>
+    <string>Allow $(PRODUCT_NAME) to access your camera</string>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>Allow $(PRODUCT_NAME) to access your microphone</string>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>Allow $(PRODUCT_NAME) to access your photos</string>
     <key>UIBackgroundModes</key>
     <array>
-      <string>fetch</string>
       <string>remote-notification</string>
     </array>
-    <key>FirebaseAppDelegateProxyEnabled</key>
-    <false/>
-    <!-- Firebase 푸시 알림 설정 끝 -->
     <key>UILaunchStoryboardName</key>
     <string>SplashScreen</string>
     <key>UIRequiredDeviceCapabilities</key>
