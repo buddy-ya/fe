@@ -1,9 +1,15 @@
 import React, { useState } from "react";
-import { TouchableOpacity, ScrollView, View, Keyboard } from "react-native";
+import {
+  TouchableOpacity,
+  ScrollView,
+  Keyboard,
+  RefreshControl,
+  Alert,
+} from "react-native";
 import { MoreVertical } from "lucide-react-native";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import Layout from "@/components/common/Layout";
-import { CommentType, Feed } from "./types";
+import { CommentType } from "./types";
 import FeedItem from "@/components/feed/FeedItem";
 import KeyboardLayout from "@/components/common/KeyboardLayout";
 import BottomModal from "@/components/common/BottomModal";
@@ -21,6 +27,7 @@ import { logError } from "@/utils/service/error";
 import { toggleBookmark, toggleLike } from "@/api/feed/getFeeds";
 import { deleteFeed } from "@/api/feed/feedAction";
 import { feedKeys } from "@/api/queryKeys";
+import { useTranslation } from "react-i18next";
 
 export default function FeedDetailScreen({ navigation, route }) {
   const { feedId } = route.params;
@@ -29,6 +36,7 @@ export default function FeedDetailScreen({ navigation, route }) {
   const queryClient = useQueryClient();
   const [comment, setComment] = useState("");
   const [isDeleted, setIsDeleted] = useState(false);
+  const { t } = useTranslation("feed");
 
   const { data: feed } = useQuery({
     queryKey: feedKeys.detail(feedId),
@@ -41,6 +49,41 @@ export default function FeedDetailScreen({ navigation, route }) {
     queryFn: () => getFeedComments(feedId),
     enabled: !isDeleted,
   });
+
+  const { refetch, isRefetching } = useQuery({
+    queryKey: feedKeys.detail(feedId),
+    queryFn: () => getFeed(feedId),
+    enabled: !isDeleted,
+  });
+
+  const { refetch: refetchComments } = useQuery({
+    queryKey: ["feedComments", feedId],
+    queryFn: () => getFeedComments(feedId),
+    enabled: !isDeleted,
+  });
+
+  const handleRefresh = async () => {
+    await Promise.all([refetch(), refetchComments()]);
+  };
+
+  const showDeleteAlert = (onConfirm: () => void) => {
+    Alert.alert(
+      t("delete.title"),
+      t("delete.description"),
+      [
+        {
+          text: t("delete.cancel"),
+          style: "cancel",
+        },
+        {
+          text: t("delete.confirm"),
+          style: "destructive",
+          onPress: onConfirm,
+        },
+      ],
+      { cancelable: true }
+    );
+  };
 
   const likeMutation = useMutation({
     mutationFn: toggleLike,
@@ -98,12 +141,14 @@ export default function FeedDetailScreen({ navigation, route }) {
                 isEdit: true,
               })
             ),
-            createModalOptions.delete(async () => {
-              await deleteFeed(feedId);
-              setIsDeleted(true);
-              queryClient.invalidateQueries({ queryKey: feedKeys.all });
-              feedModal.closeModal();
-              navigation.goBack();
+            createModalOptions.delete(() => {
+              showDeleteAlert(async () => {
+                setIsDeleted(true);
+                await deleteFeed(feedId);
+                queryClient.invalidateQueries({ queryKey: feedKeys.all });
+                feedModal.closeModal();
+                navigation.goBack();
+              });
             }),
             createModalOptions.cancel(feedModal.closeModal),
           ]
@@ -180,7 +225,17 @@ export default function FeedDetailScreen({ navigation, route }) {
             />
           }
         >
-          <ScrollView showsVerticalScrollIndicator={false} className="mt-1">
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            className="mt-1"
+            refreshControl={
+              <RefreshControl
+                refreshing={isRefetching}
+                onRefresh={handleRefresh}
+                tintColor="#4AA366"
+              />
+            }
+          >
             {feed && (
               <>
                 <FeedItem

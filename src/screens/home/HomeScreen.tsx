@@ -20,6 +20,7 @@ import ConfirmModal from "@/components/common/ConfirmModal";
 import { useTranslation } from "react-i18next";
 import { feedKeys } from "@/api/queryKeys";
 import { FeedListResponse } from "./types";
+import Loading from "@/components/common/Loading";
 
 export default function HomeScreen({ navigation }) {
   const { t } = useTranslation("certification");

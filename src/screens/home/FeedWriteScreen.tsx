@@ -21,6 +21,7 @@ import { createFeed, updateFeed } from "@/api/feed/feedAction";
 import { useTranslation } from "react-i18next";
 import { useQueryClient } from "@tanstack/react-query";
 import { feedKeys } from "@/api/queryKeys";
+import Loading from "@/components/common/Loading";
 
 interface ImageFile {
   uri: string;
@@ -53,8 +54,8 @@ export default function FeedWriteScreen({ navigation, route }) {
       : FILTERED_CATEGORIES[0]
   );
   const [title, setTitle] = useState(feed?.title || "");
-  const [isNotValid, setIsNotValid] = useState(title.trim().length > 1);
   const [content, setContent] = useState(feed?.content || "");
+  const isValid = title.trim().length > 0 && content.trim().length > 0;
   const [images, setImages] = useState<ImageFile[]>(
     feed?.imageUrls?.map((uri) => ({
       uri,
@@ -149,16 +150,8 @@ export default function FeedWriteScreen({ navigation, route }) {
     setImages((prev) => prev.filter((_, i) => i !== index));
   };
 
-  const validateForm = () => {
-    if (!title.trim()) {
-      return false;
-    }
-    return true;
-  };
-
-  // FeedWriteScreen.tsx
   const handleUpload = async () => {
-    if (!validateForm()) return;
+    if (!isValid) return;
 
     try {
       setIsLoading(true);
@@ -185,7 +178,7 @@ export default function FeedWriteScreen({ navigation, route }) {
         });
       }
     } catch (error) {
-      Alert.alert("오류", `게시물 ${isEdit ? "수정" : "등록"}에 실패했습니다.`);
+      Alert.alert("오류", `Feed ${isEdit ? "Edit" : "Upload"} Fail.`);
     } finally {
       setIsLoading(false);
       navigation.goBack();
@@ -214,61 +207,68 @@ export default function FeedWriteScreen({ navigation, route }) {
       headerRight={
         <TouchableOpacity
           className={`px-3.5 py-1.5 rounded-full ${
-            isLoading ? "bg-gray-400" : "bg-primary"
+            isValid ? "bg-primary" : "bg-gray-400"
           }`}
           onPress={handleUpload}
           disabled={isLoading}
         >
           <MyText color="text-white" className="font-semibold">
-            {isLoading ? "처리중..." : "게시"}
+            {isLoading ? t("write.loading") : t("write.postButton")}
           </MyText>
         </TouchableOpacity>
       }
     >
-      <KeyboardLayout
-        footer={
-          <View>
-            <ImagePreview images={images} onRemove={removeImage} />
-            <View className="flex-row justify-between items-center py-3 px-4 border-gray-200">
-              <View className="flex-row items-center ml-1">
-                <TouchableOpacity onPress={takePhoto} className="mr-3">
-                  <Camera size={24} color="#797979" />
-                </TouchableOpacity>
-                <TouchableOpacity onPress={pickImage}>
-                  <ImagePlus size={24} color="#797979" />
-                </TouchableOpacity>
-              </View>
-              <View className="flex-row items-center">
-                <MyText color="text-textDescription" className="font-semibold">
-                  {images.length > 0 && `${images.length}/5`}
-                </MyText>
+      {isLoading ? (
+        <Loading />
+      ) : (
+        <KeyboardLayout
+          footer={
+            <View>
+              <ImagePreview images={images} onRemove={removeImage} />
+              <View className="flex-row justify-between items-center py-3 px-4 border-gray-200">
+                <View className="flex-row items-center ml-1">
+                  <TouchableOpacity onPress={takePhoto} className="mr-3">
+                    <Camera size={24} color="#797979" />
+                  </TouchableOpacity>
+                  <TouchableOpacity onPress={pickImage}>
+                    <ImagePlus size={24} color="#797979" />
+                  </TouchableOpacity>
+                </View>
+                <View className="flex-row items-center">
+                  <MyText
+                    color="text-textDescription"
+                    className="font-semibold"
+                  >
+                    {images.length > 0 && `${images.length}/5`}
+                  </MyText>
+                </View>
               </View>
             </View>
-          </View>
-        }
-      >
-        <InnerLayout>
-          <ScrollView className="flex-1 mt-8 pb-[50px]">
-            <TextInput
-              className="text-[20px] font-semibold"
-              placeholder="제목을 입력해주세요."
-              placeholderTextColor="#CBCBCB"
-              value={title}
-              onChangeText={setTitle}
-            />
-            <TextInput
-              className="text-[18px] mt-4 font-semibold"
-              placeholder="내용을 입력해주세요."
-              placeholderTextColor="#CBCBCB"
-              value={content}
-              onChangeText={setContent}
-              multiline
-              textAlignVertical="top"
-              style={{ minHeight: 150 }}
-            />
-          </ScrollView>
-        </InnerLayout>
-      </KeyboardLayout>
+          }
+        >
+          <InnerLayout>
+            <ScrollView className="flex-1 mt-8 pb-[50px]">
+              <TextInput
+                className="text-[20px] font-semibold"
+                placeholder={t("write.titlePlaceholder")}
+                placeholderTextColor="#CBCBCB"
+                value={title}
+                onChangeText={setTitle}
+              />
+              <TextInput
+                className="text-[18px] mt-4 font-semibold"
+                placeholder={t("write.contentPlaceholder")}
+                placeholderTextColor="#CBCBCB"
+                value={content}
+                onChangeText={setContent}
+                multiline
+                textAlignVertical="top"
+                style={{ minHeight: 150 }}
+              />
+            </ScrollView>
+          </InnerLayout>
+        </KeyboardLayout>
+      )}
 
       <BottomModal
         visible={categoryModal.visible}

@@ -34,5 +34,11 @@
     "imagesCount": "{count}/5",
     "camera": "카메라",
     "gallery": "갤러리"
+  },
+  "delete": {
+    "title": "게시물 삭제",
+    "description": "정말로 이 게시물을 삭제하시겠습니까?",
+    "confirm": "삭제",
+    "cancel": "취소"
   }
 }
