@@ -10,12 +10,7 @@ import { getCountryFlag } from "@/utils/constants/countries";
 import { Chip } from "@/components/common/Chip";
 import { MAJOR_ICONS } from "@/utils/constants/majors";
 import { INTEREST_ICONS } from "@/utils/constants/interests";
-import {
-  getProfile,
-  updateInterests,
-  updateLanguages,
-  updateName,
-} from "@/api/mypage/mypage";
+import { getProfile } from "@/api/mypage/mypage";
 
 export default function MyProfileScreen({ navigation }) {
   const { t } = useTranslation([
@@ -49,10 +44,6 @@ export default function MyProfileScreen({ navigation }) {
     navigation.navigate("EditName", {
       mode: "edit",
       initialName: profile.name,
-      onComplete: async (name: string) => {
-        await updateName(name);
-        navigation.goBack();
-      },
     });
   };
 
@@ -60,10 +51,6 @@ export default function MyProfileScreen({ navigation }) {
     navigation.navigate("EditLanguage", {
       mode: "edit",
       initialLanguages: profile.languages,
-      onComplete: async (languages: string[]) => {
-        await updateLanguages(languages);
-        navigation.goBack();
-      },
     });
   };
 
@@ -71,18 +58,13 @@ export default function MyProfileScreen({ navigation }) {
     navigation.navigate("EditInterest", {
       mode: "edit",
       initialInterests: profile.interests,
-      onComplete: async (interests: string[]) => {
-        console.log(interests);
-        await updateInterests(interests);
-        navigation.goBack();
-      },
     });
   };
 
   const sections = [
     {
       title: t("mypage:profile.sections.majors"),
-      data: profile.majors,
+      data: profile?.majors,
       translationPrefix: "majors:majors",
       getIcon: (id: string) => MAJOR_ICONS[id],
       editable: false,

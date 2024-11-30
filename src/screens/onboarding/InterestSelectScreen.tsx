@@ -16,6 +16,7 @@ import { postOnboardingInfo } from "@/api/onboarding/join";
 import { logError } from "@/utils/service/error";
 import MyText from "@/components/common/MyText";
 import { saveTokens } from "@/utils/service/auth";
+import { updateInterests } from "@/api/mypage/mypage";
 
 interface Interest {
   id: InterestID;
@@ -45,10 +46,12 @@ export default function InterestSelectScreen({ navigation, route }) {
   };
 
   const handleNavigateButton = async () => {
-    try {
-      const interests = selectedInterests.map((interest) => interest.id);
+    const interests = selectedInterests.map((interest) => interest.id);
+    if (mode === "edit") {
+      await updateInterests(interests);
+      navigation.goBack();
+    } else {
       updateOnboardingData({ interests });
-
       const { data } = await postOnboardingInfo({
         ...onboardingData,
         interests,
@@ -58,8 +61,6 @@ export default function InterestSelectScreen({ navigation, route }) {
         index: 0,
         routes: [{ name: "Tab" }],
       });
-    } catch (error) {
-      logError(error);
     }
   };
 
