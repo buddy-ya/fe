@@ -112,7 +112,7 @@ export default function FeedItem({
         <MyText
           color="text-textDescription"
           size="text-sm"
-          className="tracking-tighter mr-1"
+          className="tracking-tighter mr-1 mt-0.5"
         >
           {getTimeAgo(createdDate)}
         </MyText>

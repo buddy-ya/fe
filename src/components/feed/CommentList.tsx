@@ -51,7 +51,7 @@ export default function CommentList({
         <View key={item.id} className="mb-0 px-4 py-3 bg-white">
           <View className="flex-row justify-between items-start mb-[14px]">
             <View className="flex-row">
-              <View className="mr-2">
+              <View className="mr-3">
                 <Image
                   className="w-10 h-10 rounded-[12px]"
                   source={{ uri: item.profileImageUrl }}
