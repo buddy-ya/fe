@@ -36,7 +36,10 @@ export default function Layout({
   const route = useRoute();
   const shouldUseWhiteBackground =
     isBackgroundWhite ??
-    (route.name.startsWith("Onboarding") || route.name.startsWith("Edit"));
+    (route.name.startsWith("Onboarding") ||
+      route.name.startsWith("Edit") ||
+      route.name.startsWith("Email") ||
+      route.name.startsWith("StudentId"));
 
   const defaultEdges: Edge[] = ["top", "left", "right", "bottom"];
   const edges =

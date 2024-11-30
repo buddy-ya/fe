@@ -105,11 +105,11 @@ export default function MyPageScreen({ navigation }) {
               className="w-[54] h-[54] rounded-[12px] mr-3"
             />
             <View className="flex-1">
-              <MyText className="text-textDescription font-semibold">
+              <MyText className="text-textProfile font-semibold">
                 {t(`profile.university.${profile?.university}`)}
               </MyText>
               <View className="flex-row items-center">
-                <MyText size="text-base" className="text-textDescription">
+                <MyText size="text-base" className="text-textProfile">
                   {profile?.name}
                 </MyText>
                 <MyText size="text-lg" className="ml-1">

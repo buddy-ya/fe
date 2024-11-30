@@ -18,5 +18,21 @@
     "bookmark": "북마크"
   },
   "writer": "작성자",
-  "me": "나"
+  "me": "나",
+  "write": {
+    "titlePlaceholder": "제목을 입력해주세요.",
+    "contentPlaceholder": "내용을 입력해주세요.",
+    "categoryModalTitle": "카테고리 선택",
+    "imageUploadError": "이미지를 불러오는데 실패했습니다.",
+    "photoCaptureError": "사진 촬영에 실패했습니다.",
+    "postError": {
+      "create": "게시물 등록에 실패했습니다.",
+      "edit": "게시물 수정에 실패했습니다."
+    },
+    "loading": "처리중...",
+    "postButton": "게시",
+    "imagesCount": "{count}/5",
+    "camera": "카메라",
+    "gallery": "갤러리"
+  }
 }

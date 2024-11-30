@@ -18,6 +18,9 @@ import { CategorySelectModal } from "@/components/feed/CategorySelectModal";
 import { ImagePreview } from "@/components/feed/ImagePreview";
 import InnerLayout from "@/components/common/InnerLayout";
 import { createFeed, updateFeed } from "@/api/feed/feedAction";
+import { useTranslation } from "react-i18next";
+import { useQueryClient } from "@tanstack/react-query";
+import { feedKeys } from "@/api/queryKeys";
 
 interface ImageFile {
   uri: string;
@@ -50,6 +53,7 @@ export default function FeedWriteScreen({ navigation, route }) {
       : FILTERED_CATEGORIES[0]
   );
   const [title, setTitle] = useState(feed?.title || "");
+  const [isNotValid, setIsNotValid] = useState(title.trim().length > 1);
   const [content, setContent] = useState(feed?.content || "");
   const [images, setImages] = useState<ImageFile[]>(
     feed?.imageUrls?.map((uri) => ({
@@ -59,7 +63,9 @@ export default function FeedWriteScreen({ navigation, route }) {
     })) || []
   );
   const [isLoading, setIsLoading] = useState(false);
+  const { t } = useTranslation("feed");
 
+  const queryClient = useQueryClient();
   const categoryModal = useModal();
 
   const handleCategorySelect = (category: (typeof CATEGORIES)[0]) => {
@@ -69,11 +75,6 @@ export default function FeedWriteScreen({ navigation, route }) {
 
   const pickImage = async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-
-    if (status !== "granted") {
-      Alert.alert("권한 필요", "갤러리 접근 권한이 필요합니다.");
-      return;
-    }
 
     try {
       const result = await ImagePicker.launchImageLibraryAsync({
@@ -95,18 +96,12 @@ export default function FeedWriteScreen({ navigation, route }) {
         });
       }
     } catch (error) {
-      console.error("ImagePicker Error:", error);
       Alert.alert("오류", "이미지를 불러오는데 실패했습니다.");
     }
   };
 
   const takePhoto = async () => {
     const { status } = await ImagePicker.requestCameraPermissionsAsync();
-
-    if (status !== "granted") {
-      Alert.alert("권한 필요", "카메라 접근 권한이 필요합니다.");
-      return;
-    }
 
     try {
       const result = await ImagePicker.launchCameraAsync({
@@ -129,7 +124,6 @@ export default function FeedWriteScreen({ navigation, route }) {
         });
       }
     } catch (error) {
-      console.error("Camera Error:", error);
       Alert.alert("오류", "사진 촬영에 실패했습니다.");
     }
   };
@@ -157,12 +151,12 @@ export default function FeedWriteScreen({ navigation, route }) {
 
   const validateForm = () => {
     if (!title.trim()) {
-      Alert.alert("알림", "제목을 입력해주세요.");
       return false;
     }
     return true;
   };
 
+  // FeedWriteScreen.tsx
   const handleUpload = async () => {
     if (!validateForm()) return;
 
@@ -175,9 +169,10 @@ export default function FeedWriteScreen({ navigation, route }) {
           category: selectedCategory.id,
           images,
         });
-        Alert.alert("알림", "게시물이 수정되었습니다.", [
-          { text: "확인", onPress: () => navigation.goBack() },
-        ]);
+        queryClient.invalidateQueries({ queryKey: feedKeys.detail(feed.id) });
+        queryClient.invalidateQueries({
+          queryKey: feedKeys.lists(selectedCategory.id),
+        });
       } else {
         await createFeed({
           title: title.trim(),
@@ -185,15 +180,15 @@ export default function FeedWriteScreen({ navigation, route }) {
           category: selectedCategory.id,
           images,
         });
-        Alert.alert("알림", "게시물이 등록되었습니다.", [
-          { text: "확인", onPress: () => navigation.goBack() },
-        ]);
+        queryClient.invalidateQueries({
+          queryKey: feedKeys.lists(selectedCategory.id),
+        });
       }
     } catch (error) {
-      console.error("Upload Error:", error);
       Alert.alert("오류", `게시물 ${isEdit ? "수정" : "등록"}에 실패했습니다.`);
     } finally {
       setIsLoading(false);
+      navigation.goBack();
     }
   };
 
@@ -234,7 +229,7 @@ export default function FeedWriteScreen({ navigation, route }) {
         footer={
           <View>
             <ImagePreview images={images} onRemove={removeImage} />
-            <View className="flex-row justify-between items-center py-3 px-4 border-t border-gray-200">
+            <View className="flex-row justify-between items-center py-3 px-4 border-gray-200">
               <View className="flex-row items-center ml-1">
                 <TouchableOpacity onPress={takePhoto} className="mr-3">
                   <Camera size={24} color="#797979" />

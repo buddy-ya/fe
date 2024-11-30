@@ -1,14 +1,17 @@
-export const logError = (error) => {
-  if (error?.response?.data) {
-    const apiError = error.response.data;
-    console.log(`API 오류 [${apiError.code}]: ${apiError.message}`);
-    return;
+export const logError = (error: any) => {
+  if (error.config) {
+    console.log(`API Error URL: ${error.config.url}`);
+    console.log(`API Error Method: ${error.config.method}`);
+    console.log(`API Error Status: ${error.response?.status}`);
+    console.log(`API Error Message: ${error.response?.data?.message}`);
   }
+  console.log("Error Stack:", error.stack);
 
-  if (error instanceof Error) {
-    console.log(`네트워크 오류: ${error.message}`);
-    return;
+  if (error.response?.data) {
+    console.log(
+      `API 오류 [${error.response.status}]: ${error.response.data.message}`
+    );
+  } else {
+    console.log("Error:", error);
   }
-
-  console.log(`알 수 없는 오류가 발생했습니다`);
 };

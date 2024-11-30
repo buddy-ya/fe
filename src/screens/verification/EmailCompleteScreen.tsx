@@ -28,14 +28,16 @@ export default function EmailCompleteScreen({ navigation }) {
 
         <View className="flex-1 justify-center">
           <Image
-            // source={require("@/assets/images/welcome.png")}
+            source={require("@assets/images/onboarding/student-id.png")}
             className="w-full h-[200px]"
             resizeMode="contain"
           />
         </View>
 
         <Button onPress={handleNavigateButton}>
-          <MyText color="text-white">{t("verificationComplete.start")}</MyText>
+          <MyText size="text-lg" className="font-semibold" color="text-white">
+            {t("verificationComplete.start")}
+          </MyText>
         </Button>
       </View>
     </Layout>

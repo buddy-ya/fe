@@ -187,7 +187,7 @@ export default function FeedItem({
       )}
 
       <View
-        className={`flex-row items-center justify-between px-[12px] mt-[16px]`}
+        className={`flex-row items-center justify-between px-[12px] mt-[20px]`}
       >
         {actions.map(
           ({

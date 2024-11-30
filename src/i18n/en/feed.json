@@ -18,5 +18,21 @@
     "bookmark": "bookmark"
   },
   "writer": "writer",
-  "me": "me"
+  "me": "me",
+  "write": {
+    "titlePlaceholder": "Enter a title.",
+    "contentPlaceholder": "Enter content.",
+    "categoryModalTitle": "Select Category",
+    "imageUploadError": "Failed to load image.",
+    "photoCaptureError": "Failed to capture photo.",
+    "postError": {
+      "create": "Failed to create post.",
+      "edit": "Failed to update post."
+    },
+    "loading": "Processing...",
+    "postButton": "Post",
+    "imagesCount": "{count}/5",
+    "camera": "Camera",
+    "gallery": "Gallery"
+  }
 }

@@ -62,21 +62,89 @@ export default function HomeScreen({ navigation }) {
 
   const likeMutation = useMutation({
     mutationFn: toggleLike,
-    onSuccess: (response, feedId) => {
+    onMutate: async (feedId) => {
+      await queryClient.cancelQueries({
+        queryKey: feedKeys.lists(activeCategory),
+      });
+
+      const previousData = queryClient.getQueryData(
+        feedKeys.lists(activeCategory)
+      );
+
+      queryClient.setQueryData(feedKeys.lists(activeCategory), (old: any) => ({
+        ...old,
+        pages: old.pages.map((page: any) => ({
+          ...page,
+          feeds: page.feeds.map((feed: any) =>
+            feed.id === feedId
+              ? {
+                  ...feed,
+                  isLiked: !feed.isLiked,
+                  likeCount: feed.isLiked
+                    ? feed.likeCount - 1
+                    : feed.likeCount + 1,
+                }
+              : feed
+          ),
+        })),
+      }));
+
+      return { previousData };
+    },
+    onError: (_, __, context) => {
+      queryClient.setQueryData(
+        feedKeys.lists(activeCategory),
+        context?.previousData
+      );
+    },
+    onSettled: () => {
       queryClient.invalidateQueries({
-        queryKey: [...feedKeys.all],
+        queryKey: feedKeys.lists(activeCategory),
       });
     },
   });
 
   const bookmarkMutation = useMutation({
     mutationFn: toggleBookmark,
-    onSuccess: (_, feedId) => {
+    onMutate: async (feedId) => {
+      await queryClient.cancelQueries({
+        queryKey: feedKeys.lists(activeCategory),
+      });
+
+      const previousData = queryClient.getQueryData(
+        feedKeys.lists(activeCategory)
+      );
+
+      queryClient.setQueryData(feedKeys.lists(activeCategory), (old: any) => ({
+        ...old,
+        pages: old.pages.map((page: any) => ({
+          ...page,
+          feeds: page.feeds.map((feed: any) =>
+            feed.id === feedId
+              ? {
+                  ...feed,
+                  isBookmarked: !feed.isBookmarked,
+                }
+              : feed
+          ),
+        })),
+      }));
+
+      return { previousData };
+    },
+    onError: (_, __, context) => {
+      queryClient.setQueryData(
+        feedKeys.lists(activeCategory),
+        context?.previousData
+      );
+    },
+    onSettled: () => {
       queryClient.invalidateQueries({
-        queryKey: [...feedKeys.all],
+        queryKey: feedKeys.lists(activeCategory),
       });
     },
   });
+
   const handlePageChange = (index: number) => {
     setActiveCategory(CATEGORIES[index].id);
   };

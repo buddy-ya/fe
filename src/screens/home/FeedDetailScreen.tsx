@@ -28,15 +28,18 @@ export default function FeedDetailScreen({ navigation, route }) {
   const commentModal = useModal();
   const queryClient = useQueryClient();
   const [comment, setComment] = useState("");
+  const [isDeleted, setIsDeleted] = useState(false);
 
   const { data: feed } = useQuery({
     queryKey: feedKeys.detail(feedId),
     queryFn: () => getFeed(feedId),
+    enabled: !isDeleted,
   });
 
   const { data: commentsData } = useQuery({
     queryKey: ["feedComments", feedId],
     queryFn: () => getFeedComments(feedId),
+    enabled: !isDeleted,
   });
 
   const likeMutation = useMutation({
@@ -96,13 +99,11 @@ export default function FeedDetailScreen({ navigation, route }) {
               })
             ),
             createModalOptions.delete(async () => {
-              try {
-                await deleteFeed(feedId);
-                feedModal.closeModal();
-                navigation.goBack();
-              } catch (error) {
-                logError(error);
-              }
+              await deleteFeed(feedId);
+              setIsDeleted(true);
+              queryClient.invalidateQueries({ queryKey: feedKeys.all });
+              feedModal.closeModal();
+              navigation.goBack();
             }),
             createModalOptions.cancel(feedModal.closeModal),
           ]
