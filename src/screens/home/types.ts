@@ -17,11 +17,11 @@ export interface Feed {
   createdDate: string;
 }
 
-export interface FeedResponse {
-  currentPage: number;
-  totalPages: number;
-  hasNext: boolean;
+export interface FeedListResponse {
   feeds: Feed[];
+  hasNext: boolean;
+  currentPage: number;
+  pages: FeedListResponse[];
 }
 
 export interface CommentType {

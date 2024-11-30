@@ -1,5 +1,10 @@
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useState, useCallback, useMemo } from "react";
 import { TouchableOpacity, View } from "react-native";
+import {
+  useInfiniteQuery,
+  useMutation,
+  useQueryClient,
+} from "@tanstack/react-query";
 import Layout from "@/components/common/Layout";
 import CategoryPager from "@/components/feed/CategoryPager";
 import { Bell, Plus, Search } from "lucide-react-native";
@@ -13,149 +18,85 @@ import { logError } from "@/utils/service/error";
 import { getIsCertificated } from "@/api/certification/certification";
 import ConfirmModal from "@/components/common/ConfirmModal";
 import { useTranslation } from "react-i18next";
-import { getFeed } from "@/api/feed/getFeed";
+import { feedKeys } from "@/api/queryKeys";
+import { FeedListResponse } from "./types";
 
 export default function HomeScreen({ navigation }) {
   const { t } = useTranslation("certification");
+  const queryClient = useQueryClient();
   const [activeCategory, setActiveCategory] = useState(CATEGORIES[0].id);
-  const [page, setPage] = useState(0);
-  const [feeds, setFeeds] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isRefreshing, setIsRefreshing] = useState(false);
-  const [hasNext, setHasNext] = useState(true);
-
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [currentModalTexts, setCurrentModalTexts] = useState(null);
 
-  useEffect(() => {
-    fetchFeeds(0, true);
-  }, [activeCategory]);
-
-  useEffect(() => {
-    const unsubscribe = navigation.addListener("focus", async (e) => {
-      console.log("Focus Event:", e);
-      console.log("Route:", navigation.getCurrentRoute());
-
-      const params = navigation.getCurrentRoute()?.params;
-      console.log("Params:", params);
-
-      if (!params) return;
-
-      const { deletedFeedId, updatedFeedId } = params;
-      console.log("UpdatedFeedId:", updatedFeedId);
-
-      if (deletedFeedId) {
-        setFeeds((prev) => prev.filter((feed) => feed.id !== deletedFeedId));
-        navigation.setParams({ deletedFeedId: undefined });
-      } else if (updatedFeedId) {
-        try {
-          const updatedFeed = await getFeed(updatedFeedId);
-          setFeeds((prev) =>
-            prev.map((feed) => (feed.id === updatedFeedId ? updatedFeed : feed))
-          );
-          navigation.setParams({ updatedFeedId: undefined });
-        } catch (error) {
-          logError(error);
-        }
-      }
-    });
-
-    return unsubscribe;
-  }, [navigation]);
-
-  const fetchFeeds = async (
-    pageNum: number,
-    shouldRefresh: boolean = false
-  ) => {
-    if (isLoading) return;
-
-    try {
-      setIsLoading(true);
-      const response = await getFeeds({
+  const {
+    data,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    isLoading,
+    refetch,
+  } = useInfiniteQuery<
+    FeedListResponse,
+    Error,
+    FeedListResponse,
+    string[],
+    number
+  >({
+    queryKey: feedKeys.lists(activeCategory),
+    queryFn: async ({ pageParam }) => {
+      return await getFeeds({
         category: activeCategory,
-        page: pageNum,
+        page: pageParam,
         size: 5,
       });
+    },
+    initialPageParam: 0,
+    getNextPageParam: (lastPage) =>
+      lastPage.hasNext ? lastPage.currentPage + 1 : undefined,
+  });
 
-      setFeeds((prev) =>
-        shouldRefresh ? response.feeds : [...prev, ...response.feeds]
-      );
-      setHasNext(response.hasNext);
-    } catch (error) {
-      logError(error);
-    } finally {
-      setIsLoading(false);
-      setIsRefreshing(false);
-    }
-  };
+  const feeds = useMemo(
+    () => data?.pages.flatMap((page) => page.feeds) ?? [],
+    [data]
+  );
 
-  // 카테고리 변경 시
+  const likeMutation = useMutation({
+    mutationFn: toggleLike,
+    onSuccess: (response, feedId) => {
+      queryClient.invalidateQueries({
+        queryKey: [...feedKeys.all],
+      });
+    },
+  });
+
+  const bookmarkMutation = useMutation({
+    mutationFn: toggleBookmark,
+    onSuccess: (_, feedId) => {
+      queryClient.invalidateQueries({
+        queryKey: [...feedKeys.all],
+      });
+    },
+  });
   const handlePageChange = (index: number) => {
-    setFeeds([]);
-    setPage(0);
     setActiveCategory(CATEGORIES[index].id);
   };
 
-  // 새로고침
-  const handleRefresh = async () => {
-    setIsRefreshing(true);
-    setPage(0);
-    await fetchFeeds(0, true);
+  const handleRefresh = () => {
+    return refetch();
   };
 
-  // 추가 데이터 로드
-  const handleLoadMore = () => {
-    if (!isLoading && hasNext) {
-      const nextPage = page + 1;
-      setPage(nextPage);
-      fetchFeeds(nextPage);
+  const handleLoadMore = useCallback(() => {
+    if (hasNextPage && !isFetchingNextPage) {
+      fetchNextPage();
     }
-  };
+  }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
 
-  // 좋아요 처리
   const handleLike = async (id: number) => {
-    try {
-      setFeeds((prevFeeds) =>
-        prevFeeds.map((feed) =>
-          feed.id === id
-            ? {
-                ...feed,
-                isLiked: !feed.isLiked,
-                likeCount: feed.isLiked
-                  ? feed.likeCount - 1
-                  : feed.likeCount + 1,
-              }
-            : feed
-        )
-      );
-
-      const response = await toggleLike(id);
-
-      setFeeds((prevFeeds) =>
-        prevFeeds.map((feed) =>
-          feed.id === id ? { ...feed, likeCount: response.likeCount } : feed
-        )
-      );
-    } catch (error) {
-      logError(error);
-      fetchFeeds(page, true);
-    }
+    await likeMutation.mutateAsync(id);
   };
 
-  // 북마크 처리
   const handleBookmark = async (id: number) => {
-    try {
-      setFeeds((prevFeeds) =>
-        prevFeeds.map((feed) =>
-          feed.id === id ? { ...feed, isBookmarked: !feed.isBookmarked } : feed
-        )
-      );
-
-      await toggleBookmark(id);
-    } catch (error) {
-      logError(error);
-      fetchFeeds(page, true);
-    }
+    await bookmarkMutation.mutateAsync(id);
   };
 
   const handlePressFeed = (feedId: number) => {
@@ -166,9 +107,6 @@ export default function HomeScreen({ navigation }) {
     try {
       let { isCertificated, isKorean, isStudentIdCardRequested } =
         await getIsCertificated();
-
-      isCertificated = false;
-      isKorean = false;
 
       if (isCertificated) {
         navigation.navigate("FeedWrite");
@@ -249,9 +187,9 @@ export default function HomeScreen({ navigation }) {
                     onPress={handlePressFeed}
                     isLoading={isLoading}
                     onLoadMore={handleLoadMore}
-                    hasMore={hasNext}
+                    hasMore={!!hasNextPage}
                     refreshControl={{
-                      refreshing: isRefreshing,
+                      refreshing: isLoading && feeds.length > 0,
                       onRefresh: handleRefresh,
                       tintColor: "#4AA366",
                     }}

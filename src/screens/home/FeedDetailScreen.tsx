@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { TouchableOpacity, ScrollView, View, Keyboard } from "react-native";
 import { MoreVertical } from "lucide-react-native";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import Layout from "@/components/common/Layout";
 import { CommentType, Feed } from "./types";
 import FeedItem from "@/components/feed/FeedItem";
@@ -17,54 +18,74 @@ import {
   updateComment,
 } from "@/api/feed/comment";
 import { logError } from "@/utils/service/error";
-import MyText from "@/components/common/MyText";
 import { toggleBookmark, toggleLike } from "@/api/feed/getFeeds";
 import { deleteFeed } from "@/api/feed/feedAction";
+import { feedKeys } from "@/api/queryKeys";
 
 export default function FeedDetailScreen({ navigation, route }) {
   const { feedId } = route.params;
   const feedModal = useModal();
   const commentModal = useModal();
-
-  const [feed, setFeed] = useState<Feed | null>(null);
-  const [comments, setComments] = useState([]);
+  const queryClient = useQueryClient();
   const [comment, setComment] = useState("");
-  const [isStateChanged, setIsStateChanged] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-  const [inputFocused, setInputFocused] = useState(false);
 
-  useEffect(() => {
-    loadFeedData();
-  }, [feedId]);
+  const { data: feed } = useQuery({
+    queryKey: feedKeys.detail(feedId),
+    queryFn: () => getFeed(feedId),
+  });
 
-  const loadFeedData = async () => {
-    try {
-      setIsLoading(true);
-      const [feedData, commentsData] = await Promise.all([
-        getFeed(feedId),
-        getFeedComments(feedId),
-      ]);
-      setFeed(feedData);
-      setComments(commentsData.comments);
-    } catch (error) {
-      logError(error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  const { data: commentsData } = useQuery({
+    queryKey: ["feedComments", feedId],
+    queryFn: () => getFeedComments(feedId),
+  });
 
-  // 피드 인터랙션
+  const likeMutation = useMutation({
+    mutationFn: toggleLike,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [...feedKeys.all] });
+    },
+  });
+
+  const bookmarkMutation = useMutation({
+    mutationFn: toggleBookmark,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [...feedKeys.all] });
+    },
+  });
+
+  const commentMutation = useMutation({
+    mutationFn: (content: string) => createComment(feedId, content),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["feedComments", feedId] });
+      queryClient.invalidateQueries({ queryKey: [...feedKeys.all] });
+    },
+  });
+
+  const deleteCommentMutation = useMutation({
+    mutationFn: (commentId: number) => deleteComment(feedId, commentId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["feedComments", feedId] });
+      queryClient.invalidateQueries({ queryKey: [...feedKeys.all] });
+    },
+  });
+
+  const updateCommentMutation = useMutation({
+    mutationFn: ({
+      commentId,
+      content,
+    }: {
+      commentId: number;
+      content: string;
+    }) => updateComment(feedId, commentId, content),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["feedComments", feedId] });
+      queryClient.invalidateQueries({ queryKey: [...feedKeys.all] });
+    },
+  });
+
   const handleFeedActions = {
-    like: async () => {
-      const { isLiked, likeCount } = await toggleLike(feedId);
-      setFeed((prev) => prev && { ...prev, isLiked, likeCount });
-      setIsStateChanged(true);
-    },
-    bookmark: async () => {
-      await toggleBookmark(feedId);
-      setFeed((prev) => prev && { ...prev, isBookmarked: !prev.isBookmarked });
-      setIsStateChanged(true);
-    },
+    like: () => likeMutation.mutate(feedId),
+    bookmark: () => bookmarkMutation.mutate(feedId),
     showOptions: () => {
       const options = feed?.isFeedOwner
         ? [
@@ -78,7 +99,7 @@ export default function FeedDetailScreen({ navigation, route }) {
               try {
                 await deleteFeed(feedId);
                 feedModal.closeModal();
-                navigation.navigate("FeedHome", { deletedFeedId: feedId });
+                navigation.goBack();
               } catch (error) {
                 logError(error);
               }
@@ -94,26 +115,20 @@ export default function FeedDetailScreen({ navigation, route }) {
   const handleCommentActions = {
     submit: async () => {
       if (!comment.trim()) return;
-      const newComment = await createComment(feedId, comment.trim());
-      setComments((prev) => [...prev, newComment]);
+      await commentMutation.mutateAsync(comment.trim());
       setComment("");
       Keyboard.dismiss();
-      setIsStateChanged(true);
     },
     delete: async (commentId: number) => {
       try {
-        await deleteComment(feedId, commentId);
-        setComments((prev) => prev.filter((c) => c.id !== commentId));
+        await deleteCommentMutation.mutateAsync(commentId);
       } catch (error) {
         logError(error);
       }
     },
     update: async (commentId: number, content: string) => {
       try {
-        await updateComment(feedId, commentId, content);
-        setComments((prev) =>
-          prev.map((c) => (c.id === commentId ? { ...c, content } : c))
-        );
+        await updateCommentMutation.mutateAsync({ commentId, content });
       } catch (error) {
         logError(error);
       }
@@ -143,13 +158,7 @@ export default function FeedDetailScreen({ navigation, route }) {
       <Layout
         showHeader
         disableBottomSafeArea
-        onBack={() => {
-          if (isStateChanged) {
-            navigation.navigate("FeedHome", { updatedFeedId: feedId });
-          } else {
-            navigation.goBack();
-          }
-        }}
+        onBack={() => navigation.goBack()}
         headerRight={
           <TouchableOpacity
             onPress={handleFeedActions.showOptions}
@@ -179,7 +188,7 @@ export default function FeedDetailScreen({ navigation, route }) {
                   disablePress
                 />
                 <CommentList
-                  comments={comments}
+                  comments={commentsData?.comments || []}
                   onCommentOptions={handleCommentActions.showOptions}
                 />
               </>

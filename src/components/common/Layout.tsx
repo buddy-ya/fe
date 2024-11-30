@@ -38,11 +38,6 @@ export default function Layout({
     isBackgroundWhite ??
     (route.name.startsWith("Onboarding") || route.name.startsWith("Edit"));
 
-  const TAB_BAR_HEIGHT = Platform.select({
-    ios: 85,
-    android: 65,
-  });
-
   const defaultEdges: Edge[] = ["top", "left", "right", "bottom"];
   const edges =
     safeAreaEdges ||

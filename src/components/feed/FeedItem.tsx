@@ -62,6 +62,7 @@ export default function FeedItem({
   const handleComment = (id: number) => {};
   const { t } = useTranslation("feed");
 
+  console.log(feed);
   const actions = [
     {
       icon: ThumbsUp,
@@ -200,7 +201,7 @@ export default function FeedItem({
           }) => (
             <TouchableOpacity
               key={label}
-              onPress={onPress}
+              onPress={() => onPress?.()}
               className="flex-row items-center"
             >
               {isActive && ActiveIcon ? (
