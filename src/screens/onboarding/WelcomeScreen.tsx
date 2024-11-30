@@ -1,5 +1,5 @@
-import React from "react";
-import { View, Image } from "react-native";
+import React, { useEffect } from "react";
+import { View, Image, Platform } from "react-native";
 import { useTranslation } from "react-i18next";
 import "@/../global.css";
 import Button from "@/components/common/Button";
@@ -15,7 +15,7 @@ export default function WelcomeScreen({ navigation }) {
   };
 
   return (
-    <Layout>
+    <Layout showHeader={false}>
       <InnerLayout>
         <View className="items-center mt-14">
           <Image

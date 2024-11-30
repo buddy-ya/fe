@@ -1,4 +1,4 @@
-import { ChevronRight } from "lucide-react-native";
+import { ChevronRight, LucideIcon } from "lucide-react-native";
 import React, { ReactNode } from "react";
 import { Pressable, View } from "react-native";
 
@@ -7,8 +7,11 @@ interface ButtonProps {
   children?: ReactNode;
   type?: "circle" | "box";
   disabled?: boolean;
-  color?: "primary" | "disabled" | "disabled";
+  color?: "primary" | "disabled";
   className?: string;
+  icon?: LucideIcon;
+  iconSize?: number;
+  iconColor?: string;
 }
 
 export default function Button({
@@ -17,6 +20,9 @@ export default function Button({
   type = "box",
   disabled = false,
   className = "",
+  icon: Icon = ChevronRight,
+  iconSize = 32,
+  iconColor = "white",
 }: ButtonProps) {
   const getTypeStyles = () => {
     switch (type) {
@@ -43,7 +49,7 @@ export default function Button({
          `}
         >
           {type === "circle" && (
-            <ChevronRight strokeWidth={2} size={32} color="white" />
+            <Icon strokeWidth={2} size={iconSize} color={iconColor} />
           )}
           {children}
         </View>

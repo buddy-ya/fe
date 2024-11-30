@@ -1,32 +1,58 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export const TOKEN_KEYS = {
+const TOKEN_KEYS = {
   ACCESS: "accessToken",
   REFRESH: "refreshToken",
 } as const;
 
-export const saveTokens = async (accessToken: string, refreshToken: string) => {
-  await AsyncStorage.multiSet([
-    [TOKEN_KEYS.ACCESS, accessToken],
-    [TOKEN_KEYS.REFRESH, refreshToken],
-  ]);
+export const saveTokens = async (
+  accessToken: string,
+  refreshToken: string | null
+) => {
+  try {
+    await AsyncStorage.setItem(TOKEN_KEYS.ACCESS, accessToken);
+    if (refreshToken) {
+      await AsyncStorage.setItem(TOKEN_KEYS.REFRESH, refreshToken);
+    }
+  } catch (error) {
+    console.error("Error saving tokens:", error);
+  }
 };
 
 export const getAccessToken = async () => {
-  return await AsyncStorage.getItem(TOKEN_KEYS.ACCESS);
+  try {
+    return await AsyncStorage.getItem(TOKEN_KEYS.ACCESS);
+  } catch (error) {
+    console.error("Error getting access token:", error);
+    return null;
+  }
 };
 
 export const getRefreshToken = async () => {
-  return await AsyncStorage.getItem(TOKEN_KEYS.REFRESH);
-};
-
-export const isTokenPresent = async () => {
-  const accessToken = await getAccessToken();
-  const refreshToken = await getRefreshToken();
-
-  return accessToken !== null && refreshToken !== null;
+  try {
+    return await AsyncStorage.getItem(TOKEN_KEYS.REFRESH);
+  } catch (error) {
+    console.error("Error getting refresh token:", error);
+    return null;
+  }
 };
 
 export const removeTokens = async () => {
-  await AsyncStorage.multiRemove([TOKEN_KEYS.ACCESS, TOKEN_KEYS.REFRESH]);
+  try {
+    await AsyncStorage.removeItem(TOKEN_KEYS.ACCESS);
+    await AsyncStorage.removeItem(TOKEN_KEYS.REFRESH);
+  } catch (error) {
+    console.error("Error removing tokens:", error);
+  }
+};
+
+export const isTokenPresent = async () => {
+  try {
+    const accessToken = await getAccessToken();
+    const refreshToken = await getRefreshToken();
+    return Boolean(accessToken && refreshToken);
+  } catch (error) {
+    console.error("Error checking tokens:", error);
+    return false;
+  }
 };

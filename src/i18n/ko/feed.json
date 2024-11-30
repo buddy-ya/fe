@@ -1,0 +1,20 @@
+{
+  "category": {
+    "popular": "인기",
+    "free": "자유",
+    "info": "정보공유"
+  },
+  "profile": {
+    "university": {
+      "sju": "세종대학교"
+    }
+  },
+  "comment": {
+    "placeholder": "댓글을 입력해주세요."
+  },
+  "action": {
+    "like": "공감",
+    "comment": "댓글",
+    "bookmark": "북마크"
+  }
+}

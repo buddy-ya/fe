@@ -13,6 +13,7 @@ module.exports = {
         text: "#282828",
         textDescription: "#797979",
         textWarning: "#FF7657",
+        textLight: "#CBCBCB",
 
         placeholderPrimary: "#fff",
         background: "#FFFFFF",
@@ -22,13 +23,19 @@ module.exports = {
         borderBottom: "#f3f4f6",
         borderCheckbox: "#d1d5db",
         borderFooter: "#E8E9EB",
+        borderFeed: "#E8E9EB",
         footerBackground: "#FCFCFC",
 
         chipBorder: "#A6CFC4",
         chipActive: "#F6FFFD",
 
+        modalBorderBottom: "#F6F6F6",
+
+        iconBorder: "#797977",
         headerBottom: "#E8E9EB",
         selectActive: "#f0fdf4",
+
+        mainBackground: "#F6F6F6",
       },
       fontFamily: {
         sans: ["Pretendard-Regular"],
@@ -51,6 +58,9 @@ module.exports = {
         bold: undefined,
         extrabold: undefined,
         black: undefined,
+      },
+      lineHeight: {
+        none: "1",
       },
     },
   },

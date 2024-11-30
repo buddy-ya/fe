@@ -10,9 +10,7 @@ import { Lock } from "lucide-react-native";
 import Label from "@/components/onboarding/Label";
 import ErrorMessage from "@/components/onboarding/ErrorMessage";
 import FooterLayout from "@/components/common/FooterLayout";
-import { useMutation } from "@tanstack/react-query";
 import { postPhoneVerification } from "@/api/auth/phone";
-import { logError } from "@/utils/service/error";
 import MyText from "@/components/common/MyText";
 import { formatPhone } from "@/utils/service/phone";
 
@@ -21,16 +19,7 @@ export default function PhoneScreen({ navigation }) {
   const [phone, setPhone] = useState("");
   const [isValid, setIsValid] = useState(false);
   const [showError, setShowError] = useState(false);
-
-  const { mutate: sendVerification } = useMutation({
-    mutationFn: postPhoneVerification,
-    onSuccess: () => {
-      navigation.navigate("OnboardingPhoneVerification", {
-        phone: formatPhone.addHyphen(phone),
-      });
-    },
-    onError: logError,
-  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     setIsValid(formatPhone.validate(phone));
@@ -44,20 +33,26 @@ export default function PhoneScreen({ navigation }) {
     }
   };
 
-  const handleNavigateButton = () => {
-    sendVerification({ phoneNumber: phone });
+  const handleNavigateButton = async () => {
+    if (isSubmitting) return;
+
+    setIsSubmitting(true);
+    await postPhoneVerification(phone);
+    navigation.navigate("OnboardingPhoneVerification", {
+      phone: formatPhone.addHyphen(phone),
+    });
   };
 
   const footer = (
     <FooterLayout
-      icon={<Lock strokeWidth={1} size={23} color={"#797979"} />}
+      icon={<Lock strokeWidth={1} size={23} color="#797979" />}
       content={
         <MyText size="text-sm" color="text-textDescription" className="mx-3">
           {t("phone.footer")}
         </MyText>
       }
       onPress={handleNavigateButton}
-      disabled={!isValid}
+      disabled={!isValid || isSubmitting}
     />
   );
 

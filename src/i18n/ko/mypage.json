@@ -1,0 +1,48 @@
+{
+  "title": "설정",
+  "profile": {
+    "edit": "편집",
+    "university": {
+      "sju": "세종대학교"
+    },
+    "photo": {
+      "title": "프로필 사진 선택",
+      "current": "현재 프로필 사진",
+      "select": "프로필 사진을 선택해주세요"
+    },
+    "gender": {
+      "male": "남성",
+      "female": "여성"
+    },
+    "editProfile": "프로필 수정",
+    "sections": {
+      "country": "국적",
+      "gender": "성별",
+      "languages": "구사 가능 언어",
+      "majors": "전공",
+      "interests": "관심사"
+    }
+  },
+  "bookmark": "북마크",
+  "myPosts": "내 글",
+  "settings": "설정",
+  "quickMenu": {
+    "bookmark": "북마크",
+    "myPosts": "내 글",
+    "settings": "설정"
+  },
+  "menuItems": {
+    "title": "각종 설정들 레이아웃",
+    "bookmark": "북마크",
+    "myPosts": "내 글",
+    "notifications": "알림 설정",
+    "language": "언어 설정",
+    "privacy": "개인정보 설정",
+    "terms": "이용약관",
+    "version": "앱 버전"
+  },
+  "myPostsEmpty": "아직 글이 없어요",
+  "common": {
+    "complete": "완료"
+  }
+}

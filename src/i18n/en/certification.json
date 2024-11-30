@@ -1,0 +1,51 @@
+{
+  "banner": {
+    "default": {
+      "title": "If you certify as a student, Buddyya it's more fun to use.",
+      "description": "Buddyya is a service for students.",
+      "confirm": "Verify",
+      "cancel": "Cancel"
+    },
+    "pending": {
+      "title": "Your student verification is under review.",
+      "description": "Personal information will be deleted immediately after approval.\nStudent verification typically takes 1-2 days.",
+      "confirm": "Check Status",
+      "cancel": "Confirm"
+    }
+  },
+  "studentId": {
+    "title": "Please upload your captured mobile student ID.",
+    "description": "The image is discarded immediately after the subscription is approved.",
+    "select": "Select image",
+    "submit": "Apply for certification",
+    "permission": {
+      "gallery": "Gallery permission is required to select images."
+    }
+  },
+  "email": {
+    "title": "Please verify with your school email.",
+    "description": "Please verify with your university email.",
+    "placeholder": "Enter email",
+    "domain": "@sju.ac.kr",
+    "warning": "Please enter a valid email."
+  },
+  "verification": {
+    "title": "Enter verification code",
+    "titleDescription": "We've sent a verification code to\n{email}",
+    "label": "Verification Code",
+    "timer": {
+      "notReceived": "Haven't received the code?",
+      "expired": "Verification code has expired.",
+      "resend": "Resend",
+      "timeLeft": "{{minutes}}:{{seconds}}"
+    },
+    "error": {
+      "invalidCode": "Invalid verification code"
+    }
+  },
+  "complete": {
+    "title": "Verification Complete",
+    "description": "Your student verification has been submitted.\nStudent verification typically takes 1-2 days.",
+    "button": "Complete"
+  }
+}

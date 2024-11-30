@@ -1,5 +1,4 @@
 import React from "react";
-import { Text } from "react-native";
 import MyText from "../common/MyText";
 
 interface HeadingDescriptionProps {
@@ -15,7 +14,7 @@ export default function HeadingDescription({
     <MyText
       size="text-[14px]"
       color="text-textDescription"
-      className={`mt-3 ${className}`}
+      className={`mt-[9px] ${className} leading-[1.4]`}
     >
       {children}
     </MyText>

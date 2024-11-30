@@ -13,7 +13,7 @@ export default function StudentInfoScreen({ navigation }) {
     navigation.replace("OnboardingUniversitySelect");
   };
   return (
-    <Layout preserveHeader>
+    <Layout>
       <InnerLayout>
         <Heading>{t("studentInfo.title")}</Heading>
         <HeadingDescription>{t("studentInfo.description")}</HeadingDescription>

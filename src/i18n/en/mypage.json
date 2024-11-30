@@ -1,0 +1,50 @@
+{
+  "title": "Settings",
+  "profile": {
+    "edit": "edit",
+    "profile": {
+      "photo": {
+        "title": "Select Profile Photo",
+        "current": "Current Profile Photo",
+        "select": "Please select a profile photo"
+      }
+    },
+    "university": {
+      "sju": "Sejong"
+    },
+    "gender": {
+      "male": "Male",
+      "female": "Female"
+    },
+    "editProfile": "Edit Profile",
+    "sections": {
+      "country": "Nationality",
+      "gender": "gender",
+      "languages": "Languages",
+      "majors": "Majors",
+      "interests": "Interests"
+    }
+  },
+  "bookmark": "Bookmarks",
+  "myPosts": "My Posts",
+  "settings": "Settings",
+  "quickMenu": {
+    "bookmark": "Bookmarks",
+    "myPosts": "My Posts",
+    "settings": "Settings"
+  },
+  "menuItems": {
+    "title": "Settings Layout",
+    "bookmark": "Bookmarks",
+    "myPosts": "My Posts",
+    "notifications": "Notification Settings",
+    "language": "Language Settings",
+    "privacy": "Privacy Settings",
+    "terms": "Terms of Service",
+    "version": "App Version"
+  },
+  "myPostsEmpty": "No posts yet",
+  "common": {
+    "complete": "Done"
+  }
+}

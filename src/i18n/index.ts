@@ -10,9 +10,18 @@ import ko_languages from "./ko/languages.json";
 import en_languages from "./en/languages.json";
 import ko_interests from "./ko/interests.json";
 import en_interests from "./en/interests.json";
-
 import ko_majors from "./ko/majors.json";
 import en_majors from "./en/majors.json";
+import ko_common from "./ko/common.json";
+import en_common from "./en/common.json";
+import ko_feed from "./ko/feed.json";
+import en_feed from "./en/feed.json";
+import ko_certification from "./ko/certification.json";
+import en_certification from "./en/certification.json";
+import ko_mypage from "./ko/mypage.json";
+import en_mypage from "./ko/mypage.json";
+import ko_error from "./ko/error.json";
+import en_error from "./en/error.json";
 
 const resources = {
   ko: {
@@ -21,6 +30,11 @@ const resources = {
     countries: ko_countries,
     languages: ko_languages,
     interests: ko_interests,
+    common: ko_common,
+    feed: ko_feed,
+    certification: ko_certification,
+    mypage: ko_mypage,
+    error: ko_error,
   },
   en: {
     onboarding: en_onboarding,
@@ -28,6 +42,11 @@ const resources = {
     countries: en_countries,
     languages: en_languages,
     interests: en_interests,
+    common: en_common,
+    feed: en_feed,
+    certification: en_certification,
+    mypage: en_mypage,
+    error: en_error,
   },
 };
 

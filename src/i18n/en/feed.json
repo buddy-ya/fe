@@ -1,0 +1,20 @@
+{
+  "category": {
+    "popular": "popular",
+    "free": "free",
+    "info": "info"
+  },
+  "profile": {
+    "university": {
+      "sju": "Sejong"
+    }
+  },
+  "comment": {
+    "placeholder": "Please enter a comment"
+  },
+  "action": {
+    "like": "like",
+    "comment": "comment",
+    "bookmark": "bookmark"
+  }
+}
