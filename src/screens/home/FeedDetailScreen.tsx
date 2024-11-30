@@ -160,12 +160,14 @@ export default function FeedDetailScreen({ navigation, route }) {
         disableBottomSafeArea
         onBack={() => navigation.goBack()}
         headerRight={
-          <TouchableOpacity
-            onPress={handleFeedActions.showOptions}
-            hitSlop={{ bottom: 20, left: 20 }}
-          >
-            <MoreVertical size={24} color="#797979" />
-          </TouchableOpacity>
+          feed?.isFeedOwner && (
+            <TouchableOpacity
+              onPress={handleFeedActions.showOptions}
+              hitSlop={{ bottom: 20, left: 20 }}
+            >
+              <MoreVertical size={24} color="#797979" />
+            </TouchableOpacity>
+          )
         }
       >
         <KeyboardLayout

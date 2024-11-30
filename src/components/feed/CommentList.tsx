@@ -13,11 +13,12 @@ interface CommentLabelProps {
 }
 
 const CommentLabel = ({ isFeedOwner, isCommentOwner }: CommentLabelProps) => {
+  const { t } = useTranslation("feed");
   if (isFeedOwner) {
     return (
       <View className="ml-2 px-[6px] py-[1px] bg-primary/10 rounded-full">
         <MyText size="text-[11px]" color="text-primary">
-          작성자
+          {t("writer")}
         </MyText>
       </View>
     );
@@ -26,7 +27,7 @@ const CommentLabel = ({ isFeedOwner, isCommentOwner }: CommentLabelProps) => {
     return (
       <View className="ml-2 px-[6px] py-[1px] bg-[#F6F6F6] rounded-full">
         <MyText size="text-[11px]" color="text-textDescription">
-          나
+          {t("me")}
         </MyText>
       </View>
     );
@@ -64,13 +65,17 @@ export default function CommentList({
                   >
                     {t(`profile.university.${item.university}`)}
                   </MyText>
-                  <MyText color="text-textDescription" className="mx-[4px]">
+                  <MyText
+                    size="text-sm"
+                    color="text-textDescription"
+                    className="mx-[5px]"
+                  >
                     {"·"}
                   </MyText>
                   <MyText
                     size="text-sm"
                     color="text-textDescription"
-                    className="tracking-tight"
+                    className="tracking-tighter -ml-[2px]"
                   >
                     {getTimeAgo(item.createdDate)}
                   </MyText>

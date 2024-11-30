@@ -16,5 +16,7 @@
     "like": "like",
     "comment": "comment",
     "bookmark": "bookmark"
-  }
+  },
+  "writer": "writer",
+  "me": "me"
 }

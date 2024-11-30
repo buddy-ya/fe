@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { View, ScrollView, Image, TouchableOpacity } from "react-native";
 import { useTranslation } from "react-i18next";
-import { Pencil } from "lucide-react-native";
+import { Pencil, RefreshCcw, RefreshCw } from "lucide-react-native";
 import Layout from "@/components/common/Layout";
 import InnerLayout from "@/components/common/InnerLayout";
 import MyText from "@/components/common/MyText";
@@ -106,7 +106,7 @@ export default function MyProfileScreen({ navigation }) {
     children: React.ReactNode,
     onEdit?: () => void
   ) => (
-    <View className="border-t-[1px] border-borderBottom p-5">
+    <View className="border-t-[1px] border-borderBottom px-5 py-4">
       {renderSectionHeader(title, onEdit)}
       {children}
     </View>
@@ -128,10 +128,10 @@ export default function MyProfileScreen({ navigation }) {
                   className="w-[110px] h-[110px] rounded-[25px] mb-4"
                 />
                 <TouchableOpacity
-                  className="absolute -top-1 -right-3 bg-white p-2 rounded-full"
+                  className="absolute -top-1.5 -right-3 bg-white p-1.5 rounded-full"
                   onPress={handleEditPhoto}
                 >
-                  <Pencil size={18} color="#797979" />
+                  <RefreshCcw size={18} color={"#797979"} />
                 </TouchableOpacity>
               </View>
               <View className="flex-row items-center">
@@ -153,7 +153,7 @@ export default function MyProfileScreen({ navigation }) {
           </View>
 
           <View className="bg-white rounded-[20px] mt-7">
-            <View className="p-5 flex-row justify-between items-start">
+            <View className="py-4 px-5 flex-row justify-between items-start">
               <View className="flex-1">
                 {renderSectionHeader(t("mypage:profile.sections.country"))}
                 <Chip

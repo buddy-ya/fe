@@ -62,7 +62,6 @@ export default function FeedItem({
   const handleComment = (id: number) => {};
   const { t } = useTranslation("feed");
 
-  console.log(feed);
   const actions = [
     {
       icon: ThumbsUp,
@@ -127,7 +126,7 @@ export default function FeedItem({
           size="text-[14px]"
           color="text-textDescription"
           className="font-semibold mt-2"
-          numberOfLines={showAllContent ? undefined : 3}
+          numberOfLines={showAllContent ? undefined : 2}
         >
           {content}
         </MyText>
@@ -210,7 +209,7 @@ export default function FeedItem({
                 <Icon
                   size={20}
                   color={isActive ? "#00A176" : "#797979"}
-                  fill={isActive ? "#E3FFF7" : "transparent"}
+                  fill={isActive ? "#00A176" : "transparent"}
                   strokeWidth={1}
                 />
               )}

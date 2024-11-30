@@ -16,5 +16,7 @@
     "like": "공감",
     "comment": "댓글",
     "bookmark": "북마크"
-  }
+  },
+  "writer": "작성자",
+  "me": "나"
 }
