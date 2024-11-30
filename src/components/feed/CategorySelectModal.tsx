@@ -6,8 +6,8 @@ import MyText from "../common/MyText";
 export function CategorySelectModal({ selectedCategory, onSelect }) {
   const categories = CATEGORIES.filter((category) => category.id !== "popular");
   return (
-    <View className="p-8 pb-6">
-      <MyText size="text-xl" className="font-semibold mb-9">
+    <View className="p-7 pb-6">
+      <MyText size="text-[20px]" className="font-semibold mb-9">
         게시판을 선택하세요.
       </MyText>
       {categories.map((category) => (
@@ -22,9 +22,11 @@ export function CategorySelectModal({ selectedCategory, onSelect }) {
             </View>
             <MyText
               size="text-[16px]"
-              color={`text-textDescription ${
-                selectedCategory.id == category.id && "text-[#004835]"
-              }`}
+              color={`${
+                selectedCategory.id == category.id
+                  ? "text-[#004835]"
+                  : "text-textDescription"
+              } `}
               className="font-semibold"
             >
               {category.label}
@@ -32,7 +34,7 @@ export function CategorySelectModal({ selectedCategory, onSelect }) {
           </View>
           <MyText>
             {category.id === selectedCategory.id && (
-              <Check size={20} strokeWidth={2} color="#00A176" />
+              <Check size={20} strokeWidth={2.2} color="#00A176" />
             )}
           </MyText>
         </TouchableOpacity>

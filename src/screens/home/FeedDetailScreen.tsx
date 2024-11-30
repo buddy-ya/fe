@@ -29,6 +29,7 @@ export default function FeedDetailScreen({ navigation, route }) {
   const [feed, setFeed] = useState<Feed | null>(null);
   const [comments, setComments] = useState([]);
   const [comment, setComment] = useState("");
+  const [isStateChanged, setIsStateChanged] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [inputFocused, setInputFocused] = useState(false);
 
@@ -55,22 +56,14 @@ export default function FeedDetailScreen({ navigation, route }) {
   // 피드 인터랙션
   const handleFeedActions = {
     like: async () => {
-      try {
-        const { isLiked, likeCount } = await toggleLike(feedId);
-        setFeed((prev) => prev && { ...prev, isLiked, likeCount });
-      } catch (error) {
-        logError(error);
-      }
+      const { isLiked, likeCount } = await toggleLike(feedId);
+      setFeed((prev) => prev && { ...prev, isLiked, likeCount });
+      setIsStateChanged(true);
     },
     bookmark: async () => {
-      try {
-        await toggleBookmark(feedId);
-        setFeed(
-          (prev) => prev && { ...prev, isBookmarked: !prev.isBookmarked }
-        );
-      } catch (error) {
-        logError(error);
-      }
+      await toggleBookmark(feedId);
+      setFeed((prev) => prev && { ...prev, isBookmarked: !prev.isBookmarked });
+      setIsStateChanged(true);
     },
     showOptions: () => {
       const options = feed?.isFeedOwner
@@ -81,9 +74,14 @@ export default function FeedDetailScreen({ navigation, route }) {
                 isEdit: true,
               })
             ),
-            createModalOptions.delete(() => {
-              deleteFeed(feedId);
-              feedModal.closeModal();
+            createModalOptions.delete(async () => {
+              try {
+                await deleteFeed(feedId);
+                feedModal.closeModal();
+                navigation.navigate("FeedHome", { deletedFeedId: feedId });
+              } catch (error) {
+                logError(error);
+              }
             }),
             createModalOptions.cancel(feedModal.closeModal),
           ]
@@ -96,14 +94,11 @@ export default function FeedDetailScreen({ navigation, route }) {
   const handleCommentActions = {
     submit: async () => {
       if (!comment.trim()) return;
-      try {
-        const newComment = await createComment(feedId, comment.trim());
-        setComments((prev) => [...prev, newComment]);
-        setComment("");
-        Keyboard.dismiss();
-      } catch (error) {
-        logError(error);
-      }
+      const newComment = await createComment(feedId, comment.trim());
+      setComments((prev) => [...prev, newComment]);
+      setComment("");
+      Keyboard.dismiss();
+      setIsStateChanged(true);
     },
     delete: async (commentId: number) => {
       try {
@@ -148,7 +143,13 @@ export default function FeedDetailScreen({ navigation, route }) {
       <Layout
         showHeader
         disableBottomSafeArea
-        onBack={navigation.goBack}
+        onBack={() => {
+          if (isStateChanged) {
+            navigation.navigate("FeedHome", { updatedFeedId: feedId });
+          } else {
+            navigation.goBack();
+          }
+        }}
         headerRight={
           <TouchableOpacity
             onPress={handleFeedActions.showOptions}

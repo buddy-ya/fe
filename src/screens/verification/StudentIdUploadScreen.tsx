@@ -64,7 +64,7 @@ export default function StudentIdCardUploadScreen({ navigation }) {
         <View className="flex-1 justify-center items-center">
           <TouchableOpacity
             onPress={handleImagePick}
-            className="mb-10 w-[180px] h-[320px] rounded-[12px] border-[1px] border-border justify-center items-center bg-background"
+            className="mb-10 w-[180px] h-[320px] rounded-[12px] border-[1px] border-border justify-center items-center bg-background overflow-hidden"
           >
             {selectedImage ? (
               <Image

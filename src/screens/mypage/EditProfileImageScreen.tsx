@@ -79,7 +79,7 @@ export default function EditProfileImageScreen({ navigation }) {
                 className={`w-[86px] h-[86px] rounded-[27px] overflow-hidden
                     ${
                       selectedImage === imageUrl
-                        ? "border-2 border-primary"
+                        ? "border-[1.5px] border-[#004D39]"
                         : ""
                     }`}
               >

@@ -15,8 +15,8 @@ interface CommentLabelProps {
 const CommentLabel = ({ isFeedOwner, isCommentOwner }: CommentLabelProps) => {
   if (isFeedOwner) {
     return (
-      <View className="ml-2 px-2 py-1 bg-primary/10 rounded">
-        <MyText size="text-xs" color="text-primary">
+      <View className="ml-2 px-[6px] py-[1px] bg-primary/10 rounded-full">
+        <MyText size="text-[11px]" color="text-primary">
           작성자
         </MyText>
       </View>
@@ -24,8 +24,8 @@ const CommentLabel = ({ isFeedOwner, isCommentOwner }: CommentLabelProps) => {
   }
   if (isCommentOwner) {
     return (
-      <View className="ml-2 px-2 py-1 bg-gray-100 rounded">
-        <MyText size="text-xs" color="text-textDescription">
+      <View className="ml-2 px-[6px] py-[1px] bg-[#F6F6F6] rounded-full">
+        <MyText size="text-[11px]" color="text-textDescription">
           나
         </MyText>
       </View>
@@ -45,38 +45,38 @@ export default function CommentList({
 }: CommentListProps) {
   const { t } = useTranslation("feed");
   return (
-    <View>
+    <View className="pt-1 mb-4 rounded-[20px] overflow-hidden">
       {comments?.map((item) => (
-        <View
-          key={item.id}
-          className="mb-0 px-4 py-3 border-b border-borderBottom bg-white"
-        >
-          <View className="flex-row justify-between items-start mb-2">
+        <View key={item.id} className="mb-0 px-4 py-3 bg-white">
+          <View className="flex-row justify-between items-start mb-[14px]">
             <View className="flex-row">
               <View className="mr-2">
                 <Image
-                  className="w-9 h-9 rounded-[12px]"
+                  className="w-10 h-10 rounded-[12px]"
                   source={{ uri: item.profileImageUrl }}
                 />
               </View>
-              <View>
+              <View className="">
                 <View className="flex-row items-center">
                   <MyText
                     size="text-sm"
-                    className="font-semibold text-textDescription"
+                    className="font-semibold text-[#474747]"
                   >
                     {t(`profile.university.${item.university}`)}
                   </MyText>
+                  <MyText color="text-textDescription" className="mx-[4px]">
+                    {"·"}
+                  </MyText>
                   <MyText
                     size="text-sm"
-                    color="text-textLight"
-                    className="ml-3 tracking-tight"
+                    color="text-textDescription"
+                    className="tracking-tight"
                   >
                     {getTimeAgo(item.createdDate)}
                   </MyText>
                 </View>
                 <View className="flex-row items-center">
-                  <MyText size="text-sm" color="text-textDescription">
+                  <MyText size="text-sm" color="text-[#474747]">
                     {item.name}
                   </MyText>
                   <MyText size="text-sm" className="ml-[3px]">
@@ -87,7 +87,7 @@ export default function CommentList({
                     isCommentOwner={item.isCommentOwner}
                   />
                 </View>
-                <MyText className="mt-2">{item.content}</MyText>
+                <MyText className="mt-[10px]">{item.content}</MyText>
               </View>
             </View>
             <View className="flex-row items-center">

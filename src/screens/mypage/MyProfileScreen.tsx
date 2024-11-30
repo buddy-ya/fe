@@ -106,20 +106,12 @@ export default function MyProfileScreen({ navigation }) {
 
   const renderSectionHeader = (title: string, onEdit?: () => void) => (
     <View className="flex-row items-center justify-between mb-2">
-      <MyText
-        size="text-[12px]"
-        color="text-textDescription"
-        className="font-semibold"
-      >
+      <MyText size="text-[12px]" color="text-textDescription" className="">
         {title}
       </MyText>
       {onEdit && (
         <TouchableOpacity className="px-3" onPress={onEdit}>
-          <MyText
-            size="text-[12px]"
-            color="text-textLight"
-            className="font-semibold"
-          >
+          <MyText size="text-[12px]" color="text-textLight" className="">
             {t("mypage:profile.edit")}
           </MyText>
         </TouchableOpacity>
@@ -171,7 +163,7 @@ export default function MyProfileScreen({ navigation }) {
               <MyText
                 size="text-[13px]"
                 color="text-textDescription"
-                className="font-semibold mt-2"
+                className=" mt-2"
               >
                 {t(`profile.university.${profile.university}`)}
               </MyText>
@@ -191,7 +183,7 @@ export default function MyProfileScreen({ navigation }) {
               </View>
 
               {profile.gender !== "unknown" && (
-                <View className="w-[40%]">
+                <View className="w-[50%]">
                   {renderSectionHeader(t("mypage:profile.sections.gender"))}
                   <Chip
                     readOnly={true}

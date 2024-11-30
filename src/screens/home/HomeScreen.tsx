@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { TouchableOpacity, View } from "react-native";
 import Layout from "@/components/common/Layout";
 import CategoryPager from "@/components/feed/CategoryPager";
@@ -13,6 +13,7 @@ import { logError } from "@/utils/service/error";
 import { getIsCertificated } from "@/api/certification/certification";
 import ConfirmModal from "@/components/common/ConfirmModal";
 import { useTranslation } from "react-i18next";
+import { getFeed } from "@/api/feed/getFeed";
 
 export default function HomeScreen({ navigation }) {
   const { t } = useTranslation("certification");
@@ -25,6 +26,42 @@ export default function HomeScreen({ navigation }) {
 
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [currentModalTexts, setCurrentModalTexts] = useState(null);
+
+  useEffect(() => {
+    fetchFeeds(0, true);
+  }, [activeCategory]);
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener("focus", async (e) => {
+      console.log("Focus Event:", e);
+      console.log("Route:", navigation.getCurrentRoute());
+
+      const params = navigation.getCurrentRoute()?.params;
+      console.log("Params:", params);
+
+      if (!params) return;
+
+      const { deletedFeedId, updatedFeedId } = params;
+      console.log("UpdatedFeedId:", updatedFeedId);
+
+      if (deletedFeedId) {
+        setFeeds((prev) => prev.filter((feed) => feed.id !== deletedFeedId));
+        navigation.setParams({ deletedFeedId: undefined });
+      } else if (updatedFeedId) {
+        try {
+          const updatedFeed = await getFeed(updatedFeedId);
+          setFeeds((prev) =>
+            prev.map((feed) => (feed.id === updatedFeedId ? updatedFeed : feed))
+          );
+          navigation.setParams({ updatedFeedId: undefined });
+        } catch (error) {
+          logError(error);
+        }
+      }
+    });
+
+    return unsubscribe;
+  }, [navigation]);
 
   const fetchFeeds = async (
     pageNum: number,
@@ -130,6 +167,9 @@ export default function HomeScreen({ navigation }) {
       let { isCertificated, isKorean, isStudentIdCardRequested } =
         await getIsCertificated();
 
+      isCertificated = false;
+      isKorean = false;
+
       if (isCertificated) {
         navigation.navigate("FeedWrite");
         return;
@@ -176,10 +216,6 @@ export default function HomeScreen({ navigation }) {
   const handleNotification = () => {
     console.log("Notification pressed");
   };
-
-  React.useEffect(() => {
-    fetchFeeds(0, true);
-  }, [activeCategory]);
 
   return (
     <Layout

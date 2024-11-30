@@ -21,7 +21,7 @@ export const CommentInput = ({
 
   return (
     <View
-      className={`flex-row items-center justify-between px-4 py-[10px] border-t-[0.3px] border-borderBottom bg-white ${
+      className={`flex-row items-center justify-between px-4 py-[12px] border-t-[0.3px] border-borderBottom bg-white ${
         isFocused ? "" : "pb-8"
       }`}
     >

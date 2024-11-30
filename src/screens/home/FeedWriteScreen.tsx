@@ -218,13 +218,15 @@ export default function FeedWriteScreen({ navigation, route }) {
       }
       headerRight={
         <TouchableOpacity
-          className={`px-4 py-1.5 rounded-full ${
+          className={`px-3.5 py-1.5 rounded-full ${
             isLoading ? "bg-gray-400" : "bg-primary"
           }`}
           onPress={handleUpload}
           disabled={isLoading}
         >
-          <MyText color="text-white">{isLoading ? "처리중..." : "게시"}</MyText>
+          <MyText color="text-white" className="font-semibold">
+            {isLoading ? "처리중..." : "게시"}
+          </MyText>
         </TouchableOpacity>
       }
     >
@@ -232,8 +234,8 @@ export default function FeedWriteScreen({ navigation, route }) {
         footer={
           <View>
             <ImagePreview images={images} onRemove={removeImage} />
-            <View className="flex-row justify-between items-center py-2 px-4 border-t border-gray-200">
-              <View className="flex-row items-center">
+            <View className="flex-row justify-between items-center py-3 px-4 border-t border-gray-200">
+              <View className="flex-row items-center ml-1">
                 <TouchableOpacity onPress={takePhoto} className="mr-3">
                   <Camera size={24} color="#797979" />
                 </TouchableOpacity>

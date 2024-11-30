@@ -41,12 +41,12 @@ export default function CategoryPager({
   };
 
   return (
-    <View className="flex-1 mt-1">
+    <View className="flex-1 mt-2">
       <ScrollView
         ref={scrollViewRef}
         horizontal
         showsHorizontalScrollIndicator={false}
-        className="py-2 flex-none"
+        className="py-2 pb-0 flex-none"
       >
         {categories.map((category, index) => (
           <Chip

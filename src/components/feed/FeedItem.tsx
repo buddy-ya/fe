@@ -22,7 +22,7 @@ const IMAGE_CONFIG = {
   detail: {
     aspectRatio: 3 / 4,
     containerClass: "w-full aspect-[3/4]",
-    maxHeight: 350,
+    maxHeight: 1200,
   },
 };
 
@@ -86,24 +86,21 @@ export default function FeedItem({
   ];
 
   const renderContent = () => (
-    <View className="p-4 border-[0.3px] border-b-[0px] bg-white border-borderFeed rounded-[12px] rounded-b-[0px]">
-      <View className="flex-row justify-between items-center">
+    <View className="mt-[4px] mb-4 p-4 pb-5 border-[0.3px] border-b-[0px] bg-white border-borderFeed rounded-[20px]">
+      <View className="flex-row justify-between">
         <View className="flex-row items-center">
           <View className="mr-3">
             <Image
-              className="w-10 h-10 rounded-[12px]"
+              className="w-12 h-12 rounded-[12px]"
               source={{ uri: profileImageUrl }}
             />
           </View>
           <View>
-            <MyText
-              size="text-sm"
-              className="font-semibold text-textDescription"
-            >
+            <MyText size="text-sm" className="font-semibold text-[#474747]">
               {t(`profile.university.${university}`)}
             </MyText>
             <View className="flex-row items-center">
-              <MyText size="text-sm" color="text-textDescription">
+              <MyText size="text-sm" color="text-[#474747]">
                 {name}
               </MyText>
               <MyText size="text-sm" className="ml-[3px]">
@@ -115,28 +112,28 @@ export default function FeedItem({
         <MyText
           color="text-textDescription"
           size="text-sm"
-          className="tracking-tighter"
+          className="tracking-tighter mr-1"
         >
           {getTimeAgo(createdDate)}
         </MyText>
       </View>
 
       <View className="mt-4">
-        <MyText size="text-[16px]" className="font-semibold mb-3">
+        <MyText size="text-[16px]" className="font-semibold">
           {title}
         </MyText>
         <MyText
           size="text-[14px]"
           color="text-textDescription"
-          className="font-semibold"
+          className="font-semibold mt-2"
           numberOfLines={showAllContent ? undefined : 3}
         >
           {content}
         </MyText>
       </View>
       {imageUrls.length > 0 && (
-        <View className="mt-4">
-          <View className="flex-row flex-wrap justify-between">
+        <View className="">
+          <View className="flex-row flex-wrap justify-between mt-5">
             {(showAllContent ? imageUrls : imageUrls.slice(0, 2)).map(
               (url, index) => {
                 const config = showAllContent
@@ -160,7 +157,7 @@ export default function FeedItem({
                     className={`
               ${config.containerClass} 
               ${getBorderRadiusClass()} 
-              mb-2 
+              ${showAllContent ? "mb-2" : "mb-0"}
               overflow-hidden 
               border 
               border-borderFeed
@@ -189,7 +186,9 @@ export default function FeedItem({
         </View>
       )}
 
-      <View className="flex-row items-center justify-between px-[12px] mt-5">
+      <View
+        className={`flex-row items-center justify-between px-[12px] mt-[16px]`}
+      >
         {actions.map(
           ({
             icon: Icon,
