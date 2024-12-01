@@ -21,7 +21,7 @@ const SearchInput = ({
   const { t } = useTranslation("feed");
 
   return (
-    <View className="flex-1 flex-row items-center bg-[#D9D9D9] rounded-[12px]">
+    <View className="flex-1 flex-row items-center bg-[#DFDFDF] rounded-[12px]">
       <TextInput
         value={value}
         onChangeText={onChangeText}
@@ -29,7 +29,7 @@ const SearchInput = ({
         placeholder={t("search.placeholder")}
         placeholderTextColor="#8E8E93"
         returnKeyType="search"
-        className="flex-1 px-3 text-[15px]"
+        className="flex-1 px-4 text-[15px]"
         autoFocus
         onFocus={() => onFocusChange(true)}
         onBlur={() => onFocusChange(false)}
@@ -182,7 +182,7 @@ export default function FeedSearchScreen({ navigation }) {
             {isFocused || submittedText ? (
               <FeedList
                 feeds={feeds}
-                className="mt-4"
+                className="mt-3"
                 onLike={handleLike}
                 onBookmark={handleBookmark}
                 onPress={handlePressFeed}
