@@ -1,5 +1,11 @@
-import React, { useState } from "react";
-import { View, TouchableOpacity, Image, Image as RNImage } from "react-native";
+import React, { useState, useEffect } from "react";
+import {
+  View,
+  TouchableOpacity,
+  Image,
+  Image as RNImage,
+  Dimensions,
+} from "react-native";
 import { Bookmark, ThumbsUp, MessageSquare } from "lucide-react-native";
 import MyText from "@/components/common/MyText";
 import { Feed } from "@/screens/home/types";
@@ -7,6 +13,8 @@ import { getCountryFlag } from "@/utils/constants/countries";
 import { getTimeAgo } from "@/utils/service/date";
 import { useTranslation } from "react-i18next";
 import ThumbsUpActive from "@assets/icons/feed/like-active.svg";
+
+const screenWidth = Dimensions.get("window").width;
 
 const IMAGE_CONFIG = {
   single: {
@@ -16,15 +24,19 @@ const IMAGE_CONFIG = {
   },
   multiple: {
     aspectRatio: 1 / 1,
-    containerClass: "w-[49%] aspect-[1/1]",
+    containerClass: "w-[50%] aspect-[1/1]",
     maxHeight: 150,
   },
   detail: {
-    aspectRatio: 3 / 4,
-    containerClass: "w-full aspect-[3/4]",
-    maxHeight: 1200,
+    containerClass: "w-full",
+    maxHeight: 3000,
   },
 };
+
+interface ImageDimensions {
+  width: number;
+  height: number;
+}
 
 interface FeedItemProps {
   feed: Feed;
@@ -43,6 +55,10 @@ export default function FeedItem({
   showAllContent = false,
   disablePress = false,
 }: FeedItemProps) {
+  const [imageDimensions, setImageDimensions] = useState<
+    Record<string, ImageDimensions>
+  >({});
+
   const {
     id,
     name,
@@ -58,6 +74,50 @@ export default function FeedItem({
     isBookmarked,
     createdDate,
   } = feed;
+
+  useEffect(() => {
+    if (showAllContent && imageUrls.length > 0) {
+      imageUrls.forEach((url) => {
+        Image.getSize(
+          url,
+          (width, height) => {
+            setImageDimensions((prev) => ({
+              ...prev,
+              [url]: { width, height },
+            }));
+          },
+          (error) => {
+            console.error("Error getting image dimensions:", error);
+          }
+        );
+      });
+    }
+  }, [showAllContent, imageUrls]);
+
+  const calculateImageHeight = (url: string): number | undefined => {
+    if (!showAllContent) return undefined;
+
+    const dimensions = imageDimensions[url];
+    if (!dimensions) return undefined;
+
+    const contentWidth = screenWidth - 32; // Accounting for padding
+    const aspectRatio = dimensions.height / dimensions.width;
+    return contentWidth * aspectRatio;
+  };
+
+  const getBorderRadiusClass = (index: number, totalImages: number) => {
+    if (showAllContent || totalImages === 1) {
+      return "rounded-[12px]";
+    }
+
+    if (totalImages >= 2) {
+      return index === 0
+        ? "rounded-l-[12px] rounded-r-none"
+        : "rounded-r-[12px] rounded-l-none";
+    }
+
+    return "rounded-[12px]";
+  };
 
   const handleComment = (id: number) => {};
   const { t } = useTranslation("feed");
@@ -142,34 +202,29 @@ export default function FeedItem({
                   ? IMAGE_CONFIG.single
                   : IMAGE_CONFIG.multiple;
 
-                const getBorderRadiusClass = () => {
-                  if (imageUrls.length === 2 && !showAllContent) {
-                    return index === 0
-                      ? "rounded-l-[12px] rounded-r-none"
-                      : "rounded-r-[12px] rounded-l-none";
-                  }
-                  return "rounded-[12px]";
-                };
+                const calculatedHeight = calculateImageHeight(url);
 
                 return (
                   <View
                     key={index}
                     className={`
-              ${config.containerClass} 
-              ${getBorderRadiusClass()} 
-              ${showAllContent ? "mb-2" : "mb-0"}
-              overflow-hidden 
-              border 
-              border-borderFeed
-            `}
+                      ${config.containerClass} 
+                      ${getBorderRadiusClass(index, imageUrls.length)} 
+                      ${showAllContent ? "mb-2" : "mb-0"}
+                      overflow-hidden 
+                      border 
+                      border-borderFeed
+                    `}
                     style={{
-                      maxHeight: config.maxHeight,
+                      height:
+                        calculatedHeight ||
+                        (showAllContent ? undefined : config.maxHeight),
                     }}
                   >
                     <Image
                       source={{ uri: url }}
                       className="w-full h-full"
-                      resizeMode="cover"
+                      resizeMode={showAllContent ? "contain" : "cover"}
                     />
                   </View>
                 );

@@ -19,6 +19,7 @@ const MyText = ({
   return (
     <Text
       numberOfLines={numberOfLines}
+      ellipsizeMode="tail"
       className={`${size} ${color} ${className} leading-[1.4]`}
     >
       {children}

@@ -21,13 +21,13 @@ const SearchInput = ({
   const { t } = useTranslation("feed");
 
   return (
-    <View className="flex-1 flex-row items-center bg-[#DFDFDF] rounded-[12px]">
+    <View className="flex-1 flex-row items-center bg-[#E8E9EB] rounded-[12px]">
       <TextInput
         value={value}
         onChangeText={onChangeText}
         onSubmitEditing={onSubmit}
         placeholder={t("search.placeholder")}
-        placeholderTextColor="#8E8E93"
+        placeholderTextColor="#797979"
         returnKeyType="search"
         className="flex-1 px-4 text-[15px]"
         autoFocus
@@ -36,7 +36,7 @@ const SearchInput = ({
       />
       {value.length > 0 && (
         <TouchableOpacity onPress={onClear} className="px-3">
-          <X size={18} color="#8E8E93" />
+          <X size={18} color="#797979" />
         </TouchableOpacity>
       )}
     </View>
@@ -165,6 +165,7 @@ export default function FeedSearchScreen({ navigation }) {
     <Layout
       showHeader
       isSearchLayout
+      isBackgroundWhite={false}
       onBack={() => navigation.goBack()}
       headerCenter={
         <SearchInput
@@ -178,36 +179,34 @@ export default function FeedSearchScreen({ navigation }) {
     >
       <InnerLayout>
         <KeyboardLayout>
-          <View className="flex-1">
-            {isFocused || submittedText ? (
-              <FeedList
-                feeds={feeds}
-                className="mt-3"
-                onLike={handleLike}
-                onBookmark={handleBookmark}
-                onPress={handlePressFeed}
-                isLoading={isLoading}
-                hasMore={hasNext}
-                onLoadMore={handleLoadMore}
-                emptyStateMessage={
-                  submittedText
-                    ? t("search.empty.result")
-                    : t("search.empty.default")
-                }
-                refreshControl={{
-                  refreshing: isRefreshing,
-                  onRefresh: handleRefresh,
-                  tintColor: "#4AA366",
-                }}
-              />
-            ) : (
-              <View className="flex-1 justify-center items-center">
-                <MyText color="text-textDescription">
-                  {t("search.empty.default")}
-                </MyText>
-              </View>
-            )}
-          </View>
+          {isFocused || submittedText ? (
+            <FeedList
+              feeds={feeds}
+              className="mt-3"
+              onLike={handleLike}
+              onBookmark={handleBookmark}
+              onPress={handlePressFeed}
+              isLoading={isLoading}
+              hasMore={hasNext}
+              onLoadMore={handleLoadMore}
+              emptyStateMessage={
+                submittedText
+                  ? t("search.empty.result")
+                  : t("search.empty.default")
+              }
+              refreshControl={{
+                refreshing: isRefreshing,
+                onRefresh: handleRefresh,
+                tintColor: "#4AA366",
+              }}
+            />
+          ) : (
+            <View className="flex-1 justify-center items-center bg-mainBackground">
+              <MyText color="text-textDescription">
+                {t("search.empty.default")}
+              </MyText>
+            </View>
+          )}
         </KeyboardLayout>
       </InnerLayout>
     </Layout>
