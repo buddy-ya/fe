@@ -42,6 +42,7 @@ import BookmarkScreen from "@/screens/mypage/BookmarkScreen";
 import MyPostsScreen from "@/screens/mypage/MyPostsScreen";
 import MyProfileScreen from "@/screens/mypage/MyProfileScreen";
 import EditProfileImageScreen from "@/screens/mypage/EditProfileImageScreen";
+import CommentEditScreen from "@/screens/home/CommentEditScreen";
 
 export const navigationRef = createNavigationContainerRef();
 
@@ -164,6 +165,7 @@ function FeedNavigator({ navigation, route }) {
       <FeedStack.Screen name="FeedHome" component={HomeScreen} />
       <FeedStack.Screen name="FeedWrite" component={FeedWriteScreen} />
       <FeedStack.Screen name="FeedDetail" component={FeedDetailScreen} />
+      <FeedStack.Screen name="CommentEdit" component={CommentEditScreen} />
       <FeedStack.Screen name="EmailVerification" component={EmailScreen} />
       <FeedStack.Screen
         name="EmailVerificationCode"

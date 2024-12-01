@@ -23,7 +23,6 @@ import {
   deleteComment,
   updateComment,
 } from "@/api/feed/comment";
-import { logError } from "@/utils/service/error";
 import { toggleBookmark, toggleLike } from "@/api/feed/getFeeds";
 import { deleteFeed } from "@/api/feed/feedAction";
 import { feedKeys } from "@/api/queryKeys";
@@ -88,22 +87,27 @@ export default function FeedDetailScreen({ navigation, route }) {
   const likeMutation = useMutation({
     mutationFn: toggleLike,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [...feedKeys.all] });
+      queryClient.invalidateQueries({ queryKey: feedKeys.all });
     },
   });
 
   const bookmarkMutation = useMutation({
     mutationFn: toggleBookmark,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [...feedKeys.all] });
+      queryClient.invalidateQueries({ queryKey: feedKeys.all });
     },
   });
 
   const commentMutation = useMutation({
     mutationFn: (content: string) => createComment(feedId, content),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["feedComments", feedId] });
-      queryClient.invalidateQueries({ queryKey: [...feedKeys.all] });
+    onSuccess: (newComment) => {
+      queryClient.setQueryData(["feedComments", feedId], (old: any) => ({
+        ...old,
+        comments: [...old.comments, newComment],
+      }));
+      queryClient.invalidateQueries({ queryKey: feedKeys.all });
+      setComment("");
+      Keyboard.dismiss();
     },
   });
 
@@ -166,24 +170,20 @@ export default function FeedDetailScreen({ navigation, route }) {
       Keyboard.dismiss();
     },
     delete: async (commentId: number) => {
-      try {
-        await deleteCommentMutation.mutateAsync(commentId);
-      } catch (error) {
-        logError(error);
-      }
+      await deleteCommentMutation.mutateAsync(commentId);
     },
     update: async (commentId: number, content: string) => {
-      try {
-        await updateCommentMutation.mutateAsync({ commentId, content });
-      } catch (error) {
-        logError(error);
-      }
+      await updateCommentMutation.mutateAsync({ commentId, content });
     },
     showOptions: (comment: CommentType) => {
       const options = comment.isCommentOwner
         ? [
             createModalOptions.edit(() =>
-              handleCommentActions.update(comment.id, comment.content)
+              navigation.navigate("CommentEdit", {
+                feedId,
+                commentId: comment.id,
+                initialContent: comment.content,
+              })
             ),
             createModalOptions.delete(() =>
               handleCommentActions.delete(comment.id)
