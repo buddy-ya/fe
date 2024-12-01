@@ -5,8 +5,9 @@ import FeedList from "@/components/feed/FeedList";
 import { getMyPosts, toggleBookmark, toggleLike } from "@/api/feed/getFeeds";
 import { logError } from "@/utils/service/error";
 import { useTranslation } from "react-i18next";
-import { ChevronLeft } from "lucide-react-native";
+import { ChevronLeft, NotebookPen } from "lucide-react-native";
 import MyText from "@/components/common/MyText";
+import { View } from "react-native";
 
 export default function MyPostsScreen({ navigation }) {
   const { t } = useTranslation("mypage");
@@ -110,17 +111,16 @@ export default function MyPostsScreen({ navigation }) {
   return (
     <Layout
       showHeader
-      headerLeft={
-        <ChevronLeft
-          color="#000000"
-          size={24}
-          onPress={() => navigation.goBack()}
-        />
-      }
+      onBack={() => navigation.goBack()}
       headerCenter={
-        <MyText size="text-lg" className="font-bold">
-          {t("myPosts")}
-        </MyText>
+        <View className="flex-row items-center">
+          <MyText className="mr-1">
+            <NotebookPen size={19} strokeWidth={2} color={"#282828"} />
+          </MyText>
+          <MyText size="text-lg" className="font-bold">
+            {t("myPosts")}
+          </MyText>
+        </View>
       }
     >
       <InnerLayout>

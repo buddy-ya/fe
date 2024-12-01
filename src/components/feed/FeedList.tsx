@@ -50,7 +50,7 @@ export default function FeedList({
           onPress={onPress}
         />
       )}
-      className={`mt-2 pt-3 ${className}`}
+      className={`mt-1 pt-3 ${className}`}
       contentContainerStyle={{ paddingBottom: 60 }}
       keyExtractor={(item) => `feed-${item.id}`}
       onEndReached={hasMore ? onLoadMore : undefined}

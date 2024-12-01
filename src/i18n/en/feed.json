@@ -47,5 +47,11 @@
       "default": "Enter a search term",
       "result": "No search results found"
     }
+  },
+  "modal": {
+    "edit": "Edit",
+    "delete": "Delete",
+    "report": "Report",
+    "cancel": "Cancel"
   }
 }
