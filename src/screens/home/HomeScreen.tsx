@@ -14,20 +14,25 @@ import InnerLayout from "@/components/common/InnerLayout";
 import Button from "@/components/common/Button";
 import { getFeeds, toggleBookmark, toggleLike } from "@/api/feed/getFeeds";
 import { CATEGORIES } from "@/utils/constants/categories";
-import { logError } from "@/utils/service/error";
-import { getIsCertificated } from "@/api/certification/certification";
 import ConfirmModal from "@/components/common/ConfirmModal";
 import { useTranslation } from "react-i18next";
 import { feedKeys } from "@/api/queryKeys";
 import { FeedListResponse } from "./types";
-import Loading from "@/components/common/Loading";
+import { useAuthCheck } from "@/hooks/useAuthCheck";
+import { getCertificationModalTexts } from "@/utils/constants/ModalTexts";
 
 export default function HomeScreen({ navigation }) {
-  const { t } = useTranslation("certification");
+  const { t } = useTranslation("feed");
+  const { t: certT } = useTranslation("certification");
   const queryClient = useQueryClient();
   const [activeCategory, setActiveCategory] = useState(CATEGORIES[0].id);
-  const [isModalVisible, setIsModalVisible] = useState(false);
-  const [currentModalTexts, setCurrentModalTexts] = useState(null);
+  const {
+    isModalVisible,
+    setIsModalVisible,
+    currentModalTexts,
+    setCurrentModalTexts,
+    checkAuth,
+  } = useAuthCheck();
 
   const {
     data,
@@ -173,47 +178,22 @@ export default function HomeScreen({ navigation }) {
   };
 
   const handleWriteButton = async () => {
-    try {
-      let { isCertificated, isKorean, isStudentIdCardRequested } =
-        await getIsCertificated();
+    const { isCertificated, isKorean, isStudentIdCardRequested } =
+      await checkAuth();
 
-      if (isCertificated) {
-        navigation.navigate("FeedWrite");
-        return;
-      }
-
-      const modalTexts = getModalTexts(isKorean, isStudentIdCardRequested);
-      setCurrentModalTexts(modalTexts);
-      setIsModalVisible(true);
-    } catch (error) {
-      logError(error);
-    }
-  };
-
-  const getModalTexts = (
-    isKorean: boolean,
-    isStudentIdCardRequested: boolean
-  ) => {
-    if (isStudentIdCardRequested) {
-      return {
-        title: t("banner.pending.title"),
-        description: t("banner.pending.description"),
-        confirmText: t("banner.pending.confirm"),
-        cancelText: t("banner.pending.cancel"),
-        onConfirm: () => navigation.navigate("StudentIdComplete"),
-      };
+    if (isCertificated) {
+      navigation.navigate("FeedWrite");
+      return;
     }
 
-    return {
-      title: t("banner.default.title"),
-      description: t("banner.default.description"),
-      confirmText: t("banner.default.confirm"),
-      cancelText: t("banner.default.cancel"),
-      onConfirm: () =>
-        navigation.navigate(
-          isKorean ? "EmailVerification" : "StudentIdVerification"
-        ),
-    };
+    const modalTexts = getCertificationModalTexts(
+      isKorean,
+      isStudentIdCardRequested,
+      certT,
+      navigation
+    );
+    setCurrentModalTexts(modalTexts);
+    setIsModalVisible(true);
   };
 
   const handleSearch = () => {
@@ -279,9 +259,12 @@ export default function HomeScreen({ navigation }) {
       <ConfirmModal
         visible={isModalVisible}
         onClose={() => setIsModalVisible(false)}
-        onConfirm={currentModalTexts?.onConfirm}
-        title={currentModalTexts?.title}
-        description={currentModalTexts?.description}
+        onConfirm={() => {
+          setIsModalVisible(false);
+          currentModalTexts?.onConfirm();
+        }}
+        title={currentModalTexts?.title || ""}
+        description={currentModalTexts?.description || ""}
         cancelText={currentModalTexts?.cancelText}
         confirmText={currentModalTexts?.confirmText}
         position="bottom"

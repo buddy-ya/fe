@@ -9,6 +9,7 @@ import { View, Image } from "react-native";
 import { useTranslation } from "react-i18next";
 import * as Notifications from "expo-notifications";
 import { useOnboardingStore } from "@/store/onboarding";
+import AlertIcon from "@assets/icons/alert.svg";
 
 export default function NotificationScreen({ navigation, route }) {
   const { t } = useTranslation("onboarding");
@@ -48,11 +49,10 @@ export default function NotificationScreen({ navigation, route }) {
       <InnerLayout>
         <Heading>{t("notification.title")}</Heading>
         <HeadingDescription>{t("notification.description")}</HeadingDescription>
-        <View className="flex-1">
-          <Image
-            className="w-[344px] h-[344px]"
-            source={require("@assets/images/onboarding/notification.png")}
-          />
+        <View className="flex-1 items-center justify-center">
+          <View className="mb-10">
+            <AlertIcon />
+          </View>
         </View>
         <Button
           className="w-full"

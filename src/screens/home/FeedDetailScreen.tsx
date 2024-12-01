@@ -27,6 +27,9 @@ import { toggleBookmark, toggleLike } from "@/api/feed/getFeeds";
 import { deleteFeed } from "@/api/feed/feedAction";
 import { feedKeys } from "@/api/queryKeys";
 import { useTranslation } from "react-i18next";
+import { useAuthCheck } from "@/hooks/useAuthCheck";
+import { getCertificationModalTexts } from "@/utils/constants/ModalTexts";
+import ConfirmModal from "@/components/common/ConfirmModal";
 
 export default function FeedDetailScreen({ navigation, route }) {
   const { feedId } = route.params;
@@ -36,6 +39,15 @@ export default function FeedDetailScreen({ navigation, route }) {
   const [comment, setComment] = useState("");
   const [isDeleted, setIsDeleted] = useState(false);
   const { t } = useTranslation("feed");
+  const { t: certT } = useTranslation("certification");
+
+  const {
+    isModalVisible,
+    setIsModalVisible,
+    currentModalTexts,
+    setCurrentModalTexts,
+    checkAuth,
+  } = useAuthCheck();
 
   const { data: feed } = useQuery({
     queryKey: feedKeys.detail(feedId),
@@ -165,9 +177,29 @@ export default function FeedDetailScreen({ navigation, route }) {
   const handleCommentActions = {
     submit: async () => {
       if (!comment.trim()) return;
-      await commentMutation.mutateAsync(comment.trim());
-      setComment("");
+
       Keyboard.dismiss();
+
+      try {
+        const { isCertificated, isKorean, isStudentIdCardRequested } =
+          await checkAuth();
+        if (!isCertificated) {
+          const modalTexts = getCertificationModalTexts(
+            isKorean,
+            isStudentIdCardRequested,
+            certT,
+            navigation
+          );
+          setCurrentModalTexts(modalTexts);
+          setIsModalVisible(true);
+          return;
+        }
+
+        await commentMutation.mutateAsync(comment.trim());
+        setComment("");
+      } catch (error) {
+        console.error("Comment submission failed:", error);
+      }
     },
     delete: async (commentId: number) => {
       await deleteCommentMutation.mutateAsync(commentId);
@@ -264,6 +296,20 @@ export default function FeedDetailScreen({ navigation, route }) {
         visible={commentModal.visible}
         onClose={commentModal.closeModal}
         options={commentModal.options}
+      />
+      <ConfirmModal
+        visible={isModalVisible}
+        onClose={() => setIsModalVisible(false)}
+        onConfirm={() => {
+          setIsModalVisible(false);
+          currentModalTexts?.onConfirm();
+        }}
+        title={currentModalTexts?.title || ""}
+        description={currentModalTexts?.description || ""}
+        cancelText={currentModalTexts?.cancelText}
+        confirmText={currentModalTexts?.confirmText}
+        position="bottom"
+        size="default"
       />
     </>
   );
