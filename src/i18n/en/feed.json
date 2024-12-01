@@ -34,5 +34,18 @@
     "imagesCount": "{count}/5",
     "camera": "Camera",
     "gallery": "Gallery"
+  },
+  "delete": {
+    "title": "Delete Post",
+    "description": "Are you sure you want to delete this post?",
+    "confirm": "Delete",
+    "cancel": "Cancel"
+  },
+  "search": {
+    "placeholder": "Search for content",
+    "empty": {
+      "default": "Enter a search term",
+      "result": "No search results found"
+    }
   }
 }

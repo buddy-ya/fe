@@ -217,7 +217,7 @@ export default function HomeScreen({ navigation }) {
   };
 
   const handleSearch = () => {
-    console.log("Search pressed");
+    navigation.navigate("FeedSearch");
   };
 
   const handleNotification = () => {

@@ -40,5 +40,12 @@
     "description": "정말로 이 게시물을 삭제하시겠습니까?",
     "confirm": "삭제",
     "cancel": "취소"
+  },
+  "search": {
+    "placeholder": "검색어를 입력하세요",
+    "empty": {
+      "default": "검색어를 입력해주세요",
+      "result": "검색 결과가 없습니다"
+    }
   }
 }

@@ -9,6 +9,16 @@ export const getFeeds = async (params: {
   return data;
 };
 
+export const searchFeeds = async (params: {
+  category: string;
+  keyword: string;
+  page?: number;
+  size?: number;
+}) => {
+  const { data } = await apiClient.get("/feeds", { params });
+  return data;
+};
+
 export const getBookmarkedFeeds = async (params: {
   page?: number;
   size?: number;

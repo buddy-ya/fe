@@ -17,6 +17,7 @@ interface LayoutProps {
   safeAreaEdges?: Edge[];
   disableBottomSafeArea?: boolean;
   isBackgroundWhite?: boolean;
+  isSearchLayout?: boolean;
 }
 
 export default function Layout({
@@ -30,6 +31,7 @@ export default function Layout({
   headerRight,
   hasTabBar,
   safeAreaEdges,
+  isSearchLayout,
   disableBottomSafeArea,
   isBackgroundWhite,
 }: LayoutProps) {
@@ -56,6 +58,7 @@ export default function Layout({
       <StatusBar barStyle="dark-content" backgroundColor="white" />
       {showHeader && (
         <Header
+          isSearchLayout={isSearchLayout}
           leftContent={
             headerLeft || (onBack && <BackButton onPress={onBack} />)
           }

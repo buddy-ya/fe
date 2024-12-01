@@ -30,7 +30,7 @@ export default function BookmarkScreen({ navigation }) {
       setIsLoading(true);
       const response = await getBookmarkedFeeds({
         page: pageNum,
-        size: 10,
+        size: 5,
       });
 
       setFeeds((prev) =>

@@ -26,7 +26,7 @@ export default function MyPostsScreen({ navigation }) {
       setIsLoading(true);
       const response = await getMyPosts({
         page: pageNum,
-        size: 10,
+        size: 5,
       });
 
       setFeeds((prev) =>
