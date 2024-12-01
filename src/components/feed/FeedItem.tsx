@@ -155,8 +155,12 @@ export default function FeedItem({
               source={{ uri: profileImageUrl }}
             />
           </View>
-          <View>
-            <MyText size="text-sm" className="font-semibold text-[#474747]">
+          <View className="">
+            <MyText
+              size="text-sm"
+              className="font-semibold"
+              color="text-[#474747]"
+            >
               {t(`profile.university.${university}`)}
             </MyText>
             <View className="flex-row items-center">
@@ -172,7 +176,7 @@ export default function FeedItem({
         <MyText
           color="text-textDescription"
           size="text-sm"
-          className="tracking-tighter mr-1 mt-0.5"
+          className="tracking-tighter mr-1"
         >
           {getTimeAgo(createdDate)}
         </MyText>
@@ -186,7 +190,7 @@ export default function FeedItem({
           size="text-[14px]"
           color="text-textDescription"
           className="font-semibold mt-2"
-          numberOfLines={showAllContent ? undefined : 2}
+          numberOfLines={showAllContent ? undefined : 3}
         >
           {content}
         </MyText>

@@ -127,7 +127,7 @@ export default function FeedDetailScreen({ navigation, route }) {
     mutationFn: (commentId: number) => deleteComment(feedId, commentId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["feedComments", feedId] });
-      queryClient.invalidateQueries({ queryKey: [...feedKeys.all] });
+      queryClient.invalidateQueries({ queryKey: feedKeys.all });
     },
   });
 
@@ -141,7 +141,7 @@ export default function FeedDetailScreen({ navigation, route }) {
     }) => updateComment(feedId, commentId, content),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["feedComments", feedId] });
-      queryClient.invalidateQueries({ queryKey: [...feedKeys.all] });
+      queryClient.invalidateQueries({ queryKey: feedKeys.all });
     },
   });
 

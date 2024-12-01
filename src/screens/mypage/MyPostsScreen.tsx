@@ -8,95 +8,59 @@ import { useTranslation } from "react-i18next";
 import { ChevronLeft, NotebookPen } from "lucide-react-native";
 import MyText from "@/components/common/MyText";
 import { View } from "react-native";
+import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
+import { feedKeys } from "@/api/queryKeys";
+import { updateFeedList } from "@/utils/service/optimisticUpdate";
 
 export default function MyPostsScreen({ navigation }) {
   const { t } = useTranslation("mypage");
-  const [feeds, setFeeds] = useState([]);
-  const [page, setPage] = useState(0);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isRefreshing, setIsRefreshing] = useState(false);
-  const [hasNext, setHasNext] = useState(true);
+  const queryClient = useQueryClient();
 
-  const fetchMyPosts = async (
-    pageNum: number,
-    shouldRefresh: boolean = false
-  ) => {
-    if (isLoading) return;
-
-    try {
-      setIsLoading(true);
-      const response = await getMyPosts({
-        page: pageNum,
+  const {
+    data,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    isLoading,
+    refetch,
+  } = useInfiniteQuery({
+    queryKey: feedKeys.myPosts(),
+    queryFn: async ({ pageParam = 0 }) => {
+      return await getMyPosts({
+        page: pageParam,
         size: 5,
       });
+    },
+    staleTime: 1000 * 60 * 5,
+    getNextPageParam: (lastPage) =>
+      lastPage.hasNext ? lastPage.currentPage + 1 : undefined,
+  });
 
-      setFeeds((prev) =>
-        shouldRefresh ? response.feeds : [...prev, ...response.feeds]
-      );
-      setHasNext(response.hasNext);
-    } catch (error) {
-      logError(error);
-    } finally {
-      setIsLoading(false);
-      setIsRefreshing(false);
-    }
-  };
-
-  const handleRefresh = async () => {
-    setIsRefreshing(true);
-    setPage(0);
-    await fetchMyPosts(0, true);
-  };
-
-  const handleLoadMore = () => {
-    if (!isLoading && hasNext) {
-      const nextPage = page + 1;
-      setPage(nextPage);
-      fetchMyPosts(nextPage);
-    }
-  };
+  const feeds = data?.pages.flatMap((page) => page.feeds) ?? [];
 
   const handleLike = async (id: number) => {
     try {
-      setFeeds((prevFeeds) =>
-        prevFeeds.map((feed) =>
-          feed.id === id
-            ? {
-                ...feed,
-                isLiked: !feed.isLiked,
-                likeCount: feed.isLiked
-                  ? feed.likeCount - 1
-                  : feed.likeCount + 1,
-              }
-            : feed
-        )
-      );
-
-      const response = await toggleLike(id);
-
-      setFeeds((prevFeeds) =>
-        prevFeeds.map((feed) =>
-          feed.id === id ? { ...feed, likeCount: response.likeCount } : feed
-        )
-      );
+      updateFeedList.like(queryClient, feedKeys.myPosts(), id);
+      await toggleLike(id);
     } catch (error) {
       logError(error);
-      fetchMyPosts(page, true);
+      refetch();
     }
   };
 
   const handleBookmark = async (id: number) => {
     try {
-      setFeeds((prevFeeds) =>
-        prevFeeds.map((feed) =>
-          feed.id === id ? { ...feed, isBookmarked: !feed.isBookmarked } : feed
-        )
-      );
-
+      updateFeedList.bookmark(queryClient, feedKeys.myPosts(), id);
       await toggleBookmark(id);
     } catch (error) {
       logError(error);
-      fetchMyPosts(page, true);
+      refetch();
+    }
+  };
+
+  const handleLoadMore = () => {
+    if (hasNextPage && !isFetchingNextPage) {
+      fetchNextPage();
     }
   };
 
@@ -104,17 +68,13 @@ export default function MyPostsScreen({ navigation }) {
     navigation.navigate("FeedDetail", { feedId });
   };
 
-  useEffect(() => {
-    fetchMyPosts(0, true);
-  }, []);
-
   return (
     <Layout
       showHeader
       onBack={() => navigation.goBack()}
       headerCenter={
         <View className="flex-row items-center">
-          <MyText className="mr-1">
+          <MyText className="mr-[6px]">
             <NotebookPen size={19} strokeWidth={2} color={"#282828"} />
           </MyText>
           <MyText size="text-lg" className="font-bold">
@@ -130,12 +90,12 @@ export default function MyPostsScreen({ navigation }) {
           onBookmark={handleBookmark}
           onPress={handlePressFeed}
           isLoading={isLoading}
-          hasMore={hasNext}
+          hasMore={hasNextPage}
           onLoadMore={handleLoadMore}
           emptyStateMessage={t("myPostsEmpty")}
           refreshControl={{
-            refreshing: isRefreshing,
-            onRefresh: handleRefresh,
+            refreshing: isLoading && feeds.length > 0,
+            onRefresh: refetch,
             tintColor: "#4AA366",
           }}
         />

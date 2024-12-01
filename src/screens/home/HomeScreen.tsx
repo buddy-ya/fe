@@ -20,6 +20,7 @@ import { feedKeys } from "@/api/queryKeys";
 import { FeedListResponse } from "./types";
 import { useAuthCheck } from "@/hooks/useAuthCheck";
 import { getCertificationModalTexts } from "@/utils/constants/ModalTexts";
+import { updateFeedList } from "@/utils/service/optimisticUpdate";
 
 export default function HomeScreen({ navigation }) {
   const { t } = useTranslation("feed");
@@ -56,6 +57,7 @@ export default function HomeScreen({ navigation }) {
         size: 5,
       });
     },
+    staleTime: 1000 * 60,
     initialPageParam: 0,
     getNextPageParam: (lastPage) =>
       lastPage.hasNext ? lastPage.currentPage + 1 : undefined,
@@ -77,24 +79,7 @@ export default function HomeScreen({ navigation }) {
         feedKeys.lists(activeCategory)
       );
 
-      queryClient.setQueryData(feedKeys.lists(activeCategory), (old: any) => ({
-        ...old,
-        pages: old.pages.map((page: any) => ({
-          ...page,
-          feeds: page.feeds.map((feed: any) =>
-            feed.id === feedId
-              ? {
-                  ...feed,
-                  isLiked: !feed.isLiked,
-                  likeCount: feed.isLiked
-                    ? feed.likeCount - 1
-                    : feed.likeCount + 1,
-                }
-              : feed
-          ),
-        })),
-      }));
-
+      updateFeedList.like(queryClient, feedKeys.lists(activeCategory), feedId);
       return { previousData };
     },
     onError: (_, __, context) => {
@@ -116,26 +101,14 @@ export default function HomeScreen({ navigation }) {
       await queryClient.cancelQueries({
         queryKey: feedKeys.lists(activeCategory),
       });
-
       const previousData = queryClient.getQueryData(
         feedKeys.lists(activeCategory)
       );
-
-      queryClient.setQueryData(feedKeys.lists(activeCategory), (old: any) => ({
-        ...old,
-        pages: old.pages.map((page: any) => ({
-          ...page,
-          feeds: page.feeds.map((feed: any) =>
-            feed.id === feedId
-              ? {
-                  ...feed,
-                  isBookmarked: !feed.isBookmarked,
-                }
-              : feed
-          ),
-        })),
-      }));
-
+      updateFeedList.bookmark(
+        queryClient,
+        feedKeys.lists(activeCategory),
+        feedId
+      );
       return { previousData };
     },
     onError: (_, __, context) => {

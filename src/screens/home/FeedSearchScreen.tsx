@@ -1,15 +1,17 @@
 import React, { useState } from "react";
 import { View, TextInput, TouchableOpacity } from "react-native";
 import { useTranslation } from "react-i18next";
-import { ChevronLeft, X } from "lucide-react-native";
+import { X } from "lucide-react-native";
 import { searchFeeds, toggleBookmark, toggleLike } from "@/api/feed/getFeeds";
-import { useFeedActions } from "@/hooks/useFeedActions";
 import Layout from "@/components/common/Layout";
 import FeedList from "@/components/feed/FeedList";
 import InnerLayout from "@/components/common/InnerLayout";
 import KeyboardLayout from "@/components/common/KeyboardLayout";
 import { logError } from "@/utils/service/error";
 import MyText from "@/components/common/MyText";
+import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
+import { feedKeys } from "@/api/queryKeys";
+import { updateFeedList } from "@/utils/service/optimisticUpdate";
 
 const SearchInput = ({
   value,
@@ -43,117 +45,73 @@ const SearchInput = ({
   );
 };
 
+// @ts-ignore
 export default function FeedSearchScreen({ navigation }) {
   const { t } = useTranslation("feed");
+  const queryClient = useQueryClient();
   const [searchText, setSearchText] = useState("");
   const [submittedText, setSubmittedText] = useState("");
   const [isFocused, setIsFocused] = useState(false);
-  const [feeds, setFeeds] = useState([]);
-  const [page, setPage] = useState(0);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isRefreshing, setIsRefreshing] = useState(false);
-  const [hasNext, setHasNext] = useState(true);
 
-  const fetchSearchResults = async (
-    keyword: string,
-    pageNum: number,
-    shouldRefresh: boolean = false
-  ) => {
-    if (!keyword || isLoading) return;
-
-    try {
-      setIsLoading(true);
-      const response = await searchFeeds({
+  const {
+    data,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    isLoading,
+    refetch,
+  } = useInfiniteQuery({
+    queryKey: feedKeys.search(submittedText),
+    queryFn: async ({ pageParam = 0 }) => {
+      return await searchFeeds({
         category: "free",
-        keyword,
-        page: pageNum,
-        size: 10,
+        keyword: submittedText,
+        page: pageParam,
+        size: 5,
       });
+    },
+    staleTime: 1000 * 60 * 3,
+    getNextPageParam: (lastPage) =>
+      lastPage.hasNext ? lastPage.currentPage + 1 : undefined,
+    enabled: !!submittedText,
+  });
 
-      setFeeds((prev) =>
-        shouldRefresh ? response.feeds : [...prev, ...response.feeds]
-      );
-      setHasNext(response.hasNext);
-    } catch (error) {
-      logError(error);
-    } finally {
-      setIsLoading(false);
-      setIsRefreshing(false);
-    }
-  };
-
-  const handleRefresh = async () => {
-    if (!submittedText) return;
-    setIsRefreshing(true);
-    setPage(0);
-    await fetchSearchResults(submittedText, 0, true);
-  };
-
-  const handleLoadMore = () => {
-    if (!isLoading && hasNext) {
-      const nextPage = page + 1;
-      setPage(nextPage);
-      fetchSearchResults(submittedText, nextPage);
-    }
-  };
+  const feeds = data?.pages.flatMap((page) => page.feeds) ?? [];
 
   const handleSubmit = () => {
     if (searchText.trim()) {
       setSubmittedText(searchText.trim());
-      setPage(0);
-      fetchSearchResults(searchText.trim(), 0, true);
     }
   };
 
   const handleClear = () => {
     setSearchText("");
     setSubmittedText("");
-    setFeeds([]);
-    setPage(0);
-    setHasNext(true);
   };
 
   const handleLike = async (id: number) => {
     try {
-      setFeeds((prevFeeds) =>
-        prevFeeds.map((feed) =>
-          feed.id === id
-            ? {
-                ...feed,
-                isLiked: !feed.isLiked,
-                likeCount: feed.isLiked
-                  ? feed.likeCount - 1
-                  : feed.likeCount + 1,
-              }
-            : feed
-        )
-      );
-
-      const response = await toggleLike(id);
-
-      setFeeds((prevFeeds) =>
-        prevFeeds.map((feed) =>
-          feed.id === id ? { ...feed, likeCount: response.likeCount } : feed
-        )
-      );
+      updateFeedList.like(queryClient, feedKeys.search(submittedText), id);
+      await toggleLike(id);
     } catch (error) {
       logError(error);
-      fetchSearchResults(submittedText, page, true);
+      refetch();
     }
   };
 
   const handleBookmark = async (id: number) => {
     try {
-      setFeeds((prevFeeds) =>
-        prevFeeds.map((feed) =>
-          feed.id === id ? { ...feed, isBookmarked: !feed.isBookmarked } : feed
-        )
-      );
-
+      updateFeedList.bookmark(queryClient, feedKeys.search(submittedText), id);
       await toggleBookmark(id);
     } catch (error) {
       logError(error);
-      fetchSearchResults(submittedText, page, true);
+      refetch();
+    }
+  };
+
+  const handleLoadMore = () => {
+    if (hasNextPage && !isFetchingNextPage) {
+      fetchNextPage();
     }
   };
 
@@ -187,7 +145,7 @@ export default function FeedSearchScreen({ navigation }) {
               onBookmark={handleBookmark}
               onPress={handlePressFeed}
               isLoading={isLoading}
-              hasMore={hasNext}
+              hasMore={hasNextPage}
               onLoadMore={handleLoadMore}
               emptyStateMessage={
                 submittedText
@@ -195,8 +153,8 @@ export default function FeedSearchScreen({ navigation }) {
                   : t("search.empty.default")
               }
               refreshControl={{
-                refreshing: isRefreshing,
-                onRefresh: handleRefresh,
+                refreshing: isLoading && feeds.length > 0,
+                onRefresh: refetch,
                 tintColor: "#4AA366",
               }}
             />

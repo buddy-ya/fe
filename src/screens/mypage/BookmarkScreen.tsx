@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import Layout from "@/components/common/Layout";
 import InnerLayout from "@/components/common/InnerLayout";
 import FeedList from "@/components/feed/FeedList";
@@ -9,103 +9,118 @@ import {
 } from "@/api/feed/getFeeds";
 import { logError } from "@/utils/service/error";
 import { useTranslation } from "react-i18next";
-import { Bookmark, ChevronLeft } from "lucide-react-native";
+import { Bookmark } from "lucide-react-native";
 import MyText from "@/components/common/MyText";
 import { View } from "react-native";
+import {
+  useInfiniteQuery,
+  useMutation,
+  useQueryClient,
+} from "@tanstack/react-query";
+import { feedKeys } from "@/api/queryKeys";
 
 export default function BookmarkScreen({ navigation }) {
   const { t } = useTranslation("mypage");
-  const [feeds, setFeeds] = useState([]);
-  const [page, setPage] = useState(0);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isRefreshing, setIsRefreshing] = useState(false);
-  const [hasNext, setHasNext] = useState(true);
+  const queryClient = useQueryClient();
 
-  const fetchBookmarks = async (
-    pageNum: number,
-    shouldRefresh: boolean = false
-  ) => {
-    if (isLoading) return;
-
-    try {
-      setIsLoading(true);
-      const response = await getBookmarkedFeeds({
-        page: pageNum,
+  const {
+    data,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    isLoading,
+    refetch,
+  } = useInfiniteQuery({
+    queryKey: feedKeys.bookmarks(),
+    queryFn: async ({ pageParam = 0 }) => {
+      return await getBookmarkedFeeds({
+        page: pageParam,
         size: 5,
       });
+    },
+    staleTime: 1000 * 60 * 5,
+    getNextPageParam: (lastPage) =>
+      lastPage.hasNext ? lastPage.currentPage + 1 : undefined,
+  });
 
-      setFeeds((prev) =>
-        shouldRefresh ? response.feeds : [...prev, ...response.feeds]
-      );
-      setHasNext(response.hasNext);
-    } catch (error) {
-      logError(error);
-    } finally {
-      setIsLoading(false);
-      setIsRefreshing(false);
-    }
-  };
+  const feeds = data?.pages.flatMap((page) => page.feeds) ?? [];
 
-  const handleRefresh = async () => {
-    setIsRefreshing(true);
-    setPage(0);
-    await fetchBookmarks(0, true);
+  const handleRefresh = () => {
+    return refetch();
   };
 
   const handleLoadMore = () => {
-    if (!isLoading && hasNext) {
-      const nextPage = page + 1;
-      setPage(nextPage);
-      fetchBookmarks(nextPage);
+    if (hasNextPage && !isFetchingNextPage) {
+      fetchNextPage();
     }
   };
 
   const handleLike = async (id: number) => {
     try {
-      setFeeds((prevFeeds) =>
-        prevFeeds.map((feed) =>
-          feed.id === id
-            ? {
-                ...feed,
-                isLiked: !feed.isLiked,
-                likeCount: feed.isLiked
-                  ? feed.likeCount - 1
-                  : feed.likeCount + 1,
-              }
-            : feed
-        )
-      );
+      queryClient.setQueryData(feedKeys.bookmarks(), (old: any) => {
+        if (!old) return old;
+        return {
+          ...old,
+          pages: old.pages.map((page: any) => ({
+            ...page,
+            feeds: page.feeds.map((feed: any) =>
+              feed.id === id
+                ? {
+                    ...feed,
+                    isLiked: !feed.isLiked,
+                    likeCount: feed.isLiked
+                      ? feed.likeCount - 1
+                      : feed.likeCount + 1,
+                  }
+                : feed
+            ),
+          })),
+        };
+      });
 
       const response = await toggleLike(id);
 
-      setFeeds((prevFeeds) =>
-        prevFeeds.map((feed) =>
-          feed.id === id ? { ...feed, likeCount: response.likeCount } : feed
-        )
-      );
+      // Update with real data
+      queryClient.setQueryData(feedKeys.bookmarks(), (old: any) => {
+        if (!old) return old;
+        return {
+          ...old,
+          pages: old.pages.map((page: any) => ({
+            ...page,
+            feeds: page.feeds.map((feed: any) =>
+              feed.id === id ? { ...feed, likeCount: response.likeCount } : feed
+            ),
+          })),
+        };
+      });
     } catch (error) {
       logError(error);
-      fetchBookmarks(page, true);
+      refetch();
     }
   };
 
   const handleBookmark = async (id: number) => {
     try {
-      setFeeds((prevFeeds) => prevFeeds.filter((feed) => feed.id !== id));
+      queryClient.setQueryData(feedKeys.bookmarks(), (old: any) => {
+        if (!old) return old;
+        return {
+          ...old,
+          pages: old.pages.map((page: any) => ({
+            ...page,
+            feeds: page.feeds.filter((feed: any) => feed.id !== id),
+          })),
+        };
+      });
       await toggleBookmark(id);
     } catch (error) {
       logError(error);
-      fetchBookmarks(page, true);
+      refetch();
     }
   };
 
   const handlePressFeed = (feedId: number) => {
     navigation.navigate("FeedDetail", { feedId });
   };
-
-  useEffect(() => {
-    fetchBookmarks(0, true);
-  }, []);
 
   return (
     <Layout
@@ -129,11 +144,11 @@ export default function BookmarkScreen({ navigation }) {
           onBookmark={handleBookmark}
           onPress={handlePressFeed}
           isLoading={isLoading}
-          hasMore={hasNext}
+          hasMore={hasNextPage}
           onLoadMore={handleLoadMore}
           emptyStateMessage={t("bookmarkEmpty")}
           refreshControl={{
-            refreshing: isRefreshing,
+            refreshing: isLoading && feeds.length > 0,
             onRefresh: handleRefresh,
             tintColor: "#4AA366",
           }}

@@ -144,8 +144,8 @@ export default function MyProfileScreen({ navigation }) {
               </View>
               <MyText
                 size="text-[13px]"
-                color="text-textDescription"
-                className=" mt-2"
+                color="text-textProfile"
+                className="mt-2"
               >
                 {t(`profile.university.${profile.university}`)}
               </MyText>

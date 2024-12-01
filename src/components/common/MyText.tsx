@@ -1,5 +1,5 @@
 import React from "react";
-import { Text } from "react-native";
+import { Text, StyleSheet } from "react-native";
 
 interface MyTextProps {
   children: React.ReactNode;
@@ -18,9 +18,9 @@ const MyText = ({
 }: MyTextProps) => {
   return (
     <Text
+      className={`${size} ${color} ${className} leading-[1.4]`}
       numberOfLines={numberOfLines}
       ellipsizeMode="tail"
-      className={`${size} ${color} ${className} leading-[1.4]`}
     >
       {children}
     </Text>
