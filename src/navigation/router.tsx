@@ -221,6 +221,7 @@ function MyPageNavigator({ navigation, route }) {
       />
       <MyPageStack.Screen name="Bookmark" component={BookmarkScreen} />
       <MyPageStack.Screen name="MyPosts" component={MyPostsScreen} />
+      <MyPageStack.Screen name="FeedDetail" component={FeedDetailScreen} />
     </MyPageStack.Navigator>
   );
 }

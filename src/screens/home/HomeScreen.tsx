@@ -251,6 +251,7 @@ export default function HomeScreen({ navigation }) {
                 {category.id === activeCategory && (
                   <FeedList
                     feeds={feeds}
+                    className="pt-0"
                     onLike={handleLike}
                     onBookmark={handleBookmark}
                     onPress={handlePressFeed}

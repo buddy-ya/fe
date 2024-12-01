@@ -29,8 +29,8 @@ export default function Header({
 }: HeaderProps) {
   if (isSearchLayout) {
     return (
-      <View className={`px-[16px] h-11 flex-row items-center ${className}`}>
-        <View className="mr-2">{leftContent}</View>
+      <View className={`px-[16px] h-[42px] flex-row items-center ${className}`}>
+        <View className="mr-1">{leftContent}</View>
         <View className="flex-1">{centerContent}</View>
       </View>
     );

@@ -11,6 +11,7 @@ interface FeedListProps {
   onPress: (id: number) => void;
   isLoading: boolean;
   hasMore: boolean;
+  className?: string;
   onLoadMore: () => void;
   refreshControl?: RefreshControlProps | null;
   emptyStateMessage?: string;
@@ -23,6 +24,7 @@ export default function FeedList({
   onLike,
   onBookmark,
   onPress,
+  className,
   onLoadMore,
   refreshControl,
   hasMore,
@@ -48,7 +50,7 @@ export default function FeedList({
           onPress={onPress}
         />
       )}
-      className="mt-4"
+      className={`mt-2 pt-3 ${className}`}
       contentContainerStyle={{ paddingBottom: 60 }}
       keyExtractor={(item) => `feed-${item.id}`}
       onEndReached={hasMore ? onLoadMore : undefined}
