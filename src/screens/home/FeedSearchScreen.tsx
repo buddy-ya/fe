@@ -36,7 +36,7 @@ const SearchInput = ({
       />
       {value.length > 0 && (
         <TouchableOpacity onPress={onClear} className="px-3">
-          <X size={18} color="#797979" />
+          <X size={20} color="#797979" />
         </TouchableOpacity>
       )}
     </View>
@@ -51,12 +51,14 @@ export default function SearchScreen({ navigation }) {
 
   const feedListData = useFeedList({
     queryKey: feedKeys.search(submittedText),
-    fetchFn: (params) =>
-      searchFeeds({
+    fetchFn: (params) => {
+      if (!submittedText.trim()) return Promise.resolve({ feeds: [] });
+      return searchFeeds({
         ...params,
         keyword: submittedText,
         category: "free",
-      }),
+      });
+    },
     staleTime: 1000 * 60 * 3,
   });
 
@@ -93,7 +95,7 @@ export default function SearchScreen({ navigation }) {
     >
       <InnerLayout>
         <KeyboardLayout>
-          {isFocused || submittedText ? (
+          {isFocused || submittedText.trim() ? (
             <FeedList
               feeds={feedListData.feeds}
               onLike={feedListData.handleLike}
