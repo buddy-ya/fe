@@ -10,9 +10,13 @@ import { feedKeys } from "@/api/queryKeys";
 
 interface UseFeedDetailProps {
   feedId: number;
+  enabled?: boolean;
 }
 
-export const useFeedDetail = ({ feedId }: UseFeedDetailProps) => {
+export const useFeedDetail = ({
+  feedId,
+  enabled = true,
+}: UseFeedDetailProps) => {
   const queryClient = useQueryClient();
 
   const {
@@ -22,11 +26,13 @@ export const useFeedDetail = ({ feedId }: UseFeedDetailProps) => {
   } = useQuery({
     queryKey: feedKeys.detail(feedId),
     queryFn: () => getFeed(feedId),
+    enabled,
   });
 
   const { data: commentsData, refetch: refetchComments } = useQuery({
     queryKey: ["feedComments", feedId],
     queryFn: () => getFeedComments(feedId),
+    enabled,
   });
 
   const likeMutation = useMutation({

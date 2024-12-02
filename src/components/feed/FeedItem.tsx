@@ -19,7 +19,7 @@ const screenWidth = Dimensions.get("window").width;
 const IMAGE_CONFIG = {
   single: {
     aspectRatio: 1 / 1,
-    containerClass: "w-full aspect-[1/1]",
+    containerClass: "w-full",
     maxHeight: 150,
   },
   multiple: {

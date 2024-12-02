@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   TouchableOpacity,
   ScrollView,
@@ -20,6 +20,8 @@ import ConfirmModal from "@/components/common/ConfirmModal";
 import { useFeedDetail } from "@/hooks/useFeedDetail";
 import { useFeedModals } from "@/hooks/useFeedModal";
 import { deleteFeed } from "@/api/feed/feedAction";
+import { useQueryClient } from "@tanstack/react-query";
+import { feedKeys } from "@/api/queryKeys";
 
 export default function FeedDetailScreen({ navigation, route }) {
   const { feedId } = route.params;
@@ -45,7 +47,10 @@ export default function FeedDetailScreen({ navigation, route }) {
     handleRefresh,
   } = useFeedDetail({
     feedId,
+    enabled: !isDeleted,
   });
+
+  const queryClient = useQueryClient();
 
   const showDeleteAlert = (onConfirm: () => void) => {
     Alert.alert(
@@ -78,6 +83,7 @@ export default function FeedDetailScreen({ navigation, route }) {
         showDeleteAlert(async () => {
           setIsDeleted(true);
           await deleteFeed(feedId);
+          queryClient.invalidateQueries({ queryKey: feedKeys.all });
           feedModal.closeModal();
           navigation.goBack();
         });
