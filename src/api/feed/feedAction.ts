@@ -1,46 +1,8 @@
-import { Platform } from "react-native";
 import { apiClient } from "../apiClient";
+import { FeedFormData, createFeedFormData } from "@/utils/service/formData";
 
-interface FeedData {
-  title: string;
-  content: string;
-  category: string;
-  images: ImageFile[];
-}
-
-interface ImageFile {
-  uri: string;
-  type: string;
-  fileName?: string;
-}
-
-const processImageForUpload = (image: ImageFile) => {
-  const uri =
-    Platform.OS === "ios" ? image.uri.replace("file://", "") : image.uri;
-  return {
-    uri,
-    name: image.fileName || image.uri.split("/").pop(),
-    type: image.type || `image/${image.uri.split(".").pop()}`,
-  } as any;
-};
-
-export const createFeed = async ({
-  title,
-  content,
-  category,
-  images,
-}: FeedData) => {
-  const formData = new FormData();
-  formData.append("title", title.trim());
-  formData.append("content", content.trim());
-  formData.append("category", category);
-
-  if (images.length > 0) {
-    images.forEach((image) => {
-      formData.append("images", processImageForUpload(image));
-    });
-  } else {
-  }
+export const createFeed = async (feedData: FeedFormData) => {
+  const formData = createFeedFormData(feedData);
 
   return await apiClient.post("/feeds", formData, {
     headers: {
@@ -49,20 +11,8 @@ export const createFeed = async ({
   });
 };
 
-export const updateFeed = async (
-  feedId: number,
-  { title, content, category, images }: FeedData
-) => {
-  const formData = new FormData();
-  formData.append("title", title.trim());
-  formData.append("content", content.trim());
-  formData.append("category", category);
-
-  if (images.length > 0) {
-    images.forEach((image) => {
-      formData.append("images", processImageForUpload(image));
-    });
-  }
+export const updateFeed = async (feedId: number, feedData: FeedFormData) => {
+  const formData = createFeedFormData(feedData);
 
   return await apiClient.patch(`/feeds/${feedId}`, formData, {
     headers: {

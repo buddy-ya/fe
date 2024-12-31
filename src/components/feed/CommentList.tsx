@@ -13,11 +13,12 @@ interface CommentLabelProps {
 }
 
 const CommentLabel = ({ isFeedOwner, isCommentOwner }: CommentLabelProps) => {
+  const { t } = useTranslation("feed");
   if (isFeedOwner) {
     return (
       <View className="ml-2 px-[6px] py-[1px] bg-primary/10 rounded-full">
         <MyText size="text-[11px]" color="text-primary">
-          작성자
+          {t("writer")}
         </MyText>
       </View>
     );
@@ -26,7 +27,7 @@ const CommentLabel = ({ isFeedOwner, isCommentOwner }: CommentLabelProps) => {
     return (
       <View className="ml-2 px-[6px] py-[1px] bg-[#F6F6F6] rounded-full">
         <MyText size="text-[11px]" color="text-textDescription">
-          나
+          {t("me")}
         </MyText>
       </View>
     );
@@ -50,7 +51,7 @@ export default function CommentList({
         <View key={item.id} className="mb-0 px-4 py-3 bg-white">
           <View className="flex-row justify-between items-start mb-[14px]">
             <View className="flex-row">
-              <View className="mr-2">
+              <View className="mr-3">
                 <Image
                   className="w-10 h-10 rounded-[12px]"
                   source={{ uri: item.profileImageUrl }}
@@ -64,13 +65,17 @@ export default function CommentList({
                   >
                     {t(`profile.university.${item.university}`)}
                   </MyText>
-                  <MyText color="text-textDescription" className="mx-[4px]">
+                  <MyText
+                    size="text-sm"
+                    color="text-textDescription"
+                    className="mx-[5px]"
+                  >
                     {"·"}
                   </MyText>
                   <MyText
                     size="text-sm"
                     color="text-textDescription"
-                    className="tracking-tight"
+                    className="tracking-tighter -ml-[2px]"
                   >
                     {getTimeAgo(item.createdDate)}
                   </MyText>

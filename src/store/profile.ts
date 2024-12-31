@@ -15,14 +15,25 @@ interface Profile {
   interests: string[];
 }
 
+const defaultProfile: Profile = {
+  name: "",
+  university: "",
+  country: "ko",
+  gender: "unknown",
+  profileImageUrl: "",
+  majors: [],
+  languages: [],
+  interests: [],
+};
+
 interface ProfileStore {
-  profile: Profile | null;
+  profile: Profile;
   setProfile: (profile: Profile) => void;
   fetchProfile: () => Promise<void>;
 }
 
 export const useProfileStore = create<ProfileStore>((set) => ({
-  profile: null,
+  profile: defaultProfile,
   setProfile: (profile) => set({ profile }),
   fetchProfile: async () => {
     const profileData = await getProfile();

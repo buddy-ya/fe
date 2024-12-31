@@ -12,9 +12,13 @@ export const updateComment = async (
   commentId: number,
   content: string
 ) => {
-  return await apiClient.put(`/feeds/${feedId}/comments/${commentId}`, {
-    content,
-  });
+  const { data } = await apiClient.patch(
+    `/feeds/${feedId}/comments/${commentId}`,
+    {
+      content,
+    }
+  );
+  return data;
 };
 
 export const deleteComment = async (feedId: number, commentId: number) => {

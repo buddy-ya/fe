@@ -14,6 +14,7 @@ module.exports = {
         textDescription: "#797979",
         textWarning: "#FF7657",
         textLight: "#CBCBCB",
+        textProfile: "#474747",
 
         placeholderPrimary: "#fff",
         background: "#FFFFFF",

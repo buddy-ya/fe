@@ -42,6 +42,8 @@ import BookmarkScreen from "@/screens/mypage/BookmarkScreen";
 import MyPostsScreen from "@/screens/mypage/MyPostsScreen";
 import MyProfileScreen from "@/screens/mypage/MyProfileScreen";
 import EditProfileImageScreen from "@/screens/mypage/EditProfileImageScreen";
+import CommentEditScreen from "@/screens/home/CommentEditScreen";
+import FeedSearchScreen from "@/screens/home/FeedSearchScreen";
 
 export const navigationRef = createNavigationContainerRef();
 
@@ -162,8 +164,10 @@ function FeedNavigator({ navigation, route }) {
   return (
     <FeedStack.Navigator screenOptions={{ headerShown: false }}>
       <FeedStack.Screen name="FeedHome" component={HomeScreen} />
+      <FeedStack.Screen name="FeedSearch" component={FeedSearchScreen} />
       <FeedStack.Screen name="FeedWrite" component={FeedWriteScreen} />
       <FeedStack.Screen name="FeedDetail" component={FeedDetailScreen} />
+      <FeedStack.Screen name="CommentEdit" component={CommentEditScreen} />
       <FeedStack.Screen name="EmailVerification" component={EmailScreen} />
       <FeedStack.Screen
         name="EmailVerificationCode"
@@ -217,6 +221,7 @@ function MyPageNavigator({ navigation, route }) {
       />
       <MyPageStack.Screen name="Bookmark" component={BookmarkScreen} />
       <MyPageStack.Screen name="MyPosts" component={MyPostsScreen} />
+      <MyPageStack.Screen name="FeedDetail" component={FeedDetailScreen} />
     </MyPageStack.Navigator>
   );
 }

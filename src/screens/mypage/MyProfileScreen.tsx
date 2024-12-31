@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { View, ScrollView, Image, TouchableOpacity } from "react-native";
 import { useTranslation } from "react-i18next";
-import { Pencil } from "lucide-react-native";
+import { Pencil, RefreshCcw, RefreshCw } from "lucide-react-native";
 import Layout from "@/components/common/Layout";
 import InnerLayout from "@/components/common/InnerLayout";
 import MyText from "@/components/common/MyText";
@@ -10,12 +10,7 @@ import { getCountryFlag } from "@/utils/constants/countries";
 import { Chip } from "@/components/common/Chip";
 import { MAJOR_ICONS } from "@/utils/constants/majors";
 import { INTEREST_ICONS } from "@/utils/constants/interests";
-import {
-  getProfile,
-  updateInterests,
-  updateLanguages,
-  updateName,
-} from "@/api/mypage/mypage";
+import { getProfile } from "@/api/mypage/mypage";
 
 export default function MyProfileScreen({ navigation }) {
   const { t } = useTranslation([
@@ -49,10 +44,6 @@ export default function MyProfileScreen({ navigation }) {
     navigation.navigate("EditName", {
       mode: "edit",
       initialName: profile.name,
-      onComplete: async (name: string) => {
-        await updateName(name);
-        navigation.goBack();
-      },
     });
   };
 
@@ -60,10 +51,6 @@ export default function MyProfileScreen({ navigation }) {
     navigation.navigate("EditLanguage", {
       mode: "edit",
       initialLanguages: profile.languages,
-      onComplete: async (languages: string[]) => {
-        await updateLanguages(languages);
-        navigation.goBack();
-      },
     });
   };
 
@@ -71,18 +58,13 @@ export default function MyProfileScreen({ navigation }) {
     navigation.navigate("EditInterest", {
       mode: "edit",
       initialInterests: profile.interests,
-      onComplete: async (interests: string[]) => {
-        console.log(interests);
-        await updateInterests(interests);
-        navigation.goBack();
-      },
     });
   };
 
   const sections = [
     {
       title: t("mypage:profile.sections.majors"),
-      data: profile.majors,
+      data: profile?.majors,
       translationPrefix: "majors:majors",
       getIcon: (id: string) => MAJOR_ICONS[id],
       editable: false,
@@ -110,7 +92,7 @@ export default function MyProfileScreen({ navigation }) {
         {title}
       </MyText>
       {onEdit && (
-        <TouchableOpacity className="px-3" onPress={onEdit}>
+        <TouchableOpacity className="" onPress={onEdit}>
           <MyText size="text-[12px]" color="text-textLight" className="">
             {t("mypage:profile.edit")}
           </MyText>
@@ -124,7 +106,7 @@ export default function MyProfileScreen({ navigation }) {
     children: React.ReactNode,
     onEdit?: () => void
   ) => (
-    <View className="border-t-[1px] border-borderBottom p-5">
+    <View className="border-t-[1px] border-borderBottom px-5 py-4">
       {renderSectionHeader(title, onEdit)}
       {children}
     </View>
@@ -146,10 +128,10 @@ export default function MyProfileScreen({ navigation }) {
                   className="w-[110px] h-[110px] rounded-[25px] mb-4"
                 />
                 <TouchableOpacity
-                  className="absolute -top-1 -right-3 bg-white p-2 rounded-full"
+                  className="absolute -top-1.5 -right-3 bg-white p-1.5 rounded-full"
                   onPress={handleEditPhoto}
                 >
-                  <Pencil size={18} color="#797979" />
+                  <RefreshCcw size={18} color={"#797979"} />
                 </TouchableOpacity>
               </View>
               <View className="flex-row items-center">
@@ -162,8 +144,8 @@ export default function MyProfileScreen({ navigation }) {
               </View>
               <MyText
                 size="text-[13px]"
-                color="text-textDescription"
-                className=" mt-2"
+                color="text-textProfile"
+                className="mt-2"
               >
                 {t(`profile.university.${profile.university}`)}
               </MyText>
@@ -171,7 +153,7 @@ export default function MyProfileScreen({ navigation }) {
           </View>
 
           <View className="bg-white rounded-[20px] mt-7">
-            <View className="p-5 flex-row justify-between items-start">
+            <View className="py-4 px-5 flex-row justify-between items-start">
               <View className="flex-1">
                 {renderSectionHeader(t("mypage:profile.sections.country"))}
                 <Chip

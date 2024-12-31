@@ -16,5 +16,42 @@
     "like": "공감",
     "comment": "댓글",
     "bookmark": "북마크"
+  },
+  "writer": "작성자",
+  "me": "나",
+  "write": {
+    "titlePlaceholder": "제목을 입력해주세요.",
+    "contentPlaceholder": "내용을 입력해주세요.",
+    "categoryModalTitle": "카테고리 선택",
+    "imageUploadError": "이미지를 불러오는데 실패했습니다.",
+    "photoCaptureError": "사진 촬영에 실패했습니다.",
+    "postError": {
+      "create": "게시물 등록에 실패했습니다.",
+      "edit": "게시물 수정에 실패했습니다."
+    },
+    "loading": "처리중...",
+    "postButton": "게시",
+    "imagesCount": "{count}/5",
+    "camera": "카메라",
+    "gallery": "갤러리"
+  },
+  "delete": {
+    "title": "게시물 삭제",
+    "description": "정말로 이 게시물을 삭제하시겠습니까?",
+    "confirm": "삭제",
+    "cancel": "취소"
+  },
+  "search": {
+    "placeholder": "검색어를 입력해주세요",
+    "empty": {
+      "default": "검색어를 입력해주세요",
+      "result": "검색 결과가 없습니다"
+    }
+  },
+  "modal": {
+    "edit": "수정하기",
+    "delete": "삭제하기",
+    "report": "신고하기",
+    "cancel": "취소하기"
   }
 }

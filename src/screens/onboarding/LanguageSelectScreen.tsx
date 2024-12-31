@@ -11,6 +11,7 @@ import SelectItem from "@/components/common/SelectItem";
 import { LANGUAGES } from "@/utils/constants/languages";
 import { useOnboardingStore } from "@/store/onboarding";
 import MyText from "@/components/common/MyText";
+import { updateLanguages } from "@/api/mypage/mypage";
 
 interface Language {
   id: string;
@@ -42,10 +43,11 @@ export default function LanguageSelectScreen({ navigation, route }) {
       .includes(searchQuery.toLowerCase())
   );
 
-  const handleNavigateButton = () => {
+  const handleNavigateButton = async () => {
     const languages = selectedLanguages.map((lang) => lang.id);
     if (mode === "edit") {
-      onComplete?.(languages);
+      await updateLanguages(languages);
+      navigation.goBack();
     } else {
       updateOnboardingData({ languages });
       navigation.navigate("OnboardingMajorSelect");

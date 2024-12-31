@@ -17,11 +17,11 @@ export interface Feed {
   createdDate: string;
 }
 
-export interface FeedResponse {
-  currentPage: number;
-  totalPages: number;
-  hasNext: boolean;
+export interface FeedListResponse {
   feeds: Feed[];
+  hasNext: boolean;
+  currentPage: number;
+  pages: FeedListResponse[];
 }
 
 export interface CommentType {
@@ -45,6 +45,8 @@ export interface ModalOption {
 
 export interface ImageFile {
   uri: string;
-  type?: string;
+  type: string;
   fileName?: string;
+  width?: number;
+  height?: number;
 }

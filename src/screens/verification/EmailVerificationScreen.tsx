@@ -13,7 +13,6 @@ import FooterLayout from "@/components/common/FooterLayout";
 import Label from "@/components/onboarding/Label";
 import MyText from "@/components/common/MyText";
 import ErrorMessage from "@/components/onboarding/ErrorMessage";
-import { logError } from "@/utils/service/error";
 import { verifyEmailCode, sendEmail } from "@/api/certification/certification";
 
 export default function EmailVerificationScreen({ navigation, route }) {
@@ -22,33 +21,27 @@ export default function EmailVerificationScreen({ navigation, route }) {
   const [verificationError, setVerificationError] = useState(false);
   const email = route.params?.email;
   const univName = route.params?.univName;
+  const [isSubmiting, setisSubmiting] = useState(false);
 
   const handleResend = async () => {
-    try {
-      await sendEmail({ email, univName });
-      setCode("");
-      setVerificationError(false);
-    } catch (error) {
-      logError(error);
-    }
+    await sendEmail({ email, univName });
+    setCode("");
+    setVerificationError(false);
   };
 
   const handleNavigateButton = async () => {
-    try {
-      const { success } = await verifyEmailCode({
-        email,
-        univName,
-        code,
-      });
-      if (success) {
-        setVerificationError(false);
-        navigation.navigate("EmailComplete");
-      } else {
-        setVerificationError(true);
-        setCode("");
-      }
-    } catch (error) {
-      logError(error);
+    if (isSubmiting) return;
+
+    setisSubmiting(true);
+    const { success } = await verifyEmailCode({
+      email,
+      univName,
+      code,
+    });
+    if (success) {
+      setVerificationError(false);
+      navigation.navigate("EmailComplete");
+    } else {
       setVerificationError(true);
       setCode("");
     }
@@ -70,7 +63,7 @@ export default function EmailVerificationScreen({ navigation, route }) {
       icon={<Send strokeWidth={1} size={23} color="#797979" />}
       content={<View className="mx-3">{renderFooterContent()}</View>}
       onPress={handleNavigateButton}
-      disabled={code.length !== 4}
+      disabled={code.length !== 4 || isSubmiting}
     />
   );
 

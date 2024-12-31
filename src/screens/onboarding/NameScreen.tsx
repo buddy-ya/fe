@@ -12,6 +12,7 @@ import { useOnboardingStore } from "@/store/onboarding";
 import Label from "@/components/onboarding/Label";
 import FooterLayout from "@/components/common/FooterLayout";
 import MyText from "@/components/common/MyText";
+import { updateName } from "@/api/mypage/mypage";
 
 const MIN_NAME_LENGTH = 2;
 const MAX_NAME_LENGTH = 15;
@@ -39,11 +40,14 @@ export default function NameScreen({ navigation, route }) {
 
   const isWarning = isNonEnglish || isInvalidLength;
 
-  const handleNavigation = () => {
+  const handleNavigation = async () => {
+    const trimmedName = name.trim();
+
     if (mode === "edit") {
-      onComplete?.(name.trim());
+      await updateName(trimmedName);
+      navigation.goBack();
     } else {
-      updateOnboardingData({ name: name.trim() });
+      updateOnboardingData({ name: trimmedName });
       navigation.navigate("OnboardingCountrySelect");
     }
   };

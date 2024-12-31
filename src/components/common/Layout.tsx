@@ -1,6 +1,7 @@
 import React, { ReactNode } from "react";
 import { Platform, StatusBar, View } from "react-native";
 import { SafeAreaView, Edge } from "react-native-safe-area-context";
+import { useRoute } from "@react-navigation/native";
 import Header, { BackButton } from "./Header";
 
 interface LayoutProps {
@@ -15,6 +16,8 @@ interface LayoutProps {
   hasTabBar?: boolean;
   safeAreaEdges?: Edge[];
   disableBottomSafeArea?: boolean;
+  isBackgroundWhite?: boolean;
+  isSearchLayout?: boolean;
 }
 
 export default function Layout({
@@ -28,12 +31,17 @@ export default function Layout({
   headerRight,
   hasTabBar,
   safeAreaEdges,
+  isSearchLayout,
   disableBottomSafeArea,
+  isBackgroundWhite,
 }: LayoutProps) {
-  const TAB_BAR_HEIGHT = Platform.select({
-    ios: 85,
-    android: 65,
-  });
+  const route = useRoute();
+  const shouldUseWhiteBackground =
+    isBackgroundWhite ??
+    (route.name.startsWith("Onboarding") ||
+      route.name.startsWith("Edit") ||
+      route.name.startsWith("Email") ||
+      route.name.startsWith("StudentId"));
 
   const defaultEdges: Edge[] = ["top", "left", "right", "bottom"];
   const edges =
@@ -43,11 +51,14 @@ export default function Layout({
   return (
     <SafeAreaView
       edges={edges}
-      className={`flex-1 bg-mainBackground ${className}`}
+      className={`flex-1 ${
+        shouldUseWhiteBackground ? "bg-white" : "bg-mainBackground"
+      } ${className}`}
     >
       <StatusBar barStyle="dark-content" backgroundColor="white" />
       {showHeader && (
         <Header
+          isSearchLayout={isSearchLayout}
           leftContent={
             headerLeft || (onBack && <BackButton onPress={onBack} />)
           }
