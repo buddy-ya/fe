@@ -47,7 +47,8 @@
     "react-native-screens": "~4.1.0",
     "react-native-svg": "^15.8.0",
     "zustand": "^5.0.1",
-    "expo-dev-client": "~5.0.4"
+    "expo-dev-client": "~5.0.4",
+    "expo-splash-screen": "~0.29.13"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

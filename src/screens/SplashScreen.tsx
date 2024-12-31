@@ -46,11 +46,8 @@ export default function SplashScreen({ navigation }) {
   };
 
   return (
-    <View className="flex-1 justify-center items-center bg-white">
-      <Image
-        className="w-[100px] h-[123px]"
-        source={require("@assets/images/splash.png")}
-      />
+    <View className="flex-1 justify-center items-center bg-[#00A176]">
+      <Image source={require("@assets/splash.png")} width={203} height={206} />
       <ActivityIndicator size="large" color="#007AFF" />
     </View>
   );

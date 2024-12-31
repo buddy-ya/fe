@@ -92,7 +92,7 @@ export default function MyProfileScreen({ navigation }) {
         {title}
       </MyText>
       {onEdit && (
-        <TouchableOpacity className="px-3" onPress={onEdit}>
+        <TouchableOpacity className="" onPress={onEdit}>
           <MyText size="text-[12px]" color="text-textLight" className="">
             {t("mypage:profile.edit")}
           </MyText>
