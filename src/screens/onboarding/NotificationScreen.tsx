@@ -25,8 +25,13 @@ export default function NotificationScreen({ navigation, route }) {
   };
 
   const requestNotificationPermission = async () => {
-    const { status } = await Notifications.requestPermissionsAsync();
-    return status === 'granted';
+    const { status } = await Notifications.getPermissionsAsync();
+    if (status === 'granted') {
+      return true;
+    }
+
+    const { status: newStatus } = await Notifications.requestPermissionsAsync();
+    return newStatus === 'granted';
   };
 
   const handleButtonPress = async () => {

@@ -1,9 +1,7 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Font from 'expo-font';
-
 import React, { useEffect } from 'react';
-
 import { Image, View } from 'react-native';
-
 import { getAccessToken } from '@/utils/service/auth';
 
 const FONTS = {
@@ -34,6 +32,7 @@ export default function SplashScreen({ navigation }) {
 
   const initializeApp = async () => {
     try {
+      await AsyncStorage.clear();
       await loadFonts();
       await new Promise((resolve) => setTimeout(resolve, 1000));
       await handleNavigation();
@@ -44,8 +43,8 @@ export default function SplashScreen({ navigation }) {
   };
 
   return (
-    <View className="flex-1 justify-center items-center">
-      <Image source={require('@assets/images/splash.png')} className="w-full h-full" />
+    <View className="flex-1 items-center justify-center">
+      <Image source={require('@assets/images/splash.png')} className="h-full w-full" />
     </View>
   );
 }

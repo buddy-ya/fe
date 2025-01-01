@@ -1,15 +1,10 @@
-import axios from "axios";
-import { Alert } from "react-native";
-import { BASE_URL } from "@env";
-import {
-  getRefreshToken,
-  saveTokens,
-  removeTokens,
-  getAccessToken,
-} from "@/utils/service/auth";
-import { resetToOnboarding } from "@/navigation/router";
-import { logError } from "@/utils/service/error";
-import i18n from "@/i18n";
+import i18n from '@/i18n';
+import { resetToOnboarding } from '@/navigation/router';
+import { BASE_URL } from '@env';
+import axios from 'axios';
+import { Alert } from 'react-native';
+import { getAccessToken, getRefreshToken, removeTokens, saveTokens } from '@/utils/service/auth';
+import { logError } from '@/utils/service/error';
 
 export const apiClient = axios.create({
   baseURL: BASE_URL,
@@ -17,19 +12,19 @@ export const apiClient = axios.create({
 
 const reissueTokens = async (refreshToken: string) => {
   const response = await axios({
-    method: "post",
+    method: 'post',
     url: `${BASE_URL}/auth/reissue`,
     data: { refreshToken },
-    headers: { "Content-Type": "application/json" },
+    headers: { 'Content-Type': 'application/json' },
   });
   return response.data;
 };
 
 const showErrorModal = (messageKey: string) => {
   Alert.alert(
-    i18n.t("error:title"),
+    i18n.t('error:title'),
     i18n.t(`error:${messageKey}`),
-    [{ text: i18n.t("common:confirm"), style: "default" }],
+    [{ text: i18n.t('common:confirm'), style: 'default' }],
     { cancelable: true }
   );
 };
@@ -49,20 +44,21 @@ apiClient.interceptors.response.use(
   (response) => response,
   async (error) => {
     if (!error.response) {
-      showErrorModal("network");
+      showErrorModal('network');
       return Promise.reject(error);
     }
 
-    if (error.response?.status === 401 && !error.config._retry) {
+    const errorCode = error.response?.data?.code;
+
+    if (error.response?.status === 401 && errorCode === 3002 && !error.config._retry) {
       error.config._retry = true;
       try {
         const refreshToken = await getRefreshToken();
         if (!refreshToken) {
-          throw new Error("Refresh token not found");
+          throw new Error('Refresh token not found');
         }
 
-        const { accessToken, refreshToken: newRefreshToken } =
-          await reissueTokens(refreshToken);
+        const { accessToken, refreshToken: newRefreshToken } = await reissueTokens(refreshToken);
 
         const finalRefreshToken = newRefreshToken || refreshToken;
         await saveTokens(accessToken, finalRefreshToken);
@@ -71,7 +67,7 @@ apiClient.interceptors.response.use(
       } catch (reissueError) {
         await removeTokens();
         resetToOnboarding();
-        showErrorModal("tokenExpired");
+        showErrorModal('tokenExpired');
         return Promise.reject(reissueError);
       }
     }
