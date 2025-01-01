@@ -1,9 +1,7 @@
-import { ChevronRight } from 'lucide-react-native';
-
 import React, { useState } from 'react';
 
 import { useTranslation } from 'react-i18next';
-import { View, Text } from 'react-native';
+import { Text, View } from 'react-native';
 
 import Button from '@/components/common/Button';
 import InnerLayout from '@/components/common/layout/InnerLayout';
@@ -38,7 +36,7 @@ export default function StudentTypeScreen({ navigation }) {
           />
         </View>
         <Button onPress={handleNavigateButton}>
-          <Text className="text-white text-lg font-semibold">{t('common.next')}</Text>
+          <Text className="font-semibold text-lg text-white">{t('common.next')}</Text>
         </Button>
       </InnerLayout>
     </Layout>

@@ -52,7 +52,9 @@ export default function Layout({
   return (
     <SafeAreaView
       edges={edges}
-      className={`flex-1 ${shouldUseWhiteBackground ? 'bg-white' : 'bg-mainBackground'} ${className}`}
+      className={`flex-1 ${
+        shouldUseWhiteBackground ? 'bg-white' : 'bg-mainBackground'
+      } ${className}`}
     >
       <StatusBar barStyle="dark-content" backgroundColor="white" />
       {showHeader && (
