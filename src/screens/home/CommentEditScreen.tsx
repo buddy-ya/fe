@@ -1,36 +1,33 @@
-import React, { useState } from "react";
-import { TouchableOpacity, TextInput, View } from "react-native";
-import { X } from "lucide-react-native";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import Layout from "@/components/common/Layout";
-import MyText from "@/components/common/MyText";
-import { updateComment } from "@/api/feed/comment";
-import { feedKeys } from "@/api/queryKeys";
-import InnerLayout from "@/components/common/InnerLayout";
-import { ScrollView } from "react-native-gesture-handler";
-import { useTranslation } from "react-i18next";
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { X } from 'lucide-react-native';
+
+import React, { useState } from 'react';
+
+import { useTranslation } from 'react-i18next';
+import { TouchableOpacity, TextInput, View } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
+
+import { updateComment } from '@/api/feed/comment';
+import { feedKeys } from '@/api/queryKeys';
+
+import MyText from '@/components/common/MyText';
+import InnerLayout from '@/components/common/layout/InnerLayout';
+import Layout from '@/components/common/layout/Layout';
 
 export default function CommentEditScreen({ navigation, route }) {
   const { feedId, commentId, initialContent } = route.params;
   const [content, setContent] = useState(initialContent);
   const [isLoading, setIsLoading] = useState(false);
   const queryClient = useQueryClient();
-  const { t } = useTranslation("feed");
+  const { t } = useTranslation('feed');
 
   const updateCommentMutation = useMutation({
-    mutationFn: ({
-      commentId,
-      content,
-    }: {
-      commentId: number;
-      content: string;
-    }) => updateComment(feedId, commentId, content),
+    mutationFn: ({ commentId, content }: { commentId: number; content: string }) =>
+      updateComment(feedId, commentId, content),
     onSuccess: (updatedComment) => {
-      queryClient.setQueryData(["feedComments", feedId], (old: any) => ({
+      queryClient.setQueryData(['feedComments', feedId], (old: any) => ({
         ...old,
-        comments: old.comments.map((comment: any) =>
-          comment.id === updatedComment.id ? updatedComment : comment
-        ),
+        comments: old.comments.map((comment: any) => (comment.id === updatedComment.id ? updatedComment : comment)),
       }));
       queryClient.invalidateQueries({ queryKey: feedKeys.all });
       navigation.goBack();
@@ -66,14 +63,12 @@ export default function CommentEditScreen({ navigation, route }) {
       }
       headerRight={
         <TouchableOpacity
-          className={`px-3.5 py-1.5 rounded-full ${
-            content.trim() && !isLoading ? "bg-primary" : "bg-gray-400"
-          }`}
+          className={`px-3.5 py-1.5 rounded-full ${content.trim() && !isLoading ? 'bg-primary' : 'bg-gray-400'}`}
           onPress={handleSubmit}
           disabled={!content.trim() || isLoading}
         >
           <MyText color="text-white" className="font-semibold">
-            {isLoading ? t("write.loading") : t("write.postButton")}
+            {isLoading ? t('write.loading') : t('write.postButton')}
           </MyText>
         </TouchableOpacity>
       }
@@ -85,7 +80,7 @@ export default function CommentEditScreen({ navigation, route }) {
               className="text-[18px] font-semibold"
               value={content}
               onChangeText={setContent}
-              placeholder={t("comment.placeholder")}
+              placeholder={t('comment.placeholder')}
               placeholderTextColor="#CBCBCB"
               multiline
               autoFocus

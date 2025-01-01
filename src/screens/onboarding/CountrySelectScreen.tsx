@@ -1,18 +1,22 @@
-import React, { useState } from "react";
-import { Keyboard, Text, TouchableWithoutFeedback } from "react-native";
-import { useTranslation } from "react-i18next";
-import Layout from "@/components/common/Layout";
-import InnerLayout from "@/components/common/InnerLayout";
-import Button from "@/components/common/Button";
-import Heading from "@/components/onboarding/Heading";
-import HeadingDescription from "@/components/onboarding/HeadingDescription";
-import SearchInput from "@/components/common/SearchInput";
-import SelectItem from "@/components/common/SelectItem";
-import { COUNTRIES } from "@/utils/constants/countries";
-import { useOnboardingStore } from "@/store/onboarding";
-import MyText from "@/components/common/MyText";
+import React, { useState } from 'react';
 
-type CountryID = (typeof COUNTRIES)[number]["id"];
+import { useTranslation } from 'react-i18next';
+import { Keyboard, Text, TouchableWithoutFeedback } from 'react-native';
+
+import { useOnboardingStore } from '@/store/onboarding';
+
+import { COUNTRIES } from '@/utils/constants/countries';
+
+import Button from '@/components/common/Button';
+import MyText from '@/components/common/MyText';
+import SearchInput from '@/components/common/SearchInput';
+import SelectItem from '@/components/common/SelectItem';
+import InnerLayout from '@/components/common/layout/InnerLayout';
+import Layout from '@/components/common/layout/Layout';
+import Heading from '@/components/onboarding/Heading';
+import HeadingDescription from '@/components/onboarding/HeadingDescription';
+
+type CountryID = typeof COUNTRIES[number]['id'];
 
 interface Country {
   id: CountryID;
@@ -22,8 +26,8 @@ interface Country {
 
 export default function CountrySelectScreen({ navigation }) {
   const [selectedCountry, setSelectedCountry] = useState<Country | null>(null);
-  const [searchQuery, setSearchQuery] = useState("");
-  const { t } = useTranslation("onboarding");
+  const [searchQuery, setSearchQuery] = useState('');
+  const { t } = useTranslation('onboarding');
   const { updateOnboardingData } = useOnboardingStore();
 
   const handleSelect = (country: Country) => {
@@ -31,18 +35,16 @@ export default function CountrySelectScreen({ navigation }) {
   };
 
   const filteredOptions = COUNTRIES.filter((option) =>
-    t(`countries:countries.${option.id}`)
-      .toLowerCase()
-      .includes(searchQuery.toLowerCase())
+    t(`countries:countries.${option.id}`).toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   const handleNavigateButton = () => {
     if (selectedCountry) {
       updateOnboardingData({
         country: selectedCountry.id,
-        isKorean: selectedCountry.id === "ko",
+        isKorean: selectedCountry.id === 'ko',
       });
-      navigation.navigate("OnboardingLanguageSelect");
+      navigation.navigate('OnboardingLanguageSelect');
     }
   };
 
@@ -50,14 +52,10 @@ export default function CountrySelectScreen({ navigation }) {
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <Layout showHeader onBack={() => navigation.goBack()}>
         <InnerLayout>
-          <Heading>{t("country.title")}</Heading>
-          <HeadingDescription>{t("country.description")}</HeadingDescription>
+          <Heading>{t('country.title')}</Heading>
+          <HeadingDescription>{t('country.description')}</HeadingDescription>
 
-          <SearchInput
-            value={searchQuery}
-            onChangeText={setSearchQuery}
-            placeholder={t("country.searchPlaceholder")}
-          />
+          <SearchInput value={searchQuery} onChangeText={setSearchQuery} placeholder={t('country.searchPlaceholder')} />
 
           <SelectItem
             options={filteredOptions}
@@ -73,12 +71,8 @@ export default function CountrySelectScreen({ navigation }) {
             disabled={!selectedCountry}
             className="flex-row items-center justify-center mt-5"
           >
-            <MyText
-              size="text-base"
-              color="text-white"
-              className="font-semibold"
-            >
-              {t("common.next")}
+            <MyText size="text-base" color="text-white" className="font-semibold">
+              {t('common.next')}
             </MyText>
           </Button>
         </InnerLayout>

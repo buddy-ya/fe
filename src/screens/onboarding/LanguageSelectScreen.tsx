@@ -1,17 +1,22 @@
-import React, { useState } from "react";
-import { Keyboard, View, TouchableWithoutFeedback } from "react-native";
-import { useTranslation } from "react-i18next";
-import Layout from "@/components/common/Layout";
-import InnerLayout from "@/components/common/InnerLayout";
-import Button from "@/components/common/Button";
-import Heading from "@/components/onboarding/Heading";
-import HeadingDescription from "@/components/onboarding/HeadingDescription";
-import SearchInput from "@/components/common/SearchInput";
-import SelectItem from "@/components/common/SelectItem";
-import { LANGUAGES } from "@/utils/constants/languages";
-import { useOnboardingStore } from "@/store/onboarding";
-import MyText from "@/components/common/MyText";
-import { updateLanguages } from "@/api/mypage/mypage";
+import React, { useState } from 'react';
+
+import { useTranslation } from 'react-i18next';
+import { Keyboard, View, TouchableWithoutFeedback } from 'react-native';
+
+import { useOnboardingStore } from '@/store/onboarding';
+
+import { updateLanguages } from '@/api/mypage/mypage';
+
+import { LANGUAGES } from '@/utils/constants/languages';
+
+import Button from '@/components/common/Button';
+import MyText from '@/components/common/MyText';
+import SearchInput from '@/components/common/SearchInput';
+import SelectItem from '@/components/common/SelectItem';
+import InnerLayout from '@/components/common/layout/InnerLayout';
+import Layout from '@/components/common/layout/Layout';
+import Heading from '@/components/onboarding/Heading';
+import HeadingDescription from '@/components/onboarding/HeadingDescription';
 
 interface Language {
   id: string;
@@ -19,11 +24,9 @@ interface Language {
 
 export default function LanguageSelectScreen({ navigation, route }) {
   const { mode, initialLanguages, onComplete } = route.params || {};
-  const [selectedLanguages, setSelectedLanguages] = useState<Language[]>(
-    initialLanguages?.map((id) => ({ id })) || []
-  );
-  const [searchQuery, setSearchQuery] = useState("");
-  const { t } = useTranslation("onboarding");
+  const [selectedLanguages, setSelectedLanguages] = useState<Language[]>(initialLanguages?.map((id) => ({ id })) || []);
+  const [searchQuery, setSearchQuery] = useState('');
+  const { t } = useTranslation('onboarding');
   const { updateOnboardingData } = useOnboardingStore();
   const MAX_SELECT = 4;
 
@@ -38,19 +41,17 @@ export default function LanguageSelectScreen({ navigation, route }) {
   };
 
   const filteredOptions = LANGUAGES.filter((option) =>
-    t(`languages:languages.${option.id}`)
-      .toLowerCase()
-      .includes(searchQuery.toLowerCase())
+    t(`languages:languages.${option.id}`).toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   const handleNavigateButton = async () => {
     const languages = selectedLanguages.map((lang) => lang.id);
-    if (mode === "edit") {
+    if (mode === 'edit') {
       await updateLanguages(languages);
       navigation.goBack();
     } else {
       updateOnboardingData({ languages });
-      navigation.navigate("OnboardingMajorSelect");
+      navigation.navigate('OnboardingMajorSelect');
     }
   };
 
@@ -58,15 +59,13 @@ export default function LanguageSelectScreen({ navigation, route }) {
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <Layout showHeader onBack={() => navigation.goBack()}>
         <InnerLayout>
-          <Heading>{t("language.title")}</Heading>
-          <HeadingDescription>
-            {t("language.maxSelect", { count: MAX_SELECT })}
-          </HeadingDescription>
+          <Heading>{t('language.title')}</Heading>
+          <HeadingDescription>{t('language.maxSelect', { count: MAX_SELECT })}</HeadingDescription>
 
           <SearchInput
             value={searchQuery}
             onChangeText={setSearchQuery}
-            placeholder={t("language.searchPlaceholder")}
+            placeholder={t('language.searchPlaceholder')}
           />
 
           <SelectItem
@@ -85,20 +84,12 @@ export default function LanguageSelectScreen({ navigation, route }) {
             className="flex-row items-center justify-center"
           >
             <View>
-              <MyText
-                size="text-base"
-                color="text-white"
-                className="font-semibold"
-              >
-                {t("common.selected")}
+              <MyText size="text-base" color="text-white" className="font-semibold">
+                {t('common.selected')}
               </MyText>
             </View>
             <View className="ml-1">
-              <MyText
-                size="text-base"
-                color="text-white"
-                className="font-semibold"
-              >
+              <MyText size="text-base" color="text-white" className="font-semibold">
                 {selectedLanguages.length}/{MAX_SELECT}
               </MyText>
             </View>

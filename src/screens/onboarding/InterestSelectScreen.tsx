@@ -1,22 +1,24 @@
-import { useState } from "react";
-import { View, ScrollView } from "react-native";
-import { useTranslation } from "react-i18next";
-import Layout from "@/components/common/Layout";
-import InnerLayout from "@/components/common/InnerLayout";
-import Button from "@/components/common/Button";
-import Heading from "@/components/onboarding/Heading";
-import { Chip } from "@/components/common/Chip";
-import {
-  INTEREST_CATEGORIES,
-  INTEREST_ICONS,
-} from "@/utils/constants/interests";
-import type { InterestID } from "@/utils/constants/interests";
-import { useOnboardingStore } from "@/store/onboarding";
-import { postOnboardingInfo } from "@/api/onboarding/join";
-import { logError } from "@/utils/service/error";
-import MyText from "@/components/common/MyText";
-import { saveTokens } from "@/utils/service/auth";
-import { updateInterests } from "@/api/mypage/mypage";
+import { useState } from 'react';
+
+import { useTranslation } from 'react-i18next';
+import { View, ScrollView } from 'react-native';
+
+import { useOnboardingStore } from '@/store/onboarding';
+
+import { updateInterests } from '@/api/mypage/mypage';
+import { postOnboardingInfo } from '@/api/onboarding/join';
+
+import { INTEREST_CATEGORIES, INTEREST_ICONS } from '@/utils/constants/interests';
+import type { InterestID } from '@/utils/constants/interests';
+import { saveTokens } from '@/utils/service/auth';
+import { logError } from '@/utils/service/error';
+
+import Button from '@/components/common/Button';
+import { Chip } from '@/components/common/Chip';
+import MyText from '@/components/common/MyText';
+import InnerLayout from '@/components/common/layout/InnerLayout';
+import Layout from '@/components/common/layout/Layout';
+import Heading from '@/components/onboarding/Heading';
 
 interface Interest {
   id: InterestID;
@@ -31,7 +33,7 @@ export default function InterestSelectScreen({ navigation, route }) {
       icon: INTEREST_ICONS[id],
     })) || []
   );
-  const { t } = useTranslation(["onboarding", "interests"]);
+  const { t } = useTranslation(['onboarding', 'interests']);
   const { updateOnboardingData, ...onboardingData } = useOnboardingStore();
   const MAX_SELECT = 8;
 
@@ -47,7 +49,7 @@ export default function InterestSelectScreen({ navigation, route }) {
 
   const handleNavigateButton = async () => {
     const interests = selectedInterests.map((interest) => interest.id);
-    if (mode === "edit") {
+    if (mode === 'edit') {
       await updateInterests(interests);
       navigation.goBack();
     } else {
@@ -59,7 +61,7 @@ export default function InterestSelectScreen({ navigation, route }) {
       await saveTokens(data.accessToken, data.refreshToken);
       navigation.reset({
         index: 0,
-        routes: [{ name: "Tab" }],
+        routes: [{ name: 'Tab' }],
       });
     }
   };
@@ -67,17 +69,10 @@ export default function InterestSelectScreen({ navigation, route }) {
   return (
     <Layout showHeader onBack={() => navigation.goBack()}>
       <InnerLayout>
-        <ScrollView
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={{ paddingBottom: 50 }}
-        >
-          <Heading>{t("onboarding:interest.title")}</Heading>
-          <MyText
-            size="text-base"
-            color="text-textDescription"
-            className="mt-3"
-          >
-            {t("onboarding:interest.maxSelect", { count: MAX_SELECT })}
+        <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 50 }}>
+          <Heading>{t('onboarding:interest.title')}</Heading>
+          <MyText size="text-base" color="text-textDescription" className="mt-3">
+            {t('onboarding:interest.maxSelect', { count: MAX_SELECT })}
           </MyText>
 
           {INTEREST_CATEGORIES.map((category) => (
@@ -91,9 +86,7 @@ export default function InterestSelectScreen({ navigation, route }) {
                     key={interest.id}
                     icon={interest.icon}
                     label={t(`interests:interests.${interest.id}`)}
-                    selected={selectedInterests.some(
-                      (i) => i.id === interest.id
-                    )}
+                    selected={selectedInterests.some((i) => i.id === interest.id)}
                     onPress={() => handleToggleSelect(interest)}
                     className="mr-2 mb-2"
                   />
@@ -110,20 +103,12 @@ export default function InterestSelectScreen({ navigation, route }) {
           className="flex-row items-center justify-center"
         >
           <View>
-            <MyText
-              size="text-base"
-              color="text-white"
-              className="font-semibold"
-            >
-              {t("onboarding:interest.submit")}
+            <MyText size="text-base" color="text-white" className="font-semibold">
+              {t('onboarding:interest.submit')}
             </MyText>
           </View>
           <View className="ml-1">
-            <MyText
-              size="text-base"
-              color="text-white"
-              className="font-semibold"
-            >
+            <MyText size="text-base" color="text-white" className="font-semibold">
               {`${selectedInterests.length}/${MAX_SELECT}`}
             </MyText>
           </View>

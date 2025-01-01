@@ -1,43 +1,44 @@
-import React, { useState } from "react";
-import { View, Text } from "react-native";
-import { useTranslation } from "react-i18next";
-import { ChevronRight } from "lucide-react-native";
-import Layout from "@/components/common/Layout";
-import InnerLayout from "@/components/common/InnerLayout";
-import Button from "@/components/common/Button";
-import Heading from "@/components/onboarding/Heading";
-import SelectItem from "@/components/onboarding/SelectItem";
+import { ChevronRight } from 'lucide-react-native';
 
-type StudentType = "korean" | "foreign" | null;
+import React, { useState } from 'react';
+
+import { useTranslation } from 'react-i18next';
+import { View, Text } from 'react-native';
+
+import Button from '@/components/common/Button';
+import InnerLayout from '@/components/common/layout/InnerLayout';
+import Layout from '@/components/common/layout/Layout';
+import Heading from '@/components/onboarding/Heading';
+import SelectItem from '@/components/onboarding/SelectItem';
+
+type StudentType = 'korean' | 'foreign' | null;
 
 export default function StudentTypeScreen({ navigation }) {
   const [selectedType, setSelectedType] = useState<StudentType>(null);
-  const { t } = useTranslation("onboarding");
+  const { t } = useTranslation('onboarding');
 
   const handleNavigateButton = () => {
-    navigation.navigate("OnboardingGenderSelect");
+    navigation.navigate('OnboardingGenderSelect');
   };
 
   return (
     <Layout showHeader onBack={() => navigation.goBack()}>
       <InnerLayout>
-        <Heading className="mt-8">{t("studentType.title")}</Heading>
+        <Heading className="mt-8">{t('studentType.title')}</Heading>
         <View className="mt-14">
           <SelectItem
-            selected={selectedType === "korean"}
-            onPress={() => setSelectedType("korean")}
-            item={t("studentType.korean")}
+            selected={selectedType === 'korean'}
+            onPress={() => setSelectedType('korean')}
+            item={t('studentType.korean')}
           />
           <SelectItem
-            selected={selectedType === "foreign"}
-            onPress={() => setSelectedType("foreign")}
-            item={t("studentType.foreign")}
+            selected={selectedType === 'foreign'}
+            onPress={() => setSelectedType('foreign')}
+            item={t('studentType.foreign')}
           />
         </View>
         <Button onPress={handleNavigateButton}>
-          <Text className="text-white text-lg font-semibold">
-            {t("common.next")}
-          </Text>
+          <Text className="text-white text-lg font-semibold">{t('common.next')}</Text>
         </Button>
       </InnerLayout>
     </Layout>

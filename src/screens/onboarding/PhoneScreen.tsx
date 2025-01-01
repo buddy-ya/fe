@@ -1,22 +1,27 @@
-import React, { useState, useEffect } from "react";
-import { View, TextInput } from "react-native";
-import { useTranslation } from "react-i18next";
-import Layout from "@/components/common/Layout";
-import Heading from "@/components/onboarding/Heading";
-import KeyboardLayout from "@/components/common/KeyboardLayout";
-import InnerLayout from "@/components/common/InnerLayout";
-import HeadingDescription from "@/components/onboarding/HeadingDescription";
-import { Lock } from "lucide-react-native";
-import Label from "@/components/onboarding/Label";
-import ErrorMessage from "@/components/onboarding/ErrorMessage";
-import FooterLayout from "@/components/common/FooterLayout";
-import { postPhoneVerification } from "@/api/auth/phone";
-import MyText from "@/components/common/MyText";
-import { formatPhone } from "@/utils/service/phone";
+import { Lock } from 'lucide-react-native';
+
+import React, { useState, useEffect } from 'react';
+
+import { useTranslation } from 'react-i18next';
+import { View, TextInput } from 'react-native';
+
+import { postPhoneVerification } from '@/api/auth/phone';
+
+import { formatPhone } from '@/utils/service/phone';
+
+import MyText from '@/components/common/MyText';
+import FooterLayout from '@/components/common/layout/FooterLayout';
+import InnerLayout from '@/components/common/layout/InnerLayout';
+import KeyboardLayout from '@/components/common/layout/KeyboardLayout';
+import Layout from '@/components/common/layout/Layout';
+import ErrorMessage from '@/components/onboarding/ErrorMessage';
+import Heading from '@/components/onboarding/Heading';
+import HeadingDescription from '@/components/onboarding/HeadingDescription';
+import Label from '@/components/onboarding/Label';
 
 export default function PhoneScreen({ navigation }) {
-  const { t } = useTranslation("onboarding");
-  const [phone, setPhone] = useState("");
+  const { t } = useTranslation('onboarding');
+  const [phone, setPhone] = useState('');
   const [isValid, setIsValid] = useState(false);
   const [showError, setShowError] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -38,7 +43,7 @@ export default function PhoneScreen({ navigation }) {
 
     setIsSubmitting(true);
     await postPhoneVerification(phone);
-    navigation.navigate("OnboardingPhoneVerification", {
+    navigation.navigate('OnboardingPhoneVerification', {
       phone: formatPhone.addHyphen(phone),
     });
   };
@@ -48,7 +53,7 @@ export default function PhoneScreen({ navigation }) {
       icon={<Lock strokeWidth={1} size={23} color="#797979" />}
       content={
         <MyText size="text-sm" color="text-textDescription" className="mx-3">
-          {t("phone.footer")}
+          {t('phone.footer')}
         </MyText>
       }
       onPress={handleNavigateButton}
@@ -60,9 +65,9 @@ export default function PhoneScreen({ navigation }) {
     <Layout showHeader onBack={() => navigation.goBack()}>
       <KeyboardLayout footer={footer}>
         <InnerLayout>
-          <Heading>{t("phone.title")}</Heading>
-          <HeadingDescription>{t("phone.titleDescription")}</HeadingDescription>
-          <Label>{t("phone.label")}</Label>
+          <Heading>{t('phone.title')}</Heading>
+          <HeadingDescription>{t('phone.titleDescription')}</HeadingDescription>
+          <Label>{t('phone.label')}</Label>
           <View>
             <View className="flex-row items-center mb-4">
               <View className="flex-row items-center mr-2 px-[14px] h-[52px] border border-border rounded-xl">
@@ -81,7 +86,7 @@ export default function PhoneScreen({ navigation }) {
                 autoFocus
               />
             </View>
-            {showError && <ErrorMessage>{t("phone.warning")}</ErrorMessage>}
+            {showError && <ErrorMessage>{t('phone.warning')}</ErrorMessage>}
           </View>
         </InnerLayout>
       </KeyboardLayout>

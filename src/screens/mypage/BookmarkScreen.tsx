@@ -1,17 +1,22 @@
-import React from "react";
-import { View } from "react-native";
-import { Bookmark } from "lucide-react-native";
-import { useTranslation } from "react-i18next";
-import { getBookmarkedFeeds } from "@/api/feed/getFeeds";
-import { feedKeys } from "@/api/queryKeys";
-import { useFeedList } from "@/hooks/useFeedList";
-import Layout from "@/components/common/Layout";
-import InnerLayout from "@/components/common/InnerLayout";
-import MyText from "@/components/common/MyText";
-import FeedList from "@/components/feed/FeedList";
+import { Bookmark } from 'lucide-react-native';
+
+import React from 'react';
+
+import { useTranslation } from 'react-i18next';
+import { View } from 'react-native';
+
+import { getBookmarkedFeeds } from '@/api/feed/getFeeds';
+import { feedKeys } from '@/api/queryKeys';
+
+import { useFeedList } from '@/hooks/useFeedList';
+
+import MyText from '@/components/common/MyText';
+import InnerLayout from '@/components/common/layout/InnerLayout';
+import Layout from '@/components/common/layout/Layout';
+import FeedList from '@/components/feed/FeedList';
 
 export default function BookmarkScreen({ navigation }) {
-  const { t } = useTranslation("mypage");
+  const { t } = useTranslation('mypage');
 
   const feedListData = useFeedList({
     queryKey: feedKeys.bookmarks(),
@@ -20,7 +25,7 @@ export default function BookmarkScreen({ navigation }) {
   });
 
   const handlePressFeed = (feedId: number) => {
-    navigation.navigate("FeedDetail", { feedId });
+    navigation.navigate('FeedDetail', { feedId });
   };
 
   return (
@@ -33,7 +38,7 @@ export default function BookmarkScreen({ navigation }) {
             <Bookmark size={19} strokeWidth={2} color="#282828" />
           </MyText>
           <MyText size="text-lg" className="font-bold">
-            {t("bookmark")}
+            {t('bookmark')}
           </MyText>
         </View>
       }
@@ -47,11 +52,11 @@ export default function BookmarkScreen({ navigation }) {
           isLoading={feedListData.isLoading}
           hasMore={feedListData.hasMore}
           onLoadMore={feedListData.handleLoadMore}
-          emptyStateMessage={t("bookmarkEmpty")}
+          emptyStateMessage={t('bookmarkEmpty')}
           refreshControl={{
             refreshing: feedListData.isLoading && feedListData.feeds.length > 0,
             onRefresh: feedListData.handleRefresh,
-            tintColor: "#4AA366",
+            tintColor: '#4AA366',
           }}
         />
       </InnerLayout>
