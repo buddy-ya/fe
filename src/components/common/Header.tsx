@@ -1,6 +1,6 @@
-import React, { ReactNode } from "react";
-import { View, TouchableOpacity } from "react-native";
-import { ChevronLeft } from "lucide-react-native";
+import { ChevronLeft } from 'lucide-react-native';
+import React, { ReactNode } from 'react';
+import { TouchableOpacity, View } from 'react-native';
 
 interface HeaderProps {
   leftContent?: ReactNode;
@@ -24,12 +24,12 @@ export default function Header({
   leftContent,
   centerContent,
   rightContent,
-  className = "",
+  className = '',
   isSearchLayout = false,
 }: HeaderProps) {
   if (isSearchLayout) {
     return (
-      <View className={`px-[16px] h-[42px] flex-row items-center ${className}`}>
+      <View className={`h-[42px] flex-row items-center px-[16px] ${className}`}>
         <View className="mr-1">{leftContent}</View>
         <View className="flex-1">{centerContent}</View>
       </View>
@@ -37,9 +37,7 @@ export default function Header({
   }
 
   return (
-    <View
-      className={`px-[16px] h-[44px] flex-row items-center justify-between ${className}`}
-    >
+    <View className={`h-[44px] flex-row items-center justify-between px-[16px] ${className}`}>
       <View className="flex-1">{leftContent}</View>
       <View className="flex-1 items-center">{centerContent}</View>
       <View className="flex-1 items-end">{rightContent}</View>

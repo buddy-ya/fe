@@ -1,5 +1,4 @@
 import React, { ReactNode } from 'react';
-
 import { View } from 'react-native';
 
 interface InnerLayoutProps {

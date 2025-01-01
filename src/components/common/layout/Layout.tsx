@@ -1,10 +1,7 @@
 import { useRoute } from '@react-navigation/native';
-
 import React, { ReactNode } from 'react';
-
 import { StatusBar, View } from 'react-native';
 import { Edge, SafeAreaView } from 'react-native-safe-area-context';
-
 import Header, { BackButton } from '../Header';
 
 interface LayoutProps {

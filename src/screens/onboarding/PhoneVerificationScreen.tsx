@@ -1,20 +1,13 @@
 import { Send } from 'lucide-react-native';
-
 import React, { useState } from 'react';
-
 import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
-
 import { useOnboardingStore } from '@/store/onboarding';
-
 import { postPhoneVerification, postPhoneVerifyCode } from '@/api/auth/phone';
-
 import useTimer from '@/hooks/useTimer';
-
 import { saveTokens } from '@/utils/service/auth';
 import { logError } from '@/utils/service/error';
 import { formatPhone } from '@/utils/service/phone';
-
 import LinkText from '@/components/common/LinkText';
 import MyText from '@/components/common/MyText';
 import OTPInput from '@/components/common/OTPInput';
@@ -32,10 +25,12 @@ const VERIFICATION_EXPIRE_SECONDS = 180;
 export default function PhoneVerificationScreen({ navigation, route }) {
   const { t } = useTranslation('onboarding');
   const { updateOnboardingData } = useOnboardingStore();
-  const [code, setCode] = useState('');
-  const [verificationError, setVerificationError] = useState(false);
-  const phone = route.params?.phone;
-  const plainPhoneNumber = formatPhone.removeHyphen(phone);
+
+  const formattedPhone = route.params?.phone;
+  const phoneNumber = formatPhone.removeHyphen(formattedPhone);
+
+  const [verificationCode, setVerificationCode] = useState('');
+  const [showError, setShowError] = useState(false);
 
   const { timeLeft, isExpired, restart } = useTimer({
     seconds: VERIFICATION_EXPIRE_SECONDS,
@@ -43,41 +38,39 @@ export default function PhoneVerificationScreen({ navigation, route }) {
   });
 
   const resetVerification = () => {
-    setCode('');
+    setVerificationCode('');
+    setShowError(false);
     restart();
-    setVerificationError(false);
   };
 
-  const handleResend = async () => {
+  const handleResendCode = async () => {
     try {
-      await postPhoneVerification(plainPhoneNumber);
+      await postPhoneVerification(phoneNumber);
       resetVerification();
     } catch (error) {
       logError(error);
     }
   };
 
-  const handleNavigateButton = async () => {
+  const handleVerifyCode = async () => {
     try {
-      const { data } = await postPhoneVerifyCode(plainPhoneNumber, code);
-      setVerificationError(false);
-      updateOnboardingData({ phoneNumber: plainPhoneNumber });
-
+      const { data } = await postPhoneVerifyCode(phoneNumber, verificationCode);
+      setShowError(false);
+      updateOnboardingData({ phoneNumber });
       if (data.status === 'EXISTING_MEMBER') {
         await saveTokens(data.accessToken, data.refreshToken);
       }
-
       navigation.replace('OnboardingNotification', {
         isExistingMember: data.status === 'EXISTING_MEMBER',
       });
     } catch (error) {
       logError(error);
-      setVerificationError(true);
-      setCode('');
+      setShowError(true);
+      setVerificationCode('');
     }
   };
 
-  const renderTimerContent = () => {
+  const renderTimer = () => {
     if (!isExpired) {
       return (
         <View>
@@ -96,29 +89,31 @@ export default function PhoneVerificationScreen({ navigation, route }) {
         <MyText size="text-sm" color="text-textDescription">
           {t('verification.expired')}
         </MyText>
-        <LinkText onPress={handleResend}>{t('verification.resend')}</LinkText>
+        <LinkText onPress={handleResendCode}>{t('verification.resend')}</LinkText>
       </View>
     );
   };
 
-  const footer = (
-    <FooterLayout
-      icon={<Send strokeWidth={1} size={23} color="#797979" />}
-      content={<View className="mx-3">{renderTimerContent()}</View>}
-      onPress={handleNavigateButton}
-      disabled={code.length !== 6 || isExpired}
-    />
-  );
-
   return (
     <Layout showHeader onBack={() => navigation.goBack()}>
-      <KeyboardLayout footer={footer}>
+      <KeyboardLayout
+        footer={
+          <FooterLayout
+            icon={<Send strokeWidth={1} size={23} color="#797979" />}
+            content={<View className="mx-3">{renderTimer()}</View>}
+            onPress={handleVerifyCode}
+            disabled={verificationCode.length !== 6 || isExpired}
+          />
+        }
+      >
         <InnerLayout>
           <Heading>{t('verification.title')}</Heading>
-          <HeadingDescription>{t('verification.titleDescription', { phoneNumber: phone })}</HeadingDescription>
+          <HeadingDescription>
+            {t('verification.titleDescription', { phoneNumber: formattedPhone })}
+          </HeadingDescription>
           <Label>{t('verification.label')}</Label>
-          <OTPInput value={code} onChange={setCode} length={6} />
-          {verificationError && <ErrorMessage className="mt-2">{t('verification.warning')}</ErrorMessage>}
+          <OTPInput value={verificationCode} onChange={setVerificationCode} length={6} />
+          {showError && <ErrorMessage className="mt-2">{t('verification.warning')}</ErrorMessage>}
         </InnerLayout>
       </KeyboardLayout>
     </Layout>
