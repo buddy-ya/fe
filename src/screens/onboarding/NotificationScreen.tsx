@@ -35,14 +35,9 @@ export default function NotificationScreen({ navigation, route }) {
   };
 
   const handleButtonPress = async () => {
-    try {
-      const isGranted = await requestNotificationPermission();
-      updateOnboardingData({ isNotificationEnabled: isGranted });
-      handleNavigate();
-    } catch (error) {
-      console.error('Notification permission error:', error);
-      handleNavigate();
-    }
+    const isGranted = await requestNotificationPermission();
+    updateOnboardingData({ isNotificationEnabled: isGranted });
+    handleNavigate();
   };
 
   return (

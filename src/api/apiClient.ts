@@ -4,7 +4,6 @@ import { BASE_URL } from '@env';
 import axios from 'axios';
 import { Alert } from 'react-native';
 import { getAccessToken, getRefreshToken, removeTokens, saveTokens } from '@/utils/service/auth';
-import { logError } from '@/utils/service/error';
 
 export const apiClient = axios.create({
   baseURL: BASE_URL,
@@ -96,11 +95,6 @@ apiClient.interceptors.response.use(
     //   default:
     //     showErrorModal("default");
     // }
-
-    if (__DEV__) {
-      logError(error);
-    }
-
     return Promise.reject(error);
   }
 );

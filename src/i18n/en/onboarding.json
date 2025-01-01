@@ -55,14 +55,14 @@
     "title": "Please enter your name.",
     "description": "English names are used in Buddyya.",
     "placeholder": "",
-    "label": "nickname",
-    "footer": "Your name will be displayed on the Buddyya student ID.",
+    "label": "name",
+    "footer": "Your name will be displayed on your profile.",
     "warning": "Please Enter your name in English ",
     "warningLength": "Name should be {{min}}-{{max}} characters long"
   },
   "country": {
     "title": "Select your country",
-    "description": "Please select the country where you currently reside",
+    "description": "Please select the country that will be displayed on your profile.",
     "searchPlaceholder": "Search countries"
   },
   "language": {

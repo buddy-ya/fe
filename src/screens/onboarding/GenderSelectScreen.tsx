@@ -1,10 +1,7 @@
 import React, { useState } from 'react';
-
 import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
-
 import { useOnboardingStore } from '@/store/onboarding';
-
 import Button from '@/components/common/Button';
 import MyText from '@/components/common/MyText';
 import InnerLayout from '@/components/common/layout/InnerLayout';

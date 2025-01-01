@@ -1,4 +1,4 @@
-import { Platform } from "react-native";
+import { Platform } from 'react-native';
 
 export interface ImageFile {
   uri: string;
@@ -14,12 +14,11 @@ export interface FeedFormData {
 }
 
 export const processImageForUpload = (image: ImageFile) => {
-  const uri =
-    Platform.OS === "ios" ? image.uri.replace("file://", "") : image.uri;
+  const uri = Platform.OS === 'ios' ? image.uri.replace('file://', '') : image.uri;
   return {
     uri,
-    name: image.fileName || image.uri.split("/").pop() || "image.jpg",
-    type: image.type || "image/jpeg",
+    name: image.fileName || image.uri.split('/').pop() || 'image.jpg',
+    type: image.type || 'image/jpeg',
   } as any;
 };
 
@@ -30,12 +29,12 @@ export const createFeedFormData = ({
   images = [],
 }: FeedFormData): FormData => {
   const formData = new FormData();
-  formData.append("title", title.trim());
-  formData.append("content", content.trim());
-  formData.append("category", category);
+  formData.append('title', title.trim());
+  formData.append('content', content.trim());
+  formData.append('category', category);
 
   images.forEach((image) => {
-    formData.append("images", processImageForUpload(image));
+    formData.append('images', processImageForUpload(image));
   });
 
   return formData;

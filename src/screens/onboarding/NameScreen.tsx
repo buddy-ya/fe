@@ -1,14 +1,9 @@
 import { IdCard } from 'lucide-react-native';
-
 import React, { useState } from 'react';
-
 import { useTranslation } from 'react-i18next';
 import { TextInput } from 'react-native';
-
 import { useOnboardingStore } from '@/store/onboarding';
-
 import { updateName } from '@/api/mypage/mypage';
-
 import MyText from '@/components/common/MyText';
 import FooterLayout from '@/components/common/layout/FooterLayout';
 import InnerLayout from '@/components/common/layout/InnerLayout';
@@ -35,10 +30,10 @@ export default function NameScreen({ navigation, route }) {
   };
 
   const nameLength = name.trim().length;
-  const isValidName = nameLength >= MIN_NAME_LENGTH && nameLength <= MAX_NAME_LENGTH && !isNonEnglish;
-  const isInvalidLength = nameLength > 0 && (nameLength < MIN_NAME_LENGTH || nameLength > MAX_NAME_LENGTH);
-
-  const isWarning = isNonEnglish || isInvalidLength;
+  const isValidName =
+    nameLength >= MIN_NAME_LENGTH && nameLength <= MAX_NAME_LENGTH && !isNonEnglish;
+  const isInvalidLength =
+    nameLength > 0 && (nameLength < MIN_NAME_LENGTH || nameLength > MAX_NAME_LENGTH);
 
   const handleNavigation = async () => {
     const trimmedName = name.trim();
@@ -76,7 +71,7 @@ export default function NameScreen({ navigation, route }) {
             value={name}
             onChangeText={handleNameChange}
             placeholder={t('name.placeholder')}
-            className={`px-4 py-3 w-[262px] h-[50px] text-[18px] text-text tracking-wide border border-inputBorder rounded-xl mb-4`}
+            className={`border-inputBorder mb-4 h-[50px] w-[262px] rounded-xl border px-4 py-3 text-[18px] tracking-wide text-text`}
             keyboardType="ascii-capable"
             placeholderTextColor="placeholderPrimary"
             autoFocus

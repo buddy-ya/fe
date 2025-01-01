@@ -1,12 +1,8 @@
 import React, { useState } from 'react';
-
 import { useTranslation } from 'react-i18next';
-import { Keyboard, Text, TouchableWithoutFeedback } from 'react-native';
-
+import { Keyboard, TouchableWithoutFeedback } from 'react-native';
 import { useOnboardingStore } from '@/store/onboarding';
-
 import { COUNTRIES } from '@/utils/constants/countries';
-
 import Button from '@/components/common/Button';
 import MyText from '@/components/common/MyText';
 import SearchInput from '@/components/common/SearchInput';
@@ -16,7 +12,7 @@ import Layout from '@/components/common/layout/Layout';
 import Heading from '@/components/onboarding/Heading';
 import HeadingDescription from '@/components/onboarding/HeadingDescription';
 
-type CountryID = typeof COUNTRIES[number]['id'];
+type CountryID = (typeof COUNTRIES)[number]['id'];
 
 interface Country {
   id: CountryID;
@@ -54,9 +50,11 @@ export default function CountrySelectScreen({ navigation }) {
         <InnerLayout>
           <Heading>{t('country.title')}</Heading>
           <HeadingDescription>{t('country.description')}</HeadingDescription>
-
-          <SearchInput value={searchQuery} onChangeText={setSearchQuery} placeholder={t('country.searchPlaceholder')} />
-
+          <SearchInput
+            value={searchQuery}
+            onChangeText={setSearchQuery}
+            placeholder={t('country.searchPlaceholder')}
+          />
           <SelectItem
             options={filteredOptions}
             selectedValues={selectedCountry ? [selectedCountry] : []}
@@ -64,12 +62,11 @@ export default function CountrySelectScreen({ navigation }) {
             multiple={false}
             nameSpace="countries"
           />
-
           <Button
             type="box"
             onPress={handleNavigateButton}
             disabled={!selectedCountry}
-            className="flex-row items-center justify-center mt-5"
+            className="flex-row items-center justify-center"
           >
             <MyText size="text-base" color="text-white" className="font-semibold">
               {t('common.next')}

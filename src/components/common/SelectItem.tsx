@@ -37,7 +37,7 @@ export default function SelectItem({
     !multiple ? false : !isSelected(option) && selectedValues.length >= maxSelect;
 
   return (
-    <View className={`mb-5 mt-4 flex-1 ${className}`}>
+    <View className={`mt-4 flex-1 ${className}`}>
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingBottom: 20 }}

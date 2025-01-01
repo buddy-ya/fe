@@ -3,6 +3,7 @@ import * as Font from 'expo-font';
 import React, { useEffect } from 'react';
 import { Image, View } from 'react-native';
 import { getAccessToken } from '@/utils/service/auth';
+import { logError } from '@/utils/service/error';
 
 const FONTS = {
   'Pretendard-Thin': require('@assets/fonts/Pretendard-Thin.otf'),
@@ -37,7 +38,7 @@ export default function SplashScreen({ navigation }) {
       await new Promise((resolve) => setTimeout(resolve, 1000));
       await handleNavigation();
     } catch (error) {
-      console.error('[앱 초기화 실패]:', error);
+      logError(error);
       navigation.navigate('Onboarding');
     }
   };
