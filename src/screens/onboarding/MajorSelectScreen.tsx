@@ -1,20 +1,15 @@
 import React, { useState } from 'react';
-
 import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
-
 import { useOnboardingStore } from '@/store/onboarding';
-
-import { MAJORS } from '@/utils/constants/majors';
 import type { MajorID } from '@/utils/constants/majors';
-
+import { MAJORS } from '@/utils/constants/majors';
 import Button from '@/components/common/Button';
 import MyText from '@/components/common/MyText';
-import SelectItem from '@/components/common/SelectItem';
 import InnerLayout from '@/components/common/layout/InnerLayout';
 import Layout from '@/components/common/layout/Layout';
 import Heading from '@/components/onboarding/Heading';
-import HeadingDescription from '@/components/onboarding/HeadingDescription';
+import SelectItem from '@/components/onboarding/MultiSelectItem';
 
 interface Major {
   id: MajorID;
@@ -66,7 +61,7 @@ export default function MajorSelectScreen({ navigation }) {
           type="box"
           onPress={handleNavigateButton}
           disabled={selectedMajors.length === 0}
-          className="flex-row items-center justify-center mt-5"
+          className="mt-5 flex-row items-center justify-center"
         >
           <View>
             <MyText size="text-base" color="text-white" className="font-semibold">

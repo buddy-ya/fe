@@ -2,7 +2,7 @@ import { Check } from 'lucide-react-native';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
-import MyText from './MyText';
+import MyText from '../common/MyText';
 
 interface SelectOption {
   id: string;
@@ -37,7 +37,7 @@ export default function SelectItem({
     !multiple ? false : !isSelected(option) && selectedValues.length >= maxSelect;
 
   return (
-    <View className={`mt-4 flex-1 ${className}`}>
+    <View className={`mb-14 mt-4 flex-1 ${className}`}>
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingBottom: 20 }}

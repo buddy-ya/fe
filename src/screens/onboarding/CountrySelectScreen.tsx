@@ -6,11 +6,11 @@ import { COUNTRIES } from '@/utils/constants/countries';
 import Button from '@/components/common/Button';
 import MyText from '@/components/common/MyText';
 import SearchInput from '@/components/common/SearchInput';
-import SelectItem from '@/components/common/SelectItem';
 import InnerLayout from '@/components/common/layout/InnerLayout';
 import Layout from '@/components/common/layout/Layout';
 import Heading from '@/components/onboarding/Heading';
 import HeadingDescription from '@/components/onboarding/HeadingDescription';
+import SelectItem from '@/components/onboarding/MultiSelectItem';
 
 type CountryID = (typeof COUNTRIES)[number]['id'];
 

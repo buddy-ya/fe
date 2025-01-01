@@ -1,22 +1,17 @@
 import React, { useState } from 'react';
-
 import { useTranslation } from 'react-i18next';
-import { Keyboard, View, TouchableWithoutFeedback } from 'react-native';
-
+import { Keyboard, TouchableWithoutFeedback, View } from 'react-native';
 import { useOnboardingStore } from '@/store/onboarding';
-
 import { updateLanguages } from '@/api/mypage/mypage';
-
 import { LANGUAGES } from '@/utils/constants/languages';
-
 import Button from '@/components/common/Button';
 import MyText from '@/components/common/MyText';
 import SearchInput from '@/components/common/SearchInput';
-import SelectItem from '@/components/common/SelectItem';
 import InnerLayout from '@/components/common/layout/InnerLayout';
 import Layout from '@/components/common/layout/Layout';
 import Heading from '@/components/onboarding/Heading';
 import HeadingDescription from '@/components/onboarding/HeadingDescription';
+import SelectItem from '@/components/onboarding/MultiSelectItem';
 
 interface Language {
   id: string;
@@ -24,7 +19,9 @@ interface Language {
 
 export default function LanguageSelectScreen({ navigation, route }) {
   const { mode, initialLanguages, onComplete } = route.params || {};
-  const [selectedLanguages, setSelectedLanguages] = useState<Language[]>(initialLanguages?.map((id) => ({ id })) || []);
+  const [selectedLanguages, setSelectedLanguages] = useState<Language[]>(
+    initialLanguages?.map((id) => ({ id })) || []
+  );
   const [searchQuery, setSearchQuery] = useState('');
   const { t } = useTranslation('onboarding');
   const { updateOnboardingData } = useOnboardingStore();
