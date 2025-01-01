@@ -91,18 +91,27 @@ function TabNavigator() {
 
 function OnboardingNavigator() {
   return (
-    <OnboardingStack.Navigator screenOptions={{ headerShown: false, gestureEnabled: false }}>
+    <OnboardingStack.Navigator screenOptions={{ headerShown: false }}>
       <OnboardingStack.Screen name="OnboardingWelcome" component={WelcomeScreen} />
       <OnboardingStack.Screen name="OnboardingPhone" component={PhoneScreen} />
       <OnboardingStack.Screen
         name="OnboardingPhoneVerification"
         component={PhoneVerificationScreen}
       />
-      <OnboardingStack.Screen name="OnboardingNotification" component={NotificationScreen} />
-      <OnboardingStack.Screen name="OnboardingStudentInfo" component={StudentInfo} />
+      <OnboardingStack.Screen
+        name="OnboardingNotification"
+        component={NotificationScreen}
+        options={{ gestureEnabled: false }}
+      />
+      <OnboardingStack.Screen
+        name="OnboardingStudentInfo"
+        component={StudentInfo}
+        options={{ gestureEnabled: false }}
+      />
       <OnboardingStack.Screen
         name="OnboardingUniversitySelect"
         component={UniversitySelectScreen}
+        options={{ gestureEnabled: false }}
       />
       <OnboardingStack.Screen
         name="OnboardingStudentTypeSelect"
