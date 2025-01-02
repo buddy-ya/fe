@@ -1,5 +1,5 @@
-import React from "react";
-import { Text, StyleSheet } from "react-native";
+import React from 'react';
+import { Text } from 'react-native';
 
 interface MyTextProps {
   children: React.ReactNode;
@@ -11,10 +11,10 @@ interface MyTextProps {
 
 const MyText = ({
   children,
-  size = "text-base",
-  color = "text-[#282828]",
+  size = 'text-base',
+  color = 'text-[#282828]',
   numberOfLines,
-  className = "",
+  className = '',
 }: MyTextProps) => {
   return (
     <Text

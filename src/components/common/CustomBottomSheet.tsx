@@ -1,17 +1,11 @@
-import React, { useCallback, useMemo, useRef, useState } from "react";
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  TextInput,
-  Keyboard,
-} from "react-native";
 import BottomSheet, {
-  BottomSheetView,
   BottomSheetBackdrop,
   BottomSheetScrollView,
-} from "@gorhom/bottom-sheet";
-import { X, Check, Search } from "lucide-react-native";
+  BottomSheetView,
+} from '@gorhom/bottom-sheet';
+import { Check, Search, X } from 'lucide-react-native';
+import React, { useCallback, useMemo, useRef, useState } from 'react';
+import { Keyboard, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
 interface CustomBottomSheetProps {
   isVisible: boolean;
@@ -32,15 +26,15 @@ export default function CustomBottomSheet({
   title,
   enableSearch = false,
 }: CustomBottomSheetProps) {
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState('');
   const bottomSheetRef = useRef<BottomSheet>(null);
-  const snapPoints = useMemo(() => ["50%", "70%"], []);
+  const snapPoints = useMemo(() => ['50%', '70%'], []);
 
   const handleClose = useCallback(() => {
     Keyboard.dismiss();
     bottomSheetRef.current?.close();
     onClose();
-    setSearchQuery("");
+    setSearchQuery('');
   }, [onClose]);
 
   const renderBackdrop = useCallback(
@@ -57,9 +51,7 @@ export default function CustomBottomSheet({
 
   const filteredOptions = useMemo(() => {
     if (!searchQuery) return options;
-    return options.filter((option) =>
-      option.toLowerCase().includes(searchQuery.toLowerCase())
-    );
+    return options.filter((option) => option.toLowerCase().includes(searchQuery.toLowerCase()));
   }, [options, searchQuery]);
 
   const dismissKeyboard = () => {
@@ -78,22 +70,22 @@ export default function CustomBottomSheet({
       keyboardBlurBehavior="restore"
     >
       <BottomSheetView className="flex-1">
-        <View className="px-4 py-4 flex-row items-center justify-between border-b border-gray-200">
-          {title && <Text className="text-lg font-bold">{title}</Text>}
+        <View className="flex-row items-center justify-between border-b border-gray-200 px-4 py-4">
+          {title && <Text className="font-bold text-lg">{title}</Text>}
           <TouchableOpacity onPress={handleClose}>
             <X size={24} color="black" />
           </TouchableOpacity>
         </View>
 
         {enableSearch && (
-          <View className="px-4 py-2 border-b border-borderSelect">
-            <View className="flex-row items-center px-4 py-2 border-borderBottom rounded-xl">
+          <View className="border-b border-borderSelect px-4 py-2">
+            <View className="flex-row items-center rounded-xl border-borderBottom px-4 py-2">
               <Search size={20} color="gray" />
               <TextInput
                 value={searchQuery}
                 onChangeText={setSearchQuery}
                 placeholder="검색"
-                className="flex-1 ml-2 text-base"
+                className="ml-2 flex-1 text-base"
                 autoCapitalize="none"
                 clearButtonMode="while-editing"
               />
@@ -111,16 +103,9 @@ export default function CustomBottomSheet({
                   onSelect(option);
                   handleClose();
                 }}
-                className={`
-                 flex-row items-center justify-between px-6 py-4 border-b border-borderBottom
-                 ${option === selectedValue ? "bg-selectActive" : ""}
-               `}
+                className={`flex-row items-center justify-between border-b border-borderBottom px-6 py-4 ${option === selectedValue ? 'bg-selectActive' : ''} `}
               >
-                <Text
-                  className={`text-base ${
-                    option === selectedValue ? "text-primary" : ""
-                  }`}
-                >
+                <Text className={`text-base ${option === selectedValue ? 'text-primary' : ''}`}>
                   {option}
                 </Text>
                 {option === selectedValue && <Check size={20} color="" />}

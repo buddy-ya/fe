@@ -12,7 +12,7 @@ export default function App() {
       <Suspense fallback={<></>}>
         <I18nextProvider i18n={i18n}>
           <GestureHandlerRootView>
-            <Router />
+            <Router/>
           </GestureHandlerRootView>
         </I18nextProvider>
       </Suspense>

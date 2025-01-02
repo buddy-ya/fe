@@ -1,14 +1,14 @@
-import React, { useState } from "react";
+import { Search } from 'lucide-react-native';
+import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
-  View,
-  TextInput,
   Keyboard,
-  TouchableWithoutFeedback,
-  TouchableOpacity,
   Text,
-} from "react-native";
-import { Search, X } from "lucide-react-native";
-import { useTranslation } from "react-i18next";
+  TextInput,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  View,
+} from 'react-native';
 
 interface SearchInputProps {
   value: string;
@@ -24,40 +24,38 @@ export default function SearchInput({
   className,
 }: SearchInputProps) {
   const [isFocused, setIsFocused] = useState(false);
-  const { t } = useTranslation("onboarding");
+  const { t } = useTranslation('onboarding');
 
   const DismissButton = ({ onPress }) => {
     return (
       <TouchableOpacity onPress={onPress}>
-        <Text className=" text-textDescription">{t("common.cancel")}</Text>
+        <Text className="text-textDescription">{t('common.cancel')}</Text>
       </TouchableOpacity>
     );
   };
 
   const handleDismissButton = () => {
-    onChangeText("");
+    onChangeText('');
     Keyboard.dismiss();
   };
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View
-        className={`flex-row justify-between px-4 items-center mt-7 border border-border rounded-xl ${className}`}
+        className={`mt-7 flex-row items-center justify-between rounded-xl border border-border px-4 ${className}`}
       >
         <Search size={20} color="gray" />
         <TextInput
           value={value}
           onChangeText={onChangeText}
           placeholder={placeholder}
-          className="flex-1 ml-[7px] py-[12px] text-text"
+          className="ml-[7px] flex-1 py-[12px] text-text"
           onFocus={() => setIsFocused(true)}
           onBlur={() => {
             setIsFocused(false);
           }}
         />
-        <View>
-          {isFocused && <DismissButton onPress={handleDismissButton} />}
-        </View>
+        <View>{isFocused && <DismissButton onPress={handleDismissButton} />}</View>
       </View>
     </TouchableWithoutFeedback>
   );

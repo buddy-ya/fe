@@ -1,24 +1,23 @@
-import React, { useState } from "react";
-import { View, TextInput, TouchableOpacity } from "react-native";
-import { X } from "lucide-react-native";
-import { searchFeeds } from "@/api/feed/getFeeds";
-import { feedKeys } from "@/api/queryKeys";
-import { useFeedList } from "@/hooks/useFeedList";
-import Layout from "@/components/common/Layout";
-import InnerLayout from "@/components/common/InnerLayout";
-import MyText from "@/components/common/MyText";
-import FeedList from "@/components/feed/FeedList";
-import KeyboardLayout from "@/components/common/KeyboardLayout";
-import { useTranslation } from "react-i18next";
+import { X } from 'lucide-react-native';
 
-const SearchInput = ({
-  value,
-  onChangeText,
-  onSubmit,
-  onClear,
-  onFocusChange,
-}) => {
-  const { t } = useTranslation("feed");
+import React, { useState } from 'react';
+
+import { useTranslation } from 'react-i18next';
+import { View, TextInput, TouchableOpacity } from 'react-native';
+
+import { searchFeeds } from '@/api/feed/getFeeds';
+import { feedKeys } from '@/api/queryKeys';
+
+import { useFeedList } from '@/hooks/useFeedList';
+
+import MyText from '@/components/common/MyText';
+import InnerLayout from '@/components/common/layout/InnerLayout';
+import KeyboardLayout from '@/components/common/layout/KeyboardLayout';
+import Layout from '@/components/common/layout/Layout';
+import FeedList from '@/components/feed/FeedList';
+
+const SearchInput = ({ value, onChangeText, onSubmit, onClear, onFocusChange }) => {
+  const { t } = useTranslation('feed');
 
   return (
     <View className="flex-1 flex-row items-center bg-[#E8E9EB] rounded-[12px]">
@@ -26,7 +25,7 @@ const SearchInput = ({
         value={value}
         onChangeText={onChangeText}
         onSubmitEditing={onSubmit}
-        placeholder={t("search.placeholder")}
+        placeholder={t('search.placeholder')}
         placeholderTextColor="#797979"
         returnKeyType="search"
         className="flex-1 px-4 text-[15px]"
@@ -44,9 +43,9 @@ const SearchInput = ({
 };
 
 export default function SearchScreen({ navigation }) {
-  const { t } = useTranslation("feed");
-  const [searchText, setSearchText] = useState("");
-  const [submittedText, setSubmittedText] = useState("");
+  const { t } = useTranslation('feed');
+  const [searchText, setSearchText] = useState('');
+  const [submittedText, setSubmittedText] = useState('');
   const [isFocused, setIsFocused] = useState(false);
 
   const feedListData = useFeedList({
@@ -56,7 +55,7 @@ export default function SearchScreen({ navigation }) {
       return searchFeeds({
         ...params,
         keyword: submittedText,
-        category: "free",
+        category: 'free',
       });
     },
     staleTime: 1000 * 60 * 3,
@@ -69,12 +68,12 @@ export default function SearchScreen({ navigation }) {
   };
 
   const handleClear = () => {
-    setSearchText("");
-    setSubmittedText("");
+    setSearchText('');
+    setSubmittedText('');
   };
 
   const handlePressFeed = (feedId: number) => {
-    navigation.navigate("FeedDetail", { feedId });
+    navigation.navigate('FeedDetail', { feedId });
   };
 
   return (
@@ -105,23 +104,16 @@ export default function SearchScreen({ navigation }) {
               hasMore={feedListData.hasMore}
               onLoadMore={feedListData.handleLoadMore}
               className="mt-3"
-              emptyStateMessage={
-                submittedText
-                  ? t("search.empty.result")
-                  : t("search.empty.default")
-              }
+              emptyStateMessage={submittedText ? t('search.empty.result') : t('search.empty.default')}
               refreshControl={{
-                refreshing:
-                  feedListData.isLoading && feedListData.feeds.length > 0,
+                refreshing: feedListData.isLoading && feedListData.feeds.length > 0,
                 onRefresh: feedListData.handleRefresh,
-                tintColor: "#4AA366",
+                tintColor: '#4AA366',
               }}
             />
           ) : (
             <View className="flex-1 justify-center items-center bg-mainBackground">
-              <MyText color="text-textDescription">
-                {t("search.empty.default")}
-              </MyText>
+              <MyText color="text-textDescription">{t('search.empty.default')}</MyText>
             </View>
           )}
         </KeyboardLayout>

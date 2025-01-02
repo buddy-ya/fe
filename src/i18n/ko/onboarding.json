@@ -56,13 +56,13 @@
     "description": "버디야에서는 영어 이름을 사용해주세요.",
     "label": "닉네임",
     "placeholder": "",
-    "footer": "버디야가 발급하는 학생증에 표시해 드릴게요.",
+    "footer": "회원님의 프로필에 표시될 이름이에요.",
     "warning": "영어 이름을 작성해주세요",
     "warningLength": "닉네임 형식에 맞지 않습니다. ({{min}}~{{max}}자)"
   },
   "country": {
     "title": "국가를 선택해 주세요.",
-    "description": "현재 거주하고 있는 국가를 선택해 주세요.",
+    "description": "회원님의 프로필에 표시될 국가를 선택해 주세요.",
     "searchPlaceholder": "국가 검색"
   },
 

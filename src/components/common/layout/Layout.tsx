@@ -1,8 +1,8 @@
-import React, { ReactNode } from "react";
-import { Platform, StatusBar, View } from "react-native";
-import { SafeAreaView, Edge } from "react-native-safe-area-context";
-import { useRoute } from "@react-navigation/native";
-import Header, { BackButton } from "./Header";
+import { useRoute } from '@react-navigation/native';
+import React, { ReactNode } from 'react';
+import { StatusBar, View } from 'react-native';
+import { Edge, SafeAreaView } from 'react-native-safe-area-context';
+import Header, { BackButton } from '../Header';
 
 interface LayoutProps {
   children: ReactNode;
@@ -38,30 +38,26 @@ export default function Layout({
   const route = useRoute();
   const shouldUseWhiteBackground =
     isBackgroundWhite ??
-    (route.name.startsWith("Onboarding") ||
-      route.name.startsWith("Edit") ||
-      route.name.startsWith("Email") ||
-      route.name.startsWith("StudentId"));
+    (route.name.startsWith('Onboarding') ||
+      route.name.startsWith('Edit') ||
+      route.name.startsWith('Email') ||
+      route.name.startsWith('StudentId'));
 
-  const defaultEdges: Edge[] = ["top", "left", "right", "bottom"];
-  const edges =
-    safeAreaEdges ||
-    (disableBottomSafeArea ? ["top", "left", "right"] : defaultEdges);
+  const defaultEdges: Edge[] = ['top', 'left', 'right', 'bottom'];
+  const edges = safeAreaEdges || (disableBottomSafeArea ? ['top', 'left', 'right'] : defaultEdges);
 
   return (
     <SafeAreaView
       edges={edges}
       className={`flex-1 ${
-        shouldUseWhiteBackground ? "bg-white" : "bg-mainBackground"
+        shouldUseWhiteBackground ? 'bg-white' : 'bg-mainBackground'
       } ${className}`}
     >
       <StatusBar barStyle="dark-content" backgroundColor="white" />
       {showHeader && (
         <Header
           isSearchLayout={isSearchLayout}
-          leftContent={
-            headerLeft || (onBack && <BackButton onPress={onBack} />)
-          }
+          leftContent={headerLeft || (onBack && <BackButton onPress={onBack} />)}
           centerContent={headerCenter}
           rightContent={headerRight}
         />

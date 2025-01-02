@@ -1,23 +1,27 @@
-import React, { useMemo, useState } from "react";
-import { View, Image, TouchableOpacity, ScrollView } from "react-native";
-import { useTranslation } from "react-i18next";
-import Layout from "@/components/common/Layout";
-import InnerLayout from "@/components/common/InnerLayout";
-import MyText from "@/components/common/MyText";
-import { useProfileStore } from "@/store/profile";
-import { updateProfileImage } from "@/api/mypage/mypage";
+import React, { useMemo, useState } from 'react';
+
+import { useTranslation } from 'react-i18next';
+import { View, Image, TouchableOpacity, ScrollView } from 'react-native';
+
+import { useProfileStore } from '@/store/profile';
+
+import { updateProfileImage } from '@/api/mypage/mypage';
+
+import MyText from '@/components/common/MyText';
+import InnerLayout from '@/components/common/layout/InnerLayout';
+import Layout from '@/components/common/layout/Layout';
 
 const PROFILE_IMAGES = [
-  "https://buddyya.s3.ap-northeast-2.amazonaws.com/default-profile-image/image1.png",
-  "https://buddyya.s3.ap-northeast-2.amazonaws.com/default-profile-image/image2.png",
-  "https://buddyya.s3.ap-northeast-2.amazonaws.com/default-profile-image/image3.png",
-  "https://buddyya.s3.ap-northeast-2.amazonaws.com/default-profile-image/image4.png",
-  "https://buddyya.s3.ap-northeast-2.amazonaws.com/default-profile-image/image5.png",
-  "https://buddyya.s3.ap-northeast-2.amazonaws.com/default-profile-image/image6.png",
+  'https://buddyya.s3.ap-northeast-2.amazonaws.com/default-profile-image/image1.png',
+  'https://buddyya.s3.ap-northeast-2.amazonaws.com/default-profile-image/image2.png',
+  'https://buddyya.s3.ap-northeast-2.amazonaws.com/default-profile-image/image3.png',
+  'https://buddyya.s3.ap-northeast-2.amazonaws.com/default-profile-image/image4.png',
+  'https://buddyya.s3.ap-northeast-2.amazonaws.com/default-profile-image/image5.png',
+  'https://buddyya.s3.ap-northeast-2.amazonaws.com/default-profile-image/image6.png',
 ];
 
 export default function EditProfileImageScreen({ navigation }) {
-  const { t } = useTranslation("mypage");
+  const { t } = useTranslation('mypage');
   const { profile } = useProfileStore();
   const [selectedImage, setSelectedImage] = useState(profile.profileImageUrl);
 
@@ -30,7 +34,7 @@ export default function EditProfileImageScreen({ navigation }) {
   }, [selectedImage, profile.profileImageUrl]);
 
   const handleComplete = async () => {
-    const imageKey = selectedImage.split("/").pop()?.replace(".png", "");
+    const imageKey = selectedImage.split('/').pop()?.replace('.png', '');
     if (!imageKey) return;
     await updateProfileImage(imageKey);
     navigation.goBack();
@@ -42,28 +46,20 @@ export default function EditProfileImageScreen({ navigation }) {
       onBack={() => navigation.goBack()}
       headerCenter={
         <MyText size="text-xl" className="font-semibold">
-          {t("profile.photo.title")}
+          {t('profile.photo.title')}
         </MyText>
       }
       headerRight={
         <TouchableOpacity onPress={handleComplete}>
-          <MyText
-            size="text-xl"
-            color={isChanged ? "" : "text-textLight"}
-            className="font-semibold"
-          >
-            {t("common.complete")}
+          <MyText size="text-xl" color={isChanged ? '' : 'text-textLight'} className="font-semibold">
+            {t('common.complete')}
           </MyText>
         </TouchableOpacity>
       }
     >
       <InnerLayout>
         <View className="items-center mt-20">
-          <Image
-            source={{ uri: selectedImage }}
-            className="w-[240px] h-[240px] rounded-[70px]"
-            resizeMode="cover"
-          />
+          <Image source={{ uri: selectedImage }} className="w-[240px] h-[240px] rounded-[70px]" resizeMode="cover" />
         </View>
 
         <ScrollView
@@ -77,17 +73,9 @@ export default function EditProfileImageScreen({ navigation }) {
                 key={imageUrl}
                 onPress={() => handleSelectImage(imageUrl)}
                 className={`w-[86px] h-[86px] rounded-[27px] overflow-hidden
-                    ${
-                      selectedImage === imageUrl
-                        ? "border-[1.5px] border-[#004D39]"
-                        : ""
-                    }`}
+                    ${selectedImage === imageUrl ? 'border-[1.5px] border-[#004D39]' : ''}`}
               >
-                <Image
-                  source={{ uri: imageUrl }}
-                  className="w-full h-full"
-                  resizeMode="cover"
-                />
+                <Image source={{ uri: imageUrl }} className="w-full h-full" resizeMode="cover" />
               </TouchableOpacity>
             ))}
           </View>
