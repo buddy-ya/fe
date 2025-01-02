@@ -1,0 +1,17 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+# 현재 브랜치 이름 가져오기
+branch_name=$(git symbolic-ref --short HEAD)
+
+# 보호된 브랜치 패턴 (main 또는 develop)
+protected_branch_pattern="^(main|develop)$"
+
+# 현재 브랜치가 보호된 브랜치인지 확인
+if echo "$branch_name" | grep -Eq "$protected_branch_pattern"; then
+  echo "🚫 '$branch_name' 브랜치에서 직접 커밋하는 것은 금지되어 있습니다!"
+  echo "💡 별도의 작업 브랜치를 생성하여 작업하세요."
+  exit 1
+fi
+
+echo "✅ '$branch_name' 브랜치에서 커밋 가능합니다."
