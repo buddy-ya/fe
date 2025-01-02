@@ -1,24 +1,18 @@
 import { useQueryClient } from '@tanstack/react-query';
 import { MoreVertical } from 'lucide-react-native';
-
-import React, { useState, useEffect } from 'react';
-
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { TouchableOpacity, ScrollView, Keyboard, RefreshControl, Alert } from 'react-native';
-
+import { Alert, Keyboard, RefreshControl, ScrollView, TouchableOpacity } from 'react-native';
 import { deleteFeed } from '@/api/feed/feedAction';
 import { feedKeys } from '@/api/queryKeys';
-
+import { getModalTexts } from '@/hooks/modal/useAuthModal';
+import { useFeedModals } from '@/hooks/modal/useFeedModal';
 import { useAuthCheck } from '@/hooks/useAuthCheck';
 import { useFeedDetail } from '@/hooks/useFeedDetail';
-import { useFeedModals } from '@/hooks/useFeedModal';
-
-import { getCertificationModalTexts } from '@/utils/constants/ModalTexts';
-
-import BottomModal from '@/components/common/BottomModal';
-import ConfirmModal from '@/components/common/ConfirmModal';
 import KeyboardLayout from '@/components/common/layout/KeyboardLayout';
 import Layout from '@/components/common/layout/Layout';
+import BottomModal from '@/components/common/modal/BottomModal';
+import ConfirmModal from '@/components/common/modal/ConfirmModal';
 import { CommentInput } from '@/components/feed/CommentInput';
 import CommentList from '@/components/feed/CommentList';
 import FeedItem from '@/components/feed/FeedItem';
@@ -30,12 +24,14 @@ export default function FeedDetailScreen({ navigation, route }) {
   const { t } = useTranslation('feed');
   const { t: certT } = useTranslation('certification');
 
-  const { isModalVisible, setIsModalVisible, currentModalTexts, setCurrentModalTexts, checkAuth } = useAuthCheck();
+  const { isModalVisible, setIsModalVisible, currentModalTexts, setCurrentModalTexts, checkAuth } =
+    useAuthCheck();
 
-  const { feed, comments, isRefetching, handleFeedActions, handleCommentActions, handleRefresh } = useFeedDetail({
-    feedId,
-    enabled: !isDeleted,
-  });
+  const { feed, comments, isRefetching, handleFeedActions, handleCommentActions, handleRefresh } =
+    useFeedDetail({
+      feedId,
+      enabled: !isDeleted,
+    });
 
   const queryClient = useQueryClient();
 
@@ -91,7 +87,12 @@ export default function FeedDetailScreen({ navigation, route }) {
     try {
       const { isCertificated, isKorean, isStudentIdCardRequested } = await checkAuth();
       if (!isCertificated) {
-        const modalTexts = getCertificationModalTexts(isKorean, isStudentIdCardRequested, certT, navigation);
+        const modalTexts = getModalTexts({
+          isKorean,
+          isStudentIdCardRequested,
+          t: certT,
+          navigation,
+        });
         setCurrentModalTexts(modalTexts);
         setIsModalVisible(true);
         return;
@@ -113,18 +114,26 @@ export default function FeedDetailScreen({ navigation, route }) {
         disableBottomSafeArea
         onBack={() => navigation.goBack()}
         headerRight={
-          feed?.isFeedOwner && (
-            <TouchableOpacity onPress={handleFeedOptions} hitSlop={{ bottom: 20, left: 20 }}>
-              <MoreVertical size={24} color="#797979" />
-            </TouchableOpacity>
-          )
+          <TouchableOpacity onPress={handleFeedOptions} hitSlop={{ bottom: 20, left: 20 }}>
+            <MoreVertical size={24} color="#797979" />
+          </TouchableOpacity>
         }
       >
-        <KeyboardLayout footer={<CommentInput value={comment} onChange={setComment} onSubmit={handleCommentSubmit} />}>
+        <KeyboardLayout
+          footer={
+            <CommentInput value={comment} onChange={setComment} onSubmit={handleCommentSubmit} />
+          }
+        >
           <ScrollView
             showsVerticalScrollIndicator={false}
             className="mt-1"
-            refreshControl={<RefreshControl refreshing={isRefetching} onRefresh={handleRefresh} tintColor="#4AA366" />}
+            refreshControl={
+              <RefreshControl
+                refreshing={isRefetching}
+                onRefresh={handleRefresh}
+                tintColor="#4AA366"
+              />
+            }
           >
             {feed && (
               <>
@@ -142,8 +151,16 @@ export default function FeedDetailScreen({ navigation, route }) {
         </KeyboardLayout>
       </Layout>
 
-      <BottomModal visible={feedModal.visible} onClose={feedModal.closeModal} options={feedModal.options} />
-      <BottomModal visible={commentModal.visible} onClose={commentModal.closeModal} options={commentModal.options} />
+      <BottomModal
+        visible={feedModal.visible}
+        onClose={feedModal.closeModal}
+        options={feedModal.options}
+      />
+      <BottomModal
+        visible={commentModal.visible}
+        onClose={commentModal.closeModal}
+        options={commentModal.options}
+      />
       <ConfirmModal
         visible={isModalVisible}
         onClose={() => setIsModalVisible(false)}

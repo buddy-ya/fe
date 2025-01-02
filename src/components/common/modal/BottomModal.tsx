@@ -2,7 +2,7 @@
 import { ModalOption } from '@/screens/home/types';
 import React, { ReactNode } from 'react';
 import { Modal, TouchableOpacity, View } from 'react-native';
-import MyText from './MyText';
+import MyText from '../MyText';
 
 interface BottomModalProps {
   visible: boolean;

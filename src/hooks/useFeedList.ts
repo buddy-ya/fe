@@ -1,55 +1,41 @@
-import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
-import { updateFeedList } from "@/utils/service/optimisticUpdate";
-import { logError } from "@/utils/service/error";
-import { toggleBookmark, toggleLike } from "@/api/feed/getFeeds";
-import { FeedListResponse } from "@/screens/home/types";
+import { FeedListResponse } from '@/screens/home/types';
+import { useInfiniteQuery, useQueryClient } from '@tanstack/react-query';
+import { toggleBookmark, toggleLike } from '@/api/feed/getFeeds';
+import { logError } from '@/utils/service/error';
+import { updateFeedList } from '@/utils/service/optimisticUpdate';
 
 interface UseFeedListProps {
   queryKey: string[];
-  fetchFn: (params: {
-    page: number;
-    size: number;
-  }) => Promise<FeedListResponse>;
+  fetchFn: (params: { page: number; size: number }) => Promise<FeedListResponse>;
   staleTime?: number;
   options?: {
     size?: number;
   };
 }
 
+const LOAD_MORE_SIZE = 8;
+
 export const useFeedList = ({
   queryKey,
   fetchFn,
   staleTime = 0,
-  options = { size: 5 },
+  options = { size: LOAD_MORE_SIZE },
 }: UseFeedListProps) => {
   const queryClient = useQueryClient();
 
-  const {
-    data,
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
-    isLoading,
-    refetch,
-  } = useInfiniteQuery<
-    FeedListResponse,
-    Error,
-    FeedListResponse,
-    string[],
-    number
-  >({
-    queryKey,
-    queryFn: async ({ pageParam = 0 }) => {
-      return await fetchFn({
-        page: pageParam,
-        size: options.size,
-      });
-    },
-    initialPageParam: 0,
-    getNextPageParam: (lastPage) =>
-      lastPage.hasNext ? lastPage.currentPage + 1 : undefined,
-    staleTime,
-  });
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading, refetch } =
+    useInfiniteQuery<FeedListResponse, Error, FeedListResponse, string[], number>({
+      queryKey,
+      queryFn: async ({ pageParam = 0 }) => {
+        return await fetchFn({
+          page: pageParam,
+          size: options.size,
+        });
+      },
+      initialPageParam: 0,
+      getNextPageParam: (lastPage) => (lastPage.hasNext ? lastPage.currentPage + 1 : undefined),
+      staleTime,
+    });
 
   const feeds = data?.pages.flatMap((page) => page.feeds) ?? [];
 
