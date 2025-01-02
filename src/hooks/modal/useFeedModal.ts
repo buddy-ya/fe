@@ -28,12 +28,8 @@ export const useFeedModals = ({
       ? [
           createModalOptions.delete(onDeleteFeed || (() => {})),
           createModalOptions.edit(onEditFeed || (() => {})),
-          createModalOptions.cancel(feedModal.closeModal),
         ]
-      : [
-          createModalOptions.report(() => console.log('report comment')),
-          createModalOptions.cancel(feedModal.closeModal),
-        ];
+      : [createModalOptions.report(() => console.log('report comment'))];
 
     feedModal.openModal(options);
   };
@@ -43,12 +39,8 @@ export const useFeedModals = ({
       ? [
           createModalOptions.delete(() => onDeleteComment?.(comment.id)),
           createModalOptions.edit(() => onEditComment?.(comment)),
-          createModalOptions.cancel(commentModal.closeModal),
         ]
-      : [
-          createModalOptions.report(() => console.log('report comment')),
-          createModalOptions.cancel(commentModal.closeModal),
-        ];
+      : [createModalOptions.report(() => console.log('report comment'))];
 
     commentModal.openModal(options);
   };

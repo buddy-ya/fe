@@ -3,6 +3,7 @@ import { Bell, Plus, Search } from 'lucide-react-native';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { TouchableOpacity, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { getFeeds } from '@/api/feed/getFeeds';
 import { feedKeys } from '@/api/queryKeys';
 import { getModalTexts } from '@/hooks/modal/useAuthModal';
@@ -59,6 +60,9 @@ export default function HomeScreen({ navigation }) {
     setIsModalVisible(true);
   };
 
+  const insets = useSafeAreaInsets();
+  const writeButtonPosition = insets.bottom + 40;
+
   return (
     <Layout
       hasTabBar={true}
@@ -103,7 +107,10 @@ export default function HomeScreen({ navigation }) {
         <Button
           type="circle"
           onPress={handleWriteButton}
-          className="absolute bottom-20 right-0"
+          className={`absolute right-0`}
+          containerStyle={{
+            bottom: writeButtonPosition,
+          }}
           icon={Plus}
         />
       </InnerLayout>
