@@ -10,7 +10,7 @@ import InnerLayout from '@/components/common/layout/InnerLayout';
 import Layout from '@/components/common/layout/Layout';
 import Heading from '@/components/onboarding/Heading';
 import HeadingDescription from '@/components/onboarding/HeadingDescription';
-import SelectItem from '@/components/onboarding/MultiSelectItem';
+import MultiSelectItem from '@/components/onboarding/MultiSelectItem';
 
 type CountryID = (typeof COUNTRIES)[number]['id'];
 
@@ -55,12 +55,13 @@ export default function CountrySelectScreen({ navigation }) {
             onChangeText={setSearchQuery}
             placeholder={t('country.searchPlaceholder')}
           />
-          <SelectItem
+          <MultiSelectItem
             options={filteredOptions}
             selectedValues={selectedCountry ? [selectedCountry] : []}
             onSelect={handleSelect}
             multiple={false}
             nameSpace="countries"
+            className="mb-12"
           />
           <Button
             type="box"

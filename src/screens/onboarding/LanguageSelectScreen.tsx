@@ -11,7 +11,7 @@ import InnerLayout from '@/components/common/layout/InnerLayout';
 import Layout from '@/components/common/layout/Layout';
 import Heading from '@/components/onboarding/Heading';
 import HeadingDescription from '@/components/onboarding/HeadingDescription';
-import SelectItem from '@/components/onboarding/MultiSelectItem';
+import MultiSelectItem from '@/components/onboarding/MultiSelectItem';
 
 interface Language {
   id: string;
@@ -58,22 +58,20 @@ export default function LanguageSelectScreen({ navigation, route }) {
         <InnerLayout>
           <Heading>{t('language.title')}</Heading>
           <HeadingDescription>{t('language.maxSelect', { count: MAX_SELECT })}</HeadingDescription>
-
           <SearchInput
             value={searchQuery}
             onChangeText={setSearchQuery}
             placeholder={t('language.searchPlaceholder')}
           />
-
-          <SelectItem
+          <MultiSelectItem
             options={filteredOptions}
             selectedValues={selectedLanguages}
             onSelect={handleSelect}
             maxSelect={MAX_SELECT}
             multiple={true}
             nameSpace="languages"
+            className="mb-12"
           />
-
           <Button
             type="box"
             onPress={handleNavigateButton}

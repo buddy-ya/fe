@@ -9,7 +9,7 @@ import MyText from '@/components/common/MyText';
 import InnerLayout from '@/components/common/layout/InnerLayout';
 import Layout from '@/components/common/layout/Layout';
 import Heading from '@/components/onboarding/Heading';
-import SelectItem from '@/components/onboarding/MultiSelectItem';
+import MultiSelectItem from '@/components/onboarding/MultiSelectItem';
 
 interface Major {
   id: MajorID;
@@ -47,7 +47,7 @@ export default function MajorSelectScreen({ navigation }) {
         <MyText size="text-base" color="text-textDescription" className="mt-3">
           {t('language.maxSelect', { count: MAX_SELECT })}
         </MyText>
-        <SelectItem
+        <MultiSelectItem
           options={MAJORS}
           selectedValues={selectedMajors}
           onSelect={handleSelect}

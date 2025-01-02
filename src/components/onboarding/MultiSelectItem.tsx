@@ -19,7 +19,7 @@ interface SelectItemProps {
   className?: string;
 }
 
-export default function SelectItem({
+export default function MultiSelectItem({
   options,
   selectedValues,
   onSelect,
@@ -37,7 +37,7 @@ export default function SelectItem({
     !multiple ? false : !isSelected(option) && selectedValues.length >= maxSelect;
 
   return (
-    <View className={`mb-14 mt-4 flex-1 ${className}`}>
+    <View className={`mb-8 mt-4 flex-1 ${className}`}>
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingBottom: 20 }}

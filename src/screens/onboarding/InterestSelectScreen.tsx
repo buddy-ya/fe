@@ -1,18 +1,12 @@
 import { useState } from 'react';
-
 import { useTranslation } from 'react-i18next';
-import { View, ScrollView } from 'react-native';
-
+import { ScrollView, View } from 'react-native';
 import { useOnboardingStore } from '@/store/onboarding';
-
 import { updateInterests } from '@/api/mypage/mypage';
 import { postOnboardingInfo } from '@/api/onboarding/join';
-
-import { INTEREST_CATEGORIES, INTEREST_ICONS } from '@/utils/constants/interests';
 import type { InterestID } from '@/utils/constants/interests';
+import { INTEREST_CATEGORIES, INTEREST_ICONS } from '@/utils/constants/interests';
 import { saveTokens } from '@/utils/service/auth';
-import { logError } from '@/utils/service/error';
-
 import Button from '@/components/common/Button';
 import { Chip } from '@/components/common/Chip';
 import MyText from '@/components/common/MyText';
@@ -69,7 +63,10 @@ export default function InterestSelectScreen({ navigation, route }) {
   return (
     <Layout showHeader onBack={() => navigation.goBack()}>
       <InnerLayout>
-        <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 50 }}>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{ paddingBottom: 50 }}
+        >
           <Heading>{t('onboarding:interest.title')}</Heading>
           <MyText size="text-base" color="text-textDescription" className="mt-3">
             {t('onboarding:interest.maxSelect', { count: MAX_SELECT })}
@@ -77,7 +74,7 @@ export default function InterestSelectScreen({ navigation, route }) {
 
           {INTEREST_CATEGORIES.map((category) => (
             <View key={category.id} className="mt-8">
-              <MyText size="text-[14px]" className="font-semibold mb-4">
+              <MyText size="text-[14px]" className="mb-4 font-semibold">
                 {t(`interests:categories.${category.id}`)}
               </MyText>
               <View className="flex-row flex-wrap">
@@ -88,7 +85,7 @@ export default function InterestSelectScreen({ navigation, route }) {
                     label={t(`interests:interests.${interest.id}`)}
                     selected={selectedInterests.some((i) => i.id === interest.id)}
                     onPress={() => handleToggleSelect(interest)}
-                    className="mr-2 mb-2"
+                    className="mb-2 mr-2"
                   />
                 ))}
               </View>
