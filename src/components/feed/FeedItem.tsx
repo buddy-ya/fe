@@ -221,7 +221,7 @@ export default function FeedItem({
             size="text-[14px]"
             color="text-textDescription"
             className="mt-2 font-semibold"
-            numberOfLines={showAllContent ? undefined : 3}
+            numberOfLines={showAllContent ? 0 : 3}
           >
             {content}
           </MyText>
