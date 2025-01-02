@@ -1,4 +1,3 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Font from 'expo-font';
 import React, { useEffect } from 'react';
 import { Image, View } from 'react-native';
@@ -33,7 +32,6 @@ export default function SplashScreen({ navigation }) {
 
   const initializeApp = async () => {
     try {
-      await AsyncStorage.clear();
       await loadFonts();
       await new Promise((resolve) => setTimeout(resolve, 1000));
       await handleNavigation();

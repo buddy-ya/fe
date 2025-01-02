@@ -45,7 +45,6 @@ export default function InterestSelectScreen({ navigation, route }) {
   const handleNavigateButton = async () => {
     try {
       const interests = selectedInterests.map((interest) => interest.id);
-
       if (mode === 'edit') {
         await updateInterests(interests);
         navigation.goBack();
