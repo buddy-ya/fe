@@ -2,7 +2,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { MoreVertical } from 'lucide-react-native';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Alert, Keyboard, RefreshControl, ScrollView, TouchableOpacity } from 'react-native';
+import { Alert, Keyboard, TouchableOpacity } from 'react-native';
 import { deleteFeed } from '@/api/feed/feedAction';
 import { feedKeys } from '@/api/queryKeys';
 import { getModalTexts } from '@/hooks/modal/useAuthModal';
@@ -14,13 +14,13 @@ import Layout from '@/components/common/layout/Layout';
 import BottomModal from '@/components/common/modal/BottomModal';
 import ConfirmModal from '@/components/common/modal/ConfirmModal';
 import { CommentInput } from '@/components/feed/CommentInput';
-import CommentList from '@/components/feed/CommentList';
-import FeedItem from '@/components/feed/FeedItem';
+import { FeedDetailContent } from '@/components/feed/FeedDetailContent';
 
 export default function FeedDetailScreen({ navigation, route }) {
   const { feedId } = route.params;
   const [comment, setComment] = useState('');
   const [isDeleted, setIsDeleted] = useState(false);
+
   const { t } = useTranslation('feed');
   const { t: certT } = useTranslation('certification');
 
@@ -40,15 +40,8 @@ export default function FeedDetailScreen({ navigation, route }) {
       t('delete.title'),
       t('delete.description'),
       [
-        {
-          text: t('delete.cancel'),
-          style: 'cancel',
-        },
-        {
-          text: t('delete.confirm'),
-          style: 'destructive',
-          onPress: onConfirm,
-        },
+        { text: t('delete.cancel'), style: 'cancel' },
+        { text: t('delete.confirm'), style: 'destructive', onPress: onConfirm },
       ],
       { cancelable: true }
     );
@@ -81,9 +74,7 @@ export default function FeedDetailScreen({ navigation, route }) {
 
   const handleCommentSubmit = async () => {
     if (!comment.trim()) return;
-
     Keyboard.dismiss();
-
     try {
       const { isCertificated, isKorean, isStudentIdCardRequested } = await checkAuth();
       if (!isCertificated) {
@@ -97,11 +88,10 @@ export default function FeedDetailScreen({ navigation, route }) {
         setIsModalVisible(true);
         return;
       }
-
       await handleCommentActions.submit(comment);
       setComment('');
     } catch (error) {
-      console.error('Comment submission failed:', error);
+      console.error(error);
     }
   };
 
@@ -124,30 +114,15 @@ export default function FeedDetailScreen({ navigation, route }) {
             <CommentInput value={comment} onChange={setComment} onSubmit={handleCommentSubmit} />
           }
         >
-          <ScrollView
-            showsVerticalScrollIndicator={false}
-            className="mt-1"
-            refreshControl={
-              <RefreshControl
-                refreshing={isRefetching}
-                onRefresh={handleRefresh}
-                tintColor="#4AA366"
-              />
-            }
-          >
-            {feed && (
-              <>
-                <FeedItem
-                  feed={feed}
-                  onLike={handleFeedActions.like}
-                  onBookmark={handleFeedActions.bookmark}
-                  showAllContent
-                  disablePress
-                />
-                <CommentList comments={comments} onCommentOptions={handleCommentOptions} />
-              </>
-            )}
-          </ScrollView>
+          <FeedDetailContent
+            feed={feed}
+            comments={comments}
+            isRefetching={isRefetching}
+            onRefresh={handleRefresh}
+            onLike={handleFeedActions.like}
+            onBookmark={handleFeedActions.bookmark}
+            onCommentOptions={handleCommentOptions}
+          />
         </KeyboardLayout>
       </Layout>
 
