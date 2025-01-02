@@ -23,7 +23,6 @@ export default function FeedDetailScreen({ navigation, route }) {
   const [isDeleted, setIsDeleted] = useState(false);
   const { t } = useTranslation('feed');
   const { t: certT } = useTranslation('certification');
-
   const { isModalVisible, setIsModalVisible, currentModalTexts, setCurrentModalTexts, checkAuth } =
     useAuthCheck();
 
@@ -40,17 +39,24 @@ export default function FeedDetailScreen({ navigation, route }) {
       t('delete.title'),
       t('delete.description'),
       [
-        {
-          text: t('delete.cancel'),
-          style: 'cancel',
-        },
-        {
-          text: t('delete.confirm'),
-          style: 'destructive',
-          onPress: onConfirm,
-        },
+        { text: t('delete.cancel'), style: 'cancel' },
+        { text: t('delete.confirm'), style: 'destructive', onPress: onConfirm },
       ],
       { cancelable: true }
+    );
+  };
+
+  const showFeedNotFoundAlert = () => {
+    Alert.alert(
+      t('alert.feedNotFoundTitle'),
+      t('alert.feedNotFoundMessage'),
+      [
+        {
+          text: t('alert.confirm'),
+          onPress: () => navigation.goBack(),
+        },
+      ],
+      { cancelable: false }
     );
   };
 
@@ -97,7 +103,6 @@ export default function FeedDetailScreen({ navigation, route }) {
         setIsModalVisible(true);
         return;
       }
-
       await handleCommentActions.submit(comment);
       setComment('');
     } catch (error) {
@@ -106,6 +111,10 @@ export default function FeedDetailScreen({ navigation, route }) {
   };
 
   if (isDeleted) return null;
+
+  if (!feed && !isRefetching) {
+    return null;
+  }
 
   return (
     <>

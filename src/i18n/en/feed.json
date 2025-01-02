@@ -48,6 +48,12 @@
       "result": "No search results found"
     }
   },
+  "alert": {
+    "feedNotFoundTitle": "Feed not found",
+    "feedNotFoundMessage": "Unable to load the post.",
+    "confirm": "Confirm",
+    "retry": "Retry"
+  },
   "modal": {
     "edit": "Edit",
     "delete": "Delete",

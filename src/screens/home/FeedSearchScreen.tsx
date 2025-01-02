@@ -5,7 +5,6 @@ import { TextInput, TouchableOpacity, View } from 'react-native';
 import { searchFeeds } from '@/api/feed/getFeeds';
 import { feedKeys } from '@/api/queryKeys';
 import { useFeedList } from '@/hooks/useFeedList';
-import MyText from '@/components/common/MyText';
 import InnerLayout from '@/components/common/layout/InnerLayout';
 import KeyboardLayout from '@/components/common/layout/KeyboardLayout';
 import Layout from '@/components/common/layout/Layout';
@@ -87,32 +86,29 @@ export default function SearchScreen({ navigation }) {
         />
       }
     >
-      <InnerLayout>
+      <InnerLayout className="bg-mainBackground">
         <KeyboardLayout>
-          {isFocused || submittedText.trim() ? (
-            <FeedList
-              feeds={feedListData.feeds}
-              onLike={feedListData.handleLike}
-              onBookmark={feedListData.handleBookmark}
-              onPress={handlePressFeed}
-              isLoading={feedListData.isLoading}
-              hasMore={feedListData.hasMore}
-              onLoadMore={feedListData.handleLoadMore}
-              className="mt-3"
-              emptyStateMessage={
-                submittedText ? t('search.empty.result') : t('search.empty.default')
-              }
-              refreshControl={{
-                refreshing: feedListData.isLoading && feedListData.feeds.length > 0,
-                onRefresh: feedListData.handleRefresh,
-                tintColor: '#4AA366',
-              }}
-            />
-          ) : (
-            <View className="flex-1 items-center justify-center bg-mainBackground">
-              <MyText color="text-textDescription">{t('search.empty.default')}</MyText>
-            </View>
-          )}
+          {isFocused ||
+            (submittedText.trim() && (
+              <FeedList
+                feeds={feedListData.feeds}
+                onLike={feedListData.handleLike}
+                onBookmark={feedListData.handleBookmark}
+                onPress={handlePressFeed}
+                isLoading={feedListData.isLoading}
+                hasMore={feedListData.hasMore}
+                onLoadMore={feedListData.handleLoadMore}
+                className="mt-3"
+                emptyStateMessage={
+                  submittedText ? t('search.empty.result') : t('search.empty.default')
+                }
+                refreshControl={{
+                  refreshing: feedListData.isLoading && feedListData.feeds.length > 0,
+                  onRefresh: feedListData.handleRefresh,
+                  tintColor: '#4AA366',
+                }}
+              />
+            ))}
         </KeyboardLayout>
       </InnerLayout>
     </Layout>
