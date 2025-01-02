@@ -1,16 +1,10 @@
 import * as ImagePicker from 'expo-image-picker';
 import { Plus } from 'lucide-react-native';
-
 import React, { useState } from 'react';
-
 import { useTranslation } from 'react-i18next';
-import { View, TouchableOpacity, Image, Platform } from 'react-native';
-
+import { Image, TouchableOpacity, View } from 'react-native';
 import { postStudentIdVerification } from '@/api/certification/certification';
-
-import { getAccessToken, getRefreshToken } from '@/utils/service/auth';
 import { logError } from '@/utils/service/error';
-
 import Button from '@/components/common/Button';
 import MyText from '@/components/common/MyText';
 import InnerLayout from '@/components/common/layout/InnerLayout';
@@ -64,16 +58,20 @@ export default function StudentIdCardUploadScreen({ navigation }) {
         <Heading>{t('studentId.title')}</Heading>
         <HeadingDescription>{t('studentId.description')}</HeadingDescription>
 
-        <View className="flex-1 justify-center items-center">
+        <View className="flex-1 items-center justify-center">
           <TouchableOpacity
             onPress={handleImagePick}
-            className="mb-10 w-[180px] h-[320px] rounded-[12px] border-[1px] border-border justify-center items-center bg-background overflow-hidden"
+            className="mb-10 h-[320px] w-[180px] items-center justify-center overflow-hidden rounded-[12px] border-[1px] border-border bg-background"
           >
             {selectedImage ? (
-              <Image source={{ uri: selectedImage.uri }} className="w-full h-full rounded-[6px]" resizeMode="cover" />
+              <Image
+                source={{ uri: selectedImage.uri }}
+                className="h-full w-full rounded-[6px]"
+                resizeMode="cover"
+              />
             ) : (
               <View className="items-center">
-                <View className="w-12 h-12 rounded-full bg-primary items-center justify-center mb-2">
+                <View className="mb-2 h-12 w-12 items-center justify-center rounded-full bg-primary">
                   <Plus size={24} color="white" />
                 </View>
                 <MyText color="text-textDescription">{t('studentId.select')}</MyText>

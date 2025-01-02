@@ -1,15 +1,10 @@
 import { X } from 'lucide-react-native';
-
 import React, { useState } from 'react';
-
 import { useTranslation } from 'react-i18next';
-import { View, TextInput, TouchableOpacity } from 'react-native';
-
+import { TextInput, TouchableOpacity, View } from 'react-native';
 import { searchFeeds } from '@/api/feed/getFeeds';
 import { feedKeys } from '@/api/queryKeys';
-
 import { useFeedList } from '@/hooks/useFeedList';
-
 import MyText from '@/components/common/MyText';
 import InnerLayout from '@/components/common/layout/InnerLayout';
 import KeyboardLayout from '@/components/common/layout/KeyboardLayout';
@@ -20,7 +15,7 @@ const SearchInput = ({ value, onChangeText, onSubmit, onClear, onFocusChange }) 
   const { t } = useTranslation('feed');
 
   return (
-    <View className="flex-1 flex-row items-center bg-[#E8E9EB] rounded-[12px]">
+    <View className="flex-1 flex-row items-center rounded-[12px] bg-[#E8E9EB]">
       <TextInput
         value={value}
         onChangeText={onChangeText}
@@ -104,7 +99,9 @@ export default function SearchScreen({ navigation }) {
               hasMore={feedListData.hasMore}
               onLoadMore={feedListData.handleLoadMore}
               className="mt-3"
-              emptyStateMessage={submittedText ? t('search.empty.result') : t('search.empty.default')}
+              emptyStateMessage={
+                submittedText ? t('search.empty.result') : t('search.empty.default')
+              }
               refreshControl={{
                 refreshing: feedListData.isLoading && feedListData.feeds.length > 0,
                 onRefresh: feedListData.handleRefresh,
@@ -112,7 +109,7 @@ export default function SearchScreen({ navigation }) {
               }}
             />
           ) : (
-            <View className="flex-1 justify-center items-center bg-mainBackground">
+            <View className="flex-1 items-center justify-center bg-mainBackground">
               <MyText color="text-textDescription">{t('search.empty.default')}</MyText>
             </View>
           )}

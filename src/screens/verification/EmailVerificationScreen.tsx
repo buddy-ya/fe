@@ -1,12 +1,8 @@
 import { Send } from 'lucide-react-native';
-
 import React, { useState } from 'react';
-
 import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
-
-import { verifyEmailCode, sendEmail } from '@/api/certification/certification';
-
+import { sendEmail, verifyEmailCode } from '@/api/certification/certification';
 import LinkText from '@/components/common/LinkText';
 import MyText from '@/components/common/MyText';
 import OTPInput from '@/components/common/OTPInput';
@@ -79,7 +75,9 @@ export default function EmailVerificationScreen({ navigation, route }) {
           <HeadingDescription>{t('verification.titleDescription', { email })}</HeadingDescription>
           <Label>{t('verification.label')}</Label>
           <OTPInput value={code} onChange={setCode} length={4} />
-          {verificationError && <ErrorMessage className="mt-2">{t('verification.warning')}</ErrorMessage>}
+          {verificationError && (
+            <ErrorMessage className="mt-2">{t('verification.warning')}</ErrorMessage>
+          )}
         </InnerLayout>
       </KeyboardLayout>
     </Layout>

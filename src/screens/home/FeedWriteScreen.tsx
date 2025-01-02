@@ -30,7 +30,7 @@ const FILTERED_CATEGORIES = CATEGORIES.filter((category) => category.id !== 'pop
 const IMAGE_PICKER_OPTIONS: ImagePicker.ImagePickerOptions = {
   mediaTypes: ImagePicker.MediaTypeOptions.Images,
   allowsEditing: false,
-  quality: 0.8,
+  quality: 0.7,
   allowsMultipleSelection: true,
   selectionLimit: 5,
 };

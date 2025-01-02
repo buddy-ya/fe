@@ -1,6 +1,6 @@
 import { CommentType } from '@/screens/home/types';
 import { useModal } from '@/hooks/modal/useModal';
-import { createModalOptions } from '@/utils/constants/modalOptions';
+import { createModalOptions } from '@/components/common/modal/FeedDetailModalOptions';
 import { Feed } from '../../screens/home/types';
 
 interface UseFeedModalsProps {
@@ -30,7 +30,10 @@ export const useFeedModals = ({
           createModalOptions.edit(onEditFeed || (() => {})),
           createModalOptions.cancel(feedModal.closeModal),
         ]
-      : [createModalOptions.cancel(feedModal.closeModal)];
+      : [
+          createModalOptions.report(() => console.log('report comment')),
+          createModalOptions.cancel(feedModal.closeModal),
+        ];
 
     feedModal.openModal(options);
   };

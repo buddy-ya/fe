@@ -1,7 +1,7 @@
 // store/onboarding.ts
-import { create } from "zustand";
+import { create } from 'zustand';
 
-type Gender = "male" | "female" | "unknown";
+type Gender = 'male' | 'female' | 'unknown';
 
 interface OnboardingStore {
   name: string;
@@ -14,19 +14,17 @@ interface OnboardingStore {
   majors: string[];
   languages: string[];
   interests: string[];
-  updateOnboardingData: (
-    data: Partial<Omit<OnboardingStore, "updateOnboardingData">>
-  ) => void;
+  updateOnboardingData: (data: Partial<Omit<OnboardingStore, 'updateOnboardingData'>>) => void;
 }
 
 export const useOnboardingStore = create<OnboardingStore>((set) => ({
-  name: "",
-  country: "",
+  name: '',
+  country: '',
   isKorean: false,
   isNotificationEnabled: false,
-  phoneNumber: "",
-  gender: "unknown",
-  university: "",
+  phoneNumber: '',
+  gender: 'unknown',
+  university: '',
   majors: [],
   languages: [],
   interests: [],

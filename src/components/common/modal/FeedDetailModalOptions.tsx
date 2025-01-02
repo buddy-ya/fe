@@ -19,7 +19,6 @@ export const createModalOptions = {
   report: (onPress: () => void): ModalOption => ({
     label: i18next.t('feed:modal.report'),
     icon: <Flag size={20} color="#282828" />,
-    color: 'text-red-500',
     onPress,
   }),
 
