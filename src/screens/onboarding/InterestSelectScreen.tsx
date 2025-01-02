@@ -7,6 +7,7 @@ import { postOnboardingInfo } from '@/api/onboarding/join';
 import type { InterestID } from '@/utils/constants/interests';
 import { INTEREST_CATEGORIES, INTEREST_ICONS } from '@/utils/constants/interests';
 import { saveTokens } from '@/utils/service/auth';
+import { logError } from '@/utils/service/error';
 import Button from '@/components/common/Button';
 import { Chip } from '@/components/common/Chip';
 import MyText from '@/components/common/MyText';
@@ -42,21 +43,26 @@ export default function InterestSelectScreen({ navigation, route }) {
   };
 
   const handleNavigateButton = async () => {
-    const interests = selectedInterests.map((interest) => interest.id);
-    if (mode === 'edit') {
-      await updateInterests(interests);
-      navigation.goBack();
-    } else {
-      updateOnboardingData({ interests });
-      const { data } = await postOnboardingInfo({
-        ...onboardingData,
-        interests,
-      });
-      await saveTokens(data.accessToken, data.refreshToken);
-      navigation.reset({
-        index: 0,
-        routes: [{ name: 'Tab' }],
-      });
+    try {
+      const interests = selectedInterests.map((interest) => interest.id);
+
+      if (mode === 'edit') {
+        await updateInterests(interests);
+        navigation.goBack();
+      } else {
+        updateOnboardingData({ interests });
+        const { data } = await postOnboardingInfo({
+          ...onboardingData,
+          interests,
+        });
+        await saveTokens(data.accessToken, data.refreshToken);
+        navigation.reset({
+          index: 0,
+          routes: [{ name: 'Tab' }],
+        });
+      }
+    } catch (error) {
+      logError(error);
     }
   };
 
