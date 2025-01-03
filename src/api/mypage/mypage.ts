@@ -18,7 +18,7 @@ export const updateInterests = async (interests: string[]) => {
 };
 
 export const updateProfileImage = async (imageKey: string) => {
-  return await apiClient.post(
+  return await apiClient.patch(
     `/mypage/update/profile-default-image?profileImageKey=${imageKey}`
   );
 };

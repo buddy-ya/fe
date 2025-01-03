@@ -72,20 +72,39 @@ export const getTabScreenOptions = (routeName: keyof typeof TAB_CONFIG) => {
 
 export const useTabBarAnimation = () => {
   const translateY = React.useRef(new Animated.Value(0)).current;
+  const opacity = React.useRef(new Animated.Value(1)).current;
 
   const animateTabBar = (visible: boolean) => {
-    Animated.timing(translateY, {
-      toValue: visible ? 0 : 100,
-      duration: 200,
-      useNativeDriver: true,
-    }).start();
+    if (visible) {
+      translateY.setValue(100);
+      opacity.setValue(0);
+    }
 
-    return visible
-      ? {
-          ...tabBarStyle.tabBar,
-          transform: [{ translateY }],
-        }
-      : tabBarStyle.hidden;
+    Animated.parallel([
+      Animated.spring(translateY, {
+        toValue: visible ? 0 : 100,
+        useNativeDriver: true,
+        friction: 8,
+        tension: 65,
+        velocity: 0.5,
+      }),
+
+      Animated.timing(opacity, {
+        toValue: visible ? 1 : 0,
+        duration: 150,
+        useNativeDriver: true,
+      }),
+    ]).start();
+
+    if (!visible) {
+      return tabBarStyle.hidden;
+    }
+
+    return {
+      ...tabBarStyle.tabBar,
+      transform: [{ translateY }],
+      opacity,
+    };
   };
 
   return { animateTabBar };

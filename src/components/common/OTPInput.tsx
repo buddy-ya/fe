@@ -1,12 +1,6 @@
-import React from "react";
-import {
-  View,
-  TextInput,
-  Text,
-  KeyboardAvoidingView,
-  Platform,
-} from "react-native";
-import MyText from "./MyText";
+import React from 'react';
+import { TextInput, View } from 'react-native';
+import MyText from './MyText';
 
 interface OTPInputProps {
   value: string;
@@ -14,13 +8,9 @@ interface OTPInputProps {
   length?: number;
 }
 
-export default function OTPInput({
-  value,
-  onChange,
-  length = 6,
-}: OTPInputProps) {
+export default function OTPInput({ value, onChange, length = 6 }: OTPInputProps) {
   const handleChange = (text: string) => {
-    const numericValue = text.replace(/[^0-9]/g, "");
+    const numericValue = text.replace(/[^0-9]/g, '');
     if (numericValue.length <= length) {
       onChange(numericValue);
     }
@@ -32,12 +22,7 @@ export default function OTPInput({
         {[...Array(length)].map((_, index) => (
           <View
             key={index}
-            className={`
-              w-[40px] h-[50px] 
-              border border-border rounded-[10px] 
-              items-center justify-center
-              mr-2
-            `}
+            className={`mr-2 h-[50px] w-[40px] items-center justify-center rounded-[10px] border border-border`}
           >
             <MyText size="text-[18px]">{value[index]}</MyText>
           </View>
@@ -49,7 +34,7 @@ export default function OTPInput({
         onChangeText={handleChange}
         maxLength={length}
         keyboardType="number-pad"
-        className="absolute w-full h-full opacity-0"
+        className="absolute h-full w-full opacity-0"
         autoFocus
       />
     </View>

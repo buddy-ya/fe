@@ -1,6 +1,6 @@
-import React from "react";
-import { TouchableOpacity, View } from "react-native";
-import MyText from "@/components/common/MyText";
+import React from 'react';
+import { TouchableOpacity, View } from 'react-native';
+import MyText from '@/components/common/MyText';
 
 interface ChipProps {
   icon?: string;
@@ -11,33 +11,18 @@ interface ChipProps {
   readOnly?: boolean;
 }
 
-export function Chip({
-  icon,
-  label,
-  selected,
-  onPress,
-  className,
-  readOnly,
-}: ChipProps) {
+export function Chip({ icon, label, selected, onPress, className, readOnly }: ChipProps) {
   const Container = readOnly ? View : TouchableOpacity;
 
   return (
     <Container onPress={!readOnly ? onPress : undefined} className="mb-[0.3px]">
       <View
-        className={`flex-row items-center px-4 py-2 rounded-full border
-          ${selected ? "border-primary bg-chipActive" : "border-border"}
-          ${className || ""}`}
+        className={`flex-row items-center rounded-full border px-4 py-2 ${selected ? 'border-primary bg-chipActive' : 'border-border'} ${className || ''}`}
       >
         {icon && <MyText className="mr-2">{icon}</MyText>}
         <MyText
           size="text-sm"
-          color={
-            readOnly
-              ? undefined
-              : selected
-              ? "text-active"
-              : "text-textDescription"
-          }
+          color={readOnly ? undefined : selected ? 'text-active' : 'text-textDescription'}
         >
           {label}
         </MyText>

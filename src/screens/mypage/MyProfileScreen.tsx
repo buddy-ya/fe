@@ -1,30 +1,25 @@
-import React, { useEffect } from "react";
-import { View, ScrollView, Image, TouchableOpacity } from "react-native";
-import { useTranslation } from "react-i18next";
-import { Pencil } from "lucide-react-native";
-import Layout from "@/components/common/Layout";
-import InnerLayout from "@/components/common/InnerLayout";
-import MyText from "@/components/common/MyText";
-import { useProfileStore } from "@/store/profile";
-import { getCountryFlag } from "@/utils/constants/countries";
-import { Chip } from "@/components/common/Chip";
-import { MAJOR_ICONS } from "@/utils/constants/majors";
-import { INTEREST_ICONS } from "@/utils/constants/interests";
-import {
-  getProfile,
-  updateInterests,
-  updateLanguages,
-  updateName,
-} from "@/api/mypage/mypage";
+import { Pencil, RefreshCcw, RefreshCw } from 'lucide-react-native';
+
+import React, { useEffect } from 'react';
+
+import { useTranslation } from 'react-i18next';
+import { View, ScrollView, Image, TouchableOpacity } from 'react-native';
+
+import { useProfileStore } from '@/store/profile';
+
+import { getProfile } from '@/api/mypage/mypage';
+
+import { getCountryFlag } from '@/utils/constants/countries';
+import { INTEREST_ICONS } from '@/utils/constants/interests';
+import { MAJOR_ICONS } from '@/utils/constants/majors';
+
+import { Chip } from '@/components/common/Chip';
+import MyText from '@/components/common/MyText';
+import InnerLayout from '@/components/common/layout/InnerLayout';
+import Layout from '@/components/common/layout/Layout';
 
 export default function MyProfileScreen({ navigation }) {
-  const { t } = useTranslation([
-    "mypage",
-    "interests",
-    "countries",
-    "languages",
-    "majors",
-  ]);
+  const { t } = useTranslation(['mypage', 'interests', 'countries', 'languages', 'majors']);
 
   const { profile, setProfile } = useProfileStore();
 
@@ -34,7 +29,7 @@ export default function MyProfileScreen({ navigation }) {
   };
 
   useEffect(() => {
-    const unsubscribe = navigation.addListener("focus", () => {
+    const unsubscribe = navigation.addListener('focus', () => {
       fetchMyProfile();
     });
 
@@ -42,62 +37,49 @@ export default function MyProfileScreen({ navigation }) {
   }, [navigation]);
 
   const handleEditPhoto = () => {
-    navigation.navigate("EditProfileImage");
+    navigation.navigate('EditProfileImage');
   };
 
   const handleEditName = () => {
-    navigation.navigate("EditName", {
-      mode: "edit",
+    navigation.navigate('EditName', {
+      mode: 'edit',
       initialName: profile.name,
-      onComplete: async (name: string) => {
-        await updateName(name);
-        navigation.goBack();
-      },
     });
   };
 
   const handleEditLanguages = () => {
-    navigation.navigate("EditLanguage", {
-      mode: "edit",
+    navigation.navigate('EditLanguage', {
+      mode: 'edit',
       initialLanguages: profile.languages,
-      onComplete: async (languages: string[]) => {
-        await updateLanguages(languages);
-        navigation.goBack();
-      },
     });
   };
 
   const handleEditInterests = () => {
-    navigation.navigate("EditInterest", {
-      mode: "edit",
+    navigation.navigate('EditInterest', {
+      mode: 'edit',
       initialInterests: profile.interests,
-      onComplete: async (interests: string[]) => {
-        console.log(interests);
-        await updateInterests(interests);
-        navigation.goBack();
-      },
     });
   };
 
   const sections = [
     {
-      title: t("mypage:profile.sections.majors"),
-      data: profile.majors,
-      translationPrefix: "majors:majors",
+      title: t('mypage:profile.sections.majors'),
+      data: profile?.majors,
+      translationPrefix: 'majors:majors',
       getIcon: (id: string) => MAJOR_ICONS[id],
       editable: false,
     },
     {
-      title: t("mypage:profile.sections.languages"),
+      title: t('mypage:profile.sections.languages'),
       data: profile.languages,
-      translationPrefix: "languages:languages",
+      translationPrefix: 'languages:languages',
       onEdit: handleEditLanguages,
       editable: true,
     },
     {
-      title: t("mypage:profile.sections.interests"),
+      title: t('mypage:profile.sections.interests'),
       data: profile.interests,
-      translationPrefix: "interests:interests",
+      translationPrefix: 'interests:interests',
       getIcon: (id: string) => INTEREST_ICONS[id],
       onEdit: handleEditInterests,
       editable: true,
@@ -110,46 +92,35 @@ export default function MyProfileScreen({ navigation }) {
         {title}
       </MyText>
       {onEdit && (
-        <TouchableOpacity className="px-3" onPress={onEdit}>
+        <TouchableOpacity className="" onPress={onEdit}>
           <MyText size="text-[12px]" color="text-textLight" className="">
-            {t("mypage:profile.edit")}
+            {t('mypage:profile.edit')}
           </MyText>
         </TouchableOpacity>
       )}
     </View>
   );
 
-  const renderSection = (
-    title: string,
-    children: React.ReactNode,
-    onEdit?: () => void
-  ) => (
-    <View className="border-t-[1px] border-borderBottom p-5">
+  const renderSection = (title: string, children: React.ReactNode, onEdit?: () => void) => (
+    <View className="border-t-[1px] border-borderBottom px-5 py-4">
       {renderSectionHeader(title, onEdit)}
       {children}
     </View>
   );
 
   return (
-    <Layout
-      showHeader
-      onBack={() => navigation.goBack()}
-      className="bg-gray-600"
-    >
+    <Layout showHeader onBack={() => navigation.goBack()} className="bg-gray-600">
       <InnerLayout>
         <ScrollView showsVerticalScrollIndicator={false}>
           <View className="rounded-[20px] mt-3">
             <View className="items-center">
               <View className="relative">
-                <Image
-                  source={{ uri: profile.profileImageUrl }}
-                  className="w-[110px] h-[110px] rounded-[25px] mb-4"
-                />
+                <Image source={{ uri: profile.profileImageUrl }} className="w-[110px] h-[110px] rounded-[25px] mb-4" />
                 <TouchableOpacity
-                  className="absolute -top-1 -right-3 bg-white p-2 rounded-full"
+                  className="absolute -top-1.5 -right-3 bg-white p-1.5 rounded-full"
                   onPress={handleEditPhoto}
                 >
-                  <Pencil size={18} color="#797979" />
+                  <RefreshCcw size={18} color={'#797979'} />
                 </TouchableOpacity>
               </View>
               <View className="flex-row items-center">
@@ -160,20 +131,16 @@ export default function MyProfileScreen({ navigation }) {
                   <Pencil size={18} color="#797979" />
                 </TouchableOpacity>
               </View>
-              <MyText
-                size="text-[13px]"
-                color="text-textDescription"
-                className=" mt-2"
-              >
+              <MyText size="text-[13px]" color="text-textProfile" className="mt-2">
                 {t(`profile.university.${profile.university}`)}
               </MyText>
             </View>
           </View>
 
           <View className="bg-white rounded-[20px] mt-7">
-            <View className="p-5 flex-row justify-between items-start">
+            <View className="py-4 px-5 flex-row justify-between items-start">
               <View className="flex-1">
-                {renderSectionHeader(t("mypage:profile.sections.country"))}
+                {renderSectionHeader(t('mypage:profile.sections.country'))}
                 <Chip
                   readOnly={true}
                   label={t(`countries:countries.${profile.country}`)}
@@ -182,9 +149,9 @@ export default function MyProfileScreen({ navigation }) {
                 />
               </View>
 
-              {profile.gender !== "unknown" && (
+              {profile.gender !== 'unknown' && (
                 <View className="w-[50%]">
-                  {renderSectionHeader(t("mypage:profile.sections.gender"))}
+                  {renderSectionHeader(t('mypage:profile.sections.gender'))}
                   <Chip
                     readOnly={true}
                     label={t(`mypage:profile.gender.${profile.gender}`)}

@@ -1,57 +1,49 @@
-import React, { useEffect } from "react";
-import { View, ActivityIndicator, Image } from "react-native";
-import * as Font from "expo-font";
-import { getAccessToken, removeTokens } from "@/utils/service/auth";
+import * as Font from 'expo-font';
+import React, { useEffect } from 'react';
+import { Image, View } from 'react-native';
+import { getAccessToken } from '@/utils/service/auth';
+import { logError } from '@/utils/service/error';
+
+const FONTS = {
+  'Pretendard-Thin': require('@assets/fonts/Pretendard-Thin.otf'),
+  'Pretendard-ExtraLight': require('@assets/fonts/Pretendard-ExtraLight.otf'),
+  'Pretendard-Light': require('@assets/fonts/Pretendard-Light.otf'),
+  'Pretendard-Regular': require('@assets/fonts/Pretendard-Regular.otf'),
+  'Pretendard-Medium': require('@assets/fonts/Pretendard-Medium.otf'),
+  'Pretendard-SemiBold': require('@assets/fonts/Pretendard-SemiBold.otf'),
+  'Pretendard-Bold': require('@assets/fonts/Pretendard-Bold.otf'),
+  'Pretendard-ExtraBold': require('@assets/fonts/Pretendard-ExtraBold.otf'),
+  'Pretendard-Black': require('@assets/fonts/Pretendard-Black.otf'),
+};
 
 export default function SplashScreen({ navigation }) {
   useEffect(() => {
     initializeApp();
   }, []);
 
-  const initializeApp = async () => {
-    try {
-      const [accessToken] = await Promise.all([
-        getAccessToken(),
-        loadFonts(),
-        new Promise((resolve) => setTimeout(resolve, 1000)),
-      ]);
-      if (accessToken) {
-        navigation.navigate("Tab");
-      } else {
-        navigation.navigate("Onboarding", {
-          screen: "OnboardingWelcome",
-        });
-      }
-    } catch (error) {
-      console.error("App initialization failed:", error);
-    }
+  const loadFonts = async () => {
+    await Font.loadAsync(FONTS);
   };
 
-  const loadFonts = async () => {
+  const handleNavigation = async () => {
+    const accessToken = await getAccessToken();
+    navigation.navigate(accessToken ? 'Tab' : 'Onboarding');
+  };
+
+  const initializeApp = async () => {
     try {
-      await Font.loadAsync({
-        "Pretendard-Thin": require("@assets/fonts/Pretendard-Thin.otf"),
-        "Pretendard-ExtraLight": require("@assets/fonts/Pretendard-ExtraLight.otf"),
-        "Pretendard-Light": require("@assets/fonts/Pretendard-Light.otf"),
-        "Pretendard-Regular": require("@assets/fonts/Pretendard-Regular.otf"),
-        "Pretendard-Medium": require("@assets/fonts/Pretendard-Medium.otf"),
-        "Pretendard-SemiBold": require("@assets/fonts/Pretendard-SemiBold.otf"),
-        "Pretendard-Bold": require("@assets/fonts/Pretendard-Bold.otf"),
-        "Pretendard-ExtraBold": require("@assets/fonts/Pretendard-ExtraBold.otf"),
-        "Pretendard-Black": require("@assets/fonts/Pretendard-Black.otf"),
-      });
+      await loadFonts();
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      await handleNavigation();
     } catch (error) {
-      console.error("Font loading failed:", error);
+      logError(error);
+      navigation.navigate('Onboarding');
     }
   };
 
   return (
-    <View className="flex-1 justify-center items-center bg-white">
-      <Image
-        className="w-[100px] h-[123px]"
-        source={require("@assets/images/splash.png")}
-      />
-      <ActivityIndicator size="large" color="#007AFF" />
+    <View className="flex-1 items-center justify-center">
+      <Image source={require('@assets/images/splash.png')} className="h-full w-full" />
     </View>
   );
 }

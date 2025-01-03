@@ -3,6 +3,9 @@ module.exports = {
   presets: [require("nativewind/preset")],
   theme: {
     extend: {
+      textColor: {
+        DEFAULT: "#282828",
+      },
       colors: {
         primary: "#00A176",
         active: "#004D39",
@@ -14,6 +17,7 @@ module.exports = {
         textDescription: "#797979",
         textWarning: "#FF7657",
         textLight: "#CBCBCB",
+        textProfile: "#474747",
 
         placeholderPrimary: "#fff",
         background: "#FFFFFF",
@@ -64,19 +68,4 @@ module.exports = {
       },
     },
   },
-  plugins: [
-    function ({ addComponents }) {
-      addComponents({
-        ".text": { color: "#282828" },
-        ".text-xs": { color: "#282828" },
-        ".text-sm": { color: "#282828" },
-        ".text-base": { color: "#282828" },
-        ".text-lg": { color: "#282828" },
-        ".text-xl": { color: "#282828" },
-        ".text-2xl": { color: "#282828" },
-        ".text-3xl": { color: "#282828" },
-        ".text-4xl": { color: "#282828" },
-      });
-    },
-  ],
 };

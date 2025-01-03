@@ -1,46 +1,86 @@
-import React, { useState, useEffect } from "react";
-import { View, TextInput } from "react-native";
-import { useTranslation } from "react-i18next";
-import Layout from "@/components/common/Layout";
-import Heading from "@/components/onboarding/Heading";
-import KeyboardLayout from "@/components/common/KeyboardLayout";
-import InnerLayout from "@/components/common/InnerLayout";
-import HeadingDescription from "@/components/onboarding/HeadingDescription";
-import { Lock } from "lucide-react-native";
-import Label from "@/components/onboarding/Label";
-import ErrorMessage from "@/components/onboarding/ErrorMessage";
-import FooterLayout from "@/components/common/FooterLayout";
-import { postPhoneVerification } from "@/api/auth/phone";
-import MyText from "@/components/common/MyText";
-import { formatPhone } from "@/utils/service/phone";
+import { Lock } from 'lucide-react-native';
+import React, { useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { TextInput, View } from 'react-native';
+import { postPhoneVerification } from '@/api/auth/phone';
+import { formatPhone } from '@/utils/service/phone';
+import MyText from '@/components/common/MyText';
+import FooterLayout from '@/components/common/layout/FooterLayout';
+import InnerLayout from '@/components/common/layout/InnerLayout';
+import KeyboardLayout from '@/components/common/layout/KeyboardLayout';
+import Layout from '@/components/common/layout/Layout';
+import ErrorMessage from '@/components/onboarding/ErrorMessage';
+import Heading from '@/components/onboarding/Heading';
+import HeadingDescription from '@/components/onboarding/HeadingDescription';
+import Label from '@/components/onboarding/Label';
+
+const COUNTRY_CODE = '+82';
+const MAX_PHONE_LENGTH = 11;
+const PHONE_PLACEHOLDER = '010-1234-5678';
+
+const CountryCodeBox = () => (
+  <View className="mr-2 h-[52px] flex-row items-center rounded-xl border border-border px-[14px]">
+    <MyText size="text-xl" color="text-textDescription">
+      🇰🇷 {COUNTRY_CODE}
+    </MyText>
+  </View>
+);
+
+const PhoneInput = ({ value, onChange, inputRef }) => (
+  <TextInput
+    ref={inputRef}
+    value={formatPhone.addHyphen(value)}
+    onChangeText={onChange}
+    keyboardType="number-pad"
+    placeholder={PHONE_PLACEHOLDER}
+    className="h-[52px] w-[172px] rounded-xl border border-border px-[14px] text-[18px] text-text"
+    placeholderTextColor="#DFDFDF"
+    textAlignVertical="center"
+    autoFocus
+  />
+);
 
 export default function PhoneScreen({ navigation }) {
-  const { t } = useTranslation("onboarding");
-  const [phone, setPhone] = useState("");
-  const [isValid, setIsValid] = useState(false);
-  const [showError, setShowError] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { t } = useTranslation('onboarding');
+  const inputRef = useRef(null);
+
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [isPhoneValid, setIsPhoneValid] = useState(false);
+  const [isPrefixError, setIsPrefixError] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    setIsValid(formatPhone.validate(phone));
-    setShowError(formatPhone.checkPrefix(phone));
-  }, [phone]);
+    setIsPhoneValid(formatPhone.validate(phoneNumber));
+    setIsPrefixError(formatPhone.checkPrefix(phoneNumber));
+  }, [phoneNumber]);
 
-  const handlePhoneChange = (text: string) => {
-    const newValue = formatPhone.removeHyphen(text);
-    if (newValue.length <= 11) {
-      setPhone(newValue);
+  const handleBack = () => {
+    inputRef.current?.blur();
+    navigation.goBack();
+  };
+
+  const handlePhoneNumberInput = (text: string) => {
+    const formattedNumber = formatPhone.removeHyphen(text);
+
+    if (formattedNumber.length <= MAX_PHONE_LENGTH) {
+      setPhoneNumber(formattedNumber);
     }
   };
 
-  const handleNavigateButton = async () => {
-    if (isSubmitting) return;
+  const handleVerificationRequest = async () => {
+    if (isLoading) return;
 
-    setIsSubmitting(true);
-    await postPhoneVerification(phone);
-    navigation.navigate("OnboardingPhoneVerification", {
-      phone: formatPhone.addHyphen(phone),
-    });
+    try {
+      setIsLoading(true);
+      await postPhoneVerification(phoneNumber);
+      navigation.navigate('OnboardingPhoneVerification', {
+        phone: formatPhone.addHyphen(phoneNumber),
+      });
+    } catch (error) {
+      console.error('Phone verification failed:', error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const footer = (
@@ -48,40 +88,32 @@ export default function PhoneScreen({ navigation }) {
       icon={<Lock strokeWidth={1} size={23} color="#797979" />}
       content={
         <MyText size="text-sm" color="text-textDescription" className="mx-3">
-          {t("phone.footer")}
+          {t('phone.footer')}
         </MyText>
       }
-      onPress={handleNavigateButton}
-      disabled={!isValid || isSubmitting}
+      onPress={handleVerificationRequest}
+      disabled={!isPhoneValid || isLoading}
     />
   );
 
   return (
-    <Layout showHeader onBack={() => navigation.goBack()}>
+    <Layout showHeader onBack={handleBack}>
       <KeyboardLayout footer={footer}>
         <InnerLayout>
-          <Heading>{t("phone.title")}</Heading>
-          <HeadingDescription>{t("phone.titleDescription")}</HeadingDescription>
-          <Label>{t("phone.label")}</Label>
+          <Heading>{t('phone.title')}</Heading>
+          <HeadingDescription>{t('phone.titleDescription')}</HeadingDescription>
+          <Label>{t('phone.label')}</Label>
+
           <View>
-            <View className="flex-row items-center mb-4">
-              <View className="flex-row items-center mr-2 px-[14px] h-[52px] border border-border rounded-xl">
-                <MyText size="text-xl" color="text-textDescription">
-                  🇰🇷 +82
-                </MyText>
-              </View>
-              <TextInput
-                value={formatPhone.addHyphen(phone)}
-                onChangeText={handlePhoneChange}
-                keyboardType="number-pad"
-                placeholder="010-1234-5678"
-                className="px-[14px] text-[18px] text-text w-[172px] border border-border rounded-xl h-[52px]"
-                placeholderTextColor="#DFDFDF"
-                textAlignVertical="center"
-                autoFocus
+            <View className="mb-4 flex-row items-center">
+              <CountryCodeBox />
+              <PhoneInput
+                value={phoneNumber}
+                onChange={handlePhoneNumberInput}
+                inputRef={inputRef}
               />
             </View>
-            {showError && <ErrorMessage>{t("phone.warning")}</ErrorMessage>}
+            {isPrefixError && <ErrorMessage>{t('phone.warning')}</ErrorMessage>}
           </View>
         </InnerLayout>
       </KeyboardLayout>

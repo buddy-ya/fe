@@ -1,8 +1,8 @@
-import React from "react";
-import { View, Text, TouchableOpacity, ScrollView } from "react-native";
-import { Check } from "lucide-react-native";
-import { useTranslation } from "react-i18next";
-import MyText from "./MyText";
+import { Check } from 'lucide-react-native';
+import React from 'react';
+import { useTranslation } from 'react-i18next';
+import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import MyText from '../common/MyText';
 
 interface SelectOption {
   id: string;
@@ -19,7 +19,7 @@ interface SelectItemProps {
   className?: string;
 }
 
-export default function SelectItem({
+export default function MultiSelectItem({
   options,
   selectedValues,
   onSelect,
@@ -34,12 +34,10 @@ export default function SelectItem({
     selectedValues.some((selected) => selected.id === option.id);
 
   const isDisabled = (option: SelectOption) =>
-    !multiple
-      ? false
-      : !isSelected(option) && selectedValues.length >= maxSelect;
+    !multiple ? false : !isSelected(option) && selectedValues.length >= maxSelect;
 
   return (
-    <View className={`flex-1 mt-4 mb-5 ${className}`}>
+    <View className={`mb-8 mt-4 flex-1 ${className}`}>
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingBottom: 20 }}
@@ -49,23 +47,16 @@ export default function SelectItem({
             key={option.id}
             onPress={() => onSelect(option)}
             disabled={isDisabled(option)}
-            className="flex-row items-center justify-between py-4 border-b border-borderSelect"
+            className="flex-row items-center justify-between border-b border-borderSelect py-4"
           >
             <View className="flex-row items-center">
-              {option.icon && (
-                <Text className="mr-3 text-base">{option.icon}</Text>
-              )}
+              {option.icon && <Text className="mr-3 text-base">{option.icon}</Text>}
               <MyText size="text-base">{t(`${nameSpace}.${option.id}`)}</MyText>
             </View>
             <View
-              className={`
-               w-6 h-6 items-center justify-center rounded-md
-               ${
-                 isSelected(option)
-                   ? "bg-primary"
-                   : "border border-borderCheckbox"
-               }
-             `}
+              className={`h-6 w-6 items-center justify-center rounded-md ${
+                isSelected(option) ? 'bg-primary' : 'border border-borderCheckbox'
+              } `}
             >
               {isSelected(option) && <Check size={16} color="white" />}
             </View>
