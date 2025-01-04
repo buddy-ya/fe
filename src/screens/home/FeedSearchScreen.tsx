@@ -9,12 +9,9 @@ import { feedKeys } from '@/api/queryKeys';
 
 import { useFeedList } from '@/hooks';
 
-import MyText from '@/components/common/MyText';
-import InnerLayout from '@/components/common/layout/InnerLayout';
-import KeyboardLayout from '@/components/common/layout/KeyboardLayout';
-import Layout from '@/components/common/layout/Layout';
-import FeedList from '@/components/feed/FeedList';
 import FeedRepository from '@/api/FeedRepository';
+import { FeedList } from '@/components/feed';
+import { Layout, InnerLayout, KeyboardLayout, MyText } from '@/components/common';
 
 const SearchInput = ({ value, onChangeText, onSubmit, onClear, onFocusChange }) => {
   const { t } = useTranslation('feed');

@@ -5,11 +5,8 @@ import { useTranslation } from 'react-i18next';
 import { TouchableOpacity, TextInput, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { feedKeys } from '@/api/queryKeys';
-
-import MyText from '@/components/common/MyText';
-import InnerLayout from '@/components/common/layout/InnerLayout';
-import Layout from '@/components/common/layout/Layout';
 import CommentRepository from '@/api/CommentRepository';
+import { MyText, Layout, InnerLayout } from '@/components/common';
 
 export default function CommentEditScreen({ navigation, route }) {
   const { feedId, commentId, initialContent } = route.params;

@@ -11,14 +11,11 @@ import { feedKeys } from '@/api/queryKeys';
 import { getCertificationModalTexts } from '@/utils/constants/modalTexts';
 import { CATEGORIES } from '@/utils/constants/categories';
 
-import Button from '@/components/common/Button';
-import ConfirmModal from '@/components/common/ConfirmModal';
-import InnerLayout from '@/components/common/layout/InnerLayout';
-import Layout from '@/components/common/layout/Layout';
-import CategoryPager from '@/components/feed/CategoryPager';
-import FeedList from '@/components/feed/FeedList';
+
 import FeedRepository from '@/api/FeedRepository';
 import { useAuthCheck, useFeedList } from '@/hooks';
+import { CategoryPager, FeedList } from '@/components/feed';
+import { Layout, Button, ConfirmModal, InnerLayout } from '@/components/common';
 
 export default function HomeScreen({ navigation }) {
   const { t } = useTranslation('feed');

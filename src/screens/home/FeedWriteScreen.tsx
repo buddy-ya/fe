@@ -13,15 +13,9 @@ import { useModal } from '@/hooks';
 
 import { CATEGORIES } from '@/utils/constants/categories';
 
-import BottomModal from '@/components/common/BottomModal';
-import Loading from '@/components/common/Loading';
-import MyText from '@/components/common/MyText';
-import InnerLayout from '@/components/common/layout/InnerLayout';
-import KeyboardLayout from '@/components/common/layout/KeyboardLayout';
-import Layout from '@/components/common/layout/Layout';
-import { CategorySelectModal } from '@/components/feed/CategorySelectModal';
-import { ImagePreview } from '@/components/feed/ImagePreview';
 import FeedRepository from '@/api/FeedRepository';
+import { Layout, BottomModal, InnerLayout, KeyboardLayout, Loading, MyText } from '@/components/common';
+import { CategorySelectModal, ImagePreview } from '@/components/feed';
 
 interface ImageFile {
   uri: string;

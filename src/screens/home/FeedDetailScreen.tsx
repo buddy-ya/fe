@@ -10,15 +10,10 @@ import { feedKeys } from '@/api/queryKeys';
 
 import { getCertificationModalTexts } from '@/utils/constants/modalTexts';
 
-import BottomModal from '@/components/common/BottomModal';
-import ConfirmModal from '@/components/common/ConfirmModal';
-import KeyboardLayout from '@/components/common/layout/KeyboardLayout';
-import Layout from '@/components/common/layout/Layout';
-import { CommentInput } from '@/components/feed/CommentInput';
-import CommentList from '@/components/feed/CommentList';
-import FeedItem from '@/components/feed/FeedItem';
 import FeedRepository from '@/api/FeedRepository';
 import { useAuthCheck, useFeedDetail, useFeedModals } from '@/hooks';
+import { BottomModal, ConfirmModal, KeyboardLayout, Layout } from '@/components/common';
+import { CommentInput, CommentList, FeedItem } from '@/components/feed';
 
 export default function FeedDetailScreen({ navigation, route }) {
   const { feedId } = route.params;
