@@ -1,4 +1,4 @@
-import apiClient from "../apiClient";
+import apiClient from "./apiClient";
 
 // 인증/인가 관련 API를 다루는 클래스
 class AuthRepository {

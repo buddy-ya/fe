@@ -18,7 +18,7 @@ import ErrorMessage from '@/components/onboarding/ErrorMessage';
 import Heading from '@/components/onboarding/Heading';
 import HeadingDescription from '@/components/onboarding/HeadingDescription';
 import Label from '@/components/onboarding/Label';
-import AuthRepository from '@/api/auth/AuthRepository';
+import AuthRepository from '@/api/AuthRepository';
 
 const VERIFICATION_EXPIRE_SECONDS = 180;
 

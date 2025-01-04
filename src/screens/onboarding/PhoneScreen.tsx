@@ -12,7 +12,7 @@ import ErrorMessage from '@/components/onboarding/ErrorMessage';
 import Heading from '@/components/onboarding/Heading';
 import HeadingDescription from '@/components/onboarding/HeadingDescription';
 import Label from '@/components/onboarding/Label';
-import AuthRepository from '@/api/auth/AuthRepository';
+import AuthRepository from '@/api/AuthRepository';
 
 const COUNTRY_CODE = '+82';
 const MAX_PHONE_LENGTH = 11;

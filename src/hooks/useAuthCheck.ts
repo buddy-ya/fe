@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { ModalTexts } from "@/utils/constants/ModalTexts";
-import AuthRepository from "@/api/auth/AuthRepository";
+import AuthRepository from "@/api/AuthRepository";
 
 export function useAuthCheck() {
   const [isModalVisible, setIsModalVisible] = useState(false);

@@ -1,4 +1,4 @@
-import AuthRepository from "@/api/auth/AuthRepository";
+import AuthRepository from "@/api/AuthRepository";
 import { TOKEN } from "@/utils/constants/auth";
 import { logError } from "@/utils/service/error";
 import { processImageForUpload } from "@/utils/service/image";
