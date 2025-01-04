@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { getIsCertificated } from "@/api/certification/certification";
 import { ModalTexts } from "@/utils/constants/ModalTexts";
+import AuthRepository from "@/api/auth/AuthRepository";
 
 export function useAuthCheck() {
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -10,7 +10,7 @@ export function useAuthCheck() {
 
   const checkAuth = async () => {
     try {
-      return await getIsCertificated();
+      return await AuthRepository.checkCertificated();
     } catch (error) {
       console.error("Auth check failed:", error);
       throw error;

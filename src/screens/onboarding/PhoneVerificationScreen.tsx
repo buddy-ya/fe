@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 import { useOnboardingStore } from '@/store/onboarding';
-import { postPhoneVerification, postPhoneVerifyCode } from '@/api/auth/phone';
 import useTimer from '@/hooks/useTimer';
 import { saveTokens } from '@/utils/service/auth';
 import { logError } from '@/utils/service/error';
@@ -19,6 +18,7 @@ import ErrorMessage from '@/components/onboarding/ErrorMessage';
 import Heading from '@/components/onboarding/Heading';
 import HeadingDescription from '@/components/onboarding/HeadingDescription';
 import Label from '@/components/onboarding/Label';
+import AuthRepository from '@/api/auth/AuthRepository';
 
 const VERIFICATION_EXPIRE_SECONDS = 180;
 
@@ -34,7 +34,7 @@ export default function PhoneVerificationScreen({ navigation, route }) {
 
   const { timeLeft, isExpired, restart } = useTimer({
     seconds: VERIFICATION_EXPIRE_SECONDS,
-    onExpire: () => {},
+    onExpire: () => { },
   });
 
   const resetVerification = () => {
@@ -45,7 +45,7 @@ export default function PhoneVerificationScreen({ navigation, route }) {
 
   const handleResendCode = async () => {
     try {
-      await postPhoneVerification(phoneNumber);
+      await AuthRepository.sendCodeByPhone(phoneNumber);
       resetVerification();
     } catch (error) {
       logError(error);
@@ -54,7 +54,7 @@ export default function PhoneVerificationScreen({ navigation, route }) {
 
   const handleVerifyCode = async () => {
     try {
-      const { data } = await postPhoneVerifyCode(phoneNumber, verificationCode);
+      const { data } = await AuthRepository.verifyCodeByPhone(phoneNumber, verificationCode);
       setShowError(false);
       updateOnboardingData({ phoneNumber });
       if (data.status === 'EXISTING_MEMBER') {
