@@ -7,6 +7,7 @@ import { getAccessToken, getRefreshToken, removeTokens, saveTokens } from '@/uti
 
 export const apiClient = axios.create({
   baseURL: BASE_URL,
+  headers: { 'Content-Type': 'application/json' }
 });
 
 const reissueTokens = async (refreshToken: string) => {
@@ -14,7 +15,6 @@ const reissueTokens = async (refreshToken: string) => {
     method: 'post',
     url: `${BASE_URL}/auth/reissue`,
     data: { refreshToken },
-    headers: { 'Content-Type': 'application/json' },
   });
   return response.data;
 };
