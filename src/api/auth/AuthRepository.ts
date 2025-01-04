@@ -2,7 +2,7 @@ import apiClient from "../apiClient";
 import { processImageForUpload } from "@/utils/service/image";
 import { logError } from "@/utils/service/error";
 
-// 로그인 전 API를 다루는 Repository
+// 인증/인가 관련 API를 다루는 클래스
 class AuthRepository {
 
     async sendCodeByPhone(phoneNumber: string) {
@@ -33,6 +33,7 @@ class AuthRepository {
             logError(error);
         }
     };
+
     async uploadStudentIdCard(image) {
         const formData = new FormData();
         formData.append("image", processImageForUpload(image));
