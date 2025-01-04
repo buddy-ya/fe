@@ -1,16 +1,12 @@
 import { useQueryClient } from '@tanstack/react-query';
 import { MoreVertical } from 'lucide-react-native';
 
-import React, { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 import { useTranslation } from 'react-i18next';
 import { TouchableOpacity, ScrollView, Keyboard, RefreshControl, Alert } from 'react-native';
 
 import { feedKeys } from '@/api/queryKeys';
-
-import { useAuthCheck } from '@/hooks/useAuthCheck';
-import { useFeedDetail } from '@/hooks/useFeedDetail';
-import { useFeedModals } from '@/hooks/useFeedModal';
 
 import { getCertificationModalTexts } from '@/utils/constants/modalTexts';
 
@@ -22,6 +18,7 @@ import { CommentInput } from '@/components/feed/CommentInput';
 import CommentList from '@/components/feed/CommentList';
 import FeedItem from '@/components/feed/FeedItem';
 import FeedRepository from '@/api/FeedRepository';
+import { useAuthCheck, useFeedDetail, useFeedModals } from '@/hooks';
 
 export default function FeedDetailScreen({ navigation, route }) {
   const { feedId } = route.params;
@@ -68,7 +65,7 @@ export default function FeedDetailScreen({ navigation, route }) {
     onDeleteFeed: () => {
       showDeleteAlert(async () => {
         setIsDeleted(true);
-        await FeedRepository.delete(feedId);
+        await FeedRepository.delete({ feedId });
         queryClient.invalidateQueries({ queryKey: feedKeys.all });
         feedModal.closeModal();
         navigation.goBack();

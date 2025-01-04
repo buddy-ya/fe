@@ -20,7 +20,7 @@ export default function CommentEditScreen({ navigation, route }) {
 
   const updateCommentMutation = useMutation({
     mutationFn: ({ commentId, content }: { commentId: number; content: string }) =>
-      CommentRepository.update(feedId, commentId, content),
+      CommentRepository.update({ feedId, commentId, content }),
     onSuccess: (updatedComment) => {
       queryClient.setQueryData(['feedComments', feedId], (old: any) => ({
         ...old,

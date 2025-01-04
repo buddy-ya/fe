@@ -23,7 +23,7 @@ class FeedRepository {
         return data;
     };
 
-    async create({ feedData }: Feed.CreateDTO) {
+    async create(feedData: Feed.CreateDTO) {
         const formData = createFeedFormData(feedData);
         const { data } = await API.post("/feeds", formData, {
             headers: {
@@ -33,7 +33,7 @@ class FeedRepository {
         return data;
     };
 
-    async update({ feedId, feedData }: Feed.UpdateDTO) {
+    async update({ feedId, ...feedData }: Feed.UpdateDTO) {
         const formData = createFeedFormData(feedData);
         const { data } = await API.patch(`/feeds/${feedId}`, formData, {
             headers: {

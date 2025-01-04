@@ -151,13 +151,13 @@ export default function FeedWriteScreen({ navigation, route }) {
       setIsLoading(true);
       if (isEdit && feed) {
         await FeedRepository.update({
-          feedId: feed.id, feedData: {
-            title: title.trim(),
-            content: content.trim(),
-            category: selectedCategory.id,
-            images,
-          }
-        });
+          feedId: feed.id,
+          title: title.trim(),
+          content: content.trim(),
+          category: selectedCategory.id,
+          images,
+        }
+        );
         queryClient.invalidateQueries({ queryKey: feedKeys.detail(feed.id) });
         queryClient.invalidateQueries({
           queryKey: feedKeys.lists(selectedCategory.id),
