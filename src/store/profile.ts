@@ -1,4 +1,4 @@
-import { getProfile } from "@/api/mypage/mypage";
+import UserRepository from "@/api/mypage/UserRepository";
 import { type CountryID } from "@/utils/constants/countries";
 import { create } from "zustand";
 
@@ -36,7 +36,7 @@ export const useProfileStore = create<ProfileStore>((set) => ({
   profile: defaultProfile,
   setProfile: (profile) => set({ profile }),
   fetchProfile: async () => {
-    const profileData = await getProfile();
+    const profileData = await UserRepository.get();
     set({ profile: profileData });
   },
 }));

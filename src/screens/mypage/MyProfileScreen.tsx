@@ -1,22 +1,16 @@
-import { Pencil, RefreshCcw, RefreshCw } from 'lucide-react-native';
-
+import { Pencil, RefreshCcw } from 'lucide-react-native';
 import React, { useEffect } from 'react';
-
 import { useTranslation } from 'react-i18next';
 import { View, ScrollView, Image, TouchableOpacity } from 'react-native';
-
 import { useProfileStore } from '@/store/profile';
-
-import { getProfile } from '@/api/mypage/mypage';
-
 import { getCountryFlag } from '@/utils/constants/countries';
 import { INTEREST_ICONS } from '@/utils/constants/interests';
 import { MAJOR_ICONS } from '@/utils/constants/majors';
-
 import { Chip } from '@/components/common/Chip';
 import MyText from '@/components/common/MyText';
 import InnerLayout from '@/components/common/layout/InnerLayout';
 import Layout from '@/components/common/layout/Layout';
+import UserRepository from '@/api/mypage/UserRepository';
 
 export default function MyProfileScreen({ navigation }) {
   const { t } = useTranslation(['mypage', 'interests', 'countries', 'languages', 'majors']);
@@ -24,7 +18,7 @@ export default function MyProfileScreen({ navigation }) {
   const { profile, setProfile } = useProfileStore();
 
   const fetchMyProfile = async () => {
-    const profileData = await getProfile();
+    const profileData = await UserRepository.get();
     setProfile(profileData);
   };
 

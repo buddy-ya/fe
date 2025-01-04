@@ -1,20 +1,14 @@
 import LogoIcon from '@assets/icons/logo.svg';
 import { Bell, Bookmark, ChevronRight, NotebookPen, Settings } from 'lucide-react-native';
-
 import React, { useEffect } from 'react';
-
 import { useTranslation } from 'react-i18next';
 import { View, TouchableOpacity, Image } from 'react-native';
-
 import { useProfileStore } from '@/store/profile';
-
-import { getProfile } from '@/api/mypage/mypage';
-
 import { getCountryFlag } from '@/utils/constants/countries';
-
 import MyText from '@/components/common/MyText';
 import InnerLayout from '@/components/common/layout/InnerLayout';
 import Layout from '@/components/common/layout/Layout';
+import UserRepository from '@/api/mypage/UserRepository';
 
 const SettingItem = ({ label, onPress }) => (
   <TouchableOpacity onPress={onPress} className="flex-row items-center justify-between px-4 py-4 bg-white">
@@ -28,7 +22,7 @@ export default function MyPageScreen({ navigation }) {
   const { profile, setProfile } = useProfileStore();
 
   const fetchMyProfile = async () => {
-    const profileData = await getProfile();
+    const profileData = await UserRepository.get();
     setProfile(profileData);
   };
 
