@@ -4,14 +4,14 @@ interface BaseDTO {
     feedId: number;
 }
 
-interface BaseSearchDTO {
+interface SearchDTO {
     page?: number;
     size?: number;
 }
 
 export interface GetDTO extends BaseDTO { }
 
-export interface GetAllDTO extends BaseSearchDTO {
+export interface GetAllDTO extends SearchDTO {
     category: string;
 }
 
@@ -25,15 +25,13 @@ export interface UpdateDTO extends BaseDTO {
 
 export interface DeleteDTO extends BaseDTO { }
 
-export interface SearchFeedsDTO extends BaseSearchDTO {
+export interface SearchFeedsDTO extends SearchDTO {
     category: string;
     keyword: string;
 }
 
-export interface GetBookmarkedFeedsDTO extends BaseSearchDTO { }
+export interface GetBookmarkedFeedsDTO extends SearchDTO { }
 
-export interface GetMyPostsDTO extends BaseSearchDTO { }
+export interface GetMyPostsDTO extends SearchDTO { }
 
-export interface ToggleLikeDTO extends BaseDTO { }
-
-export interface ToggleBookmarkDTO extends BaseDTO { }
+export interface ToggleDTO extends BaseDTO { }
