@@ -1,10 +1,10 @@
-import apiClient from "./apiClient";
+import API from "./API";
 import { createFeedFormData, FeedFormData } from "@/utils/service/formData";
 
 class FeedRepository {
 
     async get(feedId: number) {
-        const { data } = await apiClient.get(`/feeds/${feedId}`);
+        const { data } = await API.get(`/feeds/${feedId}`);
         return data;
     };
 
@@ -13,13 +13,13 @@ class FeedRepository {
         page?: number;
         size?: number;
     }) {
-        const { data } = await apiClient.get("/feeds", { params });
+        const { data } = await API.get("/feeds", { params });
         return data;
     };
 
     async create(feedData: FeedFormData) {
         const formData = createFeedFormData(feedData);
-        const { data } = await apiClient.post("/feeds", formData, {
+        const { data } = await API.post("/feeds", formData, {
             headers: {
                 "Content-Type": "multipart/form-data",
             },
@@ -30,7 +30,7 @@ class FeedRepository {
     async update(feedId: number, feedData: FeedFormData) {
         const formData = createFeedFormData(feedData);
 
-        return await apiClient.patch(`/feeds/${feedId}`, formData, {
+        return await API.patch(`/feeds/${feedId}`, formData, {
             headers: {
                 "Content-Type": "multipart/form-data",
             },
@@ -38,7 +38,7 @@ class FeedRepository {
     };
 
     async deleteFeed(feedId: number) {
-        return await apiClient.delete(`/feeds/${feedId}`);
+        return await API.delete(`/feeds/${feedId}`);
     };
 
 
@@ -48,7 +48,7 @@ class FeedRepository {
         page?: number;
         size?: number;
     }) {
-        const { data } = await apiClient.get("/feeds", { params });
+        const { data } = await API.get("/feeds", { params });
         return data;
     };
 
@@ -56,22 +56,22 @@ class FeedRepository {
         page?: number;
         size?: number;
     }) {
-        const { data } = await apiClient.get("/mypage/bookmark", { params });
+        const { data } = await API.get("/mypage/bookmark", { params });
         return data;
     };
 
     async getMyPosts(params: { page?: number; size?: number }) {
-        const { data } = await apiClient.get("/mypage/myfeed", { params });
+        const { data } = await API.get("/mypage/myfeed", { params });
         return data;
     };
 
     async toggleLike(feedId: number) {
-        const { data } = await apiClient.put(`/feeds/${feedId}/like`);
+        const { data } = await API.put(`/feeds/${feedId}/like`);
         return data;
     };
 
     async toggleBookmark(feedId: number) {
-        const { data } = await apiClient.put(`/feeds/${feedId}/bookmark`);
+        const { data } = await API.put(`/feeds/${feedId}/bookmark`);
         return data;
     };
 }

@@ -1,9 +1,9 @@
-import apiClient from "./apiClient";
+import API from "./API";
 
 class CommentRepository {
 
     async create(feedId: number, content: string) {
-        const { data } = await apiClient.post(`/feeds/${feedId}/comments`, {
+        const { data } = await API.post(`/feeds/${feedId}/comments`, {
             content,
         });
         return data;
@@ -14,7 +14,7 @@ class CommentRepository {
         commentId: number,
         content: string
     ) {
-        const { data } = await apiClient.patch(
+        const { data } = await API.patch(
             `/feeds/${feedId}/comments/${commentId}`,
             {
                 content,
@@ -24,11 +24,11 @@ class CommentRepository {
     };
 
     async delete(feedId: number, commentId: number) {
-        return await apiClient.delete(`/feeds/${feedId}/comments/${commentId}`);
+        return await API.delete(`/feeds/${feedId}/comments/${commentId}`);
     };
 
     async getCommentsByFeedId(feedId: number) {
-        const { data } = await apiClient.get(`/feeds/${feedId}/comments`);
+        const { data } = await API.get(`/feeds/${feedId}/comments`);
         return data;
     };
 
