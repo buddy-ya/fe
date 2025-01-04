@@ -7,7 +7,7 @@ export interface CreateDTO extends BaseDTO {
 }
 
 export interface UpdateDTO extends BaseDTO {
-    commentId: string;
+    commentId: number;
     content: string;
 }
 

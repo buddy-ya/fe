@@ -15,13 +15,10 @@ export interface GetAllDTO extends SearchDTO {
     category: string;
 }
 
-export interface CreateDTO {
-    feedData: FeedFormData
+export interface CreateDTO extends FeedFormData {
 }
 
-export interface UpdateDTO extends BaseDTO {
-    feedData: FeedFormData
-}
+export interface UpdateDTO extends BaseDTO, FeedFormData { }
 
 export interface DeleteDTO extends BaseDTO { }
 
