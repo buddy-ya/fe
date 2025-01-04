@@ -1,23 +1,29 @@
 import API from "./API";
+import { Feed } from "@/types";
+import { GetBookmarkedFeedsDTO } from "@/types/FeedDTO";
 import { createFeedFormData, FeedFormData } from "@/utils/service/formData";
 
 class FeedRepository {
 
-    async get(feedId: number) {
+    async get({ feedId }: Feed.GetDTO) {
         const { data } = await API.get(`/feeds/${feedId}`);
         return data;
     };
 
-    async getAll(params: {
-        category: string;
-        page?: number;
-        size?: number;
-    }) {
-        const { data } = await API.get("/feeds", { params });
+    async getAll({
+        category,
+        page,
+        size,
+    }: Feed.GetAllDTO) {
+        const { data } = await API.get("/feeds", {
+            params: {
+                category, page, size
+            }
+        });
         return data;
     };
 
-    async create(feedData: FeedFormData) {
+    async create({ feedData }: Feed.CreateDTO) {
         const formData = createFeedFormData(feedData);
         const { data } = await API.post("/feeds", formData, {
             headers: {
@@ -27,50 +33,66 @@ class FeedRepository {
         return data;
     };
 
-    async update(feedId: number, feedData: FeedFormData) {
+    async update({ feedId, feedData }: Feed.UpdateDTO) {
         const formData = createFeedFormData(feedData);
-
-        return await API.patch(`/feeds/${feedId}`, formData, {
+        const { data } = await API.patch(`/feeds/${feedId}`, formData, {
             headers: {
                 "Content-Type": "multipart/form-data",
             },
         });
-    };
-
-    async delete(feedId: number) {
-        return await API.delete(`/feeds/${feedId}`);
-    };
-
-
-    async searchFeeds(params: {
-        category: string;
-        keyword: string;
-        page?: number;
-        size?: number;
-    }) {
-        const { data } = await API.get("/feeds", { params });
         return data;
     };
 
-    async getBookmarkedFeeds(params: {
-        page?: number;
-        size?: number;
-    }) {
-        const { data } = await API.get("/mypage/bookmark", { params });
+    async delete({ feedId }: Feed.DeleteDTO) {
+        const { data } = await API.delete(`/feeds/${feedId}`);
         return data;
     };
 
-    async getMyPosts(params: { page?: number; size?: number }) {
-        const { data } = await API.get("/mypage/myfeed", { params });
+    async searchFeeds({
+        category,
+        keyword,
+        page,
+        size
+    }: Feed.SearchFeedsDTO) {
+        const { data } = await API.get("/feeds", {
+            params: {
+                category,
+                keyword,
+                page,
+                size
+            }
+        });
         return data;
     };
 
-    async toggleLike(feedId: number) {
+    async getBookmarkedFeeds({
+        page,
+        size,
+    }: GetBookmarkedFeedsDTO) {
+        const { data } = await API.get("/mypage/bookmark", {
+            params: {
+                page,
+                size
+            }
+        });
+        return data;
+    };
+
+    async getMyPosts({ page, size }: Feed.GetMyPostsDTO) {
+        const { data } = await API.get("/mypage/myfeed", {
+            params: {
+                page, size
+            }
+        });
+        return data;
+    };
+
+    async toggleLike({ feedId }: Feed.ToggleDTO) {
         const { data } = await API.put(`/feeds/${feedId}/like`);
         return data;
     };
 
-    async toggleBookmark(feedId: number) {
+    async toggleBookmark({ feedId }: Feed.ToggleDTO) {
         const { data } = await API.put(`/feeds/${feedId}/bookmark`);
         return data;
     };
