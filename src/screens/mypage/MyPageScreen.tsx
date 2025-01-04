@@ -8,7 +8,7 @@ import { getCountryFlag } from '@/utils/constants/countries';
 import MyText from '@/components/common/MyText';
 import InnerLayout from '@/components/common/layout/InnerLayout';
 import Layout from '@/components/common/layout/Layout';
-import UserRepository from '@/api/mypage/UserRepository';
+import UserRepository from '@/api/UserRepository';
 
 const SettingItem = ({ label, onPress }) => (
   <TouchableOpacity onPress={onPress} className="flex-row items-center justify-between px-4 py-4 bg-white">

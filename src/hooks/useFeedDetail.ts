@@ -1,8 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { getFeed, getFeedComments } from "@/api/feed/getFeed";
-import { toggleBookmark, toggleLike } from "@/api/feed/getFeeds";
 import { feedKeys } from "@/api/queryKeys";
 import CommentRepository from "@/api/CommentRepository";
+import FeedRepository from "@/api/FeedRepository";
 
 interface UseFeedDetailProps {
   feedId: number;
@@ -21,25 +20,25 @@ export const useFeedDetail = ({
     isRefetching: isRefetchingFeed,
   } = useQuery({
     queryKey: feedKeys.detail(feedId),
-    queryFn: () => getFeed(feedId),
+    queryFn: () => FeedRepository.get(feedId),
     enabled,
   });
 
   const { data: commentsData, refetch: refetchComments } = useQuery({
     queryKey: ["feedComments", feedId],
-    queryFn: () => getFeedComments(feedId),
+    queryFn: () => CommentRepository.getCommentsByFeedId(feedId),
     enabled,
   });
 
   const likeMutation = useMutation({
-    mutationFn: toggleLike,
+    mutationFn: FeedRepository.toggleLike,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: feedKeys.all });
     },
   });
 
   const bookmarkMutation = useMutation({
-    mutationFn: toggleBookmark,
+    mutationFn: FeedRepository.toggleBookmark,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: feedKeys.all });
     },

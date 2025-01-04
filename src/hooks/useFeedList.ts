@@ -1,8 +1,8 @@
 import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
 import { updateFeedList } from "@/utils/service/optimisticUpdate";
 import { logError } from "@/utils/service/error";
-import { toggleBookmark, toggleLike } from "@/api/feed/getFeeds";
 import { FeedListResponse } from "@/screens/home/types";
+import FeedRepository from "@/api/FeedRepository";
 
 interface UseFeedListProps {
   queryKey: string[];
@@ -56,7 +56,7 @@ export const useFeedList = ({
   const handleLike = async (id: number) => {
     try {
       updateFeedList.like(queryClient, queryKey, id);
-      await toggleLike(id);
+      await FeedRepository.toggleLike(id);
     } catch (error) {
       logError(error);
       refetch();
@@ -66,7 +66,7 @@ export const useFeedList = ({
   const handleBookmark = async (id: number) => {
     try {
       updateFeedList.bookmark(queryClient, queryKey, id);
-      await toggleBookmark(id);
+      await FeedRepository.toggleBookmark(id);
     } catch (error) {
       logError(error);
       refetch();
