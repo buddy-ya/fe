@@ -10,8 +10,7 @@ import { feedKeys } from '@/api/queryKeys';
 import { useFeedList } from '@/hooks';
 
 import FeedRepository from '@/api/FeedRepository';
-import { FeedList } from '@/components/feed';
-import { Layout, InnerLayout, KeyboardLayout, MyText } from '@/components/common';
+import { Layout, InnerLayout, KeyboardLayout, MyText, FeedList } from '@/components';
 
 const SearchInput = ({ value, onChangeText, onSubmit, onClear, onFocusChange }) => {
   const { t } = useTranslation('feed');

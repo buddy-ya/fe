@@ -6,7 +6,7 @@ import { TouchableOpacity, TextInput, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { feedKeys } from '@/api/queryKeys';
 import CommentRepository from '@/api/CommentRepository';
-import { MyText, Layout, InnerLayout } from '@/components/common';
+import { MyText, Layout, InnerLayout } from '@/components';
 
 export default function CommentEditScreen({ navigation, route }) {
   const { feedId, commentId, initialContent } = route.params;

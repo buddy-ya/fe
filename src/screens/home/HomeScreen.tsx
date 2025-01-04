@@ -14,8 +14,7 @@ import { CATEGORIES } from '@/utils/constants/categories';
 
 import FeedRepository from '@/api/FeedRepository';
 import { useAuthCheck, useFeedList } from '@/hooks';
-import { CategoryPager, FeedList } from '@/components/feed';
-import { Layout, Button, ConfirmModal, InnerLayout } from '@/components/common';
+import { Layout, Button, ConfirmModal, InnerLayout, CategoryPager, FeedList } from '@/components';
 
 export default function HomeScreen({ navigation }) {
   const { t } = useTranslation('feed');

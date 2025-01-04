@@ -14,8 +14,7 @@ import { useModal } from '@/hooks';
 import { CATEGORIES } from '@/utils/constants/categories';
 
 import FeedRepository from '@/api/FeedRepository';
-import { Layout, BottomModal, InnerLayout, KeyboardLayout, Loading, MyText } from '@/components/common';
-import { CategorySelectModal, ImagePreview } from '@/components/feed';
+import { Layout, BottomModal, InnerLayout, KeyboardLayout, Loading, MyText, CategorySelectModal, ImagePreview } from '@/components';
 
 interface ImageFile {
   uri: string;

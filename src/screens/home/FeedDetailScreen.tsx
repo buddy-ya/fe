@@ -12,8 +12,7 @@ import { getCertificationModalTexts } from '@/utils/constants/modalTexts';
 
 import FeedRepository from '@/api/FeedRepository';
 import { useAuthCheck, useFeedDetail, useFeedModals } from '@/hooks';
-import { BottomModal, ConfirmModal, KeyboardLayout, Layout } from '@/components/common';
-import { CommentInput, CommentList, FeedItem } from '@/components/feed';
+import { BottomModal, ConfirmModal, KeyboardLayout, Layout, CommentInput, CommentList, FeedItem } from '@/components';
 
 export default function FeedDetailScreen({ navigation, route }) {
   const { feedId } = route.params;
