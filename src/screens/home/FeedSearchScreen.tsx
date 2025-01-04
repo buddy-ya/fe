@@ -7,7 +7,7 @@ import { View, TextInput, TouchableOpacity } from 'react-native';
 
 import { feedKeys } from '@/api/queryKeys';
 
-import { useFeedList } from '@/hooks/useFeedList';
+import { useFeedList } from '@/hooks';
 
 import MyText from '@/components/common/MyText';
 import InnerLayout from '@/components/common/layout/InnerLayout';

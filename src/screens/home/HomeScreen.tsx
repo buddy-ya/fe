@@ -8,9 +8,6 @@ import { TouchableOpacity, View } from 'react-native';
 
 import { feedKeys } from '@/api/queryKeys';
 
-import { useAuthCheck } from '@/hooks/useAuthCheck';
-import { useFeedList } from '@/hooks/useFeedList';
-
 import { getCertificationModalTexts } from '@/utils/constants/modalTexts';
 import { CATEGORIES } from '@/utils/constants/categories';
 
@@ -21,6 +18,7 @@ import Layout from '@/components/common/layout/Layout';
 import CategoryPager from '@/components/feed/CategoryPager';
 import FeedList from '@/components/feed/FeedList';
 import FeedRepository from '@/api/FeedRepository';
+import { useAuthCheck, useFeedList } from '@/hooks';
 
 export default function HomeScreen({ navigation }) {
   const { t } = useTranslation('feed');

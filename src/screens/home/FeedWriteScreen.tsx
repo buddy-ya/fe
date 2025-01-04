@@ -9,7 +9,7 @@ import { View, TouchableOpacity, TextInput, ScrollView, Alert } from 'react-nati
 
 import { feedKeys } from '@/api/queryKeys';
 
-import { useModal } from '@/hooks/useModal';
+import { useModal } from '@/hooks';
 
 import { CATEGORIES } from '@/utils/constants/categories';
 
@@ -150,11 +150,13 @@ export default function FeedWriteScreen({ navigation, route }) {
     try {
       setIsLoading(true);
       if (isEdit && feed) {
-        await FeedRepository.update(feed.id, {
-          title: title.trim(),
-          content: content.trim(),
-          category: selectedCategory.id,
-          images,
+        await FeedRepository.update({
+          feedId: feed.id, feedData: {
+            title: title.trim(),
+            content: content.trim(),
+            category: selectedCategory.id,
+            images,
+          }
         });
         queryClient.invalidateQueries({ queryKey: feedKeys.detail(feed.id) });
         queryClient.invalidateQueries({
