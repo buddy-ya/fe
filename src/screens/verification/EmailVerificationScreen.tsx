@@ -5,8 +5,6 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 
-import { verifyEmailCode, sendEmail } from '@/api/certification/certification';
-
 import LinkText from '@/components/common/LinkText';
 import MyText from '@/components/common/MyText';
 import OTPInput from '@/components/common/OTPInput';
@@ -18,6 +16,7 @@ import ErrorMessage from '@/components/onboarding/ErrorMessage';
 import Heading from '@/components/onboarding/Heading';
 import HeadingDescription from '@/components/onboarding/HeadingDescription';
 import Label from '@/components/onboarding/Label';
+import AuthRepository from '@/api/AuthRepository';
 
 export default function EmailVerificationScreen({ navigation, route }) {
   const { t } = useTranslation('certification');
@@ -28,7 +27,7 @@ export default function EmailVerificationScreen({ navigation, route }) {
   const [isSubmiting, setisSubmiting] = useState(false);
 
   const handleResend = async () => {
-    await sendEmail({ email, univName });
+    await AuthRepository.sendCodeByMail({ email, univName });
     setCode('');
     setVerificationError(false);
   };
@@ -37,7 +36,7 @@ export default function EmailVerificationScreen({ navigation, route }) {
     if (isSubmiting) return;
 
     setisSubmiting(true);
-    const { success } = await verifyEmailCode({
+    const { success } = await AuthRepository.verifyCodeByMail({
       email,
       univName,
       code,

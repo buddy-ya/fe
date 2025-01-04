@@ -5,11 +5,10 @@ import { View, Image, TouchableOpacity, ScrollView } from 'react-native';
 
 import { useProfileStore } from '@/store/profile';
 
-import { updateProfileImage } from '@/api/mypage/mypage';
-
 import MyText from '@/components/common/MyText';
 import InnerLayout from '@/components/common/layout/InnerLayout';
 import Layout from '@/components/common/layout/Layout';
+import UserRepository from '@/api/UserRepository';
 
 const PROFILE_IMAGES = [
   'https://buddyya.s3.ap-northeast-2.amazonaws.com/default-profile-image/image1.png',
@@ -36,7 +35,7 @@ export default function EditProfileImageScreen({ navigation }) {
   const handleComplete = async () => {
     const imageKey = selectedImage.split('/').pop()?.replace('.png', '');
     if (!imageKey) return;
-    await updateProfileImage(imageKey);
+    await UserRepository.updateProfileImage(imageKey);
     navigation.goBack();
   };
 

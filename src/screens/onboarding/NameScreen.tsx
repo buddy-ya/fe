@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { TextInput } from 'react-native';
 import { useOnboardingStore } from '@/store/onboarding';
-import { updateName } from '@/api/mypage/mypage';
 import MyText from '@/components/common/MyText';
 import FooterLayout from '@/components/common/layout/FooterLayout';
 import InnerLayout from '@/components/common/layout/InnerLayout';
@@ -13,6 +12,7 @@ import ErrorMessage from '@/components/onboarding/ErrorMessage';
 import Heading from '@/components/onboarding/Heading';
 import HeadingDescription from '@/components/onboarding/HeadingDescription';
 import Label from '@/components/onboarding/Label';
+import UserRepository from '@/api/UserRepository';
 
 const MIN_NAME_LENGTH = 2;
 const MAX_NAME_LENGTH = 15;
@@ -39,7 +39,7 @@ export default function NameScreen({ navigation, route }) {
     const trimmedName = name.trim();
 
     if (mode === 'edit') {
-      await updateName(trimmedName);
+      await UserRepository.updateName(trimmedName);
       navigation.goBack();
     } else {
       updateOnboardingData({ name: trimmedName });

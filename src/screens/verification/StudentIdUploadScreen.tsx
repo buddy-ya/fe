@@ -6,9 +6,6 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { View, TouchableOpacity, Image, Platform } from 'react-native';
 
-import { postStudentIdVerification } from '@/api/certification/certification';
-
-import { getAccessToken, getRefreshToken } from '@/utils/service/auth';
 import { logError } from '@/utils/service/error';
 
 import Button from '@/components/common/Button';
@@ -17,6 +14,9 @@ import InnerLayout from '@/components/common/layout/InnerLayout';
 import Layout from '@/components/common/layout/Layout';
 import Heading from '@/components/onboarding/Heading';
 import HeadingDescription from '@/components/onboarding/HeadingDescription';
+import AuthRepository from '@/api/AuthRepository';
+import { processImageForUpload } from '@/utils/service/image';
+import { ImageFile } from '../home/types';
 
 export default function StudentIdCardUploadScreen({ navigation }) {
   const { t } = useTranslation('certification');
@@ -47,9 +47,10 @@ export default function StudentIdCardUploadScreen({ navigation }) {
     try {
       if (!selectedImage) return;
 
-      await postStudentIdVerification({
-        selectedImage,
-      });
+      const formData = new FormData();
+      // TODO: 테스트 필요
+      formData.append("image", processImageForUpload(selectedImage as ImageFile));
+      await AuthRepository.uploadStudentIdCard(formData);
 
       navigation.navigate('StudentIdComplete');
     } catch (error) {

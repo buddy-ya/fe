@@ -5,10 +5,6 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { View, TextInput } from 'react-native';
 
-import { useOnboardingStore } from '@/store/onboarding';
-
-import { sendEmail } from '@/api/certification/certification';
-
 import MyText from '@/components/common/MyText';
 import FooterLayout from '@/components/common/layout/FooterLayout';
 import InnerLayout from '@/components/common/layout/InnerLayout';
@@ -18,6 +14,7 @@ import ErrorMessage from '@/components/onboarding/ErrorMessage';
 import Heading from '@/components/onboarding/Heading';
 import HeadingDescription from '@/components/onboarding/HeadingDescription';
 import Label from '@/components/onboarding/Label';
+import AuthRepository from '@/api/AuthRepository';
 
 const EMAIL_REGEX = /^[A-Za-z0-9]+$/;
 
@@ -38,7 +35,7 @@ export default function EmailScreen({ navigation }) {
       email: fullEmail,
       univName,
     };
-    await sendEmail(requestBody);
+    await AuthRepository.sendCodeByMail(requestBody);
     navigation.navigate('EmailVerificationCode', {
       email: fullEmail,
       univName,

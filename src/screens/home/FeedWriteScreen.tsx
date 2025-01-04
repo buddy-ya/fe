@@ -7,7 +7,6 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { View, TouchableOpacity, TextInput, ScrollView, Alert } from 'react-native';
 
-import { createFeed, updateFeed } from '@/api/feed/feedAction';
 import { feedKeys } from '@/api/queryKeys';
 
 import { useModal } from '@/hooks/useModal';
@@ -22,6 +21,7 @@ import KeyboardLayout from '@/components/common/layout/KeyboardLayout';
 import Layout from '@/components/common/layout/Layout';
 import { CategorySelectModal } from '@/components/feed/CategorySelectModal';
 import { ImagePreview } from '@/components/feed/ImagePreview';
+import FeedRepository from '@/api/FeedRepository';
 
 interface ImageFile {
   uri: string;
@@ -150,7 +150,7 @@ export default function FeedWriteScreen({ navigation, route }) {
     try {
       setIsLoading(true);
       if (isEdit && feed) {
-        await updateFeed(feed.id, {
+        await FeedRepository.update(feed.id, {
           title: title.trim(),
           content: content.trim(),
           category: selectedCategory.id,
@@ -161,7 +161,7 @@ export default function FeedWriteScreen({ navigation, route }) {
           queryKey: feedKeys.lists(selectedCategory.id),
         });
       } else {
-        await createFeed({
+        await FeedRepository.create({
           title: title.trim(),
           content: content.trim(),
           category: selectedCategory.id,

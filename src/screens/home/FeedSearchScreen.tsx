@@ -5,7 +5,6 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { View, TextInput, TouchableOpacity } from 'react-native';
 
-import { searchFeeds } from '@/api/feed/getFeeds';
 import { feedKeys } from '@/api/queryKeys';
 
 import { useFeedList } from '@/hooks/useFeedList';
@@ -15,6 +14,7 @@ import InnerLayout from '@/components/common/layout/InnerLayout';
 import KeyboardLayout from '@/components/common/layout/KeyboardLayout';
 import Layout from '@/components/common/layout/Layout';
 import FeedList from '@/components/feed/FeedList';
+import FeedRepository from '@/api/FeedRepository';
 
 const SearchInput = ({ value, onChangeText, onSubmit, onClear, onFocusChange }) => {
   const { t } = useTranslation('feed');
@@ -52,7 +52,7 @@ export default function SearchScreen({ navigation }) {
     queryKey: feedKeys.search(submittedText),
     fetchFn: (params) => {
       if (!submittedText.trim()) return Promise.resolve({ feeds: [] });
-      return searchFeeds({
+      return FeedRepository.searchFeeds({
         ...params,
         keyword: submittedText,
         category: 'free',
