@@ -1,4 +1,4 @@
-import apiClient from "../apiClient";
+import apiClient from '../apiClient';
 
 export const getProfile = async () => {
   const { data } = await apiClient.get(`/mypage`);
@@ -18,7 +18,5 @@ export const updateInterests = async (interests: string[]) => {
 };
 
 export const updateProfileImage = async (imageKey: string) => {
-  return await apiClient.patch(
-    `/mypage/update/profile-default-image?profileImageKey=${imageKey}`
-  );
+  return await apiClient.patch(`/mypage/update/profile-default-image?profileImageKey=${imageKey}`);
 };

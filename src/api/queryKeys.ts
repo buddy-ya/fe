@@ -8,10 +8,10 @@ interface FeedKeys {
 }
 
 export const feedKeys: FeedKeys = {
-  all: ["feeds"],
-  lists: (category) => ["feeds", "list", category],
-  detail: (id) => ["feeds", "detail", id.toString()],
-  bookmarks: () => ["feeds", "bookmarks"],
-  search: (keyword) => ["feeds", "search", keyword],
-  myPosts: () => ["feeds", "myPosts"],
+  all: ['feeds'],
+  lists: (category) => ['feeds', 'list', category],
+  detail: (id) => ['feeds', 'detail', id.toString()],
+  bookmarks: () => ['feeds', 'bookmarks'],
+  search: (keyword) => ['feeds', 'search', keyword],
+  myPosts: () => ['feeds', 'myPosts'],
 };

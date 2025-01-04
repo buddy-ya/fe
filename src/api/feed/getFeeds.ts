@@ -1,11 +1,7 @@
-import { apiClient } from "../apiClient";
+import { apiClient } from '../apiClient';
 
-export const getFeeds = async (params: {
-  category: string;
-  page?: number;
-  size?: number;
-}) => {
-  const { data } = await apiClient.get("/feeds", { params });
+export const getFeeds = async (params: { category: string; page?: number; size?: number }) => {
+  const { data } = await apiClient.get('/feeds', { params });
   return data;
 };
 
@@ -15,20 +11,17 @@ export const searchFeeds = async (params: {
   page?: number;
   size?: number;
 }) => {
-  const { data } = await apiClient.get("/feeds", { params });
+  const { data } = await apiClient.get('/feeds', { params });
   return data;
 };
 
-export const getBookmarkedFeeds = async (params: {
-  page?: number;
-  size?: number;
-}) => {
-  const { data } = await apiClient.get("/mypage/bookmark", { params });
+export const getBookmarkedFeeds = async (params: { page?: number; size?: number }) => {
+  const { data } = await apiClient.get('/mypage/bookmark', { params });
   return data;
 };
 
 export const getMyPosts = async (params: { page?: number; size?: number }) => {
-  const { data } = await apiClient.get("/mypage/myfeed", { params });
+  const { data } = await apiClient.get('/mypage/myfeed', { params });
   return data;
 };
 

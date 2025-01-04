@@ -1,4 +1,4 @@
-import { apiClient } from "../apiClient";
+import { apiClient } from '../apiClient';
 
 export const getFeed = async (feedId: number) => {
   const { data } = await apiClient.get(`/feeds/${feedId}`);

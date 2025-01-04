@@ -1,12 +1,12 @@
-import { apiClient } from "../apiClient";
-import { FeedFormData, createFeedFormData } from "@/utils/service/formData";
+import { FeedFormData, createFeedFormData } from '@/utils/service/formData';
+import { apiClient } from '../apiClient';
 
 export const createFeed = async (feedData: FeedFormData) => {
   const formData = createFeedFormData(feedData);
 
-  return await apiClient.post("/feeds", formData, {
+  return await apiClient.post('/feeds', formData, {
     headers: {
-      "Content-Type": "multipart/form-data",
+      'Content-Type': 'multipart/form-data',
     },
   });
 };
@@ -16,7 +16,7 @@ export const updateFeed = async (feedId: number, feedData: FeedFormData) => {
 
   return await apiClient.patch(`/feeds/${feedId}`, formData, {
     headers: {
-      "Content-Type": "multipart/form-data",
+      'Content-Type': 'multipart/form-data',
     },
   });
 };
