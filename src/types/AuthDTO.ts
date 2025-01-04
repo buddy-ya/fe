@@ -1,14 +1,20 @@
-interface BaseDTO {
+interface PhoneDTO {
     phoneNumber: string;
 }
 
-export interface SendCodeByPhoneDTO extends BaseDTO { }
+interface EmailDTO {
+    email: string;
+    univName: string;
+}
 
-export interface VerifyCodeByPhoneDTO extends BaseDTO {
+export interface SendCodeByPhoneDTO extends PhoneDTO { }
+
+export interface VerifyCodeByPhoneDTO extends PhoneDTO {
     code: string;
 }
 
-// TODO: 작업 필요
-export interface SendCodeByMailDTO extends BaseDTO { }
+export interface SendCodeByMailDTO extends EmailDTO { }
 
-export interface VerifyCodeByMailDTO extends BaseDTO { }
+export interface VerifyCodeByMailDTO extends EmailDTO {
+    code: string;
+}
