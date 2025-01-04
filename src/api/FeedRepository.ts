@@ -37,7 +37,7 @@ class FeedRepository {
         });
     };
 
-    async deleteFeed(feedId: number) {
+    async delete(feedId: number) {
         return await API.delete(`/feeds/${feedId}`);
     };
 

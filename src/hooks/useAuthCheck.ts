@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ModalTexts } from "@/utils/constants/ModalTexts";
+import { ModalTexts } from "@/utils/constants/modalTexts";
 import AuthRepository from "@/api/AuthRepository";
 
 export function useAuthCheck() {

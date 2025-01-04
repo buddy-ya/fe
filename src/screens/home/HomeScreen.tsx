@@ -6,13 +6,12 @@ import React, { useState, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { TouchableOpacity, View } from 'react-native';
 
-import { getFeeds } from '@/api/feed/getFeeds';
 import { feedKeys } from '@/api/queryKeys';
 
 import { useAuthCheck } from '@/hooks/useAuthCheck';
 import { useFeedList } from '@/hooks/useFeedList';
 
-import { getCertificationModalTexts } from '@/utils/constants/ModalTexts';
+import { getCertificationModalTexts } from '@/utils/constants/modalTexts';
 import { CATEGORIES } from '@/utils/constants/categories';
 
 import Button from '@/components/common/Button';
@@ -21,6 +20,7 @@ import InnerLayout from '@/components/common/layout/InnerLayout';
 import Layout from '@/components/common/layout/Layout';
 import CategoryPager from '@/components/feed/CategoryPager';
 import FeedList from '@/components/feed/FeedList';
+import FeedRepository from '@/api/FeedRepository';
 
 export default function HomeScreen({ navigation }) {
   const { t } = useTranslation('feed');
@@ -31,7 +31,7 @@ export default function HomeScreen({ navigation }) {
   const feedListData = useFeedList({
     queryKey: feedKeys.lists(activeCategory),
     fetchFn: (params) =>
-      getFeeds({
+      FeedRepository.getAll({
         ...params,
         category: activeCategory,
       }),

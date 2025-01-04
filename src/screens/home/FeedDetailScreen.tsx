@@ -6,14 +6,13 @@ import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { TouchableOpacity, ScrollView, Keyboard, RefreshControl, Alert } from 'react-native';
 
-import { deleteFeed } from '@/api/feed/feedAction';
 import { feedKeys } from '@/api/queryKeys';
 
 import { useAuthCheck } from '@/hooks/useAuthCheck';
 import { useFeedDetail } from '@/hooks/useFeedDetail';
 import { useFeedModals } from '@/hooks/useFeedModal';
 
-import { getCertificationModalTexts } from '@/utils/constants/ModalTexts';
+import { getCertificationModalTexts } from '@/utils/constants/modalTexts';
 
 import BottomModal from '@/components/common/BottomModal';
 import ConfirmModal from '@/components/common/ConfirmModal';
@@ -22,6 +21,7 @@ import Layout from '@/components/common/layout/Layout';
 import { CommentInput } from '@/components/feed/CommentInput';
 import CommentList from '@/components/feed/CommentList';
 import FeedItem from '@/components/feed/FeedItem';
+import FeedRepository from '@/api/FeedRepository';
 
 export default function FeedDetailScreen({ navigation, route }) {
   const { feedId } = route.params;
@@ -68,7 +68,7 @@ export default function FeedDetailScreen({ navigation, route }) {
     onDeleteFeed: () => {
       showDeleteAlert(async () => {
         setIsDeleted(true);
-        await deleteFeed(feedId);
+        await FeedRepository.delete(feedId);
         queryClient.invalidateQueries({ queryKey: feedKeys.all });
         feedModal.closeModal();
         navigation.goBack();
