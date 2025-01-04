@@ -1,6 +1,4 @@
 import apiClient from "../apiClient";
-import { processImageForUpload } from "@/utils/service/image";
-import { logError } from "@/utils/service/error";
 
 // 인증/인가 관련 API를 다루는 클래스
 class AuthRepository {
@@ -26,17 +24,11 @@ class AuthRepository {
     };
 
     async checkCertificated() {
-        try {
-            const { data } = await apiClient.get(`/certification`);
-            return data;
-        } catch (error) {
-            logError(error);
-        }
+        const { data } = await apiClient.get(`/certification`);
+        return data;
     };
 
-    async uploadStudentIdCard(image) {
-        const formData = new FormData();
-        formData.append("image", processImageForUpload(image));
+    async uploadStudentIdCard(formData: FormData) {
         const { data } = await apiClient.post(
             "/certification/student-id-card",
             formData,
