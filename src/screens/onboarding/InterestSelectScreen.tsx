@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ScrollView, View } from 'react-native';
 import { useOnboardingStore } from '@/store/onboarding';
-import { postOnboardingInfo } from '@/api/onboarding/join';
 import type { InterestID } from '@/utils/constants/interests';
 import { INTEREST_CATEGORIES, INTEREST_ICONS } from '@/utils/constants/interests';
 import { saveTokens } from '@/utils/service/auth';
@@ -14,6 +13,7 @@ import InnerLayout from '@/components/common/layout/InnerLayout';
 import Layout from '@/components/common/layout/Layout';
 import Heading from '@/components/onboarding/Heading';
 import UserRepository from '@/api/UserRepository';
+import OnboardingRepository from '@/api/OnboardingRepository';
 
 interface Interest {
   id: InterestID;
@@ -50,7 +50,7 @@ export default function InterestSelectScreen({ navigation, route }) {
         navigation.goBack();
       } else {
         updateOnboardingData({ interests });
-        const { data } = await postOnboardingInfo({
+        const { data } = await OnboardingRepository.create({
           ...onboardingData,
           interests,
         });
