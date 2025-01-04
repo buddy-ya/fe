@@ -10,7 +10,7 @@ import { Chip } from '@/components/common/Chip';
 import MyText from '@/components/common/MyText';
 import InnerLayout from '@/components/common/layout/InnerLayout';
 import Layout from '@/components/common/layout/Layout';
-import UserRepository from '@/api/mypage/UserRepository';
+import UserRepository from '@/api/UserRepository';
 
 export default function MyProfileScreen({ navigation }) {
   const { t } = useTranslation(['mypage', 'interests', 'countries', 'languages', 'majors']);

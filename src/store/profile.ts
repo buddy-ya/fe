@@ -1,4 +1,4 @@
-import UserRepository from "@/api/mypage/UserRepository";
+import UserRepository from "@/api/UserRepository";
 import { type CountryID } from "@/utils/constants/countries";
 import { create } from "zustand";
 
