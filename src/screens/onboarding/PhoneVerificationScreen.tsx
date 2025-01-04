@@ -45,7 +45,7 @@ export default function PhoneVerificationScreen({ navigation, route }) {
 
   const handleResendCode = async () => {
     try {
-      await AuthRepository.sendCodeByPhone(phoneNumber);
+      await AuthRepository.sendCodeByPhone({ phoneNumber });
       resetVerification();
     } catch (error) {
       logError(error);
@@ -54,7 +54,7 @@ export default function PhoneVerificationScreen({ navigation, route }) {
 
   const handleVerifyCode = async () => {
     try {
-      const { data } = await AuthRepository.verifyCodeByPhone(phoneNumber, verificationCode);
+      const { data } = await AuthRepository.verifyCodeByPhone({ phoneNumber, code: verificationCode });
       setShowError(false);
       updateOnboardingData({ phoneNumber });
       if (data.status === 'EXISTING_MEMBER') {

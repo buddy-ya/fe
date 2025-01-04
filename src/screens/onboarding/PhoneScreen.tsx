@@ -72,7 +72,7 @@ export default function PhoneScreen({ navigation }) {
 
     try {
       setIsLoading(true);
-      await AuthRepository.sendCodeByPhone(phoneNumber);
+      await AuthRepository.sendCodeByPhone({ phoneNumber });
       navigation.navigate('OnboardingPhoneVerification', {
         phone: formatPhone.addHyphen(phoneNumber),
       });
