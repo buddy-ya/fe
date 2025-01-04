@@ -1,12 +1,8 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { getFeed, getFeedComments } from "@/api/feed/getFeed";
 import { toggleBookmark, toggleLike } from "@/api/feed/getFeeds";
-import {
-  createComment,
-  deleteComment,
-  updateComment,
-} from "@/api/feed/comment";
 import { feedKeys } from "@/api/queryKeys";
+import CommentRepository from "@/api/CommentRepository";
 
 interface UseFeedDetailProps {
   feedId: number;
@@ -50,7 +46,7 @@ export const useFeedDetail = ({
   });
 
   const commentMutation = useMutation({
-    mutationFn: (content: string) => createComment(feedId, content),
+    mutationFn: (content: string) => CommentRepository.create(feedId, content),
     onSuccess: (newComment) => {
       queryClient.setQueryData(["feedComments", feedId], (old: any) => ({
         ...old,
@@ -61,7 +57,7 @@ export const useFeedDetail = ({
   });
 
   const deleteCommentMutation = useMutation({
-    mutationFn: (commentId: number) => deleteComment(feedId, commentId),
+    mutationFn: (commentId: number) => CommentRepository.delete(feedId, commentId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["feedComments", feedId] });
       queryClient.invalidateQueries({ queryKey: feedKeys.all });
@@ -75,7 +71,7 @@ export const useFeedDetail = ({
     }: {
       commentId: number;
       content: string;
-    }) => updateComment(feedId, commentId, content),
+    }) => CommentRepository.update(feedId, commentId, content),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["feedComments", feedId] });
       queryClient.invalidateQueries({ queryKey: feedKeys.all });
