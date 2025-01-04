@@ -1,10 +1,52 @@
+import AuthRepository from "@/api/auth/AuthRepository";
 import { TOKEN } from "@/utils/constants/auth";
+import { logError } from "@/utils/service/error";
+import { processImageForUpload } from "@/utils/service/image";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 class AuthService {
 
   private accessToken: string | null;
   private refreshToken: string | null;
+
+  async sendCodeByPhone(phoneNumber: string) {
+    const { data } = await AuthRepository.sendCodeByPhone(phoneNumber);
+    return data;
+  };
+
+  async verifyCodeByPhone(phoneNumber: string, code: string) {
+    const { data } = await AuthRepository.verifyCodeByPhone(phoneNumber, code);
+    return data;
+  }
+
+  async sendCodeByMail(requestBody) {
+    const { data } = await AuthRepository.sendCodeByMail(requestBody);
+    return data;
+  };
+
+  async verifyCodeByMail(requestBody) {
+    const { data } = await AuthRepository.verifyCodeByMail(requestBody);
+    return data;
+  };
+
+  async checkCertificated() {
+    try {
+      const { data } = await AuthRepository.checkCertificated();
+      return data;
+    } catch (error) {
+      logError(error);
+    }
+  };
+
+  async uploadStudentIdCard(image) {
+    const formData = new FormData();
+    formData.append("image", processImageForUpload(image));
+    const { data } = await AuthRepository.uploadStudentIdCard(
+      formData,
+    );
+    return data;
+  };
+
 
   async saveTokens(
     accessToken: string,
