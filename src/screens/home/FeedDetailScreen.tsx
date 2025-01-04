@@ -6,11 +6,9 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { TouchableOpacity, ScrollView, Keyboard, RefreshControl, Alert } from 'react-native';
 
-import { feedKeys } from '@/api/queryKeys';
-
 import { getCertificationModalTexts } from '@/utils/constants/modalTexts';
 
-import FeedRepository from '@/api/FeedRepository';
+import { FeedRepository, feedKeys } from '@/api';
 import { useAuthCheck, useFeedDetail, useFeedModals } from '@/hooks';
 import { BottomModal, ConfirmModal, KeyboardLayout, Layout, CommentInput, CommentList, FeedItem } from '@/components';
 

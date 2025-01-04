@@ -4,8 +4,7 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { TouchableOpacity, TextInput, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
-import { feedKeys } from '@/api/queryKeys';
-import CommentRepository from '@/api/CommentRepository';
+import { CommentRepository, feedKeys } from '@/api';
 import { MyText, Layout, InnerLayout } from '@/components';
 
 export default function CommentEditScreen({ navigation, route }) {

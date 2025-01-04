@@ -6,13 +6,11 @@ import React, { useState, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { TouchableOpacity, View } from 'react-native';
 
-import { feedKeys } from '@/api/queryKeys';
+import { feedKeys, FeedRepository } from '@/api';
 
 import { getCertificationModalTexts } from '@/utils/constants/modalTexts';
 import { CATEGORIES } from '@/utils/constants/categories';
 
-
-import FeedRepository from '@/api/FeedRepository';
 import { useAuthCheck, useFeedList } from '@/hooks';
 import { Layout, Button, ConfirmModal, InnerLayout, CategoryPager, FeedList } from '@/components';
 

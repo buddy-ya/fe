@@ -7,13 +7,12 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { View, TouchableOpacity, TextInput, ScrollView, Alert } from 'react-native';
 
-import { feedKeys } from '@/api/queryKeys';
+import { feedKeys, FeedRepository } from '@/api';
 
 import { useModal } from '@/hooks';
 
 import { CATEGORIES } from '@/utils/constants/categories';
 
-import FeedRepository from '@/api/FeedRepository';
 import { Layout, BottomModal, InnerLayout, KeyboardLayout, Loading, MyText, CategorySelectModal, ImagePreview } from '@/components';
 
 interface ImageFile {

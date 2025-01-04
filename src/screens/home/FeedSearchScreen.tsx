@@ -5,11 +5,10 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { View, TextInput, TouchableOpacity } from 'react-native';
 
-import { feedKeys } from '@/api/queryKeys';
+import { feedKeys, FeedRepository } from '@/api';
 
 import { useFeedList } from '@/hooks';
 
-import FeedRepository from '@/api/FeedRepository';
 import { Layout, InnerLayout, KeyboardLayout, MyText, FeedList } from '@/components';
 
 const SearchInput = ({ value, onChangeText, onSubmit, onClear, onFocusChange }) => {
