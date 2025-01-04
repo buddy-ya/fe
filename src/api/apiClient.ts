@@ -11,11 +11,10 @@ export const apiClient = axios.create({
 });
 
 const reissueTokens = async (refreshToken: string) => {
-  const response = await axios({
-    method: 'post',
-    url: `${BASE_URL}/auth/reissue`,
-    data: { refreshToken },
-  });
+  const response = await apiClient.post(
+    `${BASE_URL}/auth/reissue`,
+    { refreshToken },
+  );
   return response.data;
 };
 
