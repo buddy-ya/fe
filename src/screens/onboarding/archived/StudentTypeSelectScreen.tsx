@@ -1,8 +1,8 @@
-import { Heading, InnerLayout, Layout, SelectItem } from '@/components';
+import { Heading, InnerLayout, Layout, SelectItem, Button } from '@/components';
 import React, { useState } from 'react';
 
 import { useTranslation } from 'react-i18next';
-import { Button, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
 
 
 type StudentType = 'korean' | 'foreign' | null;

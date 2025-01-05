@@ -1,8 +1,8 @@
-import { Heading, HeadingDescription, InnerLayout, Layout } from '@/components';
+import { Heading, HeadingDescription, InnerLayout, Layout, Button } from '@/components';
 import React from 'react';
 
 import { useTranslation } from 'react-i18next';
-import { Text, View, Image, Button } from 'react-native';
+import { Text, View, Image } from 'react-native';
 
 
 export default function StudentInfoScreen({ navigation }) {
