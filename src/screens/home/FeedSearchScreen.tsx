@@ -1,7 +1,5 @@
 import { X } from 'lucide-react-native';
-
 import React, { useState } from 'react';
-
 import { useTranslation } from 'react-i18next';
 import { View, TextInput, TouchableOpacity } from 'react-native';
 
@@ -15,7 +13,7 @@ const SearchInput = ({ value, onChangeText, onSubmit, onClear, onFocusChange }) 
   const { t } = useTranslation('feed');
 
   return (
-    <View className="flex-1 flex-row items-center bg-[#E8E9EB] rounded-[12px]">
+    <View className="flex-1 flex-row items-center rounded-[12px] bg-[#E8E9EB]">
       <TextInput
         value={value}
         onChangeText={onChangeText}
@@ -87,30 +85,29 @@ export default function SearchScreen({ navigation }) {
         />
       }
     >
-      <InnerLayout>
+      <InnerLayout className="bg-mainBackground">
         <KeyboardLayout>
-          {isFocused || submittedText.trim() ? (
-            <FeedList
-              feeds={feedListData.feeds}
-              onLike={feedListData.handleLike}
-              onBookmark={feedListData.handleBookmark}
-              onPress={handlePressFeed}
-              isLoading={feedListData.isLoading}
-              hasMore={feedListData.hasMore}
-              onLoadMore={feedListData.handleLoadMore}
-              className="mt-3"
-              emptyStateMessage={submittedText ? t('search.empty.result') : t('search.empty.default')}
-              refreshControl={{
-                refreshing: feedListData.isLoading && feedListData.feeds.length > 0,
-                onRefresh: feedListData.handleRefresh,
-                tintColor: '#4AA366',
-              }}
-            />
-          ) : (
-            <View className="flex-1 justify-center items-center bg-mainBackground">
-              <MyText color="text-textDescription">{t('search.empty.default')}</MyText>
-            </View>
-          )}
+          {isFocused ||
+            (submittedText.trim() && (
+              <FeedList
+                feeds={feedListData.feeds}
+                onLike={feedListData.handleLike}
+                onBookmark={feedListData.handleBookmark}
+                onPress={handlePressFeed}
+                isLoading={feedListData.isLoading}
+                hasMore={feedListData.hasMore}
+                onLoadMore={feedListData.handleLoadMore}
+                className="mt-3"
+                emptyStateMessage={
+                  submittedText ? t('search.empty.result') : t('search.empty.default')
+                }
+                refreshControl={{
+                  refreshing: feedListData.isLoading && feedListData.feeds.length > 0,
+                  onRefresh: feedListData.handleRefresh,
+                  tintColor: '#4AA366',
+                }}
+              />
+            ))}
         </KeyboardLayout>
       </InnerLayout>
     </Layout>

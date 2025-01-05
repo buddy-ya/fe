@@ -1,6 +1,6 @@
 import React from 'react';
 import { Modal, TouchableOpacity, View } from 'react-native';
-import MyText from './MyText';
+import MyText from '../MyText';
 
 interface ConfirmModalProps {
   visible: boolean;

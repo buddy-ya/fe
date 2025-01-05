@@ -1,9 +1,7 @@
 import { AuthRepository } from '@/api';
 import { ErrorMessage, FooterLayout, Heading, HeadingDescription, InnerLayout, KeyboardLayout, Label, Layout, MyText } from '@/components';
 import { Mail } from 'lucide-react-native';
-
 import React, { useState } from 'react';
-
 import { useTranslation } from 'react-i18next';
 import { View, TextInput } from 'react-native';
 
@@ -54,17 +52,17 @@ export default function EmailScreen({ navigation }) {
           <HeadingDescription>{t('email.description')}</HeadingDescription>
           <Label>{t('email.label')}</Label>
           <View>
-            <View className="flex-row items-center mb-4">
+            <View className="mb-4 flex-row items-center">
               <TextInput
                 value={email}
                 onChangeText={handleEmailChange}
                 placeholder={t('email.placeholder')}
-                className="px-4 py-3 flex-1 text-[18px] text-text border border-inputBorder rounded-xl h-[50px]"
+                className="border-inputBorder h-[50px] flex-1 rounded-xl border px-4 py-3 text-[18px] text-text"
                 keyboardType="email-address"
                 placeholderTextColor="#DFDFDF"
                 autoFocus
               />
-              <View className="ml-2 px-4 py-3 h-[50px] border border-inputBorder rounded-xl justify-center">
+              <View className="border-inputBorder ml-2 h-[50px] justify-center rounded-xl border px-4 py-3">
                 <MyText size="text-lg" color="text-textDescription">
                   {t(`email.domain.${'sju'}`)}
                 </MyText>

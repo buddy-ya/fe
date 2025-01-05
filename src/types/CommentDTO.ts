@@ -24,11 +24,10 @@ export interface CommonResponse {
     name: string;
     country: string;
     university: string;
-    profileImageURL: string;
+    profileImageUrl: string;
     createdDate: string;
-    updatedDate?: string;
     isFeedOwner: boolean;
-    isCommentOwner: boolean
+    isCommentOwner: boolean;
 }
 
 export interface UpdateResponse extends CommonResponse {

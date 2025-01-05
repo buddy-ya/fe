@@ -1,8 +1,8 @@
-import React, { useState, useRef } from "react";
-import { View, ScrollView } from "react-native";
-import PagerView from "react-native-pager-view";
-import { Chip } from "@/components";
-import { useTranslation } from "react-i18next";
+import React, { useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { ScrollView, View } from 'react-native';
+import PagerView from 'react-native-pager-view';
+import { Chip } from '@/components/common/Chip';
 
 export interface Category {
   id: string;
@@ -16,12 +16,8 @@ interface CategoryPagerProps {
   children: React.ReactNode;
 }
 
-export default function CategoryPager({
-  categories,
-  onPageChange,
-  children,
-}: CategoryPagerProps) {
-  const { t } = useTranslation("feed");
+export default function CategoryPager({ categories, onPageChange, children }: CategoryPagerProps) {
+  const { t } = useTranslation('feed');
   const [activeIndex, setActiveIndex] = useState(0);
   const pagerRef = useRef<PagerView>(null);
   const scrollViewRef = useRef<ScrollView>(null);
@@ -41,12 +37,12 @@ export default function CategoryPager({
   };
 
   return (
-    <View className="flex-1 mt-2">
+    <View className="mt-2 flex-1">
       <ScrollView
         ref={scrollViewRef}
         horizontal
         showsHorizontalScrollIndicator={false}
-        className="py-2 pb-1 flex-none"
+        className="flex-none py-2 pb-1"
       >
         {categories.map((category, index) => (
           <Chip

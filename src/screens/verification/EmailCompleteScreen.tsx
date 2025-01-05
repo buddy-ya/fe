@@ -1,9 +1,7 @@
 import { Button, Heading, HeadingDescription, Layout, MyText } from '@/components';
 import React from 'react';
-
 import { useTranslation } from 'react-i18next';
-import { View, Image } from 'react-native';
-
+import { Image, View } from 'react-native';
 
 export default function EmailCompleteScreen({ navigation }) {
   const { t } = useTranslation('certification');
@@ -27,7 +25,7 @@ export default function EmailCompleteScreen({ navigation }) {
         <View className="flex-1 justify-center">
           <Image
             source={require('@assets/images/onboarding/student-id.png')}
-            className="w-full h-[200px]"
+            className="h-[200px] w-full"
             resizeMode="contain"
           />
         </View>
