@@ -4,15 +4,18 @@ require('dotenv').config({ path: path.resolve(__dirname, '.env') });
 module.exports = {
   expo: {
     name: 'buddyya',
+    description: 'A friendly app for buddy management.',
     slug: 'buddyya',
     version: '1.0.0',
     orientation: 'portrait',
     userInterfaceStyle: 'light',
     newArchEnabled: true,
     splash: {
+      image: './assets/images/splash.png',
       resizeMode: 'contain',
       backgroundColor: '#ffffff',
     },
+    icon: './assets/images/logo.png',
     plugins: [
       [
         'expo-notifications',
