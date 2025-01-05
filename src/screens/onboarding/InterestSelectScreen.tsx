@@ -6,14 +6,9 @@ import type { InterestID } from '@/utils/constants/interests';
 import { INTEREST_CATEGORIES, INTEREST_ICONS } from '@/utils/constants/interests';
 import { saveTokens } from '@/utils/service/auth';
 import { logError } from '@/utils/service/error';
-import Button from '@/components/common/Button';
-import { Chip } from '@/components/common/Chip';
-import MyText from '@/components/common/MyText';
-import InnerLayout from '@/components/common/layout/InnerLayout';
-import Layout from '@/components/common/layout/Layout';
-import Heading from '@/components/onboarding/Heading';
-import UserRepository from '@/api/UserRepository';
-import OnboardingRepository from '@/api/OnboardingRepository';
+import { OnboardingRepository, UserRepository } from '@/api';
+import { Button, Chip, Heading, InnerLayout, Layout, MyText } from '@/components';
+
 
 interface Interest {
   id: InterestID;

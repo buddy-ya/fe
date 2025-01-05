@@ -6,11 +6,8 @@ import { useProfileStore } from '@/store/profile';
 import { getCountryFlag } from '@/utils/constants/countries';
 import { INTEREST_ICONS } from '@/utils/constants/interests';
 import { MAJOR_ICONS } from '@/utils/constants/majors';
-import { Chip } from '@/components/common/Chip';
-import MyText from '@/components/common/MyText';
-import InnerLayout from '@/components/common/layout/InnerLayout';
-import Layout from '@/components/common/layout/Layout';
-import UserRepository from '@/api/UserRepository';
+import { UserRepository } from '@/api';
+import { Chip, InnerLayout, Layout, MyText } from '@/components';
 
 export default function MyProfileScreen({ navigation }) {
   const { t } = useTranslation(['mypage', 'interests', 'countries', 'languages', 'majors']);

@@ -3,15 +3,9 @@ import { useTranslation } from 'react-i18next';
 import { Keyboard, TouchableWithoutFeedback, View } from 'react-native';
 import { useOnboardingStore } from '@/store/onboarding';
 import { LANGUAGES } from '@/utils/constants/languages';
-import Button from '@/components/common/Button';
-import MyText from '@/components/common/MyText';
-import SearchInput from '@/components/common/SearchInput';
-import InnerLayout from '@/components/common/layout/InnerLayout';
-import Layout from '@/components/common/layout/Layout';
-import Heading from '@/components/onboarding/Heading';
-import HeadingDescription from '@/components/onboarding/HeadingDescription';
-import MultiSelectItem from '@/components/onboarding/MultiSelectItem';
-import UserRepository from '@/api/UserRepository';
+import { UserRepository } from '@/api';
+import { Button, Heading, HeadingDescription, InnerLayout, Layout, MultiSelectItem, MyText, SearchInput } from '@/components';
+
 
 interface Language {
   id: string;

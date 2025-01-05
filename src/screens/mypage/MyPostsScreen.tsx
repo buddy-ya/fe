@@ -8,12 +8,9 @@ import { View } from 'react-native';
 import { feedKeys } from '@/api/queryKeys';
 
 import { useFeedList } from '@/hooks';
+import { FeedRepository } from '@/api';
+import { FeedList, InnerLayout, Layout, MyText } from '@/components';
 
-import MyText from '@/components/common/MyText';
-import InnerLayout from '@/components/common/layout/InnerLayout';
-import Layout from '@/components/common/layout/Layout';
-import FeedList from '@/components/feed/FeedList';
-import FeedRepository from '@/api/FeedRepository';
 
 export default function MyPostsScreen({ navigation }) {
   const { t } = useTranslation('mypage');

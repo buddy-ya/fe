@@ -9,11 +9,8 @@ import { feedKeys } from '@/api/queryKeys';
 
 import { useFeedList } from '@/hooks';
 
-import MyText from '@/components/common/MyText';
-import InnerLayout from '@/components/common/layout/InnerLayout';
-import Layout from '@/components/common/layout/Layout';
-import FeedList from '@/components/feed/FeedList';
-import FeedRepository from '@/api/FeedRepository';
+import { FeedRepository } from '@/api';
+import { FeedList, InnerLayout, Layout, MyText } from '@/components';
 
 export default function BookmarkScreen({ navigation }) {
   const { t } = useTranslation('mypage');

@@ -5,10 +5,8 @@ import { useTranslation } from 'react-i18next';
 import { View, TouchableOpacity, Image } from 'react-native';
 import { useProfileStore } from '@/store/profile';
 import { getCountryFlag } from '@/utils/constants/countries';
-import MyText from '@/components/common/MyText';
-import InnerLayout from '@/components/common/layout/InnerLayout';
-import Layout from '@/components/common/layout/Layout';
-import UserRepository from '@/api/UserRepository';
+import { InnerLayout, Layout, MyText } from '@/components';
+import { UserRepository } from '@/api';
 
 const SettingItem = ({ label, onPress }) => (
   <TouchableOpacity onPress={onPress} className="flex-row items-center justify-between px-4 py-4 bg-white">

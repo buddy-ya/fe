@@ -3,14 +3,7 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 import { useOnboardingStore } from '@/store/onboarding';
-import Button from '@/components/common/Button';
-import MyText from '@/components/common/MyText';
-import InnerLayout from '@/components/common/layout/InnerLayout';
-import Layout from '@/components/common/layout/Layout';
-import Heading from '@/components/onboarding/Heading';
-import HeadingDescription from '@/components/onboarding/HeadingDescription';
-import Label from '@/components/onboarding/Label';
-import SelectItem from '@/components/onboarding/SelectItem';
+import { Button, Heading, HeadingDescription, InnerLayout, Label, Layout, MyText, SelectItem } from '@/components';
 
 export default function UniversitySelectScreen({ navigation }) {
   const [selected, setSelected] = useState(true);
@@ -29,7 +22,7 @@ export default function UniversitySelectScreen({ navigation }) {
           <Heading>{t('universitySelect.title')}</Heading>
           <HeadingDescription>{t('universitySelect.title')}</HeadingDescription>
           <Label>{t('universitySelect.label')}</Label>
-          <SelectItem selected={selected} disabled={true} onPress={() => {}}>
+          <SelectItem selected={selected} disabled={true} onPress={() => { }}>
             <View className="flex-row items-center">
               <SejongLogo width={24} height={24} />
               <MyText size="text-base" color="text-active" className="ml-3">

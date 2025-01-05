@@ -1,13 +1,9 @@
+import { Heading, HeadingDescription, InnerLayout, Layout } from '@/components';
 import React from 'react';
 
 import { useTranslation } from 'react-i18next';
-import { Text, View, Image } from 'react-native';
+import { Text, View, Image, Button } from 'react-native';
 
-import Button from '@/components/common/Button';
-import InnerLayout from '@/components/common/layout/InnerLayout';
-import Layout from '@/components/common/layout/Layout';
-import Heading from '@/components/onboarding/Heading';
-import HeadingDescription from '@/components/onboarding/HeadingDescription';
 
 export default function StudentInfoScreen({ navigation }) {
   const { t } = useTranslation('onboarding');

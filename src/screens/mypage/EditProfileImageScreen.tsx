@@ -5,10 +5,8 @@ import { View, Image, TouchableOpacity, ScrollView } from 'react-native';
 
 import { useProfileStore } from '@/store/profile';
 
-import MyText from '@/components/common/MyText';
-import InnerLayout from '@/components/common/layout/InnerLayout';
-import Layout from '@/components/common/layout/Layout';
-import UserRepository from '@/api/UserRepository';
+import { UserRepository } from '@/api';
+import { InnerLayout, Layout, MyText } from '@/components';
 
 const PROFILE_IMAGES = [
   'https://buddyya.s3.ap-northeast-2.amazonaws.com/default-profile-image/image1.png',

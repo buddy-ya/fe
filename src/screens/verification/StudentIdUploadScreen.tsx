@@ -8,15 +8,10 @@ import { View, TouchableOpacity, Image, Platform } from 'react-native';
 
 import { logError } from '@/utils/service/error';
 
-import Button from '@/components/common/Button';
-import MyText from '@/components/common/MyText';
-import InnerLayout from '@/components/common/layout/InnerLayout';
-import Layout from '@/components/common/layout/Layout';
-import Heading from '@/components/onboarding/Heading';
-import HeadingDescription from '@/components/onboarding/HeadingDescription';
-import AuthRepository from '@/api/AuthRepository';
 import { processImageForUpload } from '@/utils/service/image';
 import { ImageFile } from '../home/types';
+import { AuthRepository } from '@/api';
+import { Button, Heading, HeadingDescription, InnerLayout, Layout, MyText } from '@/components';
 
 export default function StudentIdCardUploadScreen({ navigation }) {
   const { t } = useTranslation('certification');

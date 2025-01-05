@@ -1,22 +1,11 @@
+import { AuthRepository } from '@/api';
+import { ErrorMessage, FooterLayout, Heading, HeadingDescription, InnerLayout, KeyboardLayout, Label, Layout, LinkText, MyText, OTPInput } from '@/components';
 import { Send } from 'lucide-react-native';
 
 import React, { useState } from 'react';
 
 import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
-
-import LinkText from '@/components/common/LinkText';
-import MyText from '@/components/common/MyText';
-import OTPInput from '@/components/common/OTPInput';
-import FooterLayout from '@/components/common/layout/FooterLayout';
-import InnerLayout from '@/components/common/layout/InnerLayout';
-import KeyboardLayout from '@/components/common/layout/KeyboardLayout';
-import Layout from '@/components/common/layout/Layout';
-import ErrorMessage from '@/components/onboarding/ErrorMessage';
-import Heading from '@/components/onboarding/Heading';
-import HeadingDescription from '@/components/onboarding/HeadingDescription';
-import Label from '@/components/onboarding/Label';
-import AuthRepository from '@/api/AuthRepository';
 
 export default function EmailVerificationScreen({ navigation, route }) {
   const { t } = useTranslation('certification');
