@@ -7,18 +7,8 @@ import { useTimer } from '@/hooks';
 import { saveTokens } from '@/utils/service/auth';
 import { logError } from '@/utils/service/error';
 import { formatPhone } from '@/utils/service/phone';
-import LinkText from '@/components/common/LinkText';
-import MyText from '@/components/common/MyText';
-import OTPInput from '@/components/common/OTPInput';
-import FooterLayout from '@/components/common/layout/FooterLayout';
-import InnerLayout from '@/components/common/layout/InnerLayout';
-import KeyboardLayout from '@/components/common/layout/KeyboardLayout';
-import Layout from '@/components/common/layout/Layout';
-import ErrorMessage from '@/components/onboarding/ErrorMessage';
-import Heading from '@/components/onboarding/Heading';
-import HeadingDescription from '@/components/onboarding/HeadingDescription';
-import Label from '@/components/onboarding/Label';
-import AuthRepository from '@/api/AuthRepository';
+import { AuthRepository } from '@/api';
+import { ErrorMessage, FooterLayout, Heading, HeadingDescription, InnerLayout, KeyboardLayout, Label, Layout, LinkText, MyText, OTPInput } from '@/components';
 
 const VERIFICATION_EXPIRE_SECONDS = 180;
 
@@ -54,7 +44,7 @@ export default function PhoneVerificationScreen({ navigation, route }) {
 
   const handleVerifyCode = async () => {
     try {
-      const { data } = await AuthRepository.verifyCodeByPhone({ phoneNumber, code: verificationCode });
+      const data = await AuthRepository.verifyCodeByPhone({ phoneNumber, code: verificationCode });
       setShowError(false);
       updateOnboardingData({ phoneNumber });
       if (data.status === 'EXISTING_MEMBER') {
