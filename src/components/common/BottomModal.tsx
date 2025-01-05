@@ -1,6 +1,6 @@
 // components/common/BottomModal.tsx
 import { ModalOption } from '@/screens/home/types';
-import React, { ReactNode } from 'react';
+import { ReactNode } from 'react';
 import { Modal, TouchableOpacity, View } from 'react-native';
 import MyText from './MyText';
 
