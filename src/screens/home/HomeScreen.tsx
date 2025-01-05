@@ -2,7 +2,7 @@ import LogoIcon from '@assets/icons/logo.svg';
 import { Bell, Plus, Search } from 'lucide-react-native';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { TouchableOpacity, View } from 'react-native';
+import { Platform, TouchableOpacity, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { getFeeds } from '@/api/feed/getFeeds';
 import { feedKeys } from '@/api/queryKeys';
@@ -60,8 +60,9 @@ export default function HomeScreen({ navigation }) {
     setIsModalVisible(true);
   };
 
+  const isAndroid = Platform.OS === 'android';
   const insets = useSafeAreaInsets();
-  const writeButtonPosition = insets.bottom + 40;
+  const writeButtonPosition = isAndroid ? insets.bottom + 100 : insets.bottom + 40;
 
   return (
     <Layout
