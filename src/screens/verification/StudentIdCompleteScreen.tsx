@@ -1,8 +1,6 @@
 import React from 'react';
-
 import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
-
 import Button from '@/components/common/Button';
 import Layout from '@/components/common/layout/Layout';
 import Heading from '@/components/onboarding/Heading';

@@ -1,56 +1,54 @@
-import React from "react";
-import { Home, User, Users } from "lucide-react-native";
-import { BottomTabNavigationOptions } from "@react-navigation/bottom-tabs";
-import { Platform, StyleSheet, Animated } from "react-native";
+import { BottomTabNavigationOptions } from '@react-navigation/bottom-tabs';
+import { Home, User, Users } from 'lucide-react-native';
+import React from 'react';
+import { Animated, StyleSheet } from 'react-native';
 
 const TAB_CONFIG = {
   Home: {
     Icon: Home,
-    translationKey: "tab.home",
+    translationKey: 'tab.home',
   },
   Matching: {
     Icon: Users,
-    translationKey: "tab.matching",
+    translationKey: 'tab.matching',
   },
   MyPage: {
     Icon: User,
-    translationKey: "tab.my",
+    translationKey: 'tab.my',
   },
 };
 
 export const tabBarStyle = StyleSheet.create({
   tabBar: {
-    position: "absolute",
+    position: 'absolute',
     bottom: 0,
     paddingHorizontal: 10,
     height: 80,
-    backgroundColor: "white",
-    borderTopColor: "#E8E9EB",
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
+    backgroundColor: 'white',
+    borderTopColor: '#E8E9EB',
     zIndex: 1,
   },
   label: {
     fontSize: 12,
-    fontFamily: "Pretendard-Medium",
+    fontFamily: 'Pretendard-Medium',
     marginTop: -5,
   },
   iconContainer: {
     width: 24,
     height: 24,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   hidden: {
-    display: "none",
+    display: 'none',
   },
 });
 
 export const tabScreenOptions: BottomTabNavigationOptions = {
   headerShown: false,
   tabBarStyle: tabBarStyle.tabBar,
-  tabBarActiveTintColor: "#282828",
-  tabBarInactiveTintColor: "#797977",
+  tabBarActiveTintColor: '#282828',
+  tabBarInactiveTintColor: '#797977',
   tabBarLabelStyle: tabBarStyle.label,
   tabBarIconStyle: tabBarStyle.iconContainer,
 };
@@ -59,12 +57,7 @@ export const getTabScreenOptions = (routeName: keyof typeof TAB_CONFIG) => {
   const { Icon, translationKey } = TAB_CONFIG[routeName];
   return {
     tabBarIcon: ({ focused, color }: { focused: boolean; color: string }) => (
-      <Icon
-        strokeWidth={1}
-        size={24}
-        color={color}
-        fill={focused ? "#282828" : "transparent"}
-      />
+      <Icon strokeWidth={1} size={24} color={color} fill={focused ? '#282828' : 'transparent'} />
     ),
     tabBarLabel: translationKey,
   };

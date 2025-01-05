@@ -1,6 +1,6 @@
-import { apiClient } from "../apiClient";
+import { apiClient } from '../apiClient';
 
-type Gender = "male" | "female" | "unknown";
+type Gender = 'male' | 'female' | 'unknown';
 
 interface OnboardingRequest {
   name: string;
@@ -16,5 +16,5 @@ interface OnboardingRequest {
 }
 
 export const postOnboardingInfo = async (data: OnboardingRequest) => {
-  return await apiClient.post("/onboarding", data);
+  return await apiClient.post('/onboarding', data);
 };
