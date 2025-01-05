@@ -1,6 +1,5 @@
-import React from 'react';
 import { TouchableOpacity, View } from 'react-native';
-import MyText from '@/components/common/MyText';
+import { MyText } from '@/components';
 
 interface ChipProps {
   icon?: string;
