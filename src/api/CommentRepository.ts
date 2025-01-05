@@ -3,14 +3,14 @@ import { Comment } from "@/types";
 
 class CommentRepository {
 
-    async create({ feedId, content }: Comment.CreateDTO) {
+    async create({ feedId, content }: Comment.CreateDTO): Promise<Comment.CommonResponse> {
         const { data } = await API.post(`/feeds/${feedId}/comments`, {
             content,
         });
         return data;
     };
 
-    async update({ feedId, commentId, content }: Comment.UpdateDTO) {
+    async update({ feedId, commentId, content }: Comment.UpdateDTO): Promise<Comment.UpdateResponse> {
         const { data } = await API.patch(
             `/feeds/${feedId}/comments/${commentId}`,
             {
@@ -24,7 +24,7 @@ class CommentRepository {
         return await API.delete(`/feeds/${feedId}/comments/${commentId}`);
     };
 
-    async getCommentsByFeedId({ feedId }: Comment.GetCommentsDTO) {
+    async getCommentsByFeedId({ feedId }: Comment.GetCommentsDTO): Promise<Comment.CommonResponse[]> {
         const { data } = await API.get(`/feeds/${feedId}/comments`);
         return data;
     };
