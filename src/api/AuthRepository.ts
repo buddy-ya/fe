@@ -4,17 +4,17 @@ import API from "./API";
 // 인증/인가 관련 API를 다루는 클래스
 class AuthRepository {
 
-    async sendCodeByPhone({ phoneNumber }: SendCodeByPhoneDTO): Promise<SendCodeByPhoneDTO | ErrorResponse> {
+    async sendCodeByPhone({ phoneNumber }: SendCodeByPhoneDTO): Promise<SendCodeByPhoneDTO> {
         const { data } = await API.post("/phone-auth/send-code", { phoneNumber });
         return data;
     };
 
-    async verifyCodeByPhone({ phoneNumber, code }: VerifyCodeByPhoneDTO): Promise<VerifyCodeResponse | ErrorResponse> {
+    async verifyCodeByPhone({ phoneNumber, code }: VerifyCodeByPhoneDTO): Promise<VerifyCodeResponse> {
         const { data } = await API.post("/phone-auth/verify-code", { phoneNumber, code });
         return data;
     }
 
-    async sendCodeByMail({ email, univName }: SendCodeByMailDTO): Promise<CommonResponse | ErrorResponse> {
+    async sendCodeByMail({ email, univName }: SendCodeByMailDTO): Promise<CommonResponse> {
         const { data } = await API.post("/certification/email/send", { email, univName });
         return data;
     };
