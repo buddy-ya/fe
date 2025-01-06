@@ -1,9 +1,7 @@
 export { useAuthCheck } from './useAuthCheck';
-export { useFeedCategoryModal } from './useFeedCategoryModal';
 export { useFeedDetail } from './useFeedDetail';
 export { useFeedImages } from './useFeedImages';
 export { useFeedList } from './useFeedList';
-export { useFeedModals } from './useFeedModal';
 export { useFeedWrite } from './useFeedWrite';
-export { useModal } from './useModal';
 export { useTimer } from './useTimer';
+export * from './modal';

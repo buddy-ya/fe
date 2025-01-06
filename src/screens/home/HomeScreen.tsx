@@ -1,24 +1,21 @@
 import LogoIcon from '@assets/icons/logo.svg';
 import { Bell, Plus, Search } from 'lucide-react-native';
-
-import React, { useState, useCallback } from 'react';
-
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { TouchableOpacity, View } from 'react-native';
-
+import { Platform, TouchableOpacity, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { feedKeys, FeedRepository } from '@/api';
-
-import { getCertificationModalTexts } from '@/utils/constants/modalTexts';
-import { CATEGORIES } from '@/utils/constants/categories';
-
+import { getModalTexts } from '@/hooks';
 import { useAuthCheck, useFeedList } from '@/hooks';
-import { Layout, Button, ConfirmModal, InnerLayout, CategoryPager, FeedList } from '@/components';
+import { CATEGORIES } from '@/utils/constants/categories';
+import { Button, CategoryPager, ConfirmModal, FeedList, InnerLayout, Layout } from '@/components';
 
 export default function HomeScreen({ navigation }) {
-  const { t } = useTranslation('feed');
+  const STALE_TIME = 1000 * 60;
   const { t: certT } = useTranslation('certification');
   const [activeCategory, setActiveCategory] = useState(CATEGORIES[0].id);
-  const { isModalVisible, setIsModalVisible, currentModalTexts, setCurrentModalTexts, checkAuth } = useAuthCheck();
+  const { isModalVisible, setIsModalVisible, currentModalTexts, setCurrentModalTexts, checkAuth } =
+    useAuthCheck();
 
   const feedListData = useFeedList({
     queryKey: feedKeys.lists(activeCategory),
@@ -27,7 +24,7 @@ export default function HomeScreen({ navigation }) {
         ...params,
         category: activeCategory,
       }),
-    staleTime: 1000 * 60,
+    staleTime: STALE_TIME,
   });
 
   const handlePageChange = (index: number) => {
@@ -46,10 +43,19 @@ export default function HomeScreen({ navigation }) {
       return;
     }
 
-    const modalTexts = getCertificationModalTexts(isKorean, isStudentIdCardRequested, certT, navigation);
+    const modalTexts = getModalTexts({
+      isKorean,
+      isStudentIdCardRequested,
+      t: certT,
+      navigation,
+    });
     setCurrentModalTexts(modalTexts);
     setIsModalVisible(true);
   };
+
+  const isAndroid = Platform.OS === 'android';
+  const insets = useSafeAreaInsets();
+  const writeButtonPosition = isAndroid ? insets.bottom + 100 : insets.bottom + 40;
 
   return (
     <Layout
@@ -81,7 +87,6 @@ export default function HomeScreen({ navigation }) {
                     isLoading={feedListData.isLoading}
                     hasMore={feedListData.hasMore}
                     onLoadMore={feedListData.handleLoadMore}
-                    className="pt-0"
                     refreshControl={{
                       refreshing: feedListData.isLoading && feedListData.feeds.length > 0,
                       onRefresh: feedListData.handleRefresh,
@@ -93,7 +98,15 @@ export default function HomeScreen({ navigation }) {
             ))}
           </CategoryPager>
         </View>
-        <Button type="circle" onPress={handleWriteButton} className="absolute bottom-20 right-0" icon={Plus} />
+        <Button
+          type="circle"
+          onPress={handleWriteButton}
+          className={`absolute right-0`}
+          containerStyle={{
+            bottom: writeButtonPosition,
+          }}
+          icon={Plus}
+        />
       </InnerLayout>
       <ConfirmModal
         visible={isModalVisible}

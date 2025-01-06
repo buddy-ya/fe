@@ -1,13 +1,13 @@
-import { CATEGORIES } from "@/utils/constants/categories";
-import { Check } from "lucide-react-native";
-import { TouchableOpacity, View } from "react-native";
-import MyText from "../common/MyText";
+import { Check } from 'lucide-react-native';
+import { TouchableOpacity, View } from 'react-native';
+import { CATEGORIES } from '@/utils/constants/categories';
+import MyText from '../common/MyText';
 
 export function CategorySelectModal({ selectedCategory, onSelect }) {
-  const categories = CATEGORIES.filter((category) => category.id !== "popular");
+  const categories = CATEGORIES.filter((category) => category.id !== 'popular');
   return (
     <View className="p-7 pb-6">
-      <MyText size="text-[20px]" className="font-semibold mb-9">
+      <MyText size="text-[20px]" className="mb-9 font-semibold">
         게시판을 선택하세요.
       </MyText>
       {categories.map((category) => (
@@ -16,16 +16,14 @@ export function CategorySelectModal({ selectedCategory, onSelect }) {
           className="flex-row items-center justify-between py-3"
           onPress={() => onSelect(category)}
         >
-          <View className="flex-row mb-1 items-center">
+          <View className="mb-1 flex-row items-center">
             <View className="mr-3">
               <MyText>{category.icon}</MyText>
             </View>
             <MyText
               size="text-[16px]"
               color={`${
-                selectedCategory.id == category.id
-                  ? "text-[#004835]"
-                  : "text-textDescription"
+                selectedCategory.id == category.id ? 'text-[#004835]' : 'text-textDescription'
               } `}
               className="font-semibold"
             >

@@ -1,8 +1,8 @@
-import React from "react";
-import { FlatList, RefreshControl, RefreshControlProps } from "react-native";
-import FeedItem from "./FeedItem";
-import { Feed } from "@/screens/home/types";
-import EmptyState from "@/components/common/EmptyState"; // 필요한 경우 생성
+import { Feed } from '@/screens/home/types';
+import React from 'react';
+import { FlatList, RefreshControl, RefreshControlProps } from 'react-native';
+import { EmptyState } from '@/components';
+import FeedItem from './FeedItem';
 
 interface FeedListProps {
   feeds: Feed[];
@@ -33,7 +33,7 @@ export default function FeedList({
   disableActions = false,
 }: FeedListProps) {
   if (feeds.length === 0) {
-    return <EmptyState message={emptyStateMessage || "게시글이 없습니다"} />;
+    return <EmptyState message={emptyStateMessage || '게시글이 없습니다'} />;
   }
 
   return (
@@ -44,9 +44,7 @@ export default function FeedList({
           key={item.id}
           feed={item}
           onLike={disableActions ? undefined : onLike}
-          onBookmark={
-            disableActions || !showBookmarkButton ? undefined : onBookmark
-          }
+          onBookmark={disableActions || !showBookmarkButton ? undefined : onBookmark}
           onPress={onPress}
         />
       )}
@@ -60,9 +58,7 @@ export default function FeedList({
       maxToRenderPerBatch={5}
       windowSize={5}
       removeClippedSubviews={true}
-      refreshControl={
-        refreshControl ? <RefreshControl {...refreshControl} /> : undefined
-      }
+      refreshControl={refreshControl ? <RefreshControl {...refreshControl} /> : undefined}
     />
   );
 }

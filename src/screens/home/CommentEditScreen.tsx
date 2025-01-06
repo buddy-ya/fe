@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { X } from 'lucide-react-native';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { TouchableOpacity, TextInput, View } from 'react-native';
+import { TextInput, TouchableOpacity, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { CommentRepository, feedKeys } from '@/api';
 import { MyText, Layout, InnerLayout } from '@/components';
@@ -20,7 +20,9 @@ export default function CommentEditScreen({ navigation, route }) {
     onSuccess: (updatedComment) => {
       queryClient.setQueryData(['feedComments', feedId], (old: any) => ({
         ...old,
-        comments: old.comments.map((comment: any) => (comment.id === updatedComment.id ? updatedComment : comment)),
+        comments: old.comments.map((comment: any) =>
+          comment.id === updatedComment.id ? updatedComment : comment
+        ),
       }));
       queryClient.invalidateQueries({ queryKey: feedKeys.all });
       navigation.goBack();
@@ -56,7 +58,7 @@ export default function CommentEditScreen({ navigation, route }) {
       }
       headerRight={
         <TouchableOpacity
-          className={`px-3.5 py-1.5 rounded-full ${content.trim() && !isLoading ? 'bg-primary' : 'bg-gray-400'}`}
+          className={`rounded-full px-3.5 py-1.5 ${content.trim() && !isLoading ? 'bg-primary' : 'bg-gray-400'}`}
           onPress={handleSubmit}
           disabled={!content.trim() || isLoading}
         >
@@ -70,7 +72,7 @@ export default function CommentEditScreen({ navigation, route }) {
         <ScrollView className="flex-1">
           <View className="mt-4">
             <TextInput
-              className="text-[18px] font-semibold"
+              className="font-semibold text-[18px]"
               value={content}
               onChangeText={setContent}
               placeholder={t('comment.placeholder')}

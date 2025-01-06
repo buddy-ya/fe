@@ -21,12 +21,14 @@ class CommentRepository {
     };
 
     async delete({ feedId, commentId }: Comment.DeleteDTO) {
-        return await API.delete(`/feeds/${feedId}/comments/${commentId}`);
+        const { data } = await API.delete(`/feeds/${feedId}/comments/${commentId}`);
+        return data;
     };
 
     async getCommentsByFeedId({ feedId }: Comment.GetCommentsDTO): Promise<Comment.CommonResponse[]> {
         const { data } = await API.get(`/feeds/${feedId}/comments`);
-        return data;
+        // TODO: 추후 백엔드에서 comments 빼고 주게끔 수정 필요
+        return data.comments;
     };
 
 }

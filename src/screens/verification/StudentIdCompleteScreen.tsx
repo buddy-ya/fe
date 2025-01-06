@@ -1,9 +1,6 @@
-import { Button, Heading, HeadingDescription, Layout } from '@/components';
-import React from 'react';
-
 import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
-
+import { Button, Heading, HeadingDescription, Layout } from '@/components';
 
 export default function StudentIdCardCompleteScreen({ navigation }) {
   const { t } = useTranslation('');

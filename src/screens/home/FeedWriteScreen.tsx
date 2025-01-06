@@ -1,18 +1,12 @@
 import { useQueryClient } from '@tanstack/react-query';
 import * as ImagePicker from 'expo-image-picker';
-import { X, ChevronDown, Camera, ImagePlus } from 'lucide-react-native';
-
-import React, { useState } from 'react';
-
+import { Camera, ChevronDown, ImagePlus, X } from 'lucide-react-native';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { View, TouchableOpacity, TextInput, ScrollView, Alert } from 'react-native';
-
 import { feedKeys, FeedRepository } from '@/api';
-
 import { useModal } from '@/hooks';
-
 import { CATEGORIES } from '@/utils/constants/categories';
-
 import { Layout, BottomModal, InnerLayout, KeyboardLayout, Loading, MyText, CategorySelectModal, ImagePreview } from '@/components';
 
 interface ImageFile {
@@ -28,7 +22,7 @@ const FILTERED_CATEGORIES = CATEGORIES.filter((category) => category.id !== 'pop
 const IMAGE_PICKER_OPTIONS: ImagePicker.ImagePickerOptions = {
   mediaTypes: ImagePicker.MediaTypeOptions.Images,
   allowsEditing: false,
-  quality: 0.8,
+  quality: 0.7,
   allowsMultipleSelection: true,
   selectionLimit: 5,
 };
@@ -38,7 +32,9 @@ export default function FeedWriteScreen({ navigation, route }) {
   const isEdit = route.params?.isEdit;
 
   const [selectedCategory, setSelectedCategory] = useState(
-    feed ? FILTERED_CATEGORIES.find((c) => c.id === feed.category) || FILTERED_CATEGORIES[0] : FILTERED_CATEGORIES[0]
+    feed
+      ? FILTERED_CATEGORIES.find((c) => c.id === feed.category) || FILTERED_CATEGORIES[0]
+      : FILTERED_CATEGORIES[0]
   );
   const [title, setTitle] = useState(feed?.title || '');
   const [content, setContent] = useState(feed?.content || '');
@@ -56,7 +52,7 @@ export default function FeedWriteScreen({ navigation, route }) {
   const queryClient = useQueryClient();
   const categoryModal = useModal();
 
-  const handleCategorySelect = (category: typeof CATEGORIES[0]) => {
+  const handleCategorySelect = (category: (typeof CATEGORIES)[0]) => {
     setSelectedCategory(category);
     categoryModal.closeModal();
   };
@@ -123,9 +119,9 @@ export default function FeedWriteScreen({ navigation, route }) {
       color: category.id === selectedCategory.id ? 'text-textActive' : '#797979',
       icon:
         category.id === selectedCategory.id ? (
-          <View className="w-4 h-4 rounded-full bg-primary" />
+          <View className="h-4 w-4 rounded-full bg-primary" />
         ) : (
-          <View className="w-4 h-4 rounded-full border border-gray-300" />
+          <View className="h-4 w-4 rounded-full border border-gray-300" />
         ),
     }));
 
@@ -191,7 +187,7 @@ export default function FeedWriteScreen({ navigation, route }) {
       }
       headerRight={
         <TouchableOpacity
-          className={`px-3.5 py-1.5 rounded-full ${isValid ? 'bg-primary' : 'bg-gray-400'}`}
+          className={`rounded-full px-3.5 py-1.5 ${isValid ? 'bg-primary' : 'bg-gray-400'}`}
           onPress={handleUpload}
           disabled={isLoading}
         >
@@ -208,8 +204,8 @@ export default function FeedWriteScreen({ navigation, route }) {
           footer={
             <View>
               <ImagePreview images={images} onRemove={removeImage} />
-              <View className="flex-row justify-between items-center py-3 px-4 border-gray-200">
-                <View className="flex-row items-center ml-1">
+              <View className="flex-row items-center justify-between border-gray-200 px-4 py-3">
+                <View className="ml-1 flex-row items-center">
                   <TouchableOpacity onPress={takePhoto} className="mr-3">
                     <Camera size={24} color="#797979" />
                   </TouchableOpacity>
@@ -227,16 +223,16 @@ export default function FeedWriteScreen({ navigation, route }) {
           }
         >
           <InnerLayout>
-            <ScrollView className="flex-1 mt-8 pb-[50px]">
+            <ScrollView className="mt-8 flex-1 pb-[50px]">
               <TextInput
-                className="text-[20px] font-semibold"
+                className="font-semibold text-[20px]"
                 placeholder={t('write.titlePlaceholder')}
                 placeholderTextColor="#CBCBCB"
                 value={title}
                 onChangeText={setTitle}
               />
               <TextInput
-                className="text-[18px] mt-4 font-semibold"
+                className="mt-4 font-semibold text-[18px]"
                 placeholder={t('write.contentPlaceholder')}
                 placeholderTextColor="#CBCBCB"
                 value={content}

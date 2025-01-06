@@ -1,7 +1,5 @@
-export { default as BottomModal } from './BottomModal';
 export { default as Button } from './Button';
 export * from './Chip';
-export { default as ConfirmModal } from './ConfirmModal';
 export { default as CustomBottomSheet } from './CustomBottomSheet'
 export { default as EmptyState } from './EmptyState';
 export { default as Header } from './Header';
@@ -11,3 +9,4 @@ export { default as MyText } from './MyText';
 export { default as OTPInput } from './OTPInput';
 export { default as SearchInput } from './SearchInput';
 export * from './layout';
+export * from './modal';

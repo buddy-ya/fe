@@ -1,35 +1,26 @@
-import React, { useState, useEffect } from "react";
-import {
-  View,
-  TouchableOpacity,
-  Image,
-  Image as RNImage,
-  Dimensions,
-} from "react-native";
-import { Bookmark, ThumbsUp, MessageSquare } from "lucide-react-native";
-import MyText from "@/components/common/MyText";
-import { Feed } from "@/screens/home/types";
-import { getCountryFlag } from "@/utils/constants/countries";
-import { getTimeAgo } from "@/utils/service/date";
-import { useTranslation } from "react-i18next";
-import ThumbsUpActive from "@assets/icons/feed/like-active.svg";
+import { Feed } from '@/screens/home/types';
+import ThumbsUpActive from '@assets/icons/feed/like-active.svg';
+import { Bookmark, MessageSquare, ThumbsUp } from 'lucide-react-native';
+import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Dimensions, Image, TouchableOpacity, View } from 'react-native';
+import { getCountryFlag } from '@/utils/constants/countries';
+import { getTimeAgo } from '@/utils/service/date';
+import { MyText } from '@/components';
 
-const screenWidth = Dimensions.get("window").width;
+const IMAGE_CONFIG_DETAIL = {
+  containerClass: 'w-full',
+  maxHeight: 3000,
+};
 
 const IMAGE_CONFIG = {
   single: {
-    aspectRatio: 1 / 1,
-    containerClass: "w-full",
+    containerClass: 'w-full',
     maxHeight: 150,
   },
   multiple: {
-    aspectRatio: 1 / 1,
-    containerClass: "w-[50%] aspect-[1/1]",
+    containerClass: 'w-[50%] aspect-[1/1]',
     maxHeight: 150,
-  },
-  detail: {
-    containerClass: "w-full",
-    maxHeight: 3000,
   },
 };
 
@@ -55,9 +46,8 @@ export default function FeedItem({
   showAllContent = false,
   disablePress = false,
 }: FeedItemProps) {
-  const [imageDimensions, setImageDimensions] = useState<
-    Record<string, ImageDimensions>
-  >({});
+  const [imageDimensions, setImageDimensions] = useState<Record<string, ImageDimensions>>({});
+  const { t } = useTranslation('feed');
 
   const {
     id,
@@ -75,216 +65,194 @@ export default function FeedItem({
     createdDate,
   } = feed;
 
+  const screenWidth = Dimensions.get('window').width;
+
   useEffect(() => {
-    if (showAllContent && imageUrls.length > 0) {
-      imageUrls.forEach((url) => {
-        Image.getSize(
-          url,
-          (width, height) => {
+    if (!showAllContent) return;
+
+    let isComponentMounted = true;
+
+    imageUrls.forEach((url) => {
+      if (imageDimensions[url]) return;
+
+      Image.getSize(
+        url,
+        (width, height) => {
+          if (isComponentMounted) {
             setImageDimensions((prev) => ({
               ...prev,
               [url]: { width, height },
             }));
-          },
-          (error) => {
-            console.error("Error getting image dimensions:", error);
           }
-        );
-      });
-    }
+        },
+        (error) => {
+          if (isComponentMounted) {
+            console.error('Error getting image dimensions:', error);
+          }
+        }
+      );
+    });
+
+    return () => {
+      isComponentMounted = false;
+    };
   }, [showAllContent, imageUrls]);
 
-  const calculateImageHeight = (url: string): number | undefined => {
-    if (!showAllContent) return undefined;
-
-    const dimensions = imageDimensions[url];
-    if (!dimensions) return undefined;
-
-    const contentWidth = screenWidth - 32; // Accounting for padding
-    const aspectRatio = dimensions.height / dimensions.width;
+  const calculateImageHeight = (url: string) => {
+    const dims = imageDimensions[url];
+    if (!dims) return undefined;
+    const paddingWidth = 32;
+    const contentWidth = screenWidth - paddingWidth;
+    const aspectRatio = dims.height / dims.width;
     return contentWidth * aspectRatio;
   };
 
-  const getBorderRadiusClass = (index: number, totalImages: number) => {
-    if (showAllContent || totalImages === 1) {
-      return "rounded-[12px]";
-    }
+  const renderLimitedImages = () => {
+    const limitedUrls = imageUrls.slice(0, 2);
 
-    if (totalImages >= 2) {
-      return index === 0
-        ? "rounded-l-[12px] rounded-r-none"
-        : "rounded-r-[12px] rounded-l-none";
-    }
+    return (
+      <View className="mt-5 flex-row flex-wrap justify-between">
+        {limitedUrls.map((url, index) => {
+          const totalImages = imageUrls.length;
 
-    return "rounded-[12px]";
+          const config = totalImages === 1 ? IMAGE_CONFIG.single : IMAGE_CONFIG.multiple;
+
+          return (
+            <View
+              key={`${url}-${index}`}
+              className={` ${config.containerClass} overflow-hidden rounded-[12px] border border-borderFeed`}
+              style={{ height: config.maxHeight }}
+            >
+              <Image source={{ uri: url }} className="h-full w-full" resizeMode="cover" />
+            </View>
+          );
+        })}
+
+        {imageUrls.length > 2 && (
+          <View className="absolute right-2 top-2 rounded bg-black/60 px-2 py-1">
+            <MyText color="text-white" size="text-sm">
+              +{imageUrls.length - 2}
+            </MyText>
+          </View>
+        )}
+      </View>
+    );
   };
 
-  const handleComment = (id: number) => {};
-  const { t } = useTranslation("feed");
+  const renderAllImages = () => {
+    return (
+      <View className="mt-5">
+        {imageUrls.map((url, index) => {
+          const height = calculateImageHeight(url) || IMAGE_CONFIG_DETAIL.maxHeight;
+
+          return (
+            <View
+              key={`${url}-${index}`}
+              className={` ${IMAGE_CONFIG_DETAIL.containerClass} mb-2 overflow-hidden rounded-[12px] border border-borderFeed`}
+              style={{ height }}
+            >
+              <Image source={{ uri: url }} className="h-full w-full" resizeMode="contain" />
+            </View>
+          );
+        })}
+      </View>
+    );
+  };
+
+  const handleComment = (feedId: number) => {
+    onPress?.(id);
+  };
 
   const actions = [
     {
       icon: ThumbsUp,
       activeIcon: ThumbsUpActive,
-      label: t("action.like"),
+      label: t('action.like'),
       count: likeCount,
       isActive: isLiked,
       onPress: () => onLike(id),
     },
     {
       icon: MessageSquare,
-      label: t("action.comment"),
+      label: t('action.comment'),
       count: commentCount,
       onPress: () => handleComment(id),
     },
     {
       icon: Bookmark,
-      label: t("action.bookmark"),
+      label: t('action.bookmark'),
       isActive: isBookmarked,
       onPress: () => onBookmark(id),
     },
   ];
 
-  const renderContent = () => (
-    <View className="mt-[4px] mb-4 p-4 pb-5 border-[0.3px] border-b-[0px] bg-white border-borderFeed rounded-[20px]">
-      <View className="flex-row justify-between">
-        <View className="flex-row items-center">
-          <View className="mr-3">
-            <Image
-              className="w-12 h-12 rounded-[12px]"
-              source={{ uri: profileImageUrl }}
-            />
-          </View>
-          <View className="">
-            <MyText
-              size="text-sm"
-              className="font-semibold"
-              color="text-[#474747]"
-            >
-              {t(`profile.university.${university}`)}
-            </MyText>
-            <View className="flex-row items-center">
-              <MyText size="text-sm" color="text-[#474747]">
-                {name}
+  const renderContent = () => {
+    return (
+      <View className="mb-4 mt-[4px] rounded-[20px] border-[0.3px] border-b-[0px] border-borderFeed bg-white p-4 pb-5">
+        <View className="flex-row justify-between">
+          <View className="flex-row items-center">
+            <View className="mr-3">
+              <Image className="h-12 w-12 rounded-[12px]" source={{ uri: profileImageUrl }} />
+            </View>
+            <View>
+              <MyText size="text-sm" className="font-semibold" color="text-[#474747]">
+                {t(`profile.university.${university}`)}
               </MyText>
-              <MyText size="text-sm" className="ml-[3px]">
-                {getCountryFlag(country as any)}
-              </MyText>
+              <View className="flex-row items-center">
+                <MyText size="text-sm" color="text-[#474747]">
+                  {name}
+                </MyText>
+                <MyText size="text-sm" className="ml-[3px]">
+                  {getCountryFlag(country as any)}
+                </MyText>
+              </View>
             </View>
           </View>
+          <MyText color="text-textDescription" size="text-sm" className="mr-1 tracking-tighter">
+            {getTimeAgo(createdDate)}
+          </MyText>
         </View>
-        <MyText
-          color="text-textDescription"
-          size="text-sm"
-          className="tracking-tighter mr-1"
-        >
-          {getTimeAgo(createdDate)}
-        </MyText>
-      </View>
 
-      <View className="mt-4">
-        <MyText size="text-[16px]" className="font-semibold">
-          {title}
-        </MyText>
-        <MyText
-          size="text-[14px]"
-          color="text-textDescription"
-          className="font-semibold mt-2"
-          numberOfLines={showAllContent ? undefined : 3}
-        >
-          {content}
-        </MyText>
-      </View>
-      {imageUrls.length > 0 && (
-        <View className="">
-          <View className="flex-row flex-wrap justify-between mt-5">
-            {(showAllContent ? imageUrls : imageUrls.slice(0, 2)).map(
-              (url, index) => {
-                const config = showAllContent
-                  ? IMAGE_CONFIG.detail
-                  : imageUrls.length === 1
-                  ? IMAGE_CONFIG.single
-                  : IMAGE_CONFIG.multiple;
+        <View className="mt-4">
+          <MyText size="text-[16px]" className="font-semibold">
+            {title}
+          </MyText>
+          <MyText
+            size="text-[14px]"
+            color="text-textDescription"
+            className="mt-2 font-semibold"
+            numberOfLines={showAllContent ? 0 : 3}
+          >
+            {content}
+          </MyText>
+        </View>
 
-                const calculatedHeight = calculateImageHeight(url);
+        {imageUrls.length > 0 && (showAllContent ? renderAllImages() : renderLimitedImages())}
 
-                return (
-                  <View
-                    key={index}
-                    className={`
-                      ${config.containerClass} 
-                      ${getBorderRadiusClass(index, imageUrls.length)} 
-                      ${showAllContent ? "mb-2" : "mb-0"}
-                      overflow-hidden 
-                      border 
-                      border-borderFeed
-                    `}
-                    style={{
-                      height:
-                        calculatedHeight ||
-                        (showAllContent ? undefined : config.maxHeight),
-                    }}
-                  >
-                    <Image
-                      source={{ uri: url }}
-                      className="w-full h-full"
-                      resizeMode={showAllContent ? "contain" : "cover"}
-                    />
-                  </View>
-                );
-              }
-            )}
-          </View>
-          {!showAllContent && imageUrls.length > 2 && (
-            <View className="absolute right-2 top-2 bg-black/60 px-2 py-1 rounded">
-              <MyText color="text-white" size="text-sm">
-                +{imageUrls.length - 2}
-              </MyText>
-            </View>
+        <View className="mt-[20px] flex-row items-center justify-between px-[12px]">
+          {actions.map(
+            ({ icon: Icon, activeIcon: ActiveIcon, label, count, isActive, onPress }) => (
+              <TouchableOpacity key={label} onPress={onPress} className="flex-row items-center">
+                {isActive && ActiveIcon ? (
+                  <ActiveIcon />
+                ) : (
+                  <Icon
+                    size={20}
+                    color={isActive ? '#00A176' : '#797979'}
+                    fill={isActive ? '#00A176' : 'transparent'}
+                    strokeWidth={1}
+                  />
+                )}
+                <MyText size="text-sm" color="text-textDescription" className="ml-1 w-10">
+                  {label} {count > 0 && count}
+                </MyText>
+              </TouchableOpacity>
+            )
           )}
         </View>
-      )}
-
-      <View
-        className={`flex-row items-center justify-between px-[12px] mt-[20px]`}
-      >
-        {actions.map(
-          ({
-            icon: Icon,
-            activeIcon: ActiveIcon,
-            label,
-            count,
-            isActive,
-            onPress,
-          }) => (
-            <TouchableOpacity
-              key={label}
-              onPress={() => onPress?.()}
-              className="flex-row items-center"
-            >
-              {isActive && ActiveIcon ? (
-                <ActiveIcon />
-              ) : (
-                <Icon
-                  size={20}
-                  color={isActive ? "#00A176" : "#797979"}
-                  fill={isActive ? "#00A176" : "transparent"}
-                  strokeWidth={1}
-                />
-              )}
-              <MyText
-                size="text-sm"
-                color="text-textDescription"
-                className="ml-1 w-10"
-              >
-                {label} {count > 0 && count}
-              </MyText>
-            </TouchableOpacity>
-          )
-        )}
       </View>
-    </View>
-  );
+    );
+  };
 
   if (disablePress) {
     return renderContent();
