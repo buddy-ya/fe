@@ -21,7 +21,7 @@ export const saveTokens = async (
 
 export const getAccessToken = async () => {
   try {
-    return await AsyncStorage.getItem(TOKEN_KEYS.ACCESS);
+    return AsyncStorage.getItem(TOKEN_KEYS.ACCESS);
   } catch (error) {
     console.error("Error getting access token:", error);
     return null;
@@ -30,7 +30,7 @@ export const getAccessToken = async () => {
 
 export const getRefreshToken = async () => {
   try {
-    return await AsyncStorage.getItem(TOKEN_KEYS.REFRESH);
+    return AsyncStorage.getItem(TOKEN_KEYS.REFRESH);
   } catch (error) {
     console.error("Error getting refresh token:", error);
     return null;
@@ -50,7 +50,7 @@ export const isTokenPresent = async () => {
   try {
     const accessToken = await getAccessToken();
     const refreshToken = await getRefreshToken();
-    return Boolean(accessToken && refreshToken);
+    return !!(accessToken && refreshToken);
   } catch (error) {
     console.error("Error checking tokens:", error);
     return false;
