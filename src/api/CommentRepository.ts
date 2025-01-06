@@ -21,7 +21,8 @@ class CommentRepository {
     };
 
     async delete({ feedId, commentId }: Comment.DeleteDTO) {
-        return await API.delete(`/feeds/${feedId}/comments/${commentId}`);
+        const { data } = await API.delete(`/feeds/${feedId}/comments/${commentId}`);
+        return data;
     };
 
     async getCommentsByFeedId({ feedId }: Comment.GetCommentsDTO): Promise<Comment.CommonResponse[]> {
