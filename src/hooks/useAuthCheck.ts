@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ModalTexts } from '@/hooks/modal/useAuthModal';
+import { ModalTexts } from '@/hooks';
 import { AuthRepository } from '@/api';
 
 export function useAuthCheck() {
@@ -8,7 +8,7 @@ export function useAuthCheck() {
 
   const checkAuth = async () => {
     try {
-      return await AuthRepository.checkCertificated();
+      return AuthRepository.checkCertificated();
     } catch (error) {
       console.error('Auth check failed:', error);
       throw error;

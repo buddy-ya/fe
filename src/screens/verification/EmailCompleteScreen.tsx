@@ -1,7 +1,6 @@
-import { Button, Heading, HeadingDescription, Layout, MyText } from '@/components';
-import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Image, View } from 'react-native';
+import { Button, Heading, HeadingDescription, Layout, MyText } from '@/components';
 
 export default function EmailCompleteScreen({ navigation }) {
   const { t } = useTranslation('certification');

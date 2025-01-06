@@ -1,7 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { feedKeys } from "@/api/queryKeys";
-import CommentRepository from "@/api/CommentRepository";
-import FeedRepository from "@/api/FeedRepository";
+import { feedKeys, CommentRepository, FeedRepository } from "@/api";
 
 interface UseFeedDetailProps {
   feedId: number;

@@ -1,14 +1,8 @@
 import { NotebookPen } from 'lucide-react-native';
-
-import React from 'react';
-
 import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
-
-import { feedKeys } from '@/api/queryKeys';
-
+import { feedKeys, FeedRepository } from '@/api';
 import { useFeedList } from '@/hooks';
-import { FeedRepository } from '@/api';
 import { FeedList, InnerLayout, Layout, MyText } from '@/components';
 
 

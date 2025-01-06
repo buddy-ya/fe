@@ -3,14 +3,9 @@ import { MoreVertical } from 'lucide-react-native';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Alert, Keyboard, RefreshControl, ScrollView, TouchableOpacity } from 'react-native';
-import { feedKeys } from '@/api/queryKeys';
-import { getModalTexts } from '@/hooks/modal/useAuthModal';
-import { useFeedModals } from '@/hooks/modal/useFeedModal';
-import { useAuthCheck } from '@/hooks/useAuthCheck';
-import { useFeedDetail } from '@/hooks/useFeedDetail';
-import { CommentInput } from '@/components/feed/CommentInput';
-import { FeedRepository } from '@/api';
-import { BottomModal, CommentList, ConfirmModal, FeedItem, KeyboardLayout, Layout } from '@/components';
+import { feedKeys, FeedRepository } from '@/api';
+import { getModalTexts, useFeedModals, useAuthCheck, useFeedDetail } from '@/hooks';
+import { BottomModal, CommentList, ConfirmModal, FeedItem, KeyboardLayout, Layout, CommentInput } from '@/components';
 
 export default function FeedDetailScreen({ navigation, route }) {
   const { feedId } = route.params;

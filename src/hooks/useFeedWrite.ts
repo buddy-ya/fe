@@ -2,8 +2,7 @@ import { useState } from "react";
 import { Alert } from "react-native";
 import { useQueryClient } from "@tanstack/react-query";
 import { ImageFile } from "./../screens/home/types";
-import { feedKeys } from "@/api/queryKeys";
-import { FeedRepository } from "@/api";
+import { feedKeys, FeedRepository } from "@/api";
 
 interface FeedData {
   title: string;

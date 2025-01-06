@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ScrollView, View } from 'react-native';
 import PagerView from 'react-native-pager-view';
-import { Chip } from '@/components/common/Chip';
+import { Chip } from '@/components';
 
 export interface Category {
   id: string;

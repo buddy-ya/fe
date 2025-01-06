@@ -4,11 +4,10 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Platform, TouchableOpacity, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { feedKeys } from '@/api';
-import { getModalTexts } from '@/hooks/modal/useAuthModal';
+import { feedKeys, FeedRepository } from '@/api';
+import { getModalTexts } from '@/hooks';
 import { useAuthCheck, useFeedList } from '@/hooks';
 import { CATEGORIES } from '@/utils/constants/categories';
-import { FeedRepository } from '@/api';
 import { Button, CategoryPager, ConfirmModal, FeedList, InnerLayout, Layout } from '@/components';
 
 export default function HomeScreen({ navigation }) {

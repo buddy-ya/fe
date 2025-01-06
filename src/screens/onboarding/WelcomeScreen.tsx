@@ -1,6 +1,5 @@
 import '@/../global.css';
 import { Button, InnerLayout, Layout, MyText } from '@/components';
-import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Image, View } from 'react-native';
 

@@ -1,6 +1,6 @@
 import { CommentType } from '@/screens/home/types';
 import { useModal } from '@/hooks/modal/useModal';
-import { createModalOptions } from '@/components/common/modal/FeedDetailModalOptions';
+import { createModalOptions } from '@/components';
 import { Feed } from '../../screens/home/types';
 
 interface UseFeedModalsProps {
@@ -26,9 +26,9 @@ export const useFeedModals = ({
 
     const options = feed.isFeedOwner
       ? [
-          createModalOptions.delete(onDeleteFeed || (() => {})),
-          createModalOptions.edit(onEditFeed || (() => {})),
-        ]
+        createModalOptions.delete(onDeleteFeed || (() => { })),
+        createModalOptions.edit(onEditFeed || (() => { })),
+      ]
       : [createModalOptions.report(() => console.log('report comment'))];
 
     feedModal.openModal(options);
@@ -37,9 +37,9 @@ export const useFeedModals = ({
   const handleCommentOptions = (comment: CommentType) => {
     const options = comment.isCommentOwner
       ? [
-          createModalOptions.delete(() => onDeleteComment?.(comment.id)),
-          createModalOptions.edit(() => onEditComment?.(comment)),
-        ]
+        createModalOptions.delete(() => onDeleteComment?.(comment.id)),
+        createModalOptions.edit(() => onEditComment?.(comment)),
+      ]
       : [createModalOptions.report(() => console.log('report comment'))];
 
     commentModal.openModal(options);
