@@ -27,17 +27,6 @@ const showErrorModal = (messageKey: string) => {
   );
 };
 
-API.interceptors.request.use(
-  async (config) => {
-    const accessToken = await getAccessToken();
-    if (accessToken) {
-      config.headers.Authorization = `Bearer ${accessToken}`;
-    }
-    return config;
-  },
-  (error) => Promise.reject(error)
-);
-
 API.interceptors.response.use(
   (response) => response,
   async (error) => {
