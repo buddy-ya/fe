@@ -37,14 +37,11 @@ export default function PhoneScreen({ navigation }) {
   const inputRef = useRef(null);
 
   const [phoneNumber, setPhoneNumber] = useState('');
-  const [isPhoneValid, setIsPhoneValid] = useState(false);
-  const [isPrefixError, setIsPrefixError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  useEffect(() => {
-    setIsPhoneValid(formatPhone.validate(phoneNumber));
-    setIsPrefixError(formatPhone.checkPrefix(phoneNumber));
-  }, [phoneNumber]);
+  const isPhoneValid = formatPhone.validate(phoneNumber);
+  const isPrefixError = formatPhone.checkPrefix(phoneNumber);
+
 
   const handleBack = () => {
     inputRef.current?.blur();
