@@ -14,7 +14,7 @@ export default function AuthProvider({ children }: Props) {
         setLoading(true);
         const accessToken = await getAccessToken();
         if (accessToken) {
-            API.defaults.headers['Authorization'] = `Bearer ${accessToken}`;
+            API.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
         }
         setLoading(false);
     }
