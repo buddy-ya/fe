@@ -1,5 +1,5 @@
 import React from 'react';
-import MyText from '../common/MyText';
+import { MyText } from '@/components';
 
 interface ErrorMessageProps {
   children: React.ReactNode;

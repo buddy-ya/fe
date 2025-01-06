@@ -1,7 +1,7 @@
 import API from "./API";
 import { Feed } from "@/types";
 import { GetBookmarkedFeedsDTO } from "@/types/FeedDTO";
-import { createFeedFormData, FeedFormData } from "@/utils/service/formData";
+import { createFeedFormData } from "@/utils/service/formData";
 
 class FeedRepository {
 

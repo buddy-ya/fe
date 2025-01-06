@@ -1,4 +1,4 @@
-import { CheckCertificatedResponse, CommonResponse, ErrorResponse, SendCodeByMailDTO, SendCodeByPhoneDTO, VerifyCodeByMailDTO, VerifyCodeByPhoneDTO, VerifyCodeResponse } from "@/types/AuthDTO";
+import { CheckCertificatedResponse, CommonResponse, SendCodeByMailDTO, SendCodeByPhoneDTO, VerifyCodeByMailDTO, VerifyCodeByPhoneDTO, VerifyCodeResponse } from "@/types/AuthDTO";
 import API from "./API";
 
 // 인증/인가 관련 API를 다루는 클래스

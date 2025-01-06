@@ -3,7 +3,7 @@ import { resetToOnboarding } from '@/navigation/router';
 import { BASE_URL } from '@env';
 import axios from 'axios';
 import { Alert } from 'react-native';
-import { getAccessToken, getRefreshToken, removeTokens, saveTokens } from '@/utils/service/auth';
+import { getRefreshToken, removeTokens, saveTokens } from '@/utils';
 
 export const API = axios.create({
   baseURL: BASE_URL,

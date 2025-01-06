@@ -1,11 +1,9 @@
 import { CommentType } from '@/screens/home/types';
 import { MoreVertical } from 'lucide-react-native';
-import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Image, TouchableOpacity, View } from 'react-native';
-import { getCountryFlag } from '@/utils/constants/countries';
-import { getTimeAgo } from '@/utils/service/date';
-import MyText from '../common/MyText';
+import { getCountryFlag, getTimeAgo } from '@/utils';
+import { MyText } from '@/components'
 
 interface CommentLabelProps {
   isFeedOwner: boolean;

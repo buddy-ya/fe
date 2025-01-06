@@ -1,7 +1,7 @@
 import { Check } from 'lucide-react-native';
 import { TouchableOpacity, View } from 'react-native';
-import { CATEGORIES } from '@/utils/constants/categories';
-import MyText from '../common/MyText';
+import { CATEGORIES } from '@/utils';
+import { MyText } from '@/components';
 
 export function CategorySelectModal({ selectedCategory, onSelect }) {
   const categories = CATEGORIES.filter((category) => category.id !== 'popular');
@@ -22,9 +22,8 @@ export function CategorySelectModal({ selectedCategory, onSelect }) {
             </View>
             <MyText
               size="text-[16px]"
-              color={`${
-                selectedCategory.id == category.id ? 'text-[#004835]' : 'text-textDescription'
-              } `}
+              color={`${selectedCategory.id == category.id ? 'text-[#004835]' : 'text-textDescription'
+                } `}
               className="font-semibold"
             >
               {category.label}
