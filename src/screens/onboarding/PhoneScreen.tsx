@@ -1,5 +1,5 @@
 import { Lock } from 'lucide-react-native';
-import React, { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { TextInput, View } from 'react-native';
 import { formatPhone } from '@/utils/service/phone';
@@ -41,7 +41,6 @@ export default function PhoneScreen({ navigation }) {
 
   const isPhoneValid = formatPhone.validate(phoneNumber);
   const isPrefixError = formatPhone.checkPrefix(phoneNumber);
-
 
   const handleBack = () => {
     inputRef.current?.blur();

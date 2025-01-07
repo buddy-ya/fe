@@ -1,12 +1,11 @@
 import LogoIcon from '@assets/icons/logo.svg';
 import { Bell, Plus, Search } from 'lucide-react-native';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Platform, TouchableOpacity, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { feedKeys, FeedRepository } from '@/api';
-import { getModalTexts } from '@/hooks';
-import { useAuthCheck, useFeedList } from '@/hooks';
+import { useAuthCheck, useFeedList, getModalTexts } from '@/hooks';
 import { CATEGORIES } from '@/utils/constants/categories';
 import { Button, CategoryPager, ConfirmModal, FeedList, InnerLayout, Layout } from '@/components';
 

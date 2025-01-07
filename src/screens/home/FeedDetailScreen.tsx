@@ -1,6 +1,6 @@
 import { useQueryClient } from '@tanstack/react-query';
 import { MoreVertical } from 'lucide-react-native';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Alert, Keyboard, RefreshControl, ScrollView, TouchableOpacity } from 'react-native';
 import { feedKeys, FeedRepository } from '@/api';
@@ -100,11 +100,7 @@ export default function FeedDetailScreen({ navigation, route }) {
     }
   };
 
-  if (isDeleted) return null;
-
-  if (!feed && !isRefetching) {
-    return null;
-  }
+  if (isDeleted || !(feed || isRefetching)) return null;
 
   return (
     <>

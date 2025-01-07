@@ -27,7 +27,7 @@ export const useFeedList = ({
     useInfiniteQuery<FeedListResponse, Error, FeedListResponse, string[], number>({
       queryKey,
       queryFn: async ({ pageParam = 0 }) => {
-        return await fetchFn({
+        return fetchFn({
           page: pageParam,
           size: options.size,
         });
