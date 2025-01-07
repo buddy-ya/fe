@@ -44,6 +44,9 @@ module.exports = {
       infoPlist: {
         UIBackgroundModes: ['remote-notification'],
         'aps-environment': 'development',
+        NSAppTransportSecurity: {
+          NSAllowsArbitraryLoads: true,
+        },
       },
     },
     android: {
@@ -53,7 +56,7 @@ module.exports = {
       favicon: './assets/favicon.png',
     },
     extra: {
-      BASE_URL: isProduction ? process.env.BASE_URL : process.env.BASE_URL,
+      BASE_URL: process.env.BASE_URL,
       eas: {
         projectId: '6623b9dc-65be-4af9-b342-a33c0dc8cab6',
       },
