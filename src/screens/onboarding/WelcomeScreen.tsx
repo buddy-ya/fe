@@ -1,4 +1,5 @@
 import '@/../global.css';
+import Constants from 'expo-constants';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Image, View } from 'react-native';
@@ -9,7 +10,7 @@ import Layout from '@/components/common/layout/Layout';
 
 export default function WelcomeScreen({ navigation }) {
   const { t } = useTranslation('onboarding');
-
+  const BASE_URL = Constants.expoConfig?.extra?.BASE_URL;
   const handleNavigateButton = () => {
     navigation.navigate('OnboardingPhone');
   };

@@ -1,5 +1,8 @@
 const path = require('path');
+
 require('dotenv').config({ path: path.resolve(__dirname, '.env') });
+
+const isProduction = process.env.EAS_BUILD_PROFILE === 'production';
 
 module.exports = {
   expo: {
@@ -50,7 +53,7 @@ module.exports = {
       favicon: './assets/favicon.png',
     },
     extra: {
-      BASE_URL: process.env.BASE_URL,
+      BASE_URL: isProduction ? process.env.BASE_URL : process.env.BASE_URL,
       eas: {
         projectId: '6623b9dc-65be-4af9-b342-a33c0dc8cab6',
       },

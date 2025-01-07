@@ -1,9 +1,11 @@
 import i18n from '@/i18n';
 import { resetToOnboarding } from '@/navigation/router';
-import { BASE_URL } from '@env';
 import axios from 'axios';
+import Constants from 'expo-constants';
 import { Alert } from 'react-native';
 import { getAccessToken, getRefreshToken, removeTokens, saveTokens } from '@/utils/service/auth';
+
+const BASE_URL = Constants.expoConfig?.extra?.BASE_URL;
 
 export const apiClient = axios.create({
   baseURL: BASE_URL,
