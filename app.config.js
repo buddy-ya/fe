@@ -2,8 +2,6 @@ const path = require('path');
 
 require('dotenv').config({ path: path.resolve(__dirname, '.env') });
 
-const isProduction = process.env.EAS_BUILD_PROFILE === 'production';
-
 module.exports = {
   expo: {
     name: 'buddyya',

@@ -5,7 +5,7 @@ import Constants from 'expo-constants';
 import { Alert } from 'react-native';
 import { getAccessToken, getRefreshToken, removeTokens, saveTokens } from '@/utils/service/auth';
 
-const BASE_URL = Constants.expoConfig?.extra?.BASE_URL;
+const BASE_URL = Constants.expoConfig.extra.BASE_URL;
 
 export const apiClient = axios.create({
   baseURL: BASE_URL,
@@ -73,31 +73,6 @@ apiClient.interceptors.response.use(
         return Promise.reject(reissueError);
       }
     }
-
-    // const serverErrorMessage = error.response.data?.message;
-    // if (serverErrorMessage) {
-    //   Alert.alert(
-    //     i18n.t("error:title"),
-    //     serverErrorMessage,
-    //     [{ text: i18n.t("common:confirm"), style: "default" }],
-    //     { cancelable: true }
-    //   );
-    //   return Promise.reject(error);
-    // }
-
-    // switch (error.response.status) {
-    //   case 403:
-    //     showErrorModal("forbidden");
-    //     break;
-    //   case 404:
-    //     showErrorModal("notFound");
-    //     break;
-    //   case 500:
-    //     showErrorModal("server");
-    //     break;
-    //   default:
-    //     showErrorModal("default");
-    // }
     return Promise.reject(error);
   }
 );
