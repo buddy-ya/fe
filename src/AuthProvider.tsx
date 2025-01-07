@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
 import { getAccessToken } from "./utils/service/auth";
 import { API } from "./api";
+import { useSuspenseQuery } from "@tanstack/react-query";
 
 interface Props {
     children: React.ReactNode;
@@ -8,21 +8,20 @@ interface Props {
 
 export default function AuthProvider({ children }: Props) {
 
-    const [loading, setLoading] = useState(false);
-
     const initAuth = async () => {
-        setLoading(true);
         const accessToken = await getAccessToken();
         if (accessToken) {
             API.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+
         }
-        setLoading(false);
+        return accessToken || null;
     }
 
-    useEffect(() => {
-        initAuth();
-    }, [])
+    const { data } = useSuspenseQuery({
+        queryKey: ['auth'],
+        queryFn: initAuth,
+        networkMode: 'always',
+    })
 
-    if (loading) return <></>;
     return <>{children}</>
 }
