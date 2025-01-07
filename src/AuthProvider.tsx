@@ -14,7 +14,7 @@ export default function AuthProvider({ children }: Props) {
             API.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
 
         }
-        return accessToken || null;
+        return accessToken;
     }
 
     const { data } = useSuspenseQuery({
