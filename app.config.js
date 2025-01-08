@@ -49,6 +49,11 @@ module.exports = {
     },
     android: {
       package: 'com.buddyya.app',
+      manifest: {
+        application: {
+          usesCleartextTraffic: true,
+        },
+      },
     },
     web: {
       favicon: './assets/favicon.png',
