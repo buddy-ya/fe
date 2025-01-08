@@ -71,7 +71,7 @@ export default function MyPageScreen({ navigation }) {
       label: t('menuItems.delete'),
       onPress: async () => {
         await deleteAccount();
-        removeTokens();
+        await removeTokens();
         resetToOnboarding();
       },
     },
@@ -79,7 +79,6 @@ export default function MyPageScreen({ navigation }) {
       key: 'refresh',
       label: t('menuItems.refresh'),
       onPress: async () => {
-        console.log('refresh');
         await refreshStudentCertification();
       },
     },

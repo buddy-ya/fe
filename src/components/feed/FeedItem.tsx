@@ -231,8 +231,13 @@ export default function FeedItem({
 
         <View className="mt-[20px] flex-row items-center justify-between px-[12px]">
           {actions.map(
-            ({ icon: Icon, activeIcon: ActiveIcon, label, count, isActive, onPress }) => (
-              <TouchableOpacity key={label} onPress={onPress} className="flex-row items-center">
+            ({ icon: Icon, activeIcon: ActiveIcon, label, count, isActive, onPress }, index) => (
+              <TouchableOpacity
+                key={label}
+                onPress={onPress}
+                className="flex-row items-center"
+                hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+              >
                 {isActive && ActiveIcon ? (
                   <ActiveIcon />
                 ) : (
@@ -243,13 +248,18 @@ export default function FeedItem({
                     strokeWidth={1}
                   />
                 )}
-                <MyText
-                  size="text-sm"
-                  color="text-textDescription"
-                  className="ml-1 w-[60px] border-2"
-                >
-                  {label} {count > 0 && count}
-                </MyText>
+                <View className="ml-1 flex-row items-center">
+                  <MyText size="text-sm" color="text-textDescription">
+                    {label}
+                  </MyText>
+                  <MyText
+                    size="text-sm"
+                    color="text-textDescription"
+                    className={`ml-1 ${index !== actions.length - 1 ? 'min-w-[16px]' : ''}`}
+                  >
+                    {count > 0 ? count : ''}
+                  </MyText>
+                </View>
               </TouchableOpacity>
             )
           )}
