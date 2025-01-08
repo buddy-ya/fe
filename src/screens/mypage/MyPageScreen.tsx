@@ -1,3 +1,4 @@
+import { resetToOnboarding } from '@/navigation/router';
 import LogoIcon from '@assets/icons/logo.svg';
 import { Bell, Bookmark, ChevronRight, NotebookPen, Settings } from 'lucide-react-native';
 import React, { useEffect } from 'react';
@@ -68,12 +69,20 @@ export default function MyPageScreen({ navigation }) {
     {
       key: 'delete',
       label: t('menuItems.delete'),
-      onPress: () => {
+      onPress: async () => {
+        await deleteAccount();
         removeTokens();
-        deleteAccount();
+        resetToOnboarding();
       },
     },
-    { key: 'refresh', label: t('menuItems.refresh'), onPress: () => refreshStudentCertification() },
+    {
+      key: 'refresh',
+      label: t('menuItems.refresh'),
+      onPress: async () => {
+        console.log('refresh');
+        await refreshStudentCertification();
+      },
+    },
     { key: 'privacy', label: t('menuItems.privacy'), onPress: () => console.log('privacy') },
     { key: 'terms', label: t('menuItems.terms'), onPress: () => console.log('terms') },
     { key: 'version', label: t('menuItems.version'), onPress: () => console.log('version') },
