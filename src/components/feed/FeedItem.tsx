@@ -243,7 +243,11 @@ export default function FeedItem({
                     strokeWidth={1}
                   />
                 )}
-                <MyText size="text-sm" color="text-textDescription" className="ml-1 w-10">
+                <MyText
+                  size="text-sm"
+                  color="text-textDescription"
+                  className="ml-1 w-[60px] border-2"
+                >
                   {label} {count > 0 && count}
                 </MyText>
               </TouchableOpacity>
