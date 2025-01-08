@@ -31,7 +31,6 @@ export default function EmailVerificationScreen({ navigation, route }) {
 
   const handleNavigateButton = async () => {
     if (isSubmiting) return;
-
     setisSubmiting(true);
     const { success } = await verifyEmailCode({
       email,
@@ -45,6 +44,7 @@ export default function EmailVerificationScreen({ navigation, route }) {
       setVerificationError(true);
       setCode('');
     }
+    setisSubmiting(false);
   };
 
   const renderFooterContent = () => {
@@ -63,7 +63,7 @@ export default function EmailVerificationScreen({ navigation, route }) {
       icon={<Send strokeWidth={1} size={23} color="#797979" />}
       content={<View className="mx-3">{renderFooterContent()}</View>}
       onPress={handleNavigateButton}
-      disabled={code.length !== 4 || isSubmiting}
+      disabled={code.length < 4 || isSubmiting}
     />
   );
 
