@@ -36,3 +36,7 @@ export const postStudentIdVerification = async (image) => {
   });
   return data;
 };
+
+export const refreshStudentCertification = async () => {
+  return await apiClient.delete(`/certification/refresh`);
+};

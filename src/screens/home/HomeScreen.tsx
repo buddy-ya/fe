@@ -43,7 +43,6 @@ export default function HomeScreen({ navigation }) {
   };
 
   const handleWriteButton = async () => {
-    console.log('CLICKED');
     const { isCertificated, isKorean, isStudentIdCardRequested } = await checkAuth();
 
     if (isCertificated) {

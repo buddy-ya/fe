@@ -20,3 +20,7 @@ export const updateInterests = async (interests: string[]) => {
 export const updateProfileImage = async (imageKey: string) => {
   return await apiClient.patch(`/mypage/update/profile-default-image?profileImageKey=${imageKey}`);
 };
+
+export const deleteAccount = async () => {
+  return await apiClient.delete(`/mypage/delete`);
+};

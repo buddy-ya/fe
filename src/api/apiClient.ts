@@ -59,7 +59,6 @@ apiClient.interceptors.response.use(
         if (!refreshToken) {
           throw new Error('Refresh token not found');
         }
-
         const { accessToken, refreshToken: newRefreshToken } = await reissueTokens(refreshToken);
 
         const finalRefreshToken = newRefreshToken || refreshToken;
