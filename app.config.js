@@ -16,7 +16,7 @@ module.exports = {
       resizeMode: 'contain',
       backgroundColor: '#ffffff',
     },
-    icon: './assets/images/logo.png',
+    icon: './assets/images/icon.png',
     plugins: [
       [
         'expo-notifications',
