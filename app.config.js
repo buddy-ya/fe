@@ -12,7 +12,7 @@ module.exports = {
     userInterfaceStyle: 'light',
     newArchEnabled: true,
     splash: {
-      image: './assets/images/splash.png',
+      image: './assets/images/logo.png',
       resizeMode: 'contain',
       backgroundColor: '#ffffff',
     },
@@ -30,6 +30,9 @@ module.exports = {
       [
         'expo-build-properties',
         {
+          android: {
+            usesCleartextTraffic: true,
+          },
           ios: {
             useFrameworks: 'static',
           },
@@ -49,11 +52,6 @@ module.exports = {
     },
     android: {
       package: 'com.buddyya.app',
-      manifest: {
-        application: {
-          usesCleartextTraffic: true,
-        },
-      },
     },
     web: {
       favicon: './assets/favicon.png',
