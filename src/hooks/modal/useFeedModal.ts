@@ -26,8 +26,8 @@ export const useFeedModals = ({
 
     const options = feed.isFeedOwner
       ? [
-          createModalOptions.delete(onDeleteFeed || (() => {})),
           createModalOptions.edit(onEditFeed || (() => {})),
+          createModalOptions.delete(onDeleteFeed || (() => {})),
         ]
       : [createModalOptions.report(() => console.log('report comment'))];
 
@@ -37,8 +37,8 @@ export const useFeedModals = ({
   const handleCommentOptions = (comment: CommentType) => {
     const options = comment.isCommentOwner
       ? [
-          createModalOptions.delete(() => onDeleteComment?.(comment.id)),
           createModalOptions.edit(() => onEditComment?.(comment)),
+          createModalOptions.delete(() => onDeleteComment?.(comment.id)),
         ]
       : [createModalOptions.report(() => console.log('report comment'))];
 
