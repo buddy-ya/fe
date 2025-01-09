@@ -45,10 +45,10 @@ export const useFeedDetail = ({ feedId, enabled = true }: UseFeedDetailProps) =>
   const commentMutation = useMutation({
     mutationFn: (content: string) => createComment(feedId, content),
     onSuccess: (newComment) => {
-      queryClient.setQueryData(['feedComments', feedId], (old: any) => ({
-        ...old,
-        comments: [...old.comments, newComment],
-      }));
+      queryClient.setQueryData(['feedComments', feedId], (old: any) => {
+        const currentComments = old || [];
+        return [...currentComments, newComment];
+      });
       queryClient.invalidateQueries({ queryKey: feedKeys.all });
     },
   });
