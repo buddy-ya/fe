@@ -22,5 +22,5 @@ export const updateProfileImage = async (imageKey: string) => {
 };
 
 export const deleteAccount = async () => {
-  return await apiClient.delete(`/mypage/delete`);
+  return apiClient.delete(`/mypage/delete`);
 };

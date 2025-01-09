@@ -38,5 +38,5 @@ export const postStudentIdVerification = async (image) => {
 };
 
 export const refreshStudentCertification = async () => {
-  return await apiClient.put(`/certification/refresh`);
+  return apiClient.put(`/certification/refresh`);
 };
