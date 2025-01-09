@@ -114,9 +114,7 @@ export default function FeedItem({
       <View className="mt-5 flex-row flex-wrap justify-between">
         {limitedUrls.map((url, index) => {
           const totalImages = imageUrls.length;
-
           const config = totalImages === 1 ? IMAGE_CONFIG.single : IMAGE_CONFIG.multiple;
-
           return (
             <View
               key={`${url}-${index}`}
