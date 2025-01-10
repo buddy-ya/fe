@@ -28,6 +28,11 @@ class UserRepository {
         );
         return data;
     };
+
+    async delete() {
+        const { data } = await API.delete(`/mypage/delete`);
+        return data;
+    }
 }
 
 export default new UserRepository();

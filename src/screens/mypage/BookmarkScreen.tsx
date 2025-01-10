@@ -1,5 +1,4 @@
 import { Bookmark } from 'lucide-react-native';
-import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 import { feedKeys, FeedRepository } from '@/api';
@@ -29,7 +28,7 @@ export default function BookmarkScreen({ navigation }) {
             <Bookmark size={19} strokeWidth={2} color="#282828" />
           </MyText>
           <MyText size="text-lg" className="font-bold">
-            {t('bookmark')}
+            {t('quickMenu.bookmark')}
           </MyText>
         </View>
       }

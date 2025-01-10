@@ -25,6 +25,7 @@ class CommentRepository {
         return data;
     };
 
+    // TODO: get 으로 바꿔도 될 듯?
     async getCommentsByFeedId({ feedId }: Comment.GetCommentsDTO): Promise<Comment.CommonResponse[]> {
         const { data } = await API.get(`/feeds/${feedId}/comments`);
         return data;

@@ -16,8 +16,7 @@ export default function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <ErrorBoundary FallbackComponent={ErrorPage}>
-        {/* TODO: 스플래시 이미지 전에도 보이는 게 이상해 보일 수 있어서 추후 상의하여 상세 위치 결정 */}
-        <Suspense fallback={<Skeleton />}>
+        <Suspense fallback={<></>}>
           <AuthProvider>
             <I18nextProvider i18n={i18n}>
               <GestureHandlerRootView>

@@ -1,5 +1,5 @@
 import SejongLogo from '@assets/icons/universities/sejong.svg';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 import { useOnboardingStore } from '@/store/onboarding';

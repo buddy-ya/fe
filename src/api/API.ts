@@ -1,9 +1,12 @@
 import i18n from '@/i18n';
 import { resetToOnboarding } from '@/navigation/router';
-import { BASE_URL } from '@env';
 import axios from 'axios';
+import Constants from 'expo-constants';
 import { Alert } from 'react-native';
 import { getRefreshToken, removeTokens, saveTokens } from '@/utils';
+
+
+const BASE_URL = Constants.expoConfig.extra.BASE_URL;
 
 export const API = axios.create({
   baseURL: BASE_URL,
@@ -44,7 +47,6 @@ API.interceptors.response.use(
         if (!refreshToken) {
           throw new Error('Refresh token not found');
         }
-
         const { accessToken, refreshToken: newRefreshToken } = await reissueTokens(refreshToken);
 
         const finalRefreshToken = newRefreshToken || refreshToken;
@@ -59,31 +61,6 @@ API.interceptors.response.use(
         return Promise.reject(reissueError);
       }
     }
-
-    // const serverErrorMessage = error.response.data?.message;
-    // if (serverErrorMessage) {
-    //   Alert.alert(
-    //     i18n.t("error:title"),
-    //     serverErrorMessage,
-    //     [{ text: i18n.t("common:confirm"), style: "default" }],
-    //     { cancelable: true }
-    //   );
-    //   return Promise.reject(error);
-    // }
-
-    // switch (error.response.status) {
-    //   case 403:
-    //     showErrorModal("forbidden");
-    //     break;
-    //   case 404:
-    //     showErrorModal("notFound");
-    //     break;
-    //   case 500:
-    //     showErrorModal("server");
-    //     break;
-    //   default:
-    //     showErrorModal("default");
-    // }
     return Promise.reject(error);
   }
 );

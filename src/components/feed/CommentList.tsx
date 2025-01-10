@@ -45,14 +45,14 @@ export default function CommentList({ comments, onCommentOptions }: CommentListP
       {comments?.map((item) => (
         <View key={item.id} className="mb-0 bg-white px-4 py-3">
           <View className="mb-[14px] flex-row items-start justify-between">
-            <View className="flex-row">
+            <View className="flex-1 flex-row">
               <View className="mr-3">
                 <Image
                   className="h-10 w-10 rounded-[12px]"
                   source={{ uri: item.profileImageUrl }}
                 />
               </View>
-              <View className="">
+              <View className="flex-1">
                 <View className="flex-row items-center">
                   <MyText size="text-sm" className="font-semibold text-[#474747]">
                     {t(`profile.university.${item.university}`)}
@@ -80,10 +80,10 @@ export default function CommentList({ comments, onCommentOptions }: CommentListP
                     isCommentOwner={item.isCommentOwner}
                   />
                 </View>
-                <MyText className="mt-[10px]">{item.content}</MyText>
+                <MyText className="mt-[10px] flex-shrink">{item.content}</MyText>
               </View>
             </View>
-            <View className="flex-row items-center">
+            <View className="ml-2">
               <TouchableOpacity
                 onPress={() => onCommentOptions(item)}
                 hitSlop={{ top: 10, bottom: 10, left: 20, right: 10 }}

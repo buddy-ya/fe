@@ -43,6 +43,11 @@ class AuthRepository {
         return data;
     };
 
+    async refreshStudentCertification() {
+        const { data } = await API.put(`/certification/refresh`);
+        return data;
+    };
+
 }
 
 export default new AuthRepository();

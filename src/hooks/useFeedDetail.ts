@@ -1,15 +1,13 @@
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { feedKeys, CommentRepository, FeedRepository } from "@/api";
+import { CommentRepository, feedKeys, FeedRepository } from "@/api";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+
 
 interface UseFeedDetailProps {
   feedId: number;
   enabled?: boolean;
 }
 
-export const useFeedDetail = ({
-  feedId,
-  enabled = true,
-}: UseFeedDetailProps) => {
+export const useFeedDetail = ({ feedId, enabled = true }: UseFeedDetailProps) => {
   const queryClient = useQueryClient();
 
   const {
@@ -22,7 +20,7 @@ export const useFeedDetail = ({
     enabled,
   });
 
-  const { data: commentsData, refetch: refetchComments } = useQuery({
+  const { data: comments, refetch: refetchComments } = useQuery({
     queryKey: ["feedComments", feedId],
     queryFn: () => CommentRepository.getCommentsByFeedId({ feedId }),
     enabled,
@@ -45,10 +43,9 @@ export const useFeedDetail = ({
   const commentMutation = useMutation({
     mutationFn: (content: string) => CommentRepository.create({ feedId, content }),
     onSuccess: (newComment) => {
-      queryClient.setQueryData(["feedComments", feedId], (old: any) => ({
-        ...old,
-        comments: [...old, newComment],
-      }));
+      queryClient.setQueryData(['feedComments', feedId], (old: any) => {
+        return [...old, newComment];
+      });
       queryClient.invalidateQueries({ queryKey: feedKeys.all });
     },
   });
@@ -56,7 +53,7 @@ export const useFeedDetail = ({
   const deleteCommentMutation = useMutation({
     mutationFn: (commentId: number) => CommentRepository.delete({ feedId, commentId }),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["feedComments", feedId] });
+      queryClient.invalidateQueries({ queryKey: ['feedComments', feedId] });
       queryClient.invalidateQueries({ queryKey: feedKeys.all });
     },
   });
@@ -70,7 +67,7 @@ export const useFeedDetail = ({
       content: string;
     }) => CommentRepository.update({ feedId, content, commentId }),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["feedComments", feedId] });
+      queryClient.invalidateQueries({ queryKey: ['feedComments', feedId] });
       queryClient.invalidateQueries({ queryKey: feedKeys.all });
     },
   });
@@ -99,7 +96,7 @@ export const useFeedDetail = ({
 
   return {
     feed,
-    comments: commentsData || [],
+    comments: comments,
     isRefetching: isRefetchingFeed,
     handleFeedActions,
     handleCommentActions,
