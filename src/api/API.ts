@@ -51,7 +51,6 @@ API.interceptors.response.use(
 
         const finalRefreshToken = newRefreshToken || refreshToken;
         await saveTokens(accessToken, finalRefreshToken);
-        API.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
         error.config.headers.Authorization = `Bearer ${accessToken}`;
         return API(error.config);
       } catch (reissueError) {
