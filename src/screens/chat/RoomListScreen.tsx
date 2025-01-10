@@ -133,7 +133,7 @@ export default function RoomListScreen({ navigation }) {
   }
 
   const handlePressRoom = (roomId: number) => {
-    navigation.navigate('Chat', { roomId })
+    navigation.navigate('ChatRoom', { roomId })
   }
   return (
     <Layout
