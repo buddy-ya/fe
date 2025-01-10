@@ -25,9 +25,6 @@
       "interests": "Interests"
     }
   },
-  "bookmark": "Bookmarks",
-  "myPosts": "My Posts",
-  "settings": "Settings",
   "quickMenu": {
     "bookmark": "Bookmarks",
     "myPosts": "My Posts",
@@ -37,8 +34,8 @@
     "title": "Settings Layout",
     "bookmark": "Bookmarks",
     "myPosts": "My Posts",
-    "notifications": "Notification Settings",
-    "language": "Language Settings",
+    "delete": "회원탈퇴",
+    "refresh": "학생 인증 초기화",
     "privacy": "Privacy Settings",
     "terms": "Terms of Service",
     "version": "App Version"

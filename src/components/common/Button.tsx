@@ -1,6 +1,6 @@
 import { ChevronRight, LucideIcon } from 'lucide-react-native';
 import React, { ReactNode } from 'react';
-import { Pressable, StyleProp, View, ViewStyle } from 'react-native';
+import { StyleProp, TouchableOpacity, ViewStyle } from 'react-native';
 
 interface ButtonProps {
   onPress: () => void;
@@ -35,22 +35,21 @@ export default function Button({
     }
   };
 
-  const getColorStyles = (pressed: boolean) => {
+  const getColorStyles = () => {
     if (disabled) return 'bg-buttonDisabled';
-    return pressed ? 'bg-active' : 'bg-primary';
+    return 'bg-primary active:bg-active';
   };
 
   return (
-    <Pressable onPress={onPress} disabled={disabled}>
-      {({ pressed }) => (
-        <View
-          className={` ${getTypeStyles()} ${getColorStyles(pressed)} ${className} `}
-          style={containerStyle}
-        >
-          {type === 'circle' && <Icon strokeWidth={2} size={iconSize} color={iconColor} />}
-          {children}
-        </View>
-      )}
-    </Pressable>
+    <TouchableOpacity
+      onPress={onPress}
+      disabled={disabled}
+      className={`${getTypeStyles()} ${getColorStyles()} ${className}`}
+      style={containerStyle}
+      activeOpacity={0.9}
+    >
+      {type === 'circle' && <Icon strokeWidth={2} size={iconSize} color={iconColor} />}
+      {children}
+    </TouchableOpacity>
   );
 }

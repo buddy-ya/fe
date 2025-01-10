@@ -49,7 +49,7 @@ export default function Layout({
   return (
     <SafeAreaView
       edges={edges}
-      className={`flex-1 ${
+      className={`flex-1 py-2 ${
         shouldUseWhiteBackground ? 'bg-white' : 'bg-mainBackground'
       } ${className}`}
     >

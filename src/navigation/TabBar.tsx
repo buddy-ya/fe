@@ -1,8 +1,9 @@
 import { BottomTabNavigationOptions } from '@react-navigation/bottom-tabs';
 import { Home, User, Users } from 'lucide-react-native';
 import React from 'react';
-import { Animated, StyleSheet } from 'react-native';
+import { Animated, Platform, StyleSheet } from 'react-native';
 
+const isAndroid = Platform.OS === 'android';
 const TAB_CONFIG = {
   Home: {
     Icon: Home,
@@ -23,7 +24,7 @@ export const tabBarStyle = StyleSheet.create({
     position: 'absolute',
     bottom: 0,
     paddingHorizontal: 10,
-    height: 80,
+    height: isAndroid ? 65 : 80,
     backgroundColor: 'white',
     borderTopColor: '#E8E9EB',
     zIndex: 1,
