@@ -1,3 +1,4 @@
+import { API } from "@/api";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const TOKEN_KEYS = {
@@ -11,8 +12,10 @@ export const saveTokens = async (
 ) => {
   try {
     await AsyncStorage.setItem(TOKEN_KEYS.ACCESS, accessToken);
+    API.defaults.headers.common['Authorization'] = accessToken;
     if (refreshToken) {
       await AsyncStorage.setItem(TOKEN_KEYS.REFRESH, refreshToken);
+      API.defaults.headers.common['Authorization'] = refreshToken;
     }
   } catch (error) {
     console.error("Error saving tokens:", error);
