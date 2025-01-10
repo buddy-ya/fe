@@ -5,9 +5,9 @@ import PagerView from 'react-native-pager-view';
 import { Chip } from '@/components';
 
 export interface Category {
-  id: string;
+  id: string | number;
   label: string;
-  icon: string;
+  icon?: string;
 }
 
 interface CategoryPagerProps {
