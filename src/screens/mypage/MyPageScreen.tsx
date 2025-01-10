@@ -1,17 +1,14 @@
 import { resetToOnboarding } from '@/navigation/router';
 import LogoIcon from '@assets/icons/logo.svg';
 import { Bell, Bookmark, ChevronRight, NotebookPen, Settings } from 'lucide-react-native';
-import React, { useEffect } from 'react';
+import { Fragment, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Image, TouchableOpacity, View } from 'react-native';
+import { View, TouchableOpacity, Image } from 'react-native';
 import { useProfileStore } from '@/store/profile';
-import { refreshStudentCertification } from '@/api/certification/certification';
-import { deleteAccount, getProfile } from '@/api/mypage/mypage';
 import { getCountryFlag } from '@/utils/constants/countries';
+import { InnerLayout, Layout, MyText } from '@/components';
+import { AuthRepository, UserRepository } from '@/api';
 import { removeTokens } from '@/utils/service/auth';
-import MyText from '@/components/common/MyText';
-import InnerLayout from '@/components/common/layout/InnerLayout';
-import Layout from '@/components/common/layout/Layout';
 
 const SettingItem = ({ label, onPress }) => (
   <TouchableOpacity
@@ -28,7 +25,7 @@ export default function MyPageScreen({ navigation }) {
   const { profile, setProfile } = useProfileStore();
 
   const fetchMyProfile = async () => {
-    const profileData = await getProfile();
+    const profileData = await UserRepository.get();
     setProfile(profileData);
   };
 
@@ -70,16 +67,16 @@ export default function MyPageScreen({ navigation }) {
       key: 'delete',
       label: t('menuItems.delete'),
       onPress: async () => {
-        await deleteAccount();
+        await UserRepository.delete();
         await removeTokens();
         resetToOnboarding();
-      },
+      }
     },
     {
       key: 'refresh',
       label: t('menuItems.refresh'),
       onPress: async () => {
-        await refreshStudentCertification();
+        await AuthRepository.refreshStudentCertification();
       },
     },
     { key: 'privacy', label: t('menuItems.privacy'), onPress: () => console.log('privacy') },
@@ -143,9 +140,9 @@ export default function MyPageScreen({ navigation }) {
 
         <View className="mt-4 bg-white">
           {settingsItems.map((item, index) => (
-            <React.Fragment key={item.key}>
+            <Fragment key={item.key}>
               <SettingItem label={item.label} onPress={item.onPress} />
-            </React.Fragment>
+            </Fragment>
           ))}
         </View>
       </InnerLayout>

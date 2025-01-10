@@ -3,19 +3,9 @@ import { MoreVertical } from 'lucide-react-native';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Alert, Keyboard, RefreshControl, ScrollView, TouchableOpacity } from 'react-native';
-import { deleteFeed } from '@/api/feed/feedAction';
-import { feedKeys } from '@/api/queryKeys';
-import { getModalTexts } from '@/hooks/modal/useAuthModal';
-import { useFeedModals } from '@/hooks/modal/useFeedModal';
-import { useAuthCheck } from '@/hooks/useAuthCheck';
-import { useFeedDetail } from '@/hooks/useFeedDetail';
-import KeyboardLayout from '@/components/common/layout/KeyboardLayout';
-import Layout from '@/components/common/layout/Layout';
-import BottomModal from '@/components/common/modal/BottomModal';
-import ConfirmModal from '@/components/common/modal/ConfirmModal';
-import { CommentInput } from '@/components/feed/CommentInput';
-import CommentList from '@/components/feed/CommentList';
-import FeedItem from '@/components/feed/FeedItem';
+import { feedKeys, FeedRepository } from '@/api';
+import { getModalTexts, useFeedModals, useAuthCheck, useFeedDetail } from '@/hooks';
+import { BottomModal, CommentList, ConfirmModal, FeedItem, KeyboardLayout, Layout, CommentInput } from '@/components';
 
 export default function FeedDetailScreen({ navigation, route }) {
   const { feedId } = route.params;
@@ -70,7 +60,7 @@ export default function FeedDetailScreen({ navigation, route }) {
     onDeleteFeed: () => {
       showDeleteAlert(async () => {
         setIsDeleted(true);
-        await deleteFeed(feedId);
+        await FeedRepository.delete({ feedId });
         queryClient.invalidateQueries({ queryKey: feedKeys.all });
         feedModal.closeModal();
         navigation.goBack();

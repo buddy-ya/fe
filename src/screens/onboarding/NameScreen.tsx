@@ -3,16 +3,8 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { TextInput } from 'react-native';
 import { useOnboardingStore } from '@/store/onboarding';
-import { updateName } from '@/api/mypage/mypage';
-import MyText from '@/components/common/MyText';
-import FooterLayout from '@/components/common/layout/FooterLayout';
-import InnerLayout from '@/components/common/layout/InnerLayout';
-import KeyboardLayout from '@/components/common/layout/KeyboardLayout';
-import Layout from '@/components/common/layout/Layout';
-import ErrorMessage from '@/components/onboarding/ErrorMessage';
-import Heading from '@/components/onboarding/Heading';
-import HeadingDescription from '@/components/onboarding/HeadingDescription';
-import Label from '@/components/onboarding/Label';
+import { UserRepository } from '@/api';
+import { ErrorMessage, FooterLayout, Heading, HeadingDescription, InnerLayout, KeyboardLayout, Label, Layout, MyText } from '@/components';
 
 const MIN_NAME_LENGTH = 2;
 const MAX_NAME_LENGTH = 15;
@@ -24,7 +16,7 @@ export default function NameScreen({ navigation, route }) {
   const { t } = useTranslation('onboarding');
   const { updateOnboardingData } = useOnboardingStore();
 
-  const handleNameChange = (text) => {
+  const handleNameChange = (text: string) => {
     setName(text);
     setIsNonEnglish(/[^\x00-\x7F\s]/.test(text));
   };
@@ -39,7 +31,7 @@ export default function NameScreen({ navigation, route }) {
     const trimmedName = name.trim();
 
     if (mode === 'edit') {
-      await updateName(trimmedName);
+      await UserRepository.updateName(trimmedName);
       navigation.goBack();
     } else {
       updateOnboardingData({ name: trimmedName });

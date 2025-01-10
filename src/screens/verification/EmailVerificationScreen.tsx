@@ -1,19 +1,9 @@
-import { Send } from 'lucide-react-native';
 import React, { useState } from 'react';
+import { AuthRepository } from '@/api';
+import { ErrorMessage, FooterLayout, Heading, HeadingDescription, InnerLayout, KeyboardLayout, Label, Layout, LinkText, MyText, OTPInput } from '@/components';
+import { Send } from 'lucide-react-native';
 import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
-import { sendEmail, verifyEmailCode } from '@/api/certification/certification';
-import LinkText from '@/components/common/LinkText';
-import MyText from '@/components/common/MyText';
-import OTPInput from '@/components/common/OTPInput';
-import FooterLayout from '@/components/common/layout/FooterLayout';
-import InnerLayout from '@/components/common/layout/InnerLayout';
-import KeyboardLayout from '@/components/common/layout/KeyboardLayout';
-import Layout from '@/components/common/layout/Layout';
-import ErrorMessage from '@/components/onboarding/ErrorMessage';
-import Heading from '@/components/onboarding/Heading';
-import HeadingDescription from '@/components/onboarding/HeadingDescription';
-import Label from '@/components/onboarding/Label';
 
 export default function EmailVerificationScreen({ navigation, route }) {
   const { t } = useTranslation('certification');
@@ -24,7 +14,7 @@ export default function EmailVerificationScreen({ navigation, route }) {
   const [isSubmiting, setisSubmiting] = useState(false);
 
   const handleResend = async () => {
-    await sendEmail({ email, univName });
+    await AuthRepository.sendCodeByMail({ email, univName });
     setCode('');
     setVerificationError(false);
   };
@@ -32,7 +22,7 @@ export default function EmailVerificationScreen({ navigation, route }) {
   const handleNavigateButton = async () => {
     if (isSubmiting) return;
     setisSubmiting(true);
-    const { success } = await verifyEmailCode({
+    const { success } = await AuthRepository.verifyCodeByMail({
       email,
       univName,
       code,

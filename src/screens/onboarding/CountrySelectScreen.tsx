@@ -3,14 +3,8 @@ import { useTranslation } from 'react-i18next';
 import { Keyboard, TouchableWithoutFeedback } from 'react-native';
 import { useOnboardingStore } from '@/store/onboarding';
 import { COUNTRIES } from '@/utils/constants/countries';
-import Button from '@/components/common/Button';
-import MyText from '@/components/common/MyText';
-import SearchInput from '@/components/common/SearchInput';
-import InnerLayout from '@/components/common/layout/InnerLayout';
-import Layout from '@/components/common/layout/Layout';
-import Heading from '@/components/onboarding/Heading';
-import HeadingDescription from '@/components/onboarding/HeadingDescription';
-import MultiSelectItem from '@/components/onboarding/MultiSelectItem';
+import { Button, Heading, HeadingDescription, InnerLayout, Layout, MultiSelectItem, MyText, SearchInput } from '@/components';
+
 
 type CountryID = (typeof COUNTRIES)[number]['id'];
 

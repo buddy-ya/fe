@@ -1,7 +1,7 @@
 import { Feed } from '@/screens/home/types';
 import React from 'react';
 import { FlatList, RefreshControl, RefreshControlProps } from 'react-native';
-import EmptyState from '@/components/common/EmptyState';
+import { EmptyState } from '@/components';
 import FeedItem from './FeedItem';
 
 interface FeedListProps {

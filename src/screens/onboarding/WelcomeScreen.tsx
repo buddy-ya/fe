@@ -1,12 +1,8 @@
 import '@/../global.css';
+import { Button, InnerLayout, Layout, MyText } from '@/components';
 import Constants from 'expo-constants';
-import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Image, View } from 'react-native';
-import Button from '@/components/common/Button';
-import MyText from '@/components/common/MyText';
-import InnerLayout from '@/components/common/layout/InnerLayout';
-import Layout from '@/components/common/layout/Layout';
 
 export default function WelcomeScreen({ navigation }) {
   const { t } = useTranslation('onboarding');

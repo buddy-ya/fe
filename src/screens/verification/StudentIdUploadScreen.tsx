@@ -1,16 +1,15 @@
 import * as ImagePicker from 'expo-image-picker';
 import { Plus } from 'lucide-react-native';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Image, TouchableOpacity, View } from 'react-native';
-import { postStudentIdVerification } from '@/api/certification/certification';
+import { View, TouchableOpacity, Image } from 'react-native';
+
 import { logError } from '@/utils/service/error';
-import Button from '@/components/common/Button';
-import MyText from '@/components/common/MyText';
-import InnerLayout from '@/components/common/layout/InnerLayout';
-import Layout from '@/components/common/layout/Layout';
-import Heading from '@/components/onboarding/Heading';
-import HeadingDescription from '@/components/onboarding/HeadingDescription';
+
+import { processImageForUpload } from '@/utils/service/image';
+import { ImageFile } from '../home/types';
+import { AuthRepository } from '@/api';
+import { Button, Heading, HeadingDescription, InnerLayout, Layout, MyText } from '@/components';
 
 export default function StudentIdCardUploadScreen({ navigation }) {
   const { t } = useTranslation('certification');
@@ -41,9 +40,10 @@ export default function StudentIdCardUploadScreen({ navigation }) {
     try {
       if (!selectedImage) return;
 
-      await postStudentIdVerification({
-        selectedImage,
-      });
+      const formData = new FormData();
+      // TODO: 테스트 필요
+      formData.append("image", processImageForUpload(selectedImage as ImageFile));
+      await AuthRepository.uploadStudentIdCard(formData);
 
       navigation.navigate('StudentIdComplete');
     } catch (error) {

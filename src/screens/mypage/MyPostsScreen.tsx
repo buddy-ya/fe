@@ -1,21 +1,17 @@
 import { NotebookPen } from 'lucide-react-native';
-import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
-import { getMyPosts } from '@/api/feed/getFeeds';
-import { feedKeys } from '@/api/queryKeys';
-import { useFeedList } from '@/hooks/useFeedList';
-import MyText from '@/components/common/MyText';
-import InnerLayout from '@/components/common/layout/InnerLayout';
-import Layout from '@/components/common/layout/Layout';
-import FeedList from '@/components/feed/FeedList';
+import { feedKeys, FeedRepository } from '@/api';
+import { useFeedList } from '@/hooks';
+import { FeedList, InnerLayout, Layout, MyText } from '@/components';
+
 
 export default function MyPostsScreen({ navigation }) {
   const { t } = useTranslation('mypage');
 
   const feedListData = useFeedList({
     queryKey: feedKeys.myPosts(),
-    fetchFn: getMyPosts,
+    fetchFn: FeedRepository.getMyPosts,
     staleTime: 1000 * 60 * 5,
   });
 

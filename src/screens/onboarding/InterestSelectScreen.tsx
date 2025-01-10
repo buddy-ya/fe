@@ -2,18 +2,13 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ScrollView, View } from 'react-native';
 import { useOnboardingStore } from '@/store/onboarding';
-import { updateInterests } from '@/api/mypage/mypage';
-import { postOnboardingInfo } from '@/api/onboarding/join';
 import type { InterestID } from '@/utils/constants/interests';
 import { INTEREST_CATEGORIES, INTEREST_ICONS } from '@/utils/constants/interests';
 import { saveTokens } from '@/utils/service/auth';
 import { logError } from '@/utils/service/error';
-import Button from '@/components/common/Button';
-import { Chip } from '@/components/common/Chip';
-import MyText from '@/components/common/MyText';
-import InnerLayout from '@/components/common/layout/InnerLayout';
-import Layout from '@/components/common/layout/Layout';
-import Heading from '@/components/onboarding/Heading';
+import { OnboardingRepository, UserRepository } from '@/api';
+import { Button, Chip, Heading, InnerLayout, Layout, MyText } from '@/components';
+
 
 interface Interest {
   id: InterestID;
@@ -46,15 +41,15 @@ export default function InterestSelectScreen({ navigation, route }) {
     try {
       const interests = selectedInterests.map((interest) => interest.id);
       if (mode === 'edit') {
-        await updateInterests(interests);
+        await UserRepository.updateInterests(interests);
         navigation.goBack();
       } else {
         updateOnboardingData({ interests });
-        const { data } = await postOnboardingInfo({
+        const { accessToken, refreshToken } = await OnboardingRepository.create({
           ...onboardingData,
           interests,
         });
-        await saveTokens(data.accessToken, data.refreshToken);
+        await saveTokens(accessToken, refreshToken);
         navigation.reset({
           index: 0,
           routes: [{ name: 'Tab' }],

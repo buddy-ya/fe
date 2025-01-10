@@ -1,21 +1,13 @@
 import { useQueryClient } from '@tanstack/react-query';
 import * as ImagePicker from 'expo-image-picker';
 import { Camera, ChevronDown, ImagePlus, X } from 'lucide-react-native';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Alert, ScrollView, TextInput, TouchableOpacity, View } from 'react-native';
-import { createFeed, updateFeed } from '@/api/feed/feedAction';
-import { feedKeys } from '@/api/queryKeys';
-import { useModal } from '@/hooks/modal/useModal';
+import { View, TouchableOpacity, TextInput, ScrollView, Alert } from 'react-native';
+import { feedKeys, FeedRepository } from '@/api';
+import { useModal } from '@/hooks';
 import { CATEGORIES } from '@/utils/constants/categories';
-import Loading from '@/components/common/Loading';
-import MyText from '@/components/common/MyText';
-import InnerLayout from '@/components/common/layout/InnerLayout';
-import KeyboardLayout from '@/components/common/layout/KeyboardLayout';
-import Layout from '@/components/common/layout/Layout';
-import BottomModal from '@/components/common/modal/BottomModal';
-import { CategorySelectModal } from '@/components/feed/CategorySelectModal';
-import { ImagePreview } from '@/components/feed/ImagePreview';
+import { Layout, BottomModal, InnerLayout, KeyboardLayout, Loading, MyText, CategorySelectModal, ImagePreview } from '@/components';
 
 interface ImageFile {
   uri: string;
@@ -146,18 +138,20 @@ export default function FeedWriteScreen({ navigation, route }) {
     try {
       setIsLoading(true);
       if (isEdit && feed) {
-        await updateFeed(feed.id, {
+        await FeedRepository.update({
+          feedId: feed.id,
           title: title.trim(),
           content: content.trim(),
           category: selectedCategory.id,
           images,
-        });
+        }
+        );
         queryClient.invalidateQueries({ queryKey: feedKeys.detail(feed.id) });
         queryClient.invalidateQueries({
           queryKey: feedKeys.lists(selectedCategory.id),
         });
       } else {
-        await createFeed({
+        await FeedRepository.create({
           title: title.trim(),
           content: content.trim(),
           category: selectedCategory.id,

@@ -1,14 +1,10 @@
 import { X } from 'lucide-react-native';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { TextInput, TouchableOpacity, View } from 'react-native';
-import { searchFeeds } from '@/api/feed/getFeeds';
-import { feedKeys } from '@/api/queryKeys';
-import { useFeedList } from '@/hooks/useFeedList';
-import InnerLayout from '@/components/common/layout/InnerLayout';
-import KeyboardLayout from '@/components/common/layout/KeyboardLayout';
-import Layout from '@/components/common/layout/Layout';
-import FeedList from '@/components/feed/FeedList';
+import { View, TextInput, TouchableOpacity } from 'react-native';
+import { feedKeys, FeedRepository } from '@/api';
+import { useFeedList } from '@/hooks';
+import { Layout, InnerLayout, KeyboardLayout, MyText, FeedList } from '@/components';
 
 const SearchInput = ({ value, onChangeText, onSubmit, onClear, onFocusChange }) => {
   const { t } = useTranslation('feed');
@@ -46,7 +42,7 @@ export default function SearchScreen({ navigation }) {
     queryKey: feedKeys.search(submittedText),
     fetchFn: (params) => {
       if (!submittedText.trim()) return Promise.resolve({ feeds: [] });
-      return searchFeeds({
+      return FeedRepository.searchFeeds({
         ...params,
         keyword: submittedText,
         category: 'free',

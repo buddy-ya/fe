@@ -4,18 +4,11 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Platform, TouchableOpacity, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { getFeeds } from '@/api/feed/getFeeds';
-import { feedKeys } from '@/api/queryKeys';
-import { getModalTexts } from '@/hooks/modal/useAuthModal';
-import { useAuthCheck } from '@/hooks/useAuthCheck';
-import { useFeedList } from '@/hooks/useFeedList';
+import { feedKeys, FeedRepository } from '@/api';
+import { getModalTexts } from '@/hooks';
+import { useAuthCheck, useFeedList } from '@/hooks';
 import { CATEGORIES } from '@/utils/constants/categories';
-import Button from '@/components/common/Button';
-import InnerLayout from '@/components/common/layout/InnerLayout';
-import Layout from '@/components/common/layout/Layout';
-import ConfirmModal from '@/components/common/modal/ConfirmModal';
-import CategoryPager from '@/components/feed/CategoryPager';
-import FeedList from '@/components/feed/FeedList';
+import { Button, CategoryPager, ConfirmModal, FeedList, InnerLayout, Layout } from '@/components';
 
 export default function HomeScreen({ navigation }) {
   const STALE_TIME = 1000 * 60;
@@ -27,7 +20,7 @@ export default function HomeScreen({ navigation }) {
   const feedListData = useFeedList({
     queryKey: feedKeys.lists(activeCategory),
     fetchFn: (params) =>
-      getFeeds({
+      FeedRepository.getAll({
         ...params,
         category: activeCategory,
       }),

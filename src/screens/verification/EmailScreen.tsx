@@ -1,17 +1,9 @@
 import { Mail } from 'lucide-react-native';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { TextInput, View } from 'react-native';
-import { sendEmail } from '@/api/certification/certification';
-import MyText from '@/components/common/MyText';
-import FooterLayout from '@/components/common/layout/FooterLayout';
-import InnerLayout from '@/components/common/layout/InnerLayout';
-import KeyboardLayout from '@/components/common/layout/KeyboardLayout';
-import Layout from '@/components/common/layout/Layout';
-import ErrorMessage from '@/components/onboarding/ErrorMessage';
-import Heading from '@/components/onboarding/Heading';
-import HeadingDescription from '@/components/onboarding/HeadingDescription';
-import Label from '@/components/onboarding/Label';
+import { View, TextInput } from 'react-native';
+import { AuthRepository } from '@/api';
+import { ErrorMessage, FooterLayout, Heading, HeadingDescription, InnerLayout, KeyboardLayout, Label, Layout, MyText } from '@/components';
 
 const EMAIL_REGEX = /^[A-Za-z0-9]+$/;
 
@@ -32,7 +24,7 @@ export default function EmailScreen({ navigation }) {
       email: fullEmail,
       univName,
     };
-    await sendEmail(requestBody);
+    await AuthRepository.sendCodeByMail(requestBody);
     navigation.navigate('EmailVerificationCode', {
       email: fullEmail,
       univName,

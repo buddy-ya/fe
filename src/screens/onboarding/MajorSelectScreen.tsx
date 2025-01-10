@@ -4,12 +4,8 @@ import { View } from 'react-native';
 import { useOnboardingStore } from '@/store/onboarding';
 import type { MajorID } from '@/utils/constants/majors';
 import { MAJORS } from '@/utils/constants/majors';
-import Button from '@/components/common/Button';
-import MyText from '@/components/common/MyText';
-import InnerLayout from '@/components/common/layout/InnerLayout';
-import Layout from '@/components/common/layout/Layout';
-import Heading from '@/components/onboarding/Heading';
-import MultiSelectItem from '@/components/onboarding/MultiSelectItem';
+import { Button, Heading, InnerLayout, Layout, MultiSelectItem, MyText } from '@/components';
+
 
 interface Major {
   id: MajorID;

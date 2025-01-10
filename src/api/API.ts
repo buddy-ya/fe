@@ -5,20 +5,19 @@ import Constants from 'expo-constants';
 import { Alert } from 'react-native';
 import { getAccessToken, getRefreshToken, removeTokens, saveTokens } from '@/utils/service/auth';
 
+
 const BASE_URL = Constants.expoConfig.extra.BASE_URL;
 
-export const apiClient = axios.create({
+export const API = axios.create({
   baseURL: BASE_URL,
   headers: { 'Content-Type': 'application/json' },
 });
 
 const reissueTokens = async (refreshToken: string) => {
-  const response = await axios({
-    method: 'post',
-    url: `${BASE_URL}/auth/reissue`,
-    data: { refreshToken },
-    headers: { 'Content-Type': 'application/json' },
-  });
+  const response = await API.post(
+    `${BASE_URL}/auth/reissue`,
+    { refreshToken },
+  );
   return response.data;
 };
 
@@ -31,7 +30,7 @@ const showErrorModal = (messageKey: string) => {
   );
 };
 
-apiClient.interceptors.request.use(
+API.interceptors.request.use(
   async (config) => {
     const accessToken = await getAccessToken();
     if (accessToken) {
@@ -42,7 +41,7 @@ apiClient.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-apiClient.interceptors.response.use(
+API.interceptors.response.use(
   (response) => response,
   async (error) => {
     if (!error.response) {
@@ -64,7 +63,7 @@ apiClient.interceptors.response.use(
         const finalRefreshToken = newRefreshToken || refreshToken;
         await saveTokens(accessToken, finalRefreshToken);
         error.config.headers.Authorization = `Bearer ${accessToken}`;
-        return apiClient(error.config);
+        return API(error.config);
       } catch (reissueError) {
         await removeTokens();
         resetToOnboarding();
@@ -76,4 +75,4 @@ apiClient.interceptors.response.use(
   }
 );
 
-export default apiClient;
+export default API;

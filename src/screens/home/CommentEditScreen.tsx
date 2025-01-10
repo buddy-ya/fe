@@ -4,11 +4,8 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { TextInput, TouchableOpacity, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
-import { updateComment } from '@/api/feed/comment';
-import { feedKeys } from '@/api/queryKeys';
-import MyText from '@/components/common/MyText';
-import InnerLayout from '@/components/common/layout/InnerLayout';
-import Layout from '@/components/common/layout/Layout';
+import { CommentRepository, feedKeys } from '@/api';
+import { MyText, Layout, InnerLayout } from '@/components';
 
 export default function CommentEditScreen({ navigation, route }) {
   const { feedId, commentId, initialContent } = route.params;
@@ -19,7 +16,7 @@ export default function CommentEditScreen({ navigation, route }) {
 
   const updateCommentMutation = useMutation({
     mutationFn: ({ commentId, content }: { commentId: number; content: string }) =>
-      updateComment(feedId, commentId, content),
+      CommentRepository.update({ feedId, commentId, content }),
     onSuccess: (updatedComment) => {
       queryClient.setQueryData(['feedComments', feedId], (old: any) => {
         const currentComments = old || [];

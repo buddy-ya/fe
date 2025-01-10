@@ -1,9 +1,8 @@
 import { useState } from "react";
 import { Alert } from "react-native";
 import { useQueryClient } from "@tanstack/react-query";
-import { createFeed, updateFeed } from "@/api/feed/feedAction";
 import { ImageFile } from "./../screens/home/types";
-import { feedKeys } from "@/api/queryKeys";
+import { feedKeys, FeedRepository } from "@/api";
 
 interface FeedData {
   title: string;
@@ -42,7 +41,8 @@ export const useFeedWrite = ({
       setIsLoading(true);
 
       if (initialData.feedId) {
-        await updateFeed(initialData.feedId, {
+        await FeedRepository.update({
+          feedId: initialData.feedId,
           title: title.trim(),
           content: content.trim(),
           category,
@@ -55,7 +55,7 @@ export const useFeedWrite = ({
           queryKey: feedKeys.lists(category),
         });
       } else {
-        await createFeed({
+        await FeedRepository.create({
           title: title.trim(),
           content: content.trim(),
           category,

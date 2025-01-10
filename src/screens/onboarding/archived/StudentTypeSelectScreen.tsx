@@ -1,13 +1,8 @@
-import React, { useState } from 'react';
-
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Text, View } from 'react-native';
+import { Heading, InnerLayout, Layout, SelectItem, Button } from '@/components';
 
-import Button from '@/components/common/Button';
-import InnerLayout from '@/components/common/layout/InnerLayout';
-import Layout from '@/components/common/layout/Layout';
-import Heading from '@/components/onboarding/Heading';
-import SelectItem from '@/components/onboarding/SelectItem';
 
 type StudentType = 'korean' | 'foreign' | null;
 

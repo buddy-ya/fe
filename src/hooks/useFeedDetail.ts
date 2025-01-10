@@ -1,8 +1,6 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { createComment, deleteComment, updateComment } from '@/api/feed/comment';
-import { getFeed, getFeedComments } from '@/api/feed/getFeed';
-import { toggleBookmark, toggleLike } from '@/api/feed/getFeeds';
-import { feedKeys } from '@/api/queryKeys';
+import { CommentRepository, feedKeys, FeedRepository } from "@/api";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+
 
 interface UseFeedDetailProps {
   feedId: number;
@@ -18,32 +16,32 @@ export const useFeedDetail = ({ feedId, enabled = true }: UseFeedDetailProps) =>
     isRefetching: isRefetchingFeed,
   } = useQuery({
     queryKey: feedKeys.detail(feedId),
-    queryFn: () => getFeed(feedId),
+    queryFn: () => FeedRepository.get({ feedId }),
     enabled,
   });
 
   const { data: comments, refetch: refetchComments } = useQuery({
-    queryKey: ['feedComments', feedId],
-    queryFn: () => getFeedComments(feedId),
+    queryKey: ["feedComments", feedId],
+    queryFn: () => CommentRepository.getCommentsByFeedId({ feedId }),
     enabled,
   });
 
   const likeMutation = useMutation({
-    mutationFn: toggleLike,
+    mutationFn: FeedRepository.toggleLike,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: feedKeys.all });
     },
   });
 
   const bookmarkMutation = useMutation({
-    mutationFn: toggleBookmark,
+    mutationFn: FeedRepository.toggleBookmark,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: feedKeys.all });
     },
   });
 
   const commentMutation = useMutation({
-    mutationFn: (content: string) => createComment(feedId, content),
+    mutationFn: (content: string) => CommentRepository.create({ feedId, content }),
     onSuccess: (newComment) => {
       queryClient.setQueryData(['feedComments', feedId], (old: any) => {
         const currentComments = old || [];
@@ -54,7 +52,7 @@ export const useFeedDetail = ({ feedId, enabled = true }: UseFeedDetailProps) =>
   });
 
   const deleteCommentMutation = useMutation({
-    mutationFn: (commentId: number) => deleteComment(feedId, commentId),
+    mutationFn: (commentId: number) => CommentRepository.delete({ feedId, commentId }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['feedComments', feedId] });
       queryClient.invalidateQueries({ queryKey: feedKeys.all });
@@ -62,8 +60,13 @@ export const useFeedDetail = ({ feedId, enabled = true }: UseFeedDetailProps) =>
   });
 
   const updateCommentMutation = useMutation({
-    mutationFn: ({ commentId, content }: { commentId: number; content: string }) =>
-      updateComment(feedId, commentId, content),
+    mutationFn: ({
+      commentId,
+      content,
+    }: {
+      commentId: number;
+      content: string;
+    }) => CommentRepository.update({ feedId, content, commentId }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['feedComments', feedId] });
       queryClient.invalidateQueries({ queryKey: feedKeys.all });
@@ -71,8 +74,8 @@ export const useFeedDetail = ({ feedId, enabled = true }: UseFeedDetailProps) =>
   });
 
   const handleFeedActions = {
-    like: () => likeMutation.mutate(feedId),
-    bookmark: () => bookmarkMutation.mutate(feedId),
+    like: () => likeMutation.mutate({ feedId }),
+    bookmark: () => bookmarkMutation.mutate({ feedId }),
   };
 
   const handleCommentActions = {

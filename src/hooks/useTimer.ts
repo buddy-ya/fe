@@ -6,7 +6,7 @@ interface UseTimerProps {
   onExpire?: () => void;
 }
 
-export default function useTimer({ seconds, onExpire }: UseTimerProps) {
+export function useTimer({ seconds, onExpire }: UseTimerProps) {
   const [remainingSeconds, setRemainingSeconds] = useState(seconds);
   const [isExpired, setIsExpired] = useState(false);
 

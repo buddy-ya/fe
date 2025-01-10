@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { Dimensions, Image, TouchableOpacity, View } from 'react-native';
 import { getCountryFlag } from '@/utils/constants/countries';
 import { getTimeAgo } from '@/utils/service/date';
-import MyText from '@/components/common/MyText';
+import { MyText } from '@/components';
 
 const IMAGE_CONFIG_DETAIL = {
   containerClass: 'w-full',
