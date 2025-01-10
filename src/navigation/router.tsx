@@ -189,7 +189,7 @@ function ChatNavigator({ navigation, route }) {
   return (
     <FeedStack.Navigator screenOptions={{ headerShown: false }}>
       <FeedStack.Screen name="RoomList" component={RoomListScreen} />
-      <FeedStack.Screen name="Chat" component={ChatScreen} />
+      <FeedStack.Screen name="ChatRoom" component={ChatScreen} />
     </FeedStack.Navigator>
   );
 }
