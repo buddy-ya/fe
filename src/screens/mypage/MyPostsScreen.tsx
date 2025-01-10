@@ -29,7 +29,7 @@ export default function MyPostsScreen({ navigation }) {
             <NotebookPen size={19} strokeWidth={2} color="#282828" />
           </MyText>
           <MyText size="text-lg" className="font-bold">
-            {t('myPosts')}
+            {t('quickMenu.myPosts')}
           </MyText>
         </View>
       }

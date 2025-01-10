@@ -1,8 +1,8 @@
 import * as ImagePicker from 'expo-image-picker';
 import { Plus } from 'lucide-react-native';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { View, TouchableOpacity, Image, Platform } from 'react-native';
+import { View, TouchableOpacity, Image } from 'react-native';
 
 import { logError } from '@/utils/service/error';
 

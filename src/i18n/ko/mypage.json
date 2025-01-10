@@ -23,9 +23,6 @@
       "interests": "관심사"
     }
   },
-  "bookmark": "북마크",
-  "myPosts": "내 글",
-  "settings": "설정",
   "quickMenu": {
     "bookmark": "북마크",
     "myPosts": "내 글",
@@ -39,7 +36,9 @@
     "language": "언어 설정",
     "privacy": "개인정보 설정",
     "terms": "이용약관",
-    "version": "앱 버전"
+    "version": "앱 버전",
+    "delete": "회원탈퇴",
+    "refresh": "학생 인증 초기화"
   },
   "myPostsEmpty": "아직 글이 없어요",
   "common": {

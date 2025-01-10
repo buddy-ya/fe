@@ -1,5 +1,5 @@
 import { X } from 'lucide-react-native';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { View, TextInput, TouchableOpacity } from 'react-native';
 import { feedKeys, FeedRepository } from '@/api';

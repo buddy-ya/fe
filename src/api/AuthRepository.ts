@@ -1,4 +1,4 @@
-import { CheckCertificatedResponse, CommonResponse, ErrorResponse, SendCodeByMailDTO, SendCodeByPhoneDTO, VerifyCodeByMailDTO, VerifyCodeByPhoneDTO, VerifyCodeResponse } from "@/types/AuthDTO";
+import { CheckCertificatedResponse, CommonResponse, SendCodeByMailDTO, SendCodeByPhoneDTO, VerifyCodeByMailDTO, VerifyCodeByPhoneDTO, VerifyCodeResponse } from "@/types/AuthDTO";
 import API from "./API";
 
 // 인증/인가 관련 API를 다루는 클래스
@@ -34,11 +34,14 @@ class AuthRepository {
             "/certification/student-id-card",
             formData,
             {
-                headers: {
-                    "Content-Type": "multipart/form-data",
-                },
+                headers: {},
             }
         );
+        return data;
+    };
+
+    async refreshStudentCertification() {
+        const { data } = await API.put(`/certification/refresh`);
         return data;
     };
 
