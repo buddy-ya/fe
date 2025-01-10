@@ -17,7 +17,7 @@ export default function UniversitySelectScreenWV({ navigation }) {
       }
       else if (message.action === 'goNext') {
         if (message.payload) {
-          updateOnboardingData({ university: message.payload })
+          updateOnboardingData({ university: message.payload.university })
           navigation.navigate('OnboardingGenderSelect')
         }
       }
