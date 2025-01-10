@@ -6,7 +6,6 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import AuthProvider from "@/AuthProvider";
 import { ErrorBoundary } from "react-error-boundary";
-import Skeleton from "@/screens/Skeleton";
 import ErrorPage from "@/screens/ErrorPage";
 
 export default function App() {
