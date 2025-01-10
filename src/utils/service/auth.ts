@@ -12,10 +12,9 @@ export const saveTokens = async (
 ) => {
   try {
     await AsyncStorage.setItem(TOKEN_KEYS.ACCESS, accessToken);
-    API.defaults.headers.common['Authorization'] = accessToken;
+    API.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
     if (refreshToken) {
       await AsyncStorage.setItem(TOKEN_KEYS.REFRESH, refreshToken);
-      API.defaults.headers.common['Authorization'] = refreshToken;
     }
   } catch (error) {
     console.error("Error saving tokens:", error);
@@ -24,7 +23,7 @@ export const saveTokens = async (
 
 export const getAccessToken = async () => {
   try {
-    return AsyncStorage.getItem(TOKEN_KEYS.ACCESS);
+    return API.defaults.headers.common['Authorization'] || AsyncStorage.getItem(TOKEN_KEYS.ACCESS);
   } catch (error) {
     console.error("Error getting access token:", error);
     return null;
