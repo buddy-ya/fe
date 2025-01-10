@@ -3,7 +3,7 @@ import { resetToOnboarding } from '@/navigation/router';
 import axios from 'axios';
 import Constants from 'expo-constants';
 import { Alert } from 'react-native';
-import { getAccessToken, getRefreshToken, removeTokens, saveTokens } from '@/utils/service/auth';
+import { getRefreshToken, removeTokens, saveTokens } from '@/utils';
 
 
 const BASE_URL = Constants.expoConfig.extra.BASE_URL;
@@ -29,17 +29,6 @@ const showErrorModal = (messageKey: string) => {
     { cancelable: true }
   );
 };
-
-API.interceptors.request.use(
-  async (config) => {
-    const accessToken = await getAccessToken();
-    if (accessToken) {
-      config.headers.Authorization = `Bearer ${accessToken}`;
-    }
-    return config;
-  },
-  (error) => Promise.reject(error)
-);
 
 API.interceptors.response.use(
   (response) => response,

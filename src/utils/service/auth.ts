@@ -1,3 +1,4 @@
+import { API } from "@/api";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const TOKEN_KEYS = {
@@ -11,8 +12,10 @@ export const saveTokens = async (
 ) => {
   try {
     await AsyncStorage.setItem(TOKEN_KEYS.ACCESS, accessToken);
+    API.defaults.headers.common['Authorization'] = accessToken;
     if (refreshToken) {
       await AsyncStorage.setItem(TOKEN_KEYS.REFRESH, refreshToken);
+      API.defaults.headers.common['Authorization'] = refreshToken;
     }
   } catch (error) {
     console.error("Error saving tokens:", error);
@@ -21,7 +24,7 @@ export const saveTokens = async (
 
 export const getAccessToken = async () => {
   try {
-    return await AsyncStorage.getItem(TOKEN_KEYS.ACCESS);
+    return AsyncStorage.getItem(TOKEN_KEYS.ACCESS);
   } catch (error) {
     console.error("Error getting access token:", error);
     return null;
@@ -30,7 +33,7 @@ export const getAccessToken = async () => {
 
 export const getRefreshToken = async () => {
   try {
-    return await AsyncStorage.getItem(TOKEN_KEYS.REFRESH);
+    return AsyncStorage.getItem(TOKEN_KEYS.REFRESH);
   } catch (error) {
     console.error("Error getting refresh token:", error);
     return null;
@@ -50,7 +53,7 @@ export const isTokenPresent = async () => {
   try {
     const accessToken = await getAccessToken();
     const refreshToken = await getRefreshToken();
-    return Boolean(accessToken && refreshToken);
+    return !!(accessToken && refreshToken);
   } catch (error) {
     console.error("Error checking tokens:", error);
     return false;

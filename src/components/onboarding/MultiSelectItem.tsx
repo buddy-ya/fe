@@ -1,5 +1,4 @@
 import { Check } from 'lucide-react-native';
-import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import MyText from '../common/MyText';
@@ -54,9 +53,8 @@ export default function MultiSelectItem({
               <MyText size="text-base">{t(`${nameSpace}.${option.id}`)}</MyText>
             </View>
             <View
-              className={`h-6 w-6 items-center justify-center rounded-md ${
-                isSelected(option) ? 'bg-primary' : 'border border-borderCheckbox'
-              } `}
+              className={`h-6 w-6 items-center justify-center rounded-md ${isSelected(option) ? 'bg-primary' : 'border border-borderCheckbox'
+                } `}
             >
               {isSelected(option) && <Check size={16} color="white" />}
             </View>

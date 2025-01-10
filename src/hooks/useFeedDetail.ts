@@ -44,8 +44,7 @@ export const useFeedDetail = ({ feedId, enabled = true }: UseFeedDetailProps) =>
     mutationFn: (content: string) => CommentRepository.create({ feedId, content }),
     onSuccess: (newComment) => {
       queryClient.setQueryData(['feedComments', feedId], (old: any) => {
-        const currentComments = old || [];
-        return [...currentComments, newComment];
+        return [...old, newComment];
       });
       queryClient.invalidateQueries({ queryKey: feedKeys.all });
     },
@@ -97,7 +96,7 @@ export const useFeedDetail = ({ feedId, enabled = true }: UseFeedDetailProps) =>
 
   return {
     feed,
-    comments: comments || [],
+    comments: comments,
     isRefetching: isRefetchingFeed,
     handleFeedActions,
     handleCommentActions,

@@ -1,7 +1,7 @@
 import API from "./API";
 import { Feed } from "@/types";
 import { GetBookmarkedFeedsDTO } from "@/types/FeedDTO";
-import { createFeedFormData, FeedFormData } from "@/utils/service/formData";
+import { createFeedFormData } from "@/utils/service/formData";
 
 class FeedRepository {
 
@@ -27,6 +27,7 @@ class FeedRepository {
         const formData = createFeedFormData(feedData);
         const { data } = await API.post("/feeds", formData, {
             headers: {
+                ...API.defaults.headers.common,
                 "Content-Type": "multipart/form-data",
             },
         });

@@ -34,7 +34,10 @@ class AuthRepository {
             "/certification/student-id-card",
             formData,
             {
-                headers: {},
+                headers: {
+                    ...API.defaults.headers.common,
+                    "Content-Type": "multipart/form-data",
+                },
             }
         );
         return data;

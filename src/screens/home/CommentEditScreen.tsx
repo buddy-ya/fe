@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { X } from 'lucide-react-native';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { TextInput, TouchableOpacity, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
