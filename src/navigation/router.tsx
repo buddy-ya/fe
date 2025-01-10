@@ -38,7 +38,6 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import WelcomeScreen from '../screens/onboarding/WelcomeScreen';
 import { getTabScreenOptions, tabScreenOptions, useTabBarAnimation } from './TabBar';
-import UniversitySelectScreenWV from '@/screens/webview/UniversitySelectScreen';
 import ChatScreen from '@/screens/chat/ChatScreen';
 import RoomListScreen from '@/screens/chat/RoomListScreen';
 
@@ -121,7 +120,7 @@ function OnboardingNavigator() {
       />
       <OnboardingStack.Screen
         name="OnboardingUniversitySelect"
-        component={UniversitySelectScreenWV}
+        component={UniversitySelectScreen}
         options={{ gestureEnabled: false }}
       />
       <OnboardingStack.Screen
