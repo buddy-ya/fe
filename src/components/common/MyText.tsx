@@ -18,7 +18,7 @@ const MyText = ({
 }: MyTextProps) => {
   return (
     <Text
-      className={`${size} ${color} ${className} leading-[1.4]`}
+      className={`leading-[1.4] ${size} ${color} ${className} `}
       numberOfLines={numberOfLines}
       ellipsizeMode="tail"
     >
