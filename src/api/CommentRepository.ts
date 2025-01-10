@@ -27,8 +27,7 @@ class CommentRepository {
 
     async getCommentsByFeedId({ feedId }: Comment.GetCommentsDTO): Promise<Comment.CommonResponse[]> {
         const { data } = await API.get(`/feeds/${feedId}/comments`);
-        // TODO: 추후 백엔드에서 comments 빼고 주게끔 수정 필요
-        return data.comments;
+        return data;
     };
 
 }

@@ -20,7 +20,7 @@ export default function CommentEditScreen({ navigation, route }) {
     onSuccess: (updatedComment) => {
       queryClient.setQueryData(['feedComments', feedId], (old: any) => ({
         ...old,
-        comments: old.comments.map((comment: any) =>
+        comments: old.map((comment: any) =>
           comment.id === updatedComment.id ? updatedComment : comment
         ),
       }));

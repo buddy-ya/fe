@@ -47,7 +47,7 @@ export const useFeedDetail = ({
     onSuccess: (newComment) => {
       queryClient.setQueryData(["feedComments", feedId], (old: any) => ({
         ...old,
-        comments: [...old.comments, newComment],
+        comments: [...old, newComment],
       }));
       queryClient.invalidateQueries({ queryKey: feedKeys.all });
     },
