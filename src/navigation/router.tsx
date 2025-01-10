@@ -39,6 +39,8 @@ import { useTranslation } from 'react-i18next';
 import WelcomeScreen from '../screens/onboarding/WelcomeScreen';
 import { getTabScreenOptions, tabScreenOptions, useTabBarAnimation } from './TabBar';
 import UniversitySelectScreenWV from '@/screens/webview/UniversitySelectScreen';
+import ChatScreen from '@/screens/chat/ChatScreen';
+import RoomListScreen from '@/screens/chat/RoomListScreen';
 
 export const navigationRef = createNavigationContainerRef();
 
@@ -76,6 +78,14 @@ function TabNavigator() {
         options={() => ({
           ...getTabScreenOptions('Matching'),
           tabBarLabel: t('tab.matching'),
+        })}
+      />
+      <Tab.Screen
+        name="Chat"
+        component={ChatNavigator}
+        options={() => ({
+          ...getTabScreenOptions('Chat'),
+          tabBarLabel: t('tab.chat'),
         })}
       />
       <Tab.Screen
@@ -167,6 +177,24 @@ function FeedNavigator({ navigation, route }) {
   );
 }
 
+function ChatNavigator({ navigation, route }) {
+  const { animateTabBar } = useTabBarAnimation();
+
+  React.useLayoutEffect(() => {
+    const routeName = getFocusedRouteNameFromRoute(route);
+    navigation.setOptions({
+      tabBarStyle: animateTabBar(true),
+    });
+  }, [route]);
+
+  return (
+    <FeedStack.Navigator screenOptions={{ headerShown: false }}>
+      <FeedStack.Screen name="RoomList" component={RoomListScreen} />
+      <FeedStack.Screen name="Chat" component={ChatScreen} />
+    </FeedStack.Navigator>
+  );
+}
+
 function MyPageNavigator({ navigation, route }) {
   const { animateTabBar } = useTabBarAnimation();
 
@@ -199,6 +227,7 @@ export default function Router() {
         <Stack.Screen name="Splash" component={SplashScreen} />
         <Stack.Screen name="Onboarding" component={OnboardingNavigator} />
         <Stack.Screen name="Tab" component={TabNavigator} />
+        <Stack.Screen name="Chat" component={ChatNavigator} />
       </Stack.Navigator>
     </NavigationContainer>
   );
