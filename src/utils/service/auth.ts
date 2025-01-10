@@ -1,3 +1,4 @@
+import { API } from "@/api";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const TOKEN_KEYS = {
@@ -11,6 +12,7 @@ export const saveTokens = async (
 ) => {
   try {
     await AsyncStorage.setItem(TOKEN_KEYS.ACCESS, accessToken);
+    API.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
     if (refreshToken) {
       await AsyncStorage.setItem(TOKEN_KEYS.REFRESH, refreshToken);
     }
@@ -21,7 +23,7 @@ export const saveTokens = async (
 
 export const getAccessToken = async () => {
   try {
-    return AsyncStorage.getItem(TOKEN_KEYS.ACCESS);
+    return API.defaults.headers.common['Authorization'] || AsyncStorage.getItem(TOKEN_KEYS.ACCESS);
   } catch (error) {
     console.error("Error getting access token:", error);
     return null;

@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { X } from 'lucide-react-native';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { TextInput, TouchableOpacity, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
@@ -18,12 +18,12 @@ export default function CommentEditScreen({ navigation, route }) {
     mutationFn: ({ commentId, content }: { commentId: number; content: string }) =>
       CommentRepository.update({ feedId, commentId, content }),
     onSuccess: (updatedComment) => {
-      queryClient.setQueryData(['feedComments', feedId], (old: any) => ({
-        ...old,
-        comments: old.comments.map((comment: any) =>
+      queryClient.setQueryData(['feedComments', feedId], (old: any) => {
+        const currentComments = old || [];
+        return currentComments.map((comment: any) =>
           comment.id === updatedComment.id ? updatedComment : comment
-        ),
-      }));
+        );
+      });
       queryClient.invalidateQueries({ queryKey: feedKeys.all });
       navigation.goBack();
     },

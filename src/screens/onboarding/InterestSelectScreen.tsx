@@ -45,11 +45,11 @@ export default function InterestSelectScreen({ navigation, route }) {
         navigation.goBack();
       } else {
         updateOnboardingData({ interests });
-        const { data } = await OnboardingRepository.create({
+        const { accessToken, refreshToken } = await OnboardingRepository.create({
           ...onboardingData,
           interests,
         });
-        await saveTokens(data.accessToken, data.refreshToken);
+        await saveTokens(accessToken, refreshToken);
         navigation.reset({
           index: 0,
           routes: [{ name: 'Tab' }],

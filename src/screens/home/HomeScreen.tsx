@@ -54,7 +54,7 @@ export default function HomeScreen({ navigation }) {
 
   const isAndroid = Platform.OS === 'android';
   const insets = useSafeAreaInsets();
-  const writeButtonPosition = isAndroid ? insets.bottom + 100 : insets.bottom + 40;
+  const writeButtonPosition = isAndroid ? insets.bottom + 80 : insets.bottom + 40;
 
   return (
     <Layout
@@ -73,7 +73,7 @@ export default function HomeScreen({ navigation }) {
       }
     >
       <InnerLayout>
-        <View className="flex-1">
+        <View className="flex-1" pointerEvents="box-none">
           <CategoryPager categories={CATEGORIES} onPageChange={handlePageChange}>
             {CATEGORIES.map((category) => (
               <View key={category.id} className="flex-1">
@@ -96,16 +96,16 @@ export default function HomeScreen({ navigation }) {
               </View>
             ))}
           </CategoryPager>
+          <Button
+            type="circle"
+            onPress={handleWriteButton}
+            className={`absolute right-0`}
+            containerStyle={{
+              bottom: writeButtonPosition,
+            }}
+            icon={Plus}
+          />
         </View>
-        <Button
-          type="circle"
-          onPress={handleWriteButton}
-          className={`absolute right-0`}
-          containerStyle={{
-            bottom: writeButtonPosition,
-          }}
-          icon={Plus}
-        />
       </InnerLayout>
       <ConfirmModal
         visible={isModalVisible}
