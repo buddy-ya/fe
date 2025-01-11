@@ -4,11 +4,11 @@ import { Bell, Bookmark, ChevronRight, NotebookPen, Settings } from 'lucide-reac
 import { Fragment, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { View, TouchableOpacity, Image } from 'react-native';
-import { useProfileStore } from '@/store/profile';
-import { getCountryFlag } from '@/utils/constants/countries';
+import { useProfileStore } from '@/store';
+import { getCountryFlag } from '@/utils';
 import { InnerLayout, Layout, MyText } from '@/components';
 import { AuthRepository, UserRepository } from '@/api';
-import { removeTokens } from '@/utils/service/auth';
+import { TokenService } from '@/service';
 
 const SettingItem = ({ label, onPress }) => (
   <TouchableOpacity
@@ -68,7 +68,7 @@ export default function MyPageScreen({ navigation }) {
       label: t('menuItems.delete'),
       onPress: async () => {
         await UserRepository.delete();
-        await removeTokens();
+        await TokenService.remove();
         resetToOnboarding();
       }
     },

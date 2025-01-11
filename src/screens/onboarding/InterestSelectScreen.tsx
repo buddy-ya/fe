@@ -3,9 +3,10 @@ import { useTranslation } from 'react-i18next';
 import { ScrollView, View } from 'react-native';
 import { useOnboardingStore } from '@/store';
 import type { InterestID } from '@/utils';
-import { saveTokens, INTEREST_CATEGORIES, INTEREST_ICONS, logError } from '@/utils';
+import { INTEREST_CATEGORIES, INTEREST_ICONS, logError } from '@/utils';
 import { OnboardingRepository, UserRepository } from '@/api';
 import { Button, Chip, Heading, InnerLayout, Layout, MyText } from '@/components';
+import { TokenService } from '@/service';
 
 
 interface Interest {
@@ -47,7 +48,7 @@ export default function InterestSelectScreen({ navigation, route }) {
           ...onboardingData,
           interests,
         });
-        await saveTokens(accessToken, refreshToken);
+        await TokenService.save(accessToken, refreshToken);
         navigation.reset({
           index: 0,
           routes: [{ name: 'Tab' }],
