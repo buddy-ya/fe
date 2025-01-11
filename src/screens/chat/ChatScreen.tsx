@@ -1,7 +1,7 @@
-import { useRef } from "react";
-import { InnerLayout, Layout, MyText } from "@/components";
+import { useRef, useState } from "react";
+import { CommentInput, KeyboardLayout, Layout, MyText } from "@/components";
 import { EllipsisVertical, ChevronLeft } from "lucide-react-native";
-import { Text, TouchableOpacity, ScrollView } from "react-native";
+import { Text, TouchableOpacity, ScrollView, Keyboard, RefreshControl } from "react-native";
 
 export default function ChatScreen({ navigation }) {
 
@@ -12,9 +12,24 @@ export default function ChatScreen({ navigation }) {
     navigation.goBack();
   }
 
+  const [messages, setMessages] = useState('');
+
+  const handleChange = (text: string) => {
+    setMessages(text);
+  }
+
+  const handleSubmit = async () => {
+    if (messages === '') {
+      return;
+    }
+
+    console.log('send message:', messages);
+    setMessages('');
+    Keyboard.dismiss();
+  }
+
   return (
     <Layout
-      hasTabBar={true}
       showHeader
       headerLeft={<TouchableOpacity
         onPress={handleBack}
@@ -30,9 +45,21 @@ export default function ChatScreen({ navigation }) {
         </TouchableOpacity>
       }
     >
-      <InnerLayout>
-        <Text>Chat Screen</Text>
-      </InnerLayout>
+      <KeyboardLayout footer={<CommentInput value={messages} onChange={handleChange} onSubmit={handleSubmit} />}>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          className="mt-1"
+          refreshControl={
+            <RefreshControl
+              refreshing={false}
+              onRefresh={() => console.log('refresh')}
+              tintColor="#4AA366"
+            />
+          }
+        >
+          <Text>Chat Screen</Text>
+        </ScrollView>
+      </KeyboardLayout>
 
     </Layout>
   );
