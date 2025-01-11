@@ -142,6 +142,7 @@ function FeedNavigator({ navigation, route }) {
 
   React.useLayoutEffect(() => {
     const routeName = getFocusedRouteNameFromRoute(route);
+    // FeedHome 일 때만 보임
     const visible = routeName === 'FeedHome' || routeName === undefined;
     navigation.setOptions({
       tabBarStyle: animateTabBar(visible),
@@ -181,9 +182,10 @@ function ChatNavigator({ navigation, route }) {
 
   React.useLayoutEffect(() => {
     const routeName = getFocusedRouteNameFromRoute(route);
+    const visible = routeName === 'RoomList' || routeName === undefined;
     navigation.setOptions({
-      tabBarStyle: animateTabBar(true),
-    });
+      tabBarStyle: animateTabBar(visible),
+    })
   }, [route]);
 
   return (
