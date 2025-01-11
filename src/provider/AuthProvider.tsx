@@ -1,5 +1,5 @@
 import { TokenService } from "@/service";
-import { API } from "./api";
+import { API } from "@/api";
 import { useSuspenseQuery } from "@tanstack/react-query";
 
 interface Props {
