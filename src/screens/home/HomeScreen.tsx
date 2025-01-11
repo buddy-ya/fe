@@ -2,12 +2,13 @@ import LogoIcon from '@assets/icons/logo.svg';
 import { Bell, Plus, Search } from 'lucide-react-native';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Platform, TouchableOpacity, View } from 'react-native';
+import { TouchableOpacity, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { feedKeys, FeedRepository } from '@/api';
 import { useAuthCheck, useFeedList, getModalTexts } from '@/hooks';
 import { CATEGORIES } from '@/utils/constants/categories';
 import { Button, CategoryPager, ConfirmModal, FeedList, InnerLayout, Layout } from '@/components';
+import { isAndroid } from '@/utils';
 
 export default function HomeScreen({ navigation }) {
   const STALE_TIME = 1000 * 60;
@@ -52,7 +53,6 @@ export default function HomeScreen({ navigation }) {
     setIsModalVisible(true);
   };
 
-  const isAndroid = Platform.OS === 'android';
   const insets = useSafeAreaInsets();
   const writeButtonPosition = isAndroid ? insets.bottom + 80 : insets.bottom + 40;
 

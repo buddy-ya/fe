@@ -23,7 +23,6 @@ export default function RoomListScreen({ navigation }) {
   const { isModalVisible, setIsModalVisible, currentModalTexts, setCurrentModalTexts, checkAuth } =
     useAuthCheck();
 
-  const isAndroid = Platform.OS === 'android';
   const insets = useSafeAreaInsets();
 
   const [activeIndex, setActiveIndex] = useState(0);
