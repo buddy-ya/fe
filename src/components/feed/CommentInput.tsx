@@ -16,9 +16,8 @@ export const CommentInput = ({ value, onChange, onSubmit, isLoading }: CommentIn
 
   return (
     <View
-      className={`flex-row items-center justify-between border-t-[0.3px] border-borderBottom bg-white px-4 py-[12px] ${
-        isFocused ? '' : 'pb-8'
-      }`}
+      className={`flex-row items-center justify-between border-t-[0.3px] border-borderBottom bg-white px-4 py-[12px] ${isFocused ? '' : 'pb-8'
+        }`}
     >
       <TextInput
         value={value}
@@ -26,24 +25,13 @@ export const CommentInput = ({ value, onChange, onSubmit, isLoading }: CommentIn
           onChange(text);
         }}
         placeholder={t('comment.placeholder')}
-        className="w-[90%] rounded-[12px] bg-[#F1F1F1]"
+        className="w-[90%] rounded-[12px] bg-[#F1F1F1] max-h-[90px] min-h-[40px] px-[16px] py-2.5 text-[15px] leading-5 align-middle"
         multiline
         scrollEnabled={true}
         maxLength={500}
         onSubmitEditing={onSubmit}
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
-        style={{
-          maxHeight: 90,
-          height: 'auto',
-          fontSize: 15,
-          lineHeight: 20,
-          paddingTop: 10,
-          paddingBottom: 10,
-          paddingHorizontal: 16,
-          textAlignVertical: 'center',
-          minHeight: 40,
-        }}
       />
       <TouchableOpacity
         onPress={onSubmit}
