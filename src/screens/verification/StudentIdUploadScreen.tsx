@@ -3,10 +3,7 @@ import { Plus } from 'lucide-react-native';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { View, TouchableOpacity, Image } from 'react-native';
-
-import { logError } from '@/utils/service/error';
-
-import { processImageForUpload } from '@/utils/service/image';
+import { logError, processImageForUpload } from '@/utils';
 import { ImageFile } from '../home/types';
 import { AuthRepository } from '@/api';
 import { Button, Heading, HeadingDescription, InnerLayout, Layout, MyText } from '@/components';

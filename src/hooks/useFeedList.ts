@@ -1,6 +1,6 @@
 import { FeedListResponse } from '@/screens/home/types';
 import { useInfiniteQuery, useQueryClient } from '@tanstack/react-query';
-import { logError } from '@/utils/service/error';
+import { logError } from '@/utils';
 import { updateFeedList } from '@/utils/service/optimisticUpdate';
 import { FeedRepository } from '@/api';
 
