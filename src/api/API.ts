@@ -3,8 +3,8 @@ import { resetToOnboarding } from '@/navigation/router';
 import axios from 'axios';
 import Constants from 'expo-constants';
 import { Alert } from 'react-native';
-import { getRefreshToken, removeTokens, saveTokens } from '@/utils';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { TOKEN_KEYS } from '@/utils';
 
 const BASE_URL = Constants.expoConfig.extra.BASE_URL;
 
@@ -43,18 +43,21 @@ API.interceptors.response.use(
     if (error.response?.status === 401 && errorCode === 3002 && !error.config._retry) {
       error.config._retry = true;
       try {
-        const refreshToken = await getRefreshToken();
+        const refreshToken = await AsyncStorage.getItem(TOKEN_KEYS.REFRESH);
         if (!refreshToken) {
           throw new Error('Refresh token not found');
         }
         const { accessToken, refreshToken: newRefreshToken } = await reissueTokens(refreshToken);
 
         const finalRefreshToken = newRefreshToken || refreshToken;
-        await saveTokens(accessToken, finalRefreshToken);
+        await AsyncStorage.setItem(TOKEN_KEYS.ACCESS, accessToken);
+        await AsyncStorage.setItem(TOKEN_KEYS.REFRESH, finalRefreshToken);
         error.config.headers.Authorization = `Bearer ${accessToken}`;
         return API(error.config);
       } catch (reissueError) {
-        await removeTokens();
+        await AsyncStorage.removeItem(TOKEN_KEYS.ACCESS);
+        await AsyncStorage.removeItem(TOKEN_KEYS.REFRESH);
+        delete API.defaults.headers.common['Authorization'];
         resetToOnboarding();
         showErrorModal('tokenExpired');
         return Promise.reject(reissueError);
