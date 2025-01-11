@@ -1,4 +1,4 @@
-import { useOnboardingStore } from '@/store/onboarding';
+import { useOnboardingStore } from '@/store';
 import { useRef } from 'react';
 import WebView from 'react-native-webview'
 import { WEBVIEW_URL } from '@env';

@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
-import { useOnboardingStore } from '@/store/onboarding';
-import type { MajorID } from '@/utils/constants/majors';
-import { MAJORS } from '@/utils/constants/majors';
+import { useOnboardingStore } from '@/store';
+import type { MajorID } from '@/utils';
+import { MAJORS } from '@/utils';
 import { Button, Heading, InnerLayout, Layout, MultiSelectItem, MyText } from '@/components';
 
 

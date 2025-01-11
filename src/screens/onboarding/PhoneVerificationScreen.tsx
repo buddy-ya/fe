@@ -1,12 +1,10 @@
 import { Send } from 'lucide-react-native';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 import { useOnboardingStore } from '@/store/onboarding';
 import { useTimer } from '@/hooks';
-import { saveTokens } from '@/utils/service/auth';
-import { logError } from '@/utils/service/error';
-import { formatPhone } from '@/utils/service/phone';
+import { formatPhone, saveTokens, logError } from '@/utils';
 import { AuthRepository } from '@/api';
 import { ErrorMessage, FooterLayout, Heading, HeadingDescription, InnerLayout, KeyboardLayout, Label, Layout, LinkText, MyText, OTPInput } from '@/components';
 

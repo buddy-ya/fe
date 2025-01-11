@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
-import { useOnboardingStore } from '@/store/onboarding';
+import { useOnboardingStore } from '@/store';
 import { Button, Heading, HeadingDescription, InnerLayout, Label, Layout, MyText, SelectItem } from '@/components';
 
 type Gender = 'male' | 'female' | 'unknown' | null;
