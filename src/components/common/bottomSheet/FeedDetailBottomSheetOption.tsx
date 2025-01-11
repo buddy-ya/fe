@@ -1,9 +1,8 @@
 import { ModalOption } from '@/screens/home/types';
 import i18next from 'i18next';
 import { Flag, Pencil, Trash2 } from 'lucide-react-native';
-import React from 'react';
 
-export const createModalOptions = {
+export const bottomSheetOptions = {
   edit: (onPress: () => void): ModalOption => ({
     label: i18next.t('feed:modal.edit'),
     icon: <Pencil size={20} color="#282828" />,
