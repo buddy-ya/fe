@@ -7,7 +7,7 @@ import { View, TouchableOpacity, TextInput, ScrollView, Alert } from 'react-nati
 import { feedKeys, FeedRepository } from '@/api';
 import { useModal } from '@/hooks';
 import { CATEGORIES } from '@/utils/constants/categories';
-import { Layout, BottomModal, InnerLayout, KeyboardLayout, Loading, MyText, CategorySelectModal, ImagePreview } from '@/components';
+import { Layout, BottomSheet, InnerLayout, KeyboardLayout, Loading, MyText, CategorySelectModal, ImagePreview } from '@/components';
 
 interface ImageFile {
   uri: string;
@@ -246,9 +246,9 @@ export default function FeedWriteScreen({ navigation, route }) {
         </KeyboardLayout>
       )}
 
-      <BottomModal visible={categoryModal.visible} onClose={categoryModal.closeModal}>
+      <BottomSheet visible={categoryModal.visible} onClose={categoryModal.closeModal}>
         <CategorySelectModal selectedCategory={selectedCategory} onSelect={handleCategorySelect} />
-      </BottomModal>
+      </BottomSheet>
     </Layout>
   );
 }

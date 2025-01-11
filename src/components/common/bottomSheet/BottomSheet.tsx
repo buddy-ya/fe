@@ -1,22 +1,21 @@
-// components/common/BottomModal.tsx
 import { ModalOption } from '@/screens/home/types';
 import { ReactNode } from 'react';
 import { Modal, TouchableOpacity, View } from 'react-native';
 import MyText from '../MyText';
 
-interface BottomModalProps {
+interface BottomSheetProps {
   visible: boolean;
   onClose: () => void;
   options?: ModalOption[];
   children?: ReactNode;
 }
 
-export default function BottomModal({
+export function BottomSheet({
   visible,
   onClose,
   options = [],
   children,
-}: BottomModalProps) {
+}: BottomSheetProps) {
   return (
     <Modal visible={visible} transparent animationType="fade" onRequestClose={onClose}>
       <TouchableOpacity className="flex-1 bg-black/50" activeOpacity={1} onPress={onClose}>
