@@ -1,10 +1,6 @@
 import { API } from "@/api";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
-const TOKEN_KEYS = {
-  ACCESS: "accessToken",
-  REFRESH: "refreshToken",
-} as const;
+import { TOKEN_KEYS } from "../constants";
 
 export const saveTokens = async (
   accessToken: string,
