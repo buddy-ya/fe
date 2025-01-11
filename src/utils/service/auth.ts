@@ -43,6 +43,7 @@ export const removeTokens = async () => {
   try {
     await AsyncStorage.removeItem(TOKEN_KEYS.ACCESS);
     await AsyncStorage.removeItem(TOKEN_KEYS.REFRESH);
+    delete API.defaults.headers.common['Authorization'];
   } catch (error) {
     console.error("Error removing tokens:", error);
   }
