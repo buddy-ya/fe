@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { CommentInput, KeyboardLayout, Layout, MyText } from "@/components";
+import { Input, KeyboardLayout, Layout, MyText } from "@/components";
 import { EllipsisVertical, ChevronLeft } from "lucide-react-native";
 import { Text, TouchableOpacity, ScrollView, Keyboard, RefreshControl } from "react-native";
 import { NavigationProp } from "@react-navigation/native";
@@ -46,7 +46,7 @@ export default function ChatScreen({ navigation }: { navigation: NavigationProp<
         </TouchableOpacity>
       }
     >
-      <KeyboardLayout footer={<CommentInput value={messages} onChange={handleChange} onSubmit={handleSubmit} />}>
+      <KeyboardLayout footer={<Input value={messages} onChange={handleChange} onSubmit={handleSubmit} />}>
         <ScrollView
           showsVerticalScrollIndicator={false}
           className="mt-1"
