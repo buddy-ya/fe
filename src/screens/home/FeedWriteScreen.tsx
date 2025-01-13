@@ -6,16 +6,9 @@ import { useTranslation } from 'react-i18next';
 import { View, TouchableOpacity, TextInput, ScrollView, Alert } from 'react-native';
 import { feedKeys, FeedRepository } from '@/api';
 import { useModal } from '@/hooks';
-import { CATEGORIES } from '@/utils/constants/categories';
+import { CATEGORIES } from '@/utils';
 import { Layout, BottomModal, InnerLayout, KeyboardLayout, Loading, MyText, CategorySelectModal, ImagePreview } from '@/components';
-
-interface ImageFile {
-  uri: string;
-  type: string;
-  fileName?: string;
-  width?: number;
-  height?: number;
-}
+import { ImageFile } from '@/types';
 
 const FILTERED_CATEGORIES = CATEGORIES.filter((category) => category.id !== 'popular');
 

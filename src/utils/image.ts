@@ -1,4 +1,4 @@
-import { ImageFile } from "@/screens/home/types";
+import { ImageFile } from "@/types";
 
 export const processImageForUpload = (image: ImageFile) => {
   const uri = image.uri;
