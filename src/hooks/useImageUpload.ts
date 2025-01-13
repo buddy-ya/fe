@@ -1,29 +1,34 @@
 import { useState } from "react";
-import * as ImagePicker from "expo-image-picker";
 import { Alert } from "react-native";
 import { ImageFile } from "@/types";
+import { ImagePickerOptions, launchCameraAsync, launchImageLibraryAsync, requestCameraPermissionsAsync, requestMediaLibraryPermissionsAsync } from "expo-image-picker";
 
-const IMAGE_PICKER_OPTIONS: ImagePicker.ImagePickerOptions = {
-  mediaTypes: ImagePicker.MediaTypeOptions.Images,
-  allowsEditing: false,
-  quality: 0.8,
-  allowsMultipleSelection: true,
-  selectionLimit: 5,
-};
 
-interface UseFeedImagesProps {
+interface UseImageUploadProps {
+  options?: ImagePickerOptions
   initialImages?: ImageFile[];
 }
 
-export const useFeedImages = ({
+export const useImageUpload = ({
+  options,
   initialImages = [],
-}: UseFeedImagesProps = {}) => {
+}: UseImageUploadProps) => {
   const [images, setImages] = useState<ImageFile[]>(initialImages);
+  const [loading, setLoading] = useState(false);
 
-  const pickImage = async () => {
-    await ImagePicker.requestMediaLibraryPermissionsAsync();
+  const IMAGE_PICKER_OPTIONS: ImagePickerOptions = {
+    mediaTypes: ["images"],
+    allowsEditing: options?.allowsEditing ?? false,
+    quality: options?.quality ?? 0.8,
+    allowsMultipleSelection: options?.allowsMultipleSelection ?? true,
+    selectionLimit: options?.selectionLimit ?? 5,
+  };
+
+  const handleUpload = async () => {
+    setLoading(true);
+    await requestMediaLibraryPermissionsAsync();
     try {
-      const result = await ImagePicker.launchImageLibraryAsync({
+      const result = await launchImageLibraryAsync({
         ...IMAGE_PICKER_OPTIONS,
       });
 
@@ -43,13 +48,16 @@ export const useFeedImages = ({
       }
     } catch (error) {
       Alert.alert("Error", "Failed to load images");
+    } finally {
+      setLoading(false);
     }
   };
 
-  const takePhoto = async () => {
-    await ImagePicker.requestCameraPermissionsAsync();
+  const handlePhoto = async () => {
+    setLoading(true);
+    await requestCameraPermissionsAsync();
     try {
-      const result = await ImagePicker.launchCameraAsync({
+      const result = await launchCameraAsync({
         ...IMAGE_PICKER_OPTIONS,
         allowsMultipleSelection: false,
       });
@@ -70,6 +78,8 @@ export const useFeedImages = ({
       }
     } catch (error) {
       Alert.alert("Error", "Failed to take photo");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -79,8 +89,9 @@ export const useFeedImages = ({
 
   return {
     images,
-    pickImage,
-    takePhoto,
+    handleUpload,
+    handlePhoto,
     removeImage,
+    loading,
   };
 };

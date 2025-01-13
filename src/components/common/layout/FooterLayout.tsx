@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 import { View } from 'react-native';
-import { Button } from '@/components';
+import Button from '../Button';
 
 interface FooterLayoutProps {
   icon: ReactNode;

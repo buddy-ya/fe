@@ -1,8 +1,18 @@
 import { useRef, useState } from "react";
+import { ImagePickerOptions } from "expo-image-picker";
 import { Input, KeyboardLayout, Layout, MyText } from "@/components";
 import { EllipsisVertical, ChevronLeft } from "lucide-react-native";
-import { Text, TouchableOpacity, ScrollView, Keyboard, RefreshControl } from "react-native";
+import { Text, TouchableOpacity, ScrollView, Keyboard, RefreshControl, Alert } from "react-native";
 import { NavigationProp } from "@react-navigation/native";
+import { useImageUpload } from "@/hooks";
+
+const IMAGE_PICKER_OPTIONS: ImagePickerOptions = {
+  mediaTypes: ["images"],
+  allowsEditing: false,
+  quality: 0.7,
+  allowsMultipleSelection: true,
+  selectionLimit: 3,
+};
 
 export default function ChatScreen({ navigation }: { navigation: NavigationProp<any> }) {
 
@@ -14,6 +24,7 @@ export default function ChatScreen({ navigation }: { navigation: NavigationProp<
   }
 
   const [messages, setMessages] = useState('');
+  const { images, handleUpload, removeImage, loading } = useImageUpload({ options: IMAGE_PICKER_OPTIONS });
 
   const handleChange = (text: string) => {
     setMessages(text);
@@ -28,6 +39,8 @@ export default function ChatScreen({ navigation }: { navigation: NavigationProp<
     setMessages('');
     Keyboard.dismiss();
   }
+
+  console.log('images', images);
 
   return (
     <Layout
@@ -46,7 +59,7 @@ export default function ChatScreen({ navigation }: { navigation: NavigationProp<
         </TouchableOpacity>
       }
     >
-      <KeyboardLayout footer={<Input value={messages} onChange={handleChange} onSubmit={handleSubmit} />}>
+      <KeyboardLayout footer={<Input value={messages} onUpload={handleUpload} onChange={handleChange} onSubmit={handleSubmit} />}>
         <ScrollView
           showsVerticalScrollIndicator={false}
           className="mt-1"

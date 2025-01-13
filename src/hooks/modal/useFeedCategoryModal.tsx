@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { View } from 'react-native';
-import { useModal } from '@/hooks';
-import { CATEGORIES } from '@/utils/constants/categories';
+import { CATEGORIES } from '@/utils';
+import { useModal } from './useModal';
 
 const FILTERED_CATEGORIES = CATEGORIES.filter((category) => category.id !== 'popular');
 

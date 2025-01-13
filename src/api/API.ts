@@ -1,10 +1,10 @@
 import i18n from '@/i18n';
-import { resetToOnboarding } from '@/navigation/router';
 import axios from 'axios';
 import Constants from 'expo-constants';
 import { Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { TOKEN_KEYS } from '@/utils';
+import { resetToOnboarding } from '@/navigation/navigationRef';
 
 const BASE_URL = Constants?.expoConfig?.extra?.BASE_URL || '';
 

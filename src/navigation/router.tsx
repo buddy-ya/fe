@@ -27,7 +27,6 @@ import StudentIdCardCompleteScreen from '@/screens/verification/StudentIdComplet
 import StudentIdCardUploadScreen from '@/screens/verification/StudentIdUploadScreen';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import {
-  createNavigationContainerRef,
   getFocusedRouteNameFromRoute,
   NavigationContainer,
 } from '@react-navigation/native';
@@ -40,17 +39,7 @@ import WelcomeScreen from '../screens/onboarding/WelcomeScreen';
 import { getTabScreenOptions, tabScreenOptions, useTabBarAnimation } from './TabBar';
 import ChatScreen from '@/screens/chat/ChatScreen';
 import RoomListScreen from '@/screens/chat/RoomListScreen';
-
-export const navigationRef = createNavigationContainerRef();
-
-export const resetToOnboarding = () => {
-  if (navigationRef.isReady()) {
-    navigationRef.reset({
-      index: 0,
-      routes: [{ name: 'Onboarding' }],
-    });
-  }
-};
+import { navigationRef } from './navigationRef';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();

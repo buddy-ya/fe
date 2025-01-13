@@ -3,7 +3,7 @@ import { MoreVertical } from 'lucide-react-native';
 import { useTranslation } from 'react-i18next';
 import { Image, TouchableOpacity, View } from 'react-native';
 import { getCountryFlag, getTimeAgo } from '@/utils';
-import { MyText } from '@/components'
+import { MyText } from '../common';
 
 interface CommentLabelProps {
   isFeedOwner: boolean;

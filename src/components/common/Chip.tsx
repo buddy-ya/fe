@@ -1,5 +1,5 @@
 import { TouchableOpacity, View } from 'react-native';
-import { MyText } from '@/components';
+import MyText from './MyText';
 
 interface ChipProps {
   icon?: string;

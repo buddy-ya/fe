@@ -80,6 +80,11 @@ export default function FeedWriteScreen({ navigation, route }) {
   const takePhoto = async () => {
     const { status } = await ImagePicker.requestCameraPermissionsAsync();
 
+    if (status !== 'granted') {
+      alert(t('studentId.permission.gallery'));
+      return;
+    }
+
     try {
       const result = await ImagePicker.launchCameraAsync({
         ...IMAGE_PICKER_OPTIONS,

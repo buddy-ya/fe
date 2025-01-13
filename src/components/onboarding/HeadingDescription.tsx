@@ -1,5 +1,5 @@
 import React from 'react';
-import { MyText } from '@/components';
+import { MyText } from '../common';
 
 interface HeadingDescriptionProps {
   children: React.ReactNode;

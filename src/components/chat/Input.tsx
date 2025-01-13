@@ -5,15 +5,23 @@ import { TextInput, TouchableOpacity, View } from 'react-native';
 
 interface CommentInputProps {
     value: string;
+    onUpload: () => void;
     onChange: (text: string) => void;
     onSubmit: () => void;
     isLoading?: boolean;
-    leftImage?: boolean;
 }
 
-export const Input = ({ value, onChange, onSubmit, isLoading, leftImage }: CommentInputProps) => {
+export const Input = ({ value, onUpload, onChange, onSubmit, isLoading }: CommentInputProps) => {
     const { t } = useTranslation('feed');
     const [isFocused, setIsFocused] = useState(false);
+
+    const handleFocus = () => {
+        setIsFocused(true);
+    }
+
+    const handleBlur = () => {
+        setIsFocused(false);
+    }
 
     return (
         <View
@@ -22,9 +30,12 @@ export const Input = ({ value, onChange, onSubmit, isLoading, leftImage }: Comme
         >
             <View className='flex-row flex-1 items-center'>
                 <View className='flex-row items-center w-[88%] rounded-[12px] bg-[#F1F1F1]'>
-                    <View className={`flex-row items-center ml-2 w-[24px] h-[24px]`} >
-                        <Image size={20} strokeWidth={1.3} color="#CBCBCB" />
-                    </View>
+
+                    <TouchableOpacity onPress={onUpload}>
+                        <View className={`flex-row items-center ml-2 w-[24px] h-[24px]`} >
+                            <Image size={24} strokeWidth={1.3} color="#CBCBCB" />
+                        </View>
+                    </TouchableOpacity>
 
                     <TextInput
                         value={value}
@@ -37,8 +48,8 @@ export const Input = ({ value, onChange, onSubmit, isLoading, leftImage }: Comme
                         scrollEnabled={true}
                         maxLength={500}
                         onSubmitEditing={onSubmit}
-                        onFocus={() => setIsFocused(true)}
-                        onBlur={() => setIsFocused(false)}
+                        onFocus={handleFocus}
+                        onBlur={handleBlur}
                     />
                 </View>
             </View>

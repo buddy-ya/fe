@@ -1,7 +1,7 @@
 import { Check } from 'lucide-react-native';
 import { TouchableOpacity, View } from 'react-native';
 import { CATEGORIES } from '@/utils';
-import { MyText } from '@/components';
+import { MyText } from '../common';
 
 export function CategorySelectModal({ selectedCategory, onSelect }) {
   const categories = CATEGORIES.filter((category) => category.id !== 'popular');

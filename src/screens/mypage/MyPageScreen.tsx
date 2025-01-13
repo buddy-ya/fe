@@ -1,4 +1,3 @@
-import { resetToOnboarding } from '@/navigation/router';
 import LogoIcon from '@assets/icons/logo.svg';
 import { Bell, Bookmark, ChevronRight, NotebookPen, Settings } from 'lucide-react-native';
 import { Fragment, useEffect } from 'react';
@@ -9,6 +8,7 @@ import { getCountryFlag } from '@/utils';
 import { InnerLayout, Layout, MyText } from '@/components';
 import { AuthRepository, UserRepository } from '@/api';
 import { TokenService } from '@/service';
+import { resetToOnboarding } from '@/navigation/navigationRef';
 
 const SettingItem = ({ label, onPress }) => (
   <TouchableOpacity
