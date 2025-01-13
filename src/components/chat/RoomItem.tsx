@@ -1,6 +1,7 @@
 import { Room } from '@/model';
 import { Image, View, TouchableOpacity } from 'react-native';
-import { Chip, MyText } from '../common';
+import { MyText } from '../common';
+import { UnreadCountChip } from './UnreadCountChip';
 
 interface RoomItemProps {
     room: Room;
@@ -40,7 +41,7 @@ export default function RoomItem({ room, onPress }: RoomItemProps) {
                     <MyText size='text-sm'>
                         {lastMessageDate}
                     </MyText>
-                    {unreadCount > 0 && <Chip className="py-0 h-[24px] bg-textWarning" label={computedUnreadCount} textClassName='leading-[1.0] text-white' readOnly />}
+                    {unreadCount > 0 && <UnreadCountChip className="py-0 h-[24px] bg-textWarning" label={computedUnreadCount} readOnly />}
                 </View>
             </View>
         </TouchableOpacity>

@@ -6,9 +6,8 @@ import { TouchableOpacity, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { feedKeys, FeedRepository } from '@/api';
 import { useAuthCheck, useFeedList, getModalTexts } from '@/hooks';
-import { CATEGORIES } from '@/utils/constants/categories';
 import { Button, CategoryPager, ConfirmModal, FeedList, InnerLayout, Layout } from '@/components';
-import { isAndroid } from '@/utils';
+import { isAndroid, CATEGORIES } from '@/utils';
 
 export default function HomeScreen({ navigation }) {
   const STALE_TIME = 1000 * 60;
