@@ -1,8 +1,8 @@
 import { CommentType, Feed } from '@/screens/home/types';
 import { useModal } from '@/hooks/modal/useModal';
-import { bottomSheetOptions } from '@/components/common/bottomSheet';
+import { bottomModalOptions } from '@/components';
 
-interface UseFeedBottomSheetProps {
+interface UseFeedBottomModalProps {
     feed?: Feed;
     onEditFeed?: () => void;
     onDeleteFeed?: () => void;
@@ -10,13 +10,13 @@ interface UseFeedBottomSheetProps {
     onEditComment?: (comment: CommentType) => void;
 }
 
-export const useFeedBottomSheet = ({
+export const useFeedBottomModal = ({
     feed,
     onEditFeed,
     onDeleteFeed,
     onDeleteComment,
     onEditComment,
-}: UseFeedBottomSheetProps) => {
+}: UseFeedBottomModalProps) => {
     const feedModal = useModal();
     const commentModal = useModal();
 
@@ -25,10 +25,10 @@ export const useFeedBottomSheet = ({
 
         const options = feed.isFeedOwner
             ? [
-                bottomSheetOptions.edit(onEditFeed || (() => { })),
-                bottomSheetOptions.delete(onDeleteFeed || (() => { })),
+                bottomModalOptions.edit(onEditFeed || (() => { })),
+                bottomModalOptions.delete(onDeleteFeed || (() => { })),
             ]
-            : [bottomSheetOptions.report(() => console.log('report comment'))];
+            : [bottomModalOptions.report(() => console.log('report comment'))];
 
         feedModal.openModal(options);
     };
@@ -36,10 +36,10 @@ export const useFeedBottomSheet = ({
     const handleCommentOptions = (comment: CommentType) => {
         const options = comment.isCommentOwner
             ? [
-                bottomSheetOptions.edit(() => onEditComment?.(comment)),
-                bottomSheetOptions.delete(() => onDeleteComment?.(comment.id)),
+                bottomModalOptions.edit(() => onEditComment?.(comment)),
+                bottomModalOptions.delete(() => onDeleteComment?.(comment.id)),
             ]
-            : [bottomSheetOptions.report(() => console.log('report comment'))];
+            : [bottomModalOptions.report(() => console.log('report comment'))];
 
         commentModal.openModal(options);
     };

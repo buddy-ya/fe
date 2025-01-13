@@ -4,8 +4,8 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Alert, Keyboard, RefreshControl, ScrollView, TouchableOpacity } from 'react-native';
 import { feedKeys, FeedRepository } from '@/api';
-import { getModalTexts, useAuthCheck, useFeedDetail, useFeedBottomSheet } from '@/hooks';
-import { BottomSheet, CommentList, ConfirmModal, FeedItem, KeyboardLayout, Layout, CommentInput } from '@/components';
+import { getModalTexts, useAuthCheck, useFeedDetail, useFeedBottomModal } from '@/hooks';
+import { BottomModal, CommentList, ConfirmModal, FeedItem, KeyboardLayout, Layout, CommentInput } from '@/components';
 
 export default function FeedDetailScreen({ navigation, route }) {
   const { feedId } = route.params;
@@ -50,7 +50,7 @@ export default function FeedDetailScreen({ navigation, route }) {
     );
   };
 
-  const { feedModal, commentModal, handleFeedOptions, handleCommentOptions } = useFeedBottomSheet({
+  const { feedModal, commentModal, handleFeedOptions, handleCommentOptions } = useFeedBottomModal({
     feed,
     onEditFeed: () =>
       navigation.navigate('FeedWrite', {
@@ -146,12 +146,12 @@ export default function FeedDetailScreen({ navigation, route }) {
         </KeyboardLayout>
       </Layout>
 
-      <BottomSheet
+      <BottomModal
         visible={feedModal.visible}
         onClose={feedModal.closeModal}
         options={feedModal.options}
       />
-      <BottomSheet
+      <BottomModal
         visible={commentModal.visible}
         onClose={commentModal.closeModal}
         options={commentModal.options}
