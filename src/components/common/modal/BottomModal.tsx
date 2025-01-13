@@ -3,19 +3,19 @@ import { ReactNode } from 'react';
 import { Modal, TouchableOpacity, View } from 'react-native';
 import MyText from '../MyText';
 
-interface BottomSheetProps {
+interface BottomModalProps {
   visible: boolean;
   onClose: () => void;
   options?: ModalOption[];
   children?: ReactNode;
 }
 
-export function BottomSheet({
+export function BottomModal({
   visible,
   onClose,
   options = [],
   children,
-}: BottomSheetProps) {
+}: BottomModalProps) {
   return (
     <Modal visible={visible} transparent animationType="fade" onRequestClose={onClose}>
       <TouchableOpacity className="flex-1 bg-black/50" activeOpacity={1} onPress={onClose}>
