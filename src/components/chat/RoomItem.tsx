@@ -1,5 +1,5 @@
 import { Room } from '@/model';
-import { Image, View, Text, TouchableOpacity } from 'react-native';
+import { Image, View, TouchableOpacity } from 'react-native';
 import { Chip, MyText } from '../common';
 
 interface RoomItemProps {

@@ -6,7 +6,7 @@ import { Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { TOKEN_KEYS } from '@/utils';
 
-const BASE_URL = Constants.expoConfig.extra.BASE_URL;
+const BASE_URL = Constants?.expoConfig?.extra?.BASE_URL || '';
 
 export const API = axios.create({
   baseURL: BASE_URL,

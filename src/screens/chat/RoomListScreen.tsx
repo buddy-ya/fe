@@ -1,7 +1,8 @@
+import { NavigationProp } from '@react-navigation/native';
 import LogoIcon from '@assets/icons/logo.svg';
 import { Bell, Search } from 'lucide-react-native';
 import { useRef, useState } from 'react';
-import { Platform, ScrollView, TouchableOpacity, View } from 'react-native';
+import { ScrollView, TouchableOpacity, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useAuthCheck } from '@/hooks';
 import { CategoryPager, ConfirmModal, InnerLayout, Layout, RoomList } from '@/components';
@@ -19,7 +20,7 @@ export const CATEGORIES = [
   },
 ]
 
-export default function RoomListScreen({ navigation }) {
+export default function RoomListScreen({ navigation }: { navigation: NavigationProp<any> }) {
   const { isModalVisible, setIsModalVisible, currentModalTexts, setCurrentModalTexts, checkAuth } =
     useAuthCheck();
 

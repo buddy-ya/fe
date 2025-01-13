@@ -2,8 +2,9 @@ import { useRef, useState } from "react";
 import { CommentInput, KeyboardLayout, Layout, MyText } from "@/components";
 import { EllipsisVertical, ChevronLeft } from "lucide-react-native";
 import { Text, TouchableOpacity, ScrollView, Keyboard, RefreshControl } from "react-native";
+import { NavigationProp } from "@react-navigation/native";
 
-export default function ChatScreen({ navigation }) {
+export default function ChatScreen({ navigation }: { navigation: NavigationProp<any> }) {
 
   const scrollViewRef = useRef<ScrollView>(null);
 

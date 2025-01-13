@@ -4,7 +4,7 @@ export const useModal = () => {
   const [visible, setVisible] = useState(false);
   const [options, setOptions] = useState([]);
 
-  const openModal = (newOptions) => {
+  const openModal = (newOptions: any) => {
     setOptions(newOptions);
     setVisible(true);
   };
