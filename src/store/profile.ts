@@ -1,5 +1,5 @@
 import UserRepository from "@/api/UserRepository";
-import { type CountryID } from "@/utils/constants/countries";
+import { type CountryID } from "@/utils";
 import { create } from "zustand";
 
 type Gender = "male" | "female" | "unknown";

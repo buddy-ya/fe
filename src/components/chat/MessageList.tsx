@@ -22,13 +22,12 @@ const MessageList = ({ messages, currentUser }: MessageListProps) => {
         <FlatList
             data={messages}
             renderItem={({ item, index }) => (
-                <MessageItem key={item.id}
+                <MessageItem
+                    key={item.id}
                     message={item}
                     isCurrentUser={item.sender === currentUser}
                     shouldShowProfile={(index === 0 && item.sender !== currentUser) || (index > 0 && messages[index - 1].sender !== item.sender) && item.sender !== currentUser}
                 />
-
-
             )}
             contentContainerStyle={{ paddingVertical: 20 }}
             showsVerticalScrollIndicator={false}
