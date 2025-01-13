@@ -2,7 +2,7 @@ import { Lock } from 'lucide-react-native';
 import { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { TextInput, View } from 'react-native';
-import { formatPhone } from '@/utils/service/phone';
+import { formatPhone } from '@/utils';
 import { ErrorMessage, FooterLayout, Heading, HeadingDescription, InnerLayout, KeyboardLayout, Label, Layout, MyText } from '@/components';
 import { AuthRepository } from '@/api';
 

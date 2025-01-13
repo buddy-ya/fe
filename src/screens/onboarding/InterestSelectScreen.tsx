@@ -1,11 +1,9 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ScrollView, View } from 'react-native';
-import { useOnboardingStore } from '@/store/onboarding';
-import type { InterestID } from '@/utils/constants/interests';
-import { INTEREST_CATEGORIES, INTEREST_ICONS } from '@/utils/constants/interests';
-import { saveTokens } from '@/utils/service/auth';
-import { logError } from '@/utils/service/error';
+import { useOnboardingStore } from '@/store';
+import type { InterestID } from '@/utils';
+import { saveTokens, INTEREST_CATEGORIES, INTEREST_ICONS, logError } from '@/utils';
 import { OnboardingRepository, UserRepository } from '@/api';
 import { Button, Chip, Heading, InnerLayout, Layout, MyText } from '@/components';
 

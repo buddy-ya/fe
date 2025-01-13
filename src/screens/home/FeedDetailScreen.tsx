@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Alert, Keyboard, RefreshControl, ScrollView, TouchableOpacity } from 'react-native';
 import { feedKeys, FeedRepository } from '@/api';
-import { getModalTexts, useFeedModals, useAuthCheck, useFeedDetail } from '@/hooks';
+import { getModalTexts, useAuthCheck, useFeedDetail, useFeedBottomModal } from '@/hooks';
 import { BottomModal, CommentList, ConfirmModal, FeedItem, KeyboardLayout, Layout, CommentInput } from '@/components';
 
 export default function FeedDetailScreen({ navigation, route }) {
@@ -50,7 +50,7 @@ export default function FeedDetailScreen({ navigation, route }) {
     );
   };
 
-  const { feedModal, commentModal, handleFeedOptions, handleCommentOptions } = useFeedModals({
+  const { feedModal, commentModal, handleFeedOptions, handleCommentOptions } = useFeedBottomModal({
     feed,
     onEditFeed: () =>
       navigation.navigate('FeedWrite', {

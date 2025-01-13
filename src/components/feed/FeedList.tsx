@@ -1,6 +1,7 @@
 import { Feed } from '@/screens/home/types';
 import { FlatList, RefreshControl, RefreshControlProps } from 'react-native';
 import { EmptyState, FeedItem } from '@/components';
+import { memo } from 'react';
 
 interface FeedListProps {
   feeds: Feed[];
@@ -17,7 +18,7 @@ interface FeedListProps {
   disableActions?: boolean;
 }
 
-export default function FeedList({
+function FeedList({
   feeds,
   onLike,
   onBookmark,
@@ -60,3 +61,5 @@ export default function FeedList({
     />
   );
 }
+
+export default memo(FeedList);

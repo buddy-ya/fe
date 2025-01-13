@@ -1,10 +1,6 @@
 import { API } from "@/api";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
-const TOKEN_KEYS = {
-  ACCESS: "accessToken",
-  REFRESH: "refreshToken",
-} as const;
+import { TOKEN_KEYS } from "../constants";
 
 export const saveTokens = async (
   accessToken: string,
@@ -43,6 +39,7 @@ export const removeTokens = async () => {
   try {
     await AsyncStorage.removeItem(TOKEN_KEYS.ACCESS);
     await AsyncStorage.removeItem(TOKEN_KEYS.REFRESH);
+    delete API.defaults.headers.common['Authorization'];
   } catch (error) {
     console.error("Error removing tokens:", error);
   }

@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Keyboard, TouchableWithoutFeedback } from 'react-native';
-import { useOnboardingStore } from '@/store/onboarding';
-import { COUNTRIES } from '@/utils/constants/countries';
+import { useOnboardingStore } from '@/store';
+import { COUNTRIES } from '@/utils';
 import { Button, Heading, HeadingDescription, InnerLayout, Layout, MultiSelectItem, MyText, SearchInput } from '@/components';
 
 

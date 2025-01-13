@@ -1,5 +1,5 @@
 import { BottomTabNavigationOptions } from '@react-navigation/bottom-tabs';
-import { Home, User, Users } from 'lucide-react-native';
+import { Home, User, Users, MessageCircle } from 'lucide-react-native';
 import React from 'react';
 import { Animated, Platform, StyleSheet } from 'react-native';
 
@@ -12,6 +12,10 @@ const TAB_CONFIG = {
   Matching: {
     Icon: Users,
     translationKey: 'tab.matching',
+  },
+  Chat: {
+    Icon: MessageCircle,
+    translationKey: 'tab.chat',
   },
   MyPage: {
     Icon: User,

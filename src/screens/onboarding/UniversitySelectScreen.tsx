@@ -2,7 +2,7 @@ import SejongLogo from '@assets/icons/universities/sejong.svg';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
-import { useOnboardingStore } from '@/store/onboarding';
+import { useOnboardingStore } from '@/store';
 import { Button, Heading, HeadingDescription, InnerLayout, Label, Layout, MyText, SelectItem } from '@/components';
 
 export default function UniversitySelectScreen({ navigation }) {

@@ -1,9 +1,8 @@
 import AlertIcon from '@assets/icons/alert.svg';
 import * as Notifications from 'expo-notifications';
-import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
-import { useOnboardingStore } from '@/store/onboarding';
+import { useOnboardingStore } from '@/store';
 import { Button, Heading, HeadingDescription, InnerLayout, Layout, MyText } from '@/components';
 
 export default function NotificationScreen({ navigation, route }) {

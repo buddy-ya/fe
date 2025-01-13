@@ -1,4 +1,4 @@
-export const TOKEN = {
-    ACCESS_TOKEN: "accessToken",
-    REFRESH_TOKEN: "refreshToken",
+export const TOKEN_KEYS = {
+    ACCESS: "accessToken",
+    REFRESH: "refreshToken",
 } as const;

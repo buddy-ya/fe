@@ -1,4 +1,3 @@
-// components/common/BottomModal.tsx
 import { ModalOption } from '@/screens/home/types';
 import { ReactNode } from 'react';
 import { Modal, TouchableOpacity, View } from 'react-native';
@@ -11,7 +10,7 @@ interface BottomModalProps {
   children?: ReactNode;
 }
 
-export default function BottomModal({
+export function BottomModal({
   visible,
   onClose,
   options = [],
