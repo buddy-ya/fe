@@ -140,16 +140,6 @@ export default function RoomListScreen({ navigation }: { navigation: NavigationP
       hasTabBar={true}
       showHeader
       headerLeft={<LogoIcon />}
-      headerRight={
-        <View className="flex-row items-center">
-          <TouchableOpacity onPress={() => navigation.navigate('FeedSearch')} className="mr-4">
-            <Search strokeWidth={2} size={24} color="#797977" />
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <Bell strokeWidth={2} size={24} color="#797977" />
-          </TouchableOpacity>
-        </View>
-      }
     >
       <InnerLayout>
         <View className='flex-1'>
