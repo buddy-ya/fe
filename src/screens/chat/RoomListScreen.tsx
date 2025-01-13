@@ -1,8 +1,7 @@
 import { NavigationProp } from '@react-navigation/native';
 import LogoIcon from '@assets/icons/logo.svg';
-import { Bell, Search } from 'lucide-react-native';
 import { useRef, useState } from 'react';
-import { ScrollView, TouchableOpacity, View } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useAuthCheck } from '@/hooks';
 import { CategoryPager, ConfirmModal, InnerLayout, Layout, RoomList } from '@/components';

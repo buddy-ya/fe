@@ -16,7 +16,7 @@ export function UnreadCountChip({ icon, label, selected, onPress, className, rea
   return (
     <Container onPress={!readOnly ? onPress : undefined} className="mb-[0.3px]">
       <View
-        className={`flex-row items-center rounded-full border px-4 py-0 ${selected ? 'border-primary bg-chipActive' : 'border-border'} ${className || ''}`}
+        className={`flex-row items-center rounded-full px-3 py-0 ${selected ? 'border-primary bg-chipActive' : 'border-border'} ${className || ''}`}
       >
         {icon && <MyText className="mr-2">{icon}</MyText>}
         <MyText
