@@ -1,5 +1,6 @@
 import { View, Image, TouchableOpacity, Text } from 'react-native';
 import { Message } from '@/model';
+import { useRoomStore } from '@/store/useRoomStore';
 
 interface MessageProps {
     message: Message;
@@ -8,6 +9,8 @@ interface MessageProps {
 }
 
 const MessageItem = ({ message, isCurrentUser, shouldShowProfile }: MessageProps) => {
+
+    const profileImageUrl = useRoomStore(state => state.imageUrl);
 
     const computedClassName = () => {
         if (isCurrentUser) {
@@ -47,7 +50,7 @@ const MessageItem = ({ message, isCurrentUser, shouldShowProfile }: MessageProps
                 {shouldShowProfile && !isCurrentUser && (
                     <TouchableOpacity>
                         <Image
-                            source={{ uri: 'https://picsum.photos/150' }}
+                            source={{ uri: profileImageUrl }}
                             alt={`${message.sender}'s profile`}
                             className="rounded-full"
                             width={34}

@@ -12,7 +12,7 @@ interface Action {
 }
 
 // Zustand 스토어 생성
-export const useMessageStore = create<State & Action>((set) => ({
+export const useRoomStore = create<State & Action>((set) => ({
     id: -1,
     title: '',
     content: '',

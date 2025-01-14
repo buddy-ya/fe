@@ -7,6 +7,7 @@ import { NavigationProp } from "@react-navigation/native";
 import { useImageUpload } from "@/hooks";
 import { Message } from "@/model";
 import { useMessageStore } from "@/store";
+import { useRoomStore } from "@/store/useRoomStore";
 
 const IMAGE_PICKER_OPTIONS: ImagePickerOptions = {
   mediaTypes: ["images"],
@@ -124,6 +125,7 @@ const ChatRoomScreen = (navigation: NavigationProp<any>) => {
   const { handleUpload, loading } = useImageUpload({ options: IMAGE_PICKER_OPTIONS });
   const { text, messages, isLoading, error, handleChange, handleSubmit, setMessage, addMessage, deleteMessage } = useMessageStore();
   const flatListRef = useRef<FlatList>(null);
+  const title = useRoomStore(state => state.title);
 
   // TODO: 추후에 알림 등으로 바로 들어온 경우 뒤로가기 스택이 없으므로 룸리스트로 보내게끔 해야 할 듯
   const handleBack = () => {
@@ -153,7 +155,7 @@ const ChatRoomScreen = (navigation: NavigationProp<any>) => {
       >
         <ChevronLeft strokeWidth={2} size={30} color="#797979" />
       </TouchableOpacity>}
-      headerCenter={<MyText size="text-lg" className="font-semibold">채팅방 제목</MyText>}
+      headerCenter={<MyText size="text-lg" className="font-semibold">{title}</MyText>}
       headerRight={
         <TouchableOpacity>
           <EllipsisVertical strokeWidth={2} size={24} color="#797979" />

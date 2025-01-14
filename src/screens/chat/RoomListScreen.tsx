@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { View } from 'react-native';
 import { CategoryPager, InnerLayout, Layout, RoomList } from '@/components';
 import { Room } from '@/model';
+import { useRoomStore } from '@/store/useRoomStore';
 
 
 export const CATEGORIES = [
@@ -18,6 +19,7 @@ export const CATEGORIES = [
 
 export default function RoomListScreen({ navigation }: { navigation: NavigationProp<any> }) {
   const [activeIndex, setActiveIndex] = useState(0);
+  const setRoom = useRoomStore(state => state.setRoom);
 
   const rooms: Room[] = [
     {
@@ -122,9 +124,11 @@ export default function RoomListScreen({ navigation }: { navigation: NavigationP
     setActiveIndex(index);
   }
 
-  const handlePressRoom = (roomId: number) => {
-    navigation.navigate('ChatRoom', { roomId })
+  const handlePressRoom = (room: Room) => {
+    setRoom(room);
+    navigation.navigate('ChatRoom', { roomId: room.id })
   }
+
   return (
     <Layout isBackgroundWhite>
       <InnerLayout>

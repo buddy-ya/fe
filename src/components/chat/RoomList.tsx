@@ -6,7 +6,7 @@ import RoomItem from './RoomItem';
 
 interface RoomListProps {
     rooms: Room[];
-    onPress: (id: number) => void;
+    onPress: (room: Room) => void;
     isLoading?: boolean;
     hasMore?: boolean;
     className?: string;
@@ -40,7 +40,7 @@ export default function RoomList({
                 <RoomItem
                     key={item.id}
                     room={item}
-                    onPress={() => onPress(item.id)}
+                    onPress={() => onPress(item)}
                 />
             )}
             className={`mt-1 pt-3 ${className}`}
