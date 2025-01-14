@@ -17,22 +17,7 @@ export const useFeedBottomModal = ({
     onDeleteComment,
     onEditComment,
 }: UseFeedBottomModalProps) => {
-    const feedModal = useModal();
     const commentModal = useModal();
-
-    const handleFeedOptions = () => {
-        if (!feed) return;
-
-        const options = feed.isFeedOwner
-            ? [
-                bottomModalOptions.edit(onEditFeed || (() => { })),
-                bottomModalOptions.delete(onDeleteFeed || (() => { })),
-            ]
-            : [bottomModalOptions.report(() => console.log('report comment'))];
-
-        feedModal.openModal(options);
-    };
-
     const handleCommentOptions = (comment: CommentType) => {
         const options = comment.isCommentOwner
             ? [
@@ -45,9 +30,7 @@ export const useFeedBottomModal = ({
     };
 
     return {
-        feedModal,
         commentModal,
-        handleFeedOptions,
         handleCommentOptions,
     };
 };

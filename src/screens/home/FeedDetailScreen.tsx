@@ -1,14 +1,16 @@
 import { useQueryClient } from '@tanstack/react-query';
-import { MoreVertical } from 'lucide-react-native';
+import { Delete, Flag, MoreVertical, Pencil } from 'lucide-react-native';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Alert, Keyboard, RefreshControl, ScrollView, TouchableOpacity } from 'react-native';
 import { feedKeys, FeedRepository } from '@/api';
 import { getModalTexts, useAuthCheck, useFeedDetail, useFeedBottomModal } from '@/hooks';
-import { BottomModal, CommentList, ConfirmModal, FeedItem, KeyboardLayout, Layout, CommentInput } from '@/components';
-import { useConfirmModalStore } from '@/store';
+import { BottomModal, CommentList, ConfirmModal, FeedItem, KeyboardLayout, Layout, CommentInput, bottomModalOptions } from '@/components';
+import { ModalOption, useBottomModalStore, useConfirmModalStore } from '@/store';
+
 
 export default function FeedDetailScreen({ navigation, route }) {
+  const queryClient = useQueryClient();
   const { feedId } = route.params;
   const [comment, setComment] = useState('');
   const [isDeleted, setIsDeleted] = useState(false);
@@ -24,7 +26,9 @@ export default function FeedDetailScreen({ navigation, route }) {
       enabled: !isDeleted,
     });
 
-  const queryClient = useQueryClient();
+  const bottomModalOpen = useBottomModalStore(state => state.handleOpen);
+  const bottomModalClose = useBottomModalStore(state => state.handleClose);
+  const settingBottomModalOptions = useBottomModalStore(state => state.handleSet)
 
   const showDeleteAlert = (onConfirm: () => void) => {
     Alert.alert(
@@ -52,22 +56,8 @@ export default function FeedDetailScreen({ navigation, route }) {
     );
   };
 
-  const { feedModal, commentModal, handleFeedOptions, handleCommentOptions } = useFeedBottomModal({
+  const { commentModal, handleCommentOptions } = useFeedBottomModal({
     feed,
-    onEditFeed: () =>
-      navigation.navigate('FeedWrite', {
-        feed,
-        isEdit: true,
-      }),
-    onDeleteFeed: () => {
-      showDeleteAlert(async () => {
-        setIsDeleted(true);
-        await FeedRepository.delete({ feedId });
-        queryClient.invalidateQueries({ queryKey: feedKeys.all });
-        feedModal.closeModal();
-        navigation.goBack();
-      });
-    },
     onEditComment: (comment) =>
       navigation.navigate('CommentEdit', {
         feedId,
@@ -105,6 +95,36 @@ export default function FeedDetailScreen({ navigation, route }) {
     }
   };
 
+  const handleFeedOptions = (isFeedOwner: boolean) => {
+    bottomModalOpen();
+    settingBottomModalOptions(modalOptions(isFeedOwner));
+  }
+
+
+  const modalOptions = (isFeedOwner: boolean): ModalOption[] => {
+    if (isFeedOwner) {
+      return [
+        bottomModalOptions.edit(() => {
+          navigation.navigate('FeedWrite', {
+            feed,
+            isEdit: true,
+          })
+        }),
+        bottomModalOptions.delete(() => {
+          showDeleteAlert(async () => {
+            setIsDeleted(true);
+            await FeedRepository.delete({ feedId });
+            queryClient.invalidateQueries({ queryKey: feedKeys.all });
+            bottomModalClose();
+            navigation.goBack();
+          })
+        })
+      ]
+    }
+
+    return [bottomModalOptions.report(() => console.log('신고'))];
+  }
+
   if (isDeleted || !(feed || isRefetching)) return null;
 
   return (
@@ -114,7 +134,7 @@ export default function FeedDetailScreen({ navigation, route }) {
         disableBottomSafeArea
         onBack={() => navigation.goBack()}
         headerRight={
-          <TouchableOpacity onPress={handleFeedOptions} hitSlop={{ bottom: 20, left: 20 }}>
+          <TouchableOpacity onPress={() => handleFeedOptions(feed.isFeedOwner)} hitSlop={{ bottom: 20, left: 20 }}>
             <MoreVertical size={24} color="#797979" />
           </TouchableOpacity>
         }
@@ -151,11 +171,6 @@ export default function FeedDetailScreen({ navigation, route }) {
         </KeyboardLayout>
       </Layout>
 
-      <BottomModal
-        visible={feedModal.visible}
-        onClose={feedModal.closeModal}
-        options={feedModal.options}
-      />
       <BottomModal
         visible={commentModal.visible}
         onClose={commentModal.closeModal}

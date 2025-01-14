@@ -7,10 +7,15 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { AuthProvider } from "@/provider";
 import { ErrorBoundary } from "react-error-boundary";
 import ErrorPage from "@/screens/ErrorPage";
+import { useBottomModalStore } from "@/store";
+import { BottomModal } from "@/components";
 
 export default function App() {
 
   const queryClient = new QueryClient();
+  const bottomModalVisible = useBottomModalStore(state => state.visible);
+  const bottomModalOptions = useBottomModalStore(state => state.optionList);
+  const handleBottomModalClose = useBottomModalStore(state => state.handleClose);
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -20,6 +25,7 @@ export default function App() {
             <I18nextProvider i18n={i18n}>
               <GestureHandlerRootView>
                 <Router />
+                <BottomModal visible={bottomModalVisible} onClose={handleBottomModalClose} options={bottomModalOptions} />
               </GestureHandlerRootView>
             </I18nextProvider>
           </AuthProvider>

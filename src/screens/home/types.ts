@@ -40,5 +40,5 @@ export interface ModalOption {
   label: string;
   onPress: () => void;
   color?: string;
-  icon?: ReactNode;
+  icon: ReactNode;
 }

@@ -2,7 +2,7 @@ import { ReactNode } from "react";
 import { create } from "zustand";
 
 // BottomSheet 비슷한 모달이고, 옵션을 고르는 모달임.
-interface ModalOption {
+export interface ModalOption {
     label: string;
     icon: ReactNode;
     onPress: () => void;
@@ -16,6 +16,7 @@ interface ModalState {
 interface ModalAction {
     handleOpen: () => void;
     handleClose: () => void;
+    handleSet: (options: ModalOption[]) => void;
 }
 
 export const useBottomModalStore = create<ModalState & ModalAction>((set) => ({
@@ -25,5 +26,4 @@ export const useBottomModalStore = create<ModalState & ModalAction>((set) => ({
     handleOpen: () => set({ visible: true }),
     handleClose: () => set({ visible: false }),
     handleSet: (options: ModalOption[]) => set((state) => ({ optionList: [...options] })),
-
 }));
