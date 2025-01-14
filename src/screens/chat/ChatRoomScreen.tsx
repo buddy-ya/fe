@@ -1,11 +1,12 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { ImagePickerOptions } from "expo-image-picker";
-import { InnerLayout, Input, KeyboardLayout, Layout, MessageList, MyText } from "@/components";
+import { InnerLayout, Input, KeyboardLayout, Layout, MessageItem, MyText } from "@/components";
 import { EllipsisVertical, ChevronLeft } from "lucide-react-native";
-import { TouchableOpacity, ScrollView, Keyboard, RefreshControl, Alert } from "react-native";
+import { TouchableOpacity, FlatList } from "react-native";
 import { NavigationProp } from "@react-navigation/native";
 import { useImageUpload } from "@/hooks";
 import { Message } from "@/model";
+import { useMessageStore } from "@/store";
 
 const IMAGE_PICKER_OPTIONS: ImagePickerOptions = {
   mediaTypes: ["images"],
@@ -118,31 +119,25 @@ const data: Message[] = [
   },
 ];
 
-export default function ChatRoomScreen({ navigation }: { navigation: NavigationProp<any> }) {
+const ChatRoomScreen = (navigation: NavigationProp<any>) => {
 
-  const scrollViewRef = useRef<ScrollView>(null);
+  const { handleUpload, loading } = useImageUpload({ options: IMAGE_PICKER_OPTIONS });
+  const { text, messages, isLoading, error, handleChange, handleSubmit, setMessage, addMessage, deleteMessage } = useMessageStore();
+  const flatListRef = useRef<FlatList>(null);
 
   // TODO: 추후에 알림 등으로 바로 들어온 경우 뒤로가기 스택이 없으므로 룸리스트로 보내게끔 해야 할 듯
   const handleBack = () => {
     navigation.goBack();
   }
 
-  const [messages, setMessages] = useState('');
-  const { images, handleUpload, removeImage, loading } = useImageUpload({ options: IMAGE_PICKER_OPTIONS });
-
-  const handleChange = (text: string) => {
-    setMessages(text);
+  const onSubmit = () => {
+    handleSubmit();
+    setTimeout(() => flatListRef.current?.scrollToEnd({ animated: true }), 0);
   }
 
-  const handleSubmit = async () => {
-    if (messages === '') {
-      return;
-    }
-
-    console.log('send message:', messages);
-    setMessages('');
-    Keyboard.dismiss();
-  }
+  useEffect(() => {
+    setMessage(data);
+  }, []);
 
   return (
     <Layout
@@ -161,12 +156,30 @@ export default function ChatRoomScreen({ navigation }: { navigation: NavigationP
         </TouchableOpacity>
       }
     >
-      <KeyboardLayout footer={<Input value={messages} onUpload={handleUpload} onChange={handleChange} onSubmit={handleSubmit} />}>
+      <KeyboardLayout footer={<Input value={text} onUpload={handleUpload} onChange={handleChange} onSubmit={onSubmit} />}>
         <InnerLayout>
-          <MessageList messages={data} currentUser={"me"} />
+          {/* TODO: FlatList에서 ref 전달 관련 타입 에러가 있어서 일단 끌어올림. */}
+          <FlatList
+            data={messages}
+            renderItem={({ item, index }) => (
+              <MessageItem
+                key={item.id}
+                message={item}
+                isCurrentUser={item.sender === "me"}
+                shouldShowProfile={(index === 0 && item.sender !== "me") || (index > 0 && messages[index - 1].sender !== item.sender) && item.sender !== "me"}
+              />
+            )}
+            ref={flatListRef}
+            showsVerticalScrollIndicator={false}
+            onContentSizeChange={() => flatListRef.current?.scrollToEnd({ animated: true })} // 안전하게 current에 접근
+            onLayout={() => flatListRef.current?.scrollToEnd({ animated: true })} // 안전하게 current에 접근
+
+          />
         </InnerLayout>
       </KeyboardLayout>
 
     </Layout>
   );
 }
+
+export default ChatRoomScreen;

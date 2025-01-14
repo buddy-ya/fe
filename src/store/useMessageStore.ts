@@ -1,51 +1,44 @@
 import { create } from 'zustand';
-import { devtools } from 'zustand/middleware';
-import axios from 'axios';
 import { Message } from '@/model';
 
 
 // Zustand 스토어 타입 정의
 interface MessageStore {
+    text: string;
     messages: Message[];
     isLoading: boolean;
     error: string | null;
+    lastMessageId: number | null;
 
     // Actions
-    get: () => Promise<void>;
-    add: (message: Message) => void;
-    delete: (id: number) => void;
+    handleChange: (text: string) => void;
+    handleSubmit: () => void;
+    setMessage: (messages: Message[]) => void;
+    addMessage: (message: Message) => void;
+    deleteMessage: (id: number) => void;
 }
 
 // Zustand 스토어 생성
-export const useMessageStore = create<MessageStore>()(
-    devtools((set) => ({
-        messages: [],
-        isLoading: false,
-        error: null,
+export const useMessageStore = create<MessageStore>((set) => ({
+    text: '',
+    messages: [],
+    isLoading: false,
+    error: null,
+    lastMessageId: 1000,
 
-        // 서버에서 메시지 가져오기
-        get: async () => {
-            set({ isLoading: true, error: null });
-            try {
-                const response = await axios.get('/api/messages'); // 메시지 목록 가져오기 API
-                set({ messages: response.data, isLoading: false });
-            } catch (err: any) {
-                set({ error: err.message || 'Failed to fetch messages', isLoading: false });
-            }
-        },
+    handleChange: (text) => set({ text }),
+    handleSubmit: () => set((state) => ({
+        messages: [...state.messages, {
+            id: state.lastMessageId += 1,
+            sender: 'me',
+            content: state.text
+        }], text: ''
+    })),
+    setMessage: (messages) => set({ messages: messages, isLoading: false }),
+    // 메시지 추가
+    addMessage: (message) => set((state) => ({ messages: [...state.messages, message] })),
 
-        // 메시지 추가
-        add: (message) => {
-            set((state) => ({
-                messages: [...state.messages, message],
-            }));
-        },
+    // 메시지 삭제
+    deleteMessage: (id) => set((state) => ({ messages: state.messages.filter((message) => message.id !== id) })),
+}));
 
-        // 메시지 삭제
-        delete: (id) => {
-            set((state) => ({
-                messages: state.messages.filter((message) => message.id !== id),
-            }));
-        },
-    }))
-);
