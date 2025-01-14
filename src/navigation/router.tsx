@@ -45,6 +45,7 @@ const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 const OnboardingStack = createNativeStackNavigator();
 const FeedStack = createNativeStackNavigator();
+const ChatStack = createNativeStackNavigator();
 const MyPageStack = createNativeStackNavigator();
 
 function TabNavigator() {
@@ -178,10 +179,10 @@ function ChatNavigator({ navigation, route }) {
   }, [route]);
 
   return (
-    <FeedStack.Navigator screenOptions={{ headerShown: false }}>
-      <FeedStack.Screen name="RoomList" component={RoomListScreen} />
-      <FeedStack.Screen name="ChatRoom" component={ChatRoomScreen} />
-    </FeedStack.Navigator>
+    <ChatStack.Navigator screenOptions={{ headerShown: false }}>
+      <ChatStack.Screen name="RoomList" component={RoomListScreen} />
+      <ChatStack.Screen name="ChatRoom" component={ChatRoomScreen} />
+    </ChatStack.Navigator>
   );
 }
 
