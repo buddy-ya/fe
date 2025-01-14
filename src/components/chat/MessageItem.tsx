@@ -9,8 +9,35 @@ interface MessageProps {
 
 const MessageItem = ({ message, isCurrentUser, shouldShowProfile }: MessageProps) => {
 
-    const computedClassName = isCurrentUser ? '' : shouldShowProfile ? '' : 'ml-[35px]';
+    const computedClassName = () => {
+        if (isCurrentUser) {
+            return 'bg-primary rounded-br-xl rounded-bl-xl rounded-tl-xl ';
+        }
+        else {
+            let className = 'bg-natural rounded-tr-xl rounded-br-xl rounded-bl-xl';
+            if (shouldShowProfile) {
+                return `ml-[10px] ${className}`;
+            }
+            else {
+                return `ml-[45px] ${className}`
+            }
+        }
+    }
 
+    const computedFontClassName = () => {
+        if (isCurrentUser) {
+            return 'text-white'
+        }
+        else {
+            let className = 'bg-natural rounded-tr-xl rounded-br-xl rounded-bl-xl';
+            if (shouldShowProfile) {
+                return `${className}`;
+            }
+            else {
+                return `${className}`;
+            }
+        }
+    }
     return (
         <>
             <View
@@ -18,18 +45,18 @@ const MessageItem = ({ message, isCurrentUser, shouldShowProfile }: MessageProps
             >
                 {/* 상대방의 메시지에만 프로필 표시 */}
                 {shouldShowProfile && !isCurrentUser && (
-                    <TouchableOpacity className="profile">
+                    <TouchableOpacity>
                         <Image
                             source={{ uri: 'https://picsum.photos/150' }}
                             alt={`${message.sender}'s profile`}
-                            className="w-10 h-10 rounded-full"
-                            width={20}
-                            height={20}
+                            className="rounded-full"
+                            width={34}
+                            height={34}
                         />
                     </TouchableOpacity>
                 )}
-                <View className={`flex jusity-center w-24 h-10 bg-red-200 ${computedClassName}`}>
-                    <Text>{message.content}</Text>
+                <View className={`flex-row items-center jusity-center mt-1 max-w-[70%] min-h-[36px] max-h-[150px] ${computedClassName()}`}>
+                    <Text className={`p-2.5 ${computedFontClassName()}`}>{message.content}</Text>
                 </View>
             </View>
         </>
