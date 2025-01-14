@@ -120,7 +120,7 @@ const data: Message[] = [
   },
 ];
 
-const ChatRoomScreen = (navigation: NavigationProp<any>) => {
+const ChatRoomScreen = ({ navigation }: { navigation: NavigationProp<any> }) => {
 
   const { handleUpload, loading } = useImageUpload({ options: IMAGE_PICKER_OPTIONS });
   const { text, messages, isLoading, error, handleChange, handleSubmit, setMessage, addMessage, deleteMessage } = useMessageStore();
