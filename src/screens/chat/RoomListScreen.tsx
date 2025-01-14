@@ -2,9 +2,7 @@ import { NavigationProp } from '@react-navigation/native';
 import LogoIcon from '@assets/icons/logo.svg';
 import { useRef, useState } from 'react';
 import { ScrollView, View } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useAuthCheck } from '@/hooks';
-import { CategoryPager, ConfirmModal, InnerLayout, Layout, RoomList } from '@/components';
+import { CategoryPager, InnerLayout, Layout, RoomList } from '@/components';
 import { Room } from '@/model';
 
 
@@ -20,11 +18,6 @@ export const CATEGORIES = [
 ]
 
 export default function RoomListScreen({ navigation }: { navigation: NavigationProp<any> }) {
-  const { isModalVisible, setIsModalVisible, currentModalTexts, setCurrentModalTexts, checkAuth } =
-    useAuthCheck();
-
-  const insets = useSafeAreaInsets();
-
   const [activeIndex, setActiveIndex] = useState(0);
 
   const rooms: Room[] = [
@@ -154,20 +147,6 @@ export default function RoomListScreen({ navigation }: { navigation: NavigationP
         </View>
 
       </InnerLayout>
-      <ConfirmModal
-        visible={isModalVisible}
-        onClose={() => setIsModalVisible(false)}
-        onConfirm={() => {
-          setIsModalVisible(false);
-          currentModalTexts?.onConfirm();
-        }}
-        title={currentModalTexts?.title || ''}
-        description={currentModalTexts?.description || ''}
-        cancelText={currentModalTexts?.cancelText}
-        confirmText={currentModalTexts?.confirmText}
-        position="bottom"
-        size="default"
-      />
     </Layout>
   );
 }

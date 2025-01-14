@@ -8,13 +8,15 @@ import { feedKeys, FeedRepository } from '@/api';
 import { useAuthCheck, useFeedList, getModalTexts } from '@/hooks';
 import { Button, CategoryPager, ConfirmModal, FeedList, InnerLayout, Layout } from '@/components';
 import { isAndroid, CATEGORIES } from '@/utils';
+import { useConfirmModalStore } from '@/store';
 
 export default function HomeScreen({ navigation }) {
   const STALE_TIME = 1000 * 60;
   const { t: certT } = useTranslation('certification');
   const [activeCategory, setActiveCategory] = useState(CATEGORIES[0].id);
-  const { isModalVisible, setIsModalVisible, currentModalTexts, setCurrentModalTexts, checkAuth } =
+  const { currentModalTexts, checkAuth } =
     useAuthCheck();
+  const { visible, title, description, cancelText, confirmText, handleOpen, handleClose, setTitle, setDescription, setCancelText, setConfirmText } = useConfirmModalStore();
 
   const feedListData = useFeedList({
     queryKey: feedKeys.lists(activeCategory),
@@ -48,8 +50,12 @@ export default function HomeScreen({ navigation }) {
       t: certT,
       navigation,
     });
-    setCurrentModalTexts(modalTexts);
-    setIsModalVisible(true);
+
+    setTitle(modalTexts.title);
+    setDescription(modalTexts.description);
+    setCancelText(modalTexts.cancelText);
+    setConfirmText(modalTexts.confirmText);
+    handleOpen();
   };
 
   const insets = useSafeAreaInsets();
@@ -107,16 +113,16 @@ export default function HomeScreen({ navigation }) {
         </View>
       </InnerLayout>
       <ConfirmModal
-        visible={isModalVisible}
-        onClose={() => setIsModalVisible(false)}
+        visible={visible}
+        onClose={handleClose}
         onConfirm={() => {
-          setIsModalVisible(false);
           currentModalTexts?.onConfirm();
+          handleClose();
         }}
-        title={currentModalTexts?.title || ''}
-        description={currentModalTexts?.description || ''}
-        cancelText={currentModalTexts?.cancelText}
-        confirmText={currentModalTexts?.confirmText}
+        title={title}
+        description={description}
+        cancelText={cancelText}
+        confirmText={confirmText}
         position="bottom"
         size="default"
       />

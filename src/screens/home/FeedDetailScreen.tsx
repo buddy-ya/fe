@@ -6,6 +6,7 @@ import { Alert, Keyboard, RefreshControl, ScrollView, TouchableOpacity } from 'r
 import { feedKeys, FeedRepository } from '@/api';
 import { getModalTexts, useAuthCheck, useFeedDetail, useFeedBottomModal } from '@/hooks';
 import { BottomModal, CommentList, ConfirmModal, FeedItem, KeyboardLayout, Layout, CommentInput } from '@/components';
+import { useConfirmModalStore } from '@/store';
 
 export default function FeedDetailScreen({ navigation, route }) {
   const { feedId } = route.params;
@@ -13,9 +14,10 @@ export default function FeedDetailScreen({ navigation, route }) {
   const [isDeleted, setIsDeleted] = useState(false);
   const { t } = useTranslation('feed');
   const { t: certT } = useTranslation('certification');
-  const { isModalVisible, setIsModalVisible, currentModalTexts, setCurrentModalTexts, checkAuth } =
+  const { currentModalTexts, checkAuth } =
     useAuthCheck();
 
+  const { visible, title, description, cancelText, confirmText, handleOpen, handleClose, handleConfirm, setTitle, setDescription, setCancelText, setConfirmText } = useConfirmModalStore();
   const { feed, comments, isRefetching, handleFeedActions, handleCommentActions, handleRefresh } =
     useFeedDetail({
       feedId,
@@ -89,8 +91,11 @@ export default function FeedDetailScreen({ navigation, route }) {
           t: certT,
           navigation,
         });
-        setCurrentModalTexts(modalTexts);
-        setIsModalVisible(true);
+        setTitle(modalTexts.title);
+        setDescription(modalTexts.description);
+        setCancelText(modalTexts.cancelText);
+        setConfirmText(modalTexts.confirmText);
+        handleOpen();
         return;
       }
       await handleCommentActions.submit(comment);
@@ -157,16 +162,16 @@ export default function FeedDetailScreen({ navigation, route }) {
         options={commentModal.options}
       />
       <ConfirmModal
-        visible={isModalVisible}
-        onClose={() => setIsModalVisible(false)}
+        visible={visible}
+        onClose={handleClose}
         onConfirm={() => {
-          setIsModalVisible(false);
           currentModalTexts?.onConfirm();
+          handleClose();
         }}
-        title={currentModalTexts?.title || ''}
-        description={currentModalTexts?.description || ''}
-        cancelText={currentModalTexts?.cancelText}
-        confirmText={currentModalTexts?.confirmText}
+        title={title}
+        description={description}
+        cancelText={cancelText}
+        confirmText={confirmText}
         position="bottom"
         size="default"
       />
