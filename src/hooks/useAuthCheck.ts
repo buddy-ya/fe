@@ -3,7 +3,6 @@ import { ModalTexts } from '@/hooks';
 import { AuthRepository } from '@/api';
 
 export function useAuthCheck() {
-  const [isModalVisible, setIsModalVisible] = useState(false);
   const [currentModalTexts, setCurrentModalTexts] = useState<ModalTexts | null>(null);
 
   const checkAuth = async () => {
@@ -16,8 +15,6 @@ export function useAuthCheck() {
   };
 
   return {
-    isModalVisible,
-    setIsModalVisible,
     currentModalTexts,
     setCurrentModalTexts,
     checkAuth,
