@@ -1,7 +1,6 @@
 import { NavigationProp } from '@react-navigation/native';
-import LogoIcon from '@assets/icons/logo.svg';
-import { useRef, useState } from 'react';
-import { ScrollView, View } from 'react-native';
+import { useState } from 'react';
+import { View } from 'react-native';
 import { CategoryPager, InnerLayout, Layout, RoomList } from '@/components';
 import { Room } from '@/model';
 
@@ -118,7 +117,6 @@ export default function RoomListScreen({ navigation }: { navigation: NavigationP
       lastMessageDate: "2022-10-10"
     }
   ]
-  const scrollViewRef = useRef<ScrollView>(null);
 
   const handleChipPress = (index: number) => {
     setActiveIndex(index);
@@ -128,11 +126,7 @@ export default function RoomListScreen({ navigation }: { navigation: NavigationP
     navigation.navigate('ChatRoom', { roomId })
   }
   return (
-    <Layout
-      hasTabBar={true}
-      showHeader
-      headerLeft={<LogoIcon />}
-    >
+    <Layout isBackgroundWhite>
       <InnerLayout>
         <View className='flex-1'>
           <CategoryPager categories={CATEGORIES} onPageChange={handleChipPress}>
