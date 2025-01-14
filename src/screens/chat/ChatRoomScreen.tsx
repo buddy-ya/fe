@@ -132,8 +132,11 @@ const ChatRoomScreen = (navigation: NavigationProp<any>) => {
 
   const onSubmit = () => {
     handleSubmit();
-    setTimeout(() => flatListRef.current?.scrollToEnd({ animated: true }), 0);
   }
+
+  useEffect(() => {
+    setTimeout(() => flatListRef.current?.scrollToEnd({ animated: true }), 0);
+  }, [messages]);
 
   useEffect(() => {
     setMessage(data);
@@ -142,9 +145,10 @@ const ChatRoomScreen = (navigation: NavigationProp<any>) => {
   return (
     <Layout
       showHeader
+      isBackgroundWhite
       headerLeft={<TouchableOpacity
         onPress={handleBack}
-        className="relative right-2 flex-row items-center"
+        className="flex-row items-center"
         hitSlop={{ right: 20 }}
       >
         <ChevronLeft strokeWidth={2} size={30} color="#797979" />
