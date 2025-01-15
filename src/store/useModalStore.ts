@@ -1,11 +1,12 @@
 import { create } from "zustand";
 
-type ModalType = "comment" | "feed";
+type ModalType = keyof ModalState["visible"]
 
 interface ModalState {
     visible: {
         comment: boolean,
         feed: boolean,
+        studentCertification: boolean,
     }
 }
 
@@ -18,7 +19,8 @@ export const useModalStore = create<ModalState & ModalAction>((set) => ({
     // 초기 상태
     visible: {
         comment: false,
-        feed: false
+        feed: false,
+        studentCertification: false,
     },
     handleOpen: (type) => set((state) => ({ visible: { ...state.visible, [type]: true } })),
     handleClose: (type) => set((state) => ({ visible: { ...state.visible, [type]: false } })),

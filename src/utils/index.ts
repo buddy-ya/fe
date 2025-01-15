@@ -4,3 +4,4 @@ export * from './phone';
 export * from './error';
 export * from './formData';
 export * from './deviceCheck';
+export * from './regex';

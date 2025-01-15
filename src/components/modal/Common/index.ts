@@ -1,1 +1,1 @@
-export * from './CommonModal';
+export * from './StudentCertificationModal';

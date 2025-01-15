@@ -4,6 +4,5 @@ export { useFeedImages } from './useFeedImages';
 export { useImageUpload } from './useImageUpload';
 export { useFeedList } from './useFeedList';
 export { useFeedWrite } from './useFeedWrite';
-export { useFeedBottomModal } from './useFeedBottomModal'
 export { useTimer } from './useTimer';
 export * from './modal';

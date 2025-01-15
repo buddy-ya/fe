@@ -2,7 +2,7 @@ import { MoreVertical } from 'lucide-react-native';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Alert, Keyboard, RefreshControl, ScrollView, TouchableOpacity } from 'react-native';
-import { getModalTexts, useAuthCheck, useFeedDetail } from '@/hooks';
+import { useAuthCheck, useFeedDetail } from '@/hooks';
 import { CommentList, FeedItem, KeyboardLayout, Layout, CommentInput, CommentOptionModal } from '@/components';
 import { FeedOptionModal } from '@/components/modal/BottomOption/FeedOptionModal';
 import { useCommentStore } from '@/store/useCommentStore';
@@ -12,11 +12,10 @@ export default function FeedDetailScreen({ navigation, route }) {
   const { feedId } = route.params;
   const [comment, setComment] = useState('');
   const { t } = useTranslation('feed');
-  const { t: certT } = useTranslation('certification');
   const modalVisible = useModalStore(state => state.visible);
   const handleModalOpen = useModalStore(state => state.handleOpen);
   const handleModalClose = useModalStore(state => state.handleClose);
-  const { currentModalTexts, checkAuth } =
+  const { checkAuth } =
     useAuthCheck();
 
   const { feed, comments, isRefetching, handleFeedActions, handleCommentActions, handleRefresh } =
@@ -54,21 +53,12 @@ export default function FeedDetailScreen({ navigation, route }) {
 
   const handleCommentSubmit = async () => {
     if (!comment.trim()) return;
-
     Keyboard.dismiss();
 
     try {
-      const { isCertificated, isKorean, isStudentIdCardRequested } = await checkAuth();
-      if (!isCertificated) {
-        const modalTexts = getModalTexts({
-          isKorean,
-          isStudentIdCardRequested,
-          t: certT,
-          navigation,
-        });
-        return;
-      }
-      await handleCommentActions.submit(comment);
+      const { isCertificated } = await checkAuth();
+      !isCertificated && handleModalOpen('studentCertification');
+      isCertificated && await handleCommentActions.submit(comment);
       setComment('');
     } catch (error) {
       console.error('Comment submission failed:', error);
@@ -133,21 +123,6 @@ export default function FeedDetailScreen({ navigation, route }) {
         comment={selectedComment}
         onClose={() => handleModalClose('comment')}
       />
-
-      {/* <ConfirmModal
-        visible={visible}
-        onClose={handleClose}
-        onConfirm={() => {
-          currentModalTexts?.onConfirm();
-          handleClose();
-        }}
-        title={title}
-        description={description}
-        cancelText={cancelText}
-        confirmText={confirmText}
-        position="bottom"
-        size="default"
-      /> */}
     </>
   );
 }

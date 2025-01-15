@@ -1,13 +1,15 @@
-import { useState } from 'react';
-import { ModalTexts } from '@/hooks';
 import { AuthRepository } from '@/api';
+import { useUserStore } from '@/store';
 
 export function useAuthCheck() {
-  const [currentModalTexts, setCurrentModalTexts] = useState<ModalTexts | null>(null);
+
+  const update = useUserStore(state => state.update);
 
   const checkAuth = async () => {
     try {
-      return AuthRepository.checkCertificated();
+      const data = await AuthRepository.checkCertificated();
+      update(data);
+      return data
     } catch (error) {
       console.error('Auth check failed:', error);
       throw error;
@@ -15,8 +17,6 @@ export function useAuthCheck() {
   };
 
   return {
-    currentModalTexts,
-    setCurrentModalTexts,
     checkAuth,
   };
 }

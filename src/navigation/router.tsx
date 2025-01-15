@@ -40,6 +40,8 @@ import { getTabScreenOptions, tabScreenOptions, useTabBarAnimation } from './Tab
 import ChatRoomScreen from '@/screens/chat/ChatRoomScreen';
 import RoomListScreen from '@/screens/chat/RoomListScreen';
 import { navigationRef } from './navigationRef';
+import { StudentCertificationModal } from '@/components/modal/Common';
+import { useModalStore } from '@/store';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -212,6 +214,10 @@ function MyPageNavigator({ navigation, route }) {
 }
 
 export default function Router() {
+
+  const modalVisible = useModalStore(state => state.visible.studentCertification);
+  const handleModalClose = useModalStore(state => state.handleClose)
+
   return (
     <NavigationContainer ref={navigationRef}>
       <Stack.Navigator screenOptions={{ headerShown: false, gestureEnabled: false }}>
@@ -220,6 +226,12 @@ export default function Router() {
         <Stack.Screen name="Tab" component={TabNavigator} />
         <Stack.Screen name="Chat" component={ChatNavigator} />
       </Stack.Navigator>
+
+      {/* 같은 형상을 공유하는 모달의 경우 상단으로 끌어올림. */}
+      <StudentCertificationModal
+        visible={modalVisible}
+        onClose={() => handleModalClose('studentCertification')}
+      />
     </NavigationContainer>
   );
 }

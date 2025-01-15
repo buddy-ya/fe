@@ -1,29 +1,34 @@
 import MyText from '@/components/common/MyText';
+import { useUserStore } from '@/store';
+import { useNavigation } from '@react-navigation/native';
+import { useTranslation } from 'react-i18next';
 import { Modal, TouchableOpacity, View } from 'react-native';
 
 interface CommonModalProps {
     visible: boolean;
     onClose: () => void;
-    onConfirm: () => void;
-    title: string;
-    description: string;
-    cancelText?: string;
-    confirmText?: string;
     size?: 'default' | 'sm';
     position?: 'bottom' | 'center';
 }
 
-export function CommonModal({
+export function StudentCertificationModal({
     visible,
     onClose,
-    onConfirm,
-    title,
-    description,
-    cancelText = '아니요',
-    confirmText = '네',
     size = 'default',
     position = 'bottom',
 }: CommonModalProps) {
+
+    const { t } = useTranslation('certification');
+    const navigation = useNavigation<any>();
+    const isKorean = useUserStore(state => state.isKorean);
+    const isStudentIdCardRequested = useUserStore(state => state.isStudentIdCardRequested);
+
+    const title = isStudentIdCardRequested ? t('banner.pending.title') : t('banner.default.title');
+    const description = isStudentIdCardRequested ? t('banner.pending.description') : t('banner.default.description');
+    const confirmText = isStudentIdCardRequested ? t('banner.pending.confirm') : t('banner.default.confirm');
+    const cancelText = isStudentIdCardRequested ? t('banner.pending.cancel') : t('banner.default.cancel');
+    const onConfirm = isKorean ? () => navigation.navigate('EmailVerification') : () => navigation.navigate('StudentIdVerification')
+
     const getPositionStyle = () => {
         if (position === 'center') {
             return 'top-1/2 -translate-y-1/2';
