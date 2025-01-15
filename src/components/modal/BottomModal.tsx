@@ -1,7 +1,7 @@
 import { ModalOption } from '@/screens/home/types';
 import { ReactNode } from 'react';
 import { Modal, TouchableOpacity, View } from 'react-native';
-import MyText from '../MyText';
+import MyText from '../common/MyText';
 
 interface BottomModalProps {
   visible: boolean;
@@ -26,8 +26,8 @@ export function BottomModal({
                 key={index}
                 className={`py-6 ${index !== 0 && 'border-t'} border-modalBorderBottom`}
                 onPress={() => {
-                  onClose();
                   option.onPress();
+                  onClose();
                 }}
               >
                 <View className="flex-row items-center justify-center">

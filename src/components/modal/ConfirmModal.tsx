@@ -1,5 +1,5 @@
 import { Modal, TouchableOpacity, View } from 'react-native';
-import MyText from '../MyText';
+import MyText from '../common/MyText';
 
 interface ConfirmModalProps {
   visible: boolean;
@@ -65,8 +65,8 @@ export default function ConfirmModal({
               <TouchableOpacity
                 className="flex-1 rounded-[12px] bg-primary py-[16px]"
                 onPress={() => {
-                  onClose();
                   onConfirm();
+                  onClose();
                 }}
               >
                 <MyText size="text-[16px]" className="text-center font-semibold text-white">
