@@ -1,7 +1,7 @@
 import { NavigationProp } from '@react-navigation/native';
 import { useState } from 'react';
 import { View } from 'react-native';
-import { CategoryPager, InnerLayout, Layout, RoomList } from '@/components';
+import { ChatPaper, InnerLayout, Layout, RoomList } from '@/components';
 import { Room } from '@/model';
 import { useRoomStore } from '@/store/useRoomStore';
 
@@ -9,11 +9,11 @@ import { useRoomStore } from '@/store/useRoomStore';
 export const CATEGORIES = [
   {
     "id": 1,
-    "label": "매칭"
+    "label": "피드"
   },
   {
     "id": 2,
-    "label": "피드"
+    "label": "매칭"
   },
 ]
 
@@ -133,7 +133,7 @@ export default function RoomListScreen({ navigation }: { navigation: NavigationP
     <Layout isBackgroundWhite>
       <InnerLayout>
         <View className='flex-1'>
-          <CategoryPager categories={CATEGORIES} onPageChange={handleChipPress}>
+          <ChatPaper categories={CATEGORIES} onPageChange={handleChipPress}>
             {CATEGORIES.map((category) => (
               <View key={category.id} className="flex-1">
                 <RoomList
@@ -141,7 +141,7 @@ export default function RoomListScreen({ navigation }: { navigation: NavigationP
                   onPress={handlePressRoom} />
               </View>
             ))}
-          </CategoryPager>
+          </ChatPaper>
         </View>
 
       </InnerLayout>
