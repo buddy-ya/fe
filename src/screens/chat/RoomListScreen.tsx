@@ -1,6 +1,6 @@
 import { NavigationProp } from '@react-navigation/native';
 import { useState } from 'react';
-import { View } from 'react-native';
+import { View, Text } from 'react-native';
 import { ChatPaper, InnerLayout, Layout, RoomList } from '@/components';
 import { Room } from '@/model';
 import { useRoomStore } from '@/store/useRoomStore';
@@ -135,11 +135,15 @@ export default function RoomListScreen({ navigation }: { navigation: NavigationP
         <View className='flex-1'>
           <ChatPaper categories={CATEGORIES} onPageChange={handleChipPress}>
             {CATEGORIES.map((category) => (
-              <View key={category.id} className="flex-1">
-                <RoomList
-                  rooms={rooms}
-                  onPress={handlePressRoom} />
-              </View>
+              <>
+                <View key={category.label} className='flex items-center justify-center bg-primary h-[77px] rounded-xl'>
+                  <Text className='text-base text-white'>더 많은 글로벌 버디와 친구가 되고 싶다면?</Text>
+                </View>
+                <View key={category.id} className="flex-1">
+                  <RoomList
+                    rooms={rooms}
+                    onPress={handlePressRoom} />
+                </View></>
             ))}
           </ChatPaper>
         </View>
