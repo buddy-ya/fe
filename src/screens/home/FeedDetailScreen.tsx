@@ -1,34 +1,30 @@
-import { useQueryClient } from '@tanstack/react-query';
-import { Delete, Flag, MoreVertical, Pencil } from 'lucide-react-native';
+import { MoreVertical } from 'lucide-react-native';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Alert, Keyboard, RefreshControl, ScrollView, TouchableOpacity } from 'react-native';
-import { feedKeys, FeedRepository } from '@/api';
-import { getModalTexts, useAuthCheck, useFeedDetail, useFeedBottomModal } from '@/hooks';
-import { BottomModal, CommentList, ConfirmModal, FeedItem, KeyboardLayout, Layout, CommentInput, bottomModalOptions } from '@/components';
-import { ModalOption, useBottomModalStore, useConfirmModalStore } from '@/store';
-
+import { getModalTexts, useAuthCheck, useFeedDetail } from '@/hooks';
+import { CommentList, FeedItem, KeyboardLayout, Layout, CommentInput, CommentOptionModal } from '@/components';
+import { FeedOptionModal } from '@/components/modal/BottomOption/FeedOptionModal';
+import { useCommentStore } from '@/store/useCommentStore';
+import { useModalStore } from '@/store';
 
 export default function FeedDetailScreen({ navigation, route }) {
-  const queryClient = useQueryClient();
   const { feedId } = route.params;
   const [comment, setComment] = useState('');
-  const [isDeleted, setIsDeleted] = useState(false);
   const { t } = useTranslation('feed');
   const { t: certT } = useTranslation('certification');
+  const modalVisible = useModalStore(state => state.visible);
+  const handleModalOpen = useModalStore(state => state.handleOpen);
+  const handleModalClose = useModalStore(state => state.handleClose);
   const { currentModalTexts, checkAuth } =
     useAuthCheck();
 
-  const { visible, title, description, cancelText, confirmText, handleOpen, handleClose, handleConfirm, setTitle, setDescription, setCancelText, setConfirmText } = useConfirmModalStore();
   const { feed, comments, isRefetching, handleFeedActions, handleCommentActions, handleRefresh } =
     useFeedDetail({
       feedId,
-      enabled: !isDeleted,
     });
 
-  const bottomModalOpen = useBottomModalStore(state => state.handleOpen);
-  const bottomModalClose = useBottomModalStore(state => state.handleClose);
-  const settingBottomModalOptions = useBottomModalStore(state => state.handleSet)
+  const selectedComment = useCommentStore(state => state.comment);
 
   const showDeleteAlert = (onConfirm: () => void) => {
     Alert.alert(
@@ -56,17 +52,6 @@ export default function FeedDetailScreen({ navigation, route }) {
     );
   };
 
-  const { commentModal, handleCommentOptions } = useFeedBottomModal({
-    feed,
-    onEditComment: (comment) =>
-      navigation.navigate('CommentEdit', {
-        feedId,
-        commentId: comment.id,
-        initialContent: comment.content,
-      }),
-    onDeleteComment: handleCommentActions.delete,
-  });
-
   const handleCommentSubmit = async () => {
     if (!comment.trim()) return;
 
@@ -81,11 +66,6 @@ export default function FeedDetailScreen({ navigation, route }) {
           t: certT,
           navigation,
         });
-        setTitle(modalTexts.title);
-        setDescription(modalTexts.description);
-        setCancelText(modalTexts.cancelText);
-        setConfirmText(modalTexts.confirmText);
-        handleOpen();
         return;
       }
       await handleCommentActions.submit(comment);
@@ -95,37 +75,7 @@ export default function FeedDetailScreen({ navigation, route }) {
     }
   };
 
-  const handleFeedOptions = (isFeedOwner: boolean) => {
-    bottomModalOpen();
-    settingBottomModalOptions(modalOptions(isFeedOwner));
-  }
-
-
-  const modalOptions = (isFeedOwner: boolean): ModalOption[] => {
-    if (isFeedOwner) {
-      return [
-        bottomModalOptions.edit(() => {
-          navigation.navigate('FeedWrite', {
-            feed,
-            isEdit: true,
-          })
-        }),
-        bottomModalOptions.delete(() => {
-          showDeleteAlert(async () => {
-            setIsDeleted(true);
-            await FeedRepository.delete({ feedId });
-            queryClient.invalidateQueries({ queryKey: feedKeys.all });
-            bottomModalClose();
-            navigation.goBack();
-          })
-        })
-      ]
-    }
-
-    return [bottomModalOptions.report(() => console.log('신고'))];
-  }
-
-  if (isDeleted || !(feed || isRefetching)) return null;
+  if (!(feed || isRefetching)) return null;
 
   return (
     <>
@@ -134,7 +84,7 @@ export default function FeedDetailScreen({ navigation, route }) {
         disableBottomSafeArea
         onBack={() => navigation.goBack()}
         headerRight={
-          <TouchableOpacity onPress={() => handleFeedOptions(feed.isFeedOwner)} hitSlop={{ bottom: 20, left: 20 }}>
+          <TouchableOpacity onPress={() => handleModalOpen('feed')} hitSlop={{ bottom: 20, left: 20 }}>
             <MoreVertical size={24} color="#797979" />
           </TouchableOpacity>
         }
@@ -164,19 +114,27 @@ export default function FeedDetailScreen({ navigation, route }) {
                   showAllContent
                   disablePress
                 />
-                <CommentList comments={comments} onCommentOptions={handleCommentOptions} />
+                <CommentList comments={comments} />
               </>
             )}
           </ScrollView>
         </KeyboardLayout>
       </Layout>
 
-      <BottomModal
-        visible={commentModal.visible}
-        onClose={commentModal.closeModal}
-        options={commentModal.options}
+      <FeedOptionModal
+        visible={modalVisible.feed}
+        feed={feed}
+        onClose={() => handleModalClose('feed')}
       />
-      <ConfirmModal
+
+      <CommentOptionModal
+        visible={modalVisible.comment}
+        feed={feed}
+        comment={selectedComment}
+        onClose={() => handleModalClose('comment')}
+      />
+
+      {/* <ConfirmModal
         visible={visible}
         onClose={handleClose}
         onConfirm={() => {
@@ -189,7 +147,7 @@ export default function FeedDetailScreen({ navigation, route }) {
         confirmText={confirmText}
         position="bottom"
         size="default"
-      />
+      /> */}
     </>
   );
 }

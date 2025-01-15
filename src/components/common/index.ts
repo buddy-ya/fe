@@ -9,4 +9,4 @@ export { default as MyText } from './MyText';
 export { default as OTPInput } from './OTPInput';
 export { default as SearchInput } from './SearchInput';
 export * from './layout';
-export * from './modal';
+export * from '../modal';

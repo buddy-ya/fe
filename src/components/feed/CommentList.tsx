@@ -4,6 +4,8 @@ import { useTranslation } from 'react-i18next';
 import { Image, TouchableOpacity, View } from 'react-native';
 import { getCountryFlag, getTimeAgo } from '@/utils';
 import { MyText } from '../common';
+import { useCommentStore } from '@/store/useCommentStore';
+import { useModalStore } from '@/store';
 
 interface CommentLabelProps {
   isFeedOwner: boolean;
@@ -35,11 +37,18 @@ const CommentLabel = ({ isFeedOwner, isCommentOwner }: CommentLabelProps) => {
 
 interface CommentListProps {
   comments: CommentType[];
-  onCommentOptions: (comment: CommentType) => void;
 }
 
-export default function CommentList({ comments, onCommentOptions }: CommentListProps) {
+export default function CommentList({ comments }: CommentListProps) {
   const { t } = useTranslation('feed');
+  const setCommentId = useCommentStore(state => state.setComment);
+  const handleModalOpen = useModalStore(state => state.handleOpen);
+
+  const handleCommentOptions = (comment) => {
+    setCommentId(comment)
+    handleModalOpen('comment');
+  }
+
   return (
     <View className="mb-4 overflow-hidden rounded-[20px] pt-1">
       {comments?.map((item) => (
@@ -85,7 +94,7 @@ export default function CommentList({ comments, onCommentOptions }: CommentListP
             </View>
             <View className="ml-2">
               <TouchableOpacity
-                onPress={() => onCommentOptions(item)}
+                onPress={() => handleCommentOptions(item)}
                 hitSlop={{ top: 10, bottom: 10, left: 20, right: 10 }}
               >
                 <MoreVertical size={20} color="#797977" />
