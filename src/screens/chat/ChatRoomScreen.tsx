@@ -119,12 +119,13 @@ const data: Message[] = [
   },
 ];
 
-const ChatRoomScreen = ({ navigation }: { navigation: NavigationProp<any> }) => {
+const ChatRoomScreen = ({ navigation, route }: { navigation: NavigationProp<any>, route }) => {
 
   const { handleUpload, loading } = useImageUpload({ options: IMAGE_PICKER_OPTIONS });
   const { text, messages, isLoading, error, handleChange, handleSubmit, setMessage, addMessage, deleteMessage } = useMessageStore();
   const flatListRef = useRef<FlatList>(null);
   const title = useRoomStore(state => state.title);
+  const profileImageUrl = route.params.imageUrl;
 
   // TODO: 추후에 알림 등으로 바로 들어온 경우 뒤로가기 스택이 없으므로 룸리스트로 보내게끔 해야 할 듯
   const handleBack = () => {
@@ -170,6 +171,7 @@ const ChatRoomScreen = ({ navigation }: { navigation: NavigationProp<any> }) => 
               <MessageItem
                 key={item.id}
                 message={item}
+                profileImageUrl={profileImageUrl}
                 isCurrentUser={item.sender === "me"}
                 shouldShowProfile={(index === 0 && item.sender !== "me") || (index > 0 && messages[index - 1].sender !== item.sender) && item.sender !== "me"}
               />

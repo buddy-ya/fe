@@ -1,16 +1,14 @@
 import { View, Image, TouchableOpacity, Text } from 'react-native';
 import { Message } from '@/model';
-import { useRoomStore } from '@/store/useRoomStore';
 
 interface MessageProps {
     message: Message;
     isCurrentUser: boolean;
     shouldShowProfile: boolean;
+    profileImageUrl: string;
 }
 
-const MessageItem = ({ message, isCurrentUser, shouldShowProfile }: MessageProps) => {
-
-    const profileImageUrl = useRoomStore(state => state.imageUrl);
+const MessageItem = ({ message, isCurrentUser, shouldShowProfile, profileImageUrl }: MessageProps) => {
 
     const computedClassName = () => {
         if (isCurrentUser) {

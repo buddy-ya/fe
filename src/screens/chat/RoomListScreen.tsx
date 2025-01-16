@@ -127,7 +127,7 @@ export default function RoomListScreen({ navigation }: { navigation: NavigationP
 
   const handlePressRoom = (room: Room) => {
     setRoom(room);
-    navigation.navigate('ChatRoom', { roomId: room.id })
+    navigation.navigate('ChatRoom', { ...room })
   }
 
   return (
