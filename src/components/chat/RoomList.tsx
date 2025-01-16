@@ -45,7 +45,7 @@ export default function RoomList({
             )}
             className={`mt-1 pt-3 ${className}`}
             contentContainerStyle={{ paddingBottom: 60 }}
-            keyExtractor={(item) => `feed-${item.id}`}
+            keyExtractor={(item) => `room-${item.id}`}
             onEndReached={hasMore ? onLoadMore : null}
             onEndReachedThreshold={0.8}
             showsVerticalScrollIndicator={false}
