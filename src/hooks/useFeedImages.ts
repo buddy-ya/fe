@@ -4,7 +4,7 @@ import { Alert } from "react-native";
 import { ImageFile } from "@/types";
 
 const IMAGE_PICKER_OPTIONS: ImagePicker.ImagePickerOptions = {
-  mediaTypes: ImagePicker.MediaTypeOptions.Images,
+  mediaTypes: 'images',
   allowsEditing: false,
   quality: 0.8,
   allowsMultipleSelection: true,

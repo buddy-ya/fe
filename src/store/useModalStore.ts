@@ -7,6 +7,7 @@ interface ModalState {
         comment: boolean,
         feed: boolean,
         studentCertification: boolean,
+        category: boolean,
     }
 }
 
@@ -21,6 +22,7 @@ export const useModalStore = create<ModalState & ModalAction>((set) => ({
         comment: false,
         feed: false,
         studentCertification: false,
+        category: false,
     },
     handleOpen: (type) => set((state) => ({ visible: { ...state.visible, [type]: true } })),
     handleClose: (type) => set((state) => ({ visible: { ...state.visible, [type]: false } })),
