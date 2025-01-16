@@ -24,7 +24,7 @@ export function CommentOptionModal({
         useFeedDetail({
             feedId: feed.id,
         });
-    const options = feed.isFeedOwner ?
+    const options = comment.isCommentOwner ?
         [
             {
                 id: 1,
@@ -41,7 +41,7 @@ export function CommentOptionModal({
                 id: 2,
                 label: i18next.t('feed:modal.delete'),
                 icon: <Trash2 size={20} color="#282828" />,
-                onPress: async () => handleCommentActions.delete
+                onPress: async () => await handleCommentActions.delete(comment.id)
             }
         ] :
         [
