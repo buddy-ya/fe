@@ -6,8 +6,7 @@ import { TouchableOpacity, FlatList } from "react-native";
 import { NavigationProp } from "@react-navigation/native";
 import { useImageUpload } from "@/hooks";
 import { Message } from "@/model";
-import { useMessageStore } from "@/store";
-import { useRoomStore } from "@/store/useRoomStore";
+import { useMessageStore, useRoomStore } from "@/store";
 
 const IMAGE_PICKER_OPTIONS: ImagePickerOptions = {
   mediaTypes: ["images"],
