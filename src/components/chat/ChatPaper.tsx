@@ -7,7 +7,6 @@ import { Tab } from '../common';
 export interface Category {
   id: string | number;
   label: string;
-  icon?: string;
 }
 
 interface ChatPagerProps {
