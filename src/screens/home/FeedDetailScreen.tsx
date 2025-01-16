@@ -104,7 +104,7 @@ export default function FeedDetailScreen({ navigation, route }) {
                   showAllContent
                   disablePress
                 />
-                <CommentList comments={comments} />
+                <CommentList feed={feed} comments={comments} />
               </>
             )}
           </ScrollView>
@@ -117,12 +117,6 @@ export default function FeedDetailScreen({ navigation, route }) {
         onClose={() => handleModalClose('feed')}
       />
 
-      <CommentOptionModal
-        visible={modalVisible.comment}
-        feed={feed}
-        comment={selectedComment}
-        onClose={() => handleModalClose('comment')}
-      />
     </>
   );
 }
