@@ -2,6 +2,7 @@ import { Room } from '@/model';
 import { Image, View, TouchableOpacity } from 'react-native';
 import { MyText } from '../common';
 import { UnreadCountChip } from './UnreadCountChip';
+import { getTimeAgo } from '@/utils';
 
 interface RoomItemProps {
     room: Room;
@@ -39,7 +40,7 @@ export default function RoomItem({ room, onPress }: RoomItemProps) {
                 </View>
                 <View className='flex justify-between items-end mr-3 w-1/5 h-[38px]'>
                     <MyText size='text-sm'>
-                        {lastMessageDate}
+                        {getTimeAgo(lastMessageDate)}
                     </MyText>
                     {unreadCount > 0 && <UnreadCountChip className="py-0 h-[24px] bg-textWarning" label={computedUnreadCount} readOnly />}
                 </View>
