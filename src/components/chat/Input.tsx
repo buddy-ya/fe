@@ -1,17 +1,17 @@
 import { Send, Image } from 'lucide-react-native';
-import { useState } from 'react';
+import { ReactNode, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { TextInput, TouchableOpacity, View } from 'react-native';
 
 interface CommentInputProps {
     value: string;
-    onUpload: () => void;
+    leftImage?: ReactNode;
     onChange: (text: string) => void;
     onSubmit: () => void;
     isLoading?: boolean;
 }
 
-export const Input = ({ value, onUpload, onChange, onSubmit, isLoading }: CommentInputProps) => {
+export const Input = ({ value, leftImage, onChange, onSubmit, isLoading }: CommentInputProps) => {
     const { t } = useTranslation('feed');
     const [isFocused, setIsFocused] = useState(false);
 
@@ -29,21 +29,15 @@ export const Input = ({ value, onUpload, onChange, onSubmit, isLoading }: Commen
                 }`}
         >
             <View className='flex-row flex-1 items-center'>
-                <View className='flex-row items-center w-[88%] rounded-[12px] bg-[#F1F1F1]'>
-
-                    <TouchableOpacity onPress={onUpload}>
-                        <View className={`flex-row items-center ml-2 w-[24px] h-[24px]`} >
-                            <Image size={24} strokeWidth={1.3} color="#CBCBCB" />
-                        </View>
-                    </TouchableOpacity>
-
+                <View className={`flex-row items-center ${leftImage ? 'w-[88%]' : 'w-[97%]'} rounded-[12px] bg-[#F1F1F1]`}>
+                    {leftImage}
                     <TextInput
                         value={value}
                         onChangeText={(text) => {
                             onChange(text);
                         }}
                         placeholder={t('comment.placeholder')}
-                        className={`w-full bg-[#F1F1F1] max-h-[90px] min-h-[40px] px-[8px] py-2.5 text-[15px] leading-5 align-middle rounded-[12px]`}
+                        className={`w-full bg-[#F1F1F1] max-h-[90px] min-h-[40px] ${leftImage ? 'px-[8px]' : 'px-[16px]'} py-2.5 text-[15px] leading-5 align-middle rounded-[12px]`}
                         multiline
                         scrollEnabled={true}
                         maxLength={500}

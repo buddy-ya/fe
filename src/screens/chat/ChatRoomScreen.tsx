@@ -1,8 +1,8 @@
 import { useEffect, useRef } from "react";
 import { ImagePickerOptions } from "expo-image-picker";
 import { InnerLayout, Input, KeyboardLayout, Layout, MessageItem, MyText } from "@/components";
-import { EllipsisVertical, ChevronLeft } from "lucide-react-native";
-import { TouchableOpacity, FlatList } from "react-native";
+import { EllipsisVertical, ChevronLeft, Image } from "lucide-react-native";
+import { TouchableOpacity, FlatList, View } from "react-native";
 import { NavigationProp } from "@react-navigation/native";
 import { useImageUpload } from "@/hooks";
 import { Message } from "@/model";
@@ -126,6 +126,7 @@ const ChatRoomScreen = ({ navigation, route }: { navigation: NavigationProp<any>
   const flatListRef = useRef<FlatList>(null);
   const title = route.params.title;
   const profileImageUrl = route.params.imageUrl;
+  const country = route.params.country;
 
   // TODO: 추후에 알림 등으로 바로 들어온 경우 뒤로가기 스택이 없으므로 룸리스트로 보내게끔 해야 할 듯
   const handleBack = () => {
@@ -162,7 +163,21 @@ const ChatRoomScreen = ({ navigation, route }: { navigation: NavigationProp<any>
         </TouchableOpacity>
       }
     >
-      <KeyboardLayout footer={<Input value={text} onUpload={handleUpload} onChange={handleChange} onSubmit={onSubmit} />}>
+      <KeyboardLayout
+        footer={
+          <Input value={text}
+            leftImage={
+              <TouchableOpacity onPress={handleUpload}>
+                <View className={`flex-row items-center ml-2 w-[24px] h-[24px]`} >
+                  <Image size={24} strokeWidth={1.3} color="#CBCBCB" />
+                </View>
+              </TouchableOpacity>
+            }
+            onChange={handleChange}
+            onSubmit={onSubmit}
+          />
+        }
+      >
         <InnerLayout>
           {/* TODO: FlatList에서 ref 전달 관련 타입 에러가 있어서 일단 끌어올림. */}
           <FlatList

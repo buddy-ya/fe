@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Alert, Keyboard, RefreshControl, ScrollView, TouchableOpacity } from 'react-native';
 import { useAuthCheck, useFeedDetail } from '@/hooks';
-import { CommentList, FeedItem, KeyboardLayout, Layout, CommentInput, CommentOptionModal } from '@/components';
+import { CommentList, FeedItem, KeyboardLayout, Layout, CommentInput, Input } from '@/components';
 import { FeedOptionModal } from '@/components/modal/BottomOption/FeedOptionModal';
 import { useModalStore } from '@/store';
 
@@ -78,7 +78,7 @@ export default function FeedDetailScreen({ navigation, route }) {
       >
         <KeyboardLayout
           footer={
-            <CommentInput value={comment} onChange={setComment} onSubmit={handleCommentSubmit} />
+            <Input value={comment} onChange={setComment} onSubmit={handleCommentSubmit} />
           }
         >
           <ScrollView
