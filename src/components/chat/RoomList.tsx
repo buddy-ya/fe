@@ -49,8 +49,8 @@ export default function RoomList({
             onEndReached={hasMore ? onLoadMore : null}
             onEndReachedThreshold={0.8}
             showsVerticalScrollIndicator={false}
-            initialNumToRender={5}
-            maxToRenderPerBatch={5}
+            initialNumToRender={10}
+            maxToRenderPerBatch={10}
             windowSize={5}
             removeClippedSubviews={true}
             refreshControl={refreshControl ? <RefreshControl {...refreshControl} /> : undefined}
