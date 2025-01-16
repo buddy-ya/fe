@@ -5,7 +5,6 @@ import { Alert, Keyboard, RefreshControl, ScrollView, TouchableOpacity } from 'r
 import { useAuthCheck, useFeedDetail } from '@/hooks';
 import { CommentList, FeedItem, KeyboardLayout, Layout, CommentInput, CommentOptionModal } from '@/components';
 import { FeedOptionModal } from '@/components/modal/BottomOption/FeedOptionModal';
-import { useCommentStore } from '@/store/useCommentStore';
 import { useModalStore } from '@/store';
 
 export default function FeedDetailScreen({ navigation, route }) {
@@ -22,8 +21,6 @@ export default function FeedDetailScreen({ navigation, route }) {
     useFeedDetail({
       feedId,
     });
-
-  const selectedComment = useCommentStore(state => state.comment);
 
   const showDeleteAlert = (onConfirm: () => void) => {
     Alert.alert(

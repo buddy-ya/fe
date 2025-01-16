@@ -4,5 +4,3 @@ export * from './useMessageStore';
 export * from './useModalStore';
 export * from './useRoomStore';
 export * from './useUserStore';
-export * from './useFeedStore';
-export * from './useCommentStore';
