@@ -26,7 +26,7 @@ export default function RoomItem({ room, onPress }: RoomItemProps) {
     const computedUnreadCount = unreadCount > 999 ? unreadCount.toString().slice(0, 3) + '+' : unreadCount.toString();
 
     return (
-        <TouchableOpacity onPress={handleClick}>
+        <TouchableOpacity onPress={handleClick} activeOpacity={0.7}>
             <View className="flex-row flex-wrap items-center justify-between mt-3 rounded-[13px] w-full h-[60px]">
                 <View className='flex-row items-center w-3/4 h-full'>
                     <View>
