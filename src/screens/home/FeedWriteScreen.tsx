@@ -49,6 +49,7 @@ export default function FeedWriteScreen({ navigation, route }) {
 
   const handleCategorySelect = (category: (typeof CATEGORIES)[0]) => {
     setSelectedCategory(category);
+    handleModalClose('category');
   };
 
   const pickImage = async () => {
