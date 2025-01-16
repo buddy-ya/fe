@@ -3,7 +3,6 @@ import { Fragment, useState } from 'react';
 import { View, Text } from 'react-native';
 import { ChatPaper, InnerLayout, Layout, RoomList } from '@/components';
 import { Room } from '@/model';
-import { useRoomStore } from '@/store/useRoomStore';
 
 
 export const CATEGORIES = [
@@ -119,14 +118,12 @@ const rooms: Room[] = [
 
 export default function RoomListScreen({ navigation }: { navigation: NavigationProp<any> }) {
   const [activeIndex, setActiveIndex] = useState(0);
-  const setRoom = useRoomStore(state => state.setRoom);
 
   const handleChipPress = (index: number) => {
     setActiveIndex(index);
   }
 
   const handlePressRoom = (room: Room) => {
-    setRoom(room);
     navigation.navigate('ChatRoom', { ...room })
   }
 

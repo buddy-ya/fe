@@ -6,7 +6,7 @@ import { TouchableOpacity, FlatList } from "react-native";
 import { NavigationProp } from "@react-navigation/native";
 import { useImageUpload } from "@/hooks";
 import { Message } from "@/model";
-import { useMessageStore, useRoomStore } from "@/store";
+import { useMessageStore } from "@/store";
 
 const IMAGE_PICKER_OPTIONS: ImagePickerOptions = {
   mediaTypes: ["images"],
@@ -124,7 +124,7 @@ const ChatRoomScreen = ({ navigation, route }: { navigation: NavigationProp<any>
   const { handleUpload, loading } = useImageUpload({ options: IMAGE_PICKER_OPTIONS });
   const { text, messages, isLoading, error, handleChange, handleSubmit, setMessage, addMessage, deleteMessage } = useMessageStore();
   const flatListRef = useRef<FlatList>(null);
-  const title = useRoomStore(state => state.title);
+  const title = route.parmas.title;
   const profileImageUrl = route.params.imageUrl;
 
   // TODO: 추후에 알림 등으로 바로 들어온 경우 뒤로가기 스택이 없으므로 룸리스트로 보내게끔 해야 할 듯
