@@ -4,8 +4,13 @@ import { View } from 'react-native';
 import { feedKeys, FeedRepository } from '@/api';
 import { useFeedList } from '@/hooks';
 import { FeedList, InnerLayout, Layout, MyText } from '@/components';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { MyPageStackParamList } from '@/navigation/navigationRef';
 
-export default function BookmarkScreen({ navigation }) {
+
+type BookmarkScreenProps = NativeStackScreenProps<MyPageStackParamList, 'Bookmark'>;
+
+export default function BookmarkScreen({ navigation, route }: BookmarkScreenProps) {
   const { t } = useTranslation('mypage');
 
   const feedListData = useFeedList({

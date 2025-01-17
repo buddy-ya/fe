@@ -5,12 +5,19 @@ import { TextInput } from 'react-native';
 import { useOnboardingStore } from '@/store/onboarding';
 import { UserRepository } from '@/api';
 import { ErrorMessage, FooterLayout, Heading, HeadingDescription, InnerLayout, KeyboardLayout, Label, Layout, MyText } from '@/components';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { OnboardingStackParamList } from '@/navigation/navigationRef';
 
 const MIN_NAME_LENGTH = 2;
 const MAX_NAME_LENGTH = 15;
 
-export default function NameScreen({ navigation, route }) {
-  const { mode, onComplete } = route.params || {};
+type OnboardingNameScreenProps = NativeStackScreenProps<
+  OnboardingStackParamList,
+  'OnboardingName'
+>;
+
+export default function NameScreen({ navigation, route }: OnboardingNameScreenProps) {
+  const { mode } = route.params;
   const [name, setName] = useState('');
   const [isNonEnglish, setIsNonEnglish] = useState(false);
   const { t } = useTranslation('onboarding');

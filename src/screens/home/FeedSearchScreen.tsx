@@ -4,9 +4,11 @@ import { useTranslation } from 'react-i18next';
 import { View, TextInput, TouchableOpacity } from 'react-native';
 import { feedKeys, FeedRepository } from '@/api';
 import { useFeedList } from '@/hooks';
-import { Layout, InnerLayout, KeyboardLayout, MyText, FeedList } from '@/components';
+import { Layout, InnerLayout, KeyboardLayout, FeedList } from '@/components';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { FeedStackParamList } from '@/navigation/navigationRef';
 
-const SearchInput = ({ value, onChangeText, onSubmit, onClear, onFocusChange }) => {
+const SearchInput = ({ value, onChangeText, onSubmit, onClear, onFocusChange }: any) => {
   const { t } = useTranslation('feed');
 
   return (
@@ -32,7 +34,9 @@ const SearchInput = ({ value, onChangeText, onSubmit, onClear, onFocusChange }) 
   );
 };
 
-export default function SearchScreen({ navigation }) {
+type SearchScreenProps = NativeStackScreenProps<FeedStackParamList, 'FeedSearch'>;
+
+export default function SearchScreen({ navigation, route }: SearchScreenProps) {
   const { t } = useTranslation('feed');
   const [searchText, setSearchText] = useState('');
   const [submittedText, setSubmittedText] = useState('');

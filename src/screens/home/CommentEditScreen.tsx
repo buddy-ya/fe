@@ -6,8 +6,12 @@ import { TextInput, TouchableOpacity, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { CommentRepository, feedKeys } from '@/api';
 import { MyText, Layout, InnerLayout } from '@/components';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { FeedStackParamList } from '@/navigation/navigationRef';
 
-export default function CommentEditScreen({ navigation, route }) {
+type CommentEditScreenProps = NativeStackScreenProps<FeedStackParamList, 'CommentEdit'>;
+
+export default function CommentEditScreen({ navigation, route }: CommentEditScreenProps) {
   const { feedId, commentId, initialContent } = route.params;
   const [content, setContent] = useState(initialContent);
   const [isLoading, setIsLoading] = useState(false);

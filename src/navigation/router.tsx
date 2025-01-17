@@ -29,6 +29,8 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import {
   getFocusedRouteNameFromRoute,
   NavigationContainer,
+  useNavigation,
+  useRoute,
 } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import MatchingScreen from '@screens/matching/MatchingScreen';
@@ -39,16 +41,16 @@ import WelcomeScreen from '../screens/onboarding/WelcomeScreen';
 import { getTabScreenOptions, tabScreenOptions, useTabBarAnimation } from './TabBar';
 import ChatRoomScreen from '@/screens/chat/ChatRoomScreen';
 import RoomListScreen from '@/screens/chat/RoomListScreen';
-import { navigationRef } from './navigationRef';
+import { ChatStackParamList, FeedStackParamList, MyPageStackParamList, navigationRef, OnboardingStackParamList } from './navigationRef';
 import { StudentCertificationModal } from '@/components/modal/Common';
 import { useModalStore } from '@/store';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
-const OnboardingStack = createNativeStackNavigator();
-const FeedStack = createNativeStackNavigator();
-const ChatStack = createNativeStackNavigator();
-const MyPageStack = createNativeStackNavigator();
+const OnboardingStack = createNativeStackNavigator<OnboardingStackParamList>();
+const FeedStack = createNativeStackNavigator<FeedStackParamList>();
+const ChatStack = createNativeStackNavigator<ChatStackParamList>();
+const MyPageStack = createNativeStackNavigator<MyPageStackParamList>();
 
 function TabNavigator() {
   const { t } = useTranslation('common');
@@ -91,6 +93,7 @@ function TabNavigator() {
   );
 }
 
+
 function OnboardingNavigator() {
   return (
     <OnboardingStack.Navigator screenOptions={{ headerShown: false }}>
@@ -129,9 +132,11 @@ function OnboardingNavigator() {
   );
 }
 
-function FeedNavigator({ navigation, route }) {
-  const { animateTabBar } = useTabBarAnimation();
+function FeedNavigator() {
 
+  const navigation = useNavigation();
+  const route = useRoute();
+  const { animateTabBar } = useTabBarAnimation();
   React.useLayoutEffect(() => {
     const routeName = getFocusedRouteNameFromRoute(route);
     // FeedHome 일 때만 보임
@@ -169,7 +174,9 @@ function FeedNavigator({ navigation, route }) {
   );
 }
 
-function ChatNavigator({ navigation, route }) {
+function ChatNavigator() {
+  const navigation = useNavigation();
+  const route = useRoute();
   const { animateTabBar } = useTabBarAnimation();
 
   React.useLayoutEffect(() => {
@@ -188,7 +195,9 @@ function ChatNavigator({ navigation, route }) {
   );
 }
 
-function MyPageNavigator({ navigation, route }) {
+function MyPageNavigator() {
+  const navigation = useNavigation();
+  const route = useRoute();
   const { animateTabBar } = useTabBarAnimation();
 
   React.useLayoutEffect(() => {

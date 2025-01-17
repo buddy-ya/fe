@@ -4,6 +4,8 @@ import { View, Image, TouchableOpacity, ScrollView } from 'react-native';
 import { useProfileStore } from '@/store/profile';
 import { UserRepository } from '@/api';
 import { InnerLayout, Layout, MyText } from '@/components';
+import { MyPageStackParamList } from '@/navigation/navigationRef';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
 const PROFILE_IMAGES = [
   'https://buddyya.s3.ap-northeast-2.amazonaws.com/default-profile-image/image1.png',
@@ -14,7 +16,9 @@ const PROFILE_IMAGES = [
   'https://buddyya.s3.ap-northeast-2.amazonaws.com/default-profile-image/image6.png',
 ];
 
-export default function EditProfileImageScreen({ navigation }) {
+type EditProfileImageScreenProps = NativeStackScreenProps<MyPageStackParamList, 'EditProfileImage'>;
+
+export default function EditProfileImageScreen({ navigation, route }: EditProfileImageScreenProps) {
   const { t } = useTranslation('mypage');
   const { profile } = useProfileStore();
   const [selectedImage, setSelectedImage] = useState(profile.profileImageUrl);

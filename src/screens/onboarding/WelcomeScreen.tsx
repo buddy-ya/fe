@@ -1,12 +1,17 @@
 import '@/../global.css';
 import { Button, InnerLayout, Layout, MyText } from '@/components';
-import Constants from 'expo-constants';
+import { OnboardingStackParamList } from '@/navigation/navigationRef';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useTranslation } from 'react-i18next';
 import { Image, View } from 'react-native';
 
-export default function WelcomeScreen({ navigation }) {
+type OnboardingWelcomeScreenProps = NativeStackScreenProps<
+  OnboardingStackParamList,
+  'OnboardingWelcome'
+>;
+
+export default function WelcomeScreen({ navigation }: OnboardingWelcomeScreenProps) {
   const { t } = useTranslation('onboarding');
-  const BASE_URL = Constants.expoConfig?.extra?.BASE_URL;
   const handleNavigateButton = () => {
     navigation.navigate('OnboardingPhone');
   };

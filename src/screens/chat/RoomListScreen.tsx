@@ -1,9 +1,9 @@
-import { NavigationProp } from '@react-navigation/native';
 import { Fragment, useState } from 'react';
 import { View, Text } from 'react-native';
 import { ChatPaper, InnerLayout, Layout, RoomList } from '@/components';
 import { Room } from '@/model';
-
+import type { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { ChatStackParamList } from '@/navigation/navigationRef';
 
 export const CATEGORIES = [
   {
@@ -116,7 +116,9 @@ const rooms: Room[] = [
   }
 ]
 
-export default function RoomListScreen({ navigation }: { navigation: NavigationProp<any> }) {
+type RoomListNavigationProps = NativeStackScreenProps<ChatStackParamList, 'RoomList'>;
+
+export default function RoomListScreen({ navigation }: RoomListNavigationProps) {
   const [activeIndex, setActiveIndex] = useState(0);
 
   const handleChipPress = (index: number) => {
