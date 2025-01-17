@@ -4,6 +4,8 @@ import { Keyboard, TouchableWithoutFeedback } from 'react-native';
 import { useOnboardingStore } from '@/store';
 import { COUNTRIES } from '@/utils';
 import { Button, Heading, HeadingDescription, InnerLayout, Layout, MultiSelectItem, MyText, SearchInput } from '@/components';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { OnboardingStackParamList } from '@/navigation/navigationRef';
 
 
 type CountryID = (typeof COUNTRIES)[number]['id'];
@@ -11,10 +13,12 @@ type CountryID = (typeof COUNTRIES)[number]['id'];
 interface Country {
   id: CountryID;
   icon: string;
-  name: string;
+  // name: string;
 }
 
-export default function CountrySelectScreen({ navigation }) {
+type CountrySelectScreenProps = NativeStackScreenProps<OnboardingStackParamList, 'OnboardingCountrySelect'>;
+
+export default function CountrySelectScreen({ navigation }: CountrySelectScreenProps) {
   const [selectedCountry, setSelectedCountry] = useState<Country | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const { t } = useTranslation('onboarding');

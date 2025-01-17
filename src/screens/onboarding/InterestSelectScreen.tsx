@@ -7,6 +7,8 @@ import { INTEREST_CATEGORIES, INTEREST_ICONS, logError } from '@/utils';
 import { OnboardingRepository, UserRepository } from '@/api';
 import { Button, Chip, Heading, InnerLayout, Layout, MyText } from '@/components';
 import { TokenService } from '@/service';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { OnboardingStackParamList } from '@/navigation/navigationRef';
 
 
 interface Interest {
@@ -14,7 +16,11 @@ interface Interest {
   icon: string;
 }
 
-export default function InterestSelectScreen({ navigation, route }) {
+type OnboardingInterestSelectScreenProps = NativeStackScreenProps<
+  OnboardingStackParamList,
+  'OnboardingInterestSelect'
+>;
+export default function InterestSelectScreen({ navigation, route }: OnboardingInterestSelectScreenProps) {
   const { mode, initialInterests, onComplete } = route.params || {};
   const [selectedInterests, setSelectedInterests] = useState<Interest[]>(
     initialInterests?.map((id) => ({

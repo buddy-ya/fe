@@ -5,13 +5,20 @@ import { useOnboardingStore } from '@/store';
 import { LANGUAGES } from '@/utils';
 import { UserRepository } from '@/api';
 import { Button, Heading, HeadingDescription, InnerLayout, Layout, MultiSelectItem, MyText, SearchInput } from '@/components';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { OnboardingStackParamList } from '@/navigation/navigationRef';
 
 
 interface Language {
   id: string;
 }
 
-export default function LanguageSelectScreen({ navigation, route }) {
+type OnboardingLanguageSelectScreenProps = NativeStackScreenProps<
+  OnboardingStackParamList,
+  'OnboardingLanguageSelect'
+>;
+
+export default function LanguageSelectScreen({ navigation, route }: OnboardingLanguageSelectScreenProps) {
   const { mode, initialLanguages, onComplete } = route.params || {};
   const [selectedLanguages, setSelectedLanguages] = useState<Language[]>(
     initialLanguages?.map((id) => ({ id })) || []

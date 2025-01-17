@@ -8,7 +8,8 @@ import { getCountryFlag } from '@/utils';
 import { InnerLayout, Layout, MyText } from '@/components';
 import { AuthRepository, UserRepository } from '@/api';
 import { TokenService } from '@/service';
-import { resetToOnboarding } from '@/navigation/navigationRef';
+import { MyPageStackParamList, resetToOnboarding } from '@/navigation/navigationRef';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
 const SettingItem = ({ label, onPress }) => (
   <TouchableOpacity
@@ -20,7 +21,9 @@ const SettingItem = ({ label, onPress }) => (
   </TouchableOpacity>
 );
 
-export default function MyPageScreen({ navigation }) {
+type MyPageScreenProps = NativeStackScreenProps<MyPageStackParamList, 'MyPageHome'>;
+
+export default function MyPageScreen({ navigation }: MyPageScreenProps) {
   const { t } = useTranslation('mypage');
   const { profile, setProfile } = useProfileStore();
 

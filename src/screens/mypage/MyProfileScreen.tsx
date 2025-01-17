@@ -8,8 +8,13 @@ import { INTEREST_ICONS } from '@/utils/constants/interests';
 import { MAJOR_ICONS } from '@/utils/constants/majors';
 import { UserRepository } from '@/api';
 import { Chip, InnerLayout, Layout, MyText } from '@/components';
+import { MyPageStackParamList } from '@/navigation/navigationRef';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
-export default function MyProfileScreen({ navigation }) {
+
+type MyProfileScreenProps = NativeStackScreenProps<MyPageStackParamList, 'MyProfile'>;
+
+export default function MyProfileScreen({ navigation, route }: MyProfileScreenProps) {
   const { t } = useTranslation(['mypage', 'interests', 'countries', 'languages', 'majors']);
 
   const { profile, setProfile } = useProfileStore();

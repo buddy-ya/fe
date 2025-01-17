@@ -5,6 +5,8 @@ import { TextInput, View } from 'react-native';
 import { formatPhone } from '@/utils';
 import { ErrorMessage, FooterLayout, Heading, HeadingDescription, InnerLayout, KeyboardLayout, Label, Layout, MyText } from '@/components';
 import { AuthRepository } from '@/api';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { OnboardingStackParamList } from '@/navigation/navigationRef';
 
 const COUNTRY_CODE = '+82';
 const MAX_PHONE_LENGTH = 11;
@@ -18,7 +20,7 @@ const CountryCodeBox = () => (
   </View>
 );
 
-const PhoneInput = ({ value, onChange, inputRef }) => (
+const PhoneInput = ({ value, onChange, inputRef }: any) => (
   <TextInput
     ref={inputRef}
     value={formatPhone.addHyphen(value)}
@@ -32,7 +34,12 @@ const PhoneInput = ({ value, onChange, inputRef }) => (
   />
 );
 
-export default function PhoneScreen({ navigation }) {
+type OnboardingPhoneScreenProps = NativeStackScreenProps<
+  OnboardingStackParamList,
+  'OnboardingPhone'
+>;
+
+export default function PhoneScreen({ navigation }: OnboardingPhoneScreenProps) {
   const { t } = useTranslation('onboarding');
   const inputRef = useRef(null);
 
