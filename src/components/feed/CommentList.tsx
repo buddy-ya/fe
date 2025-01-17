@@ -42,7 +42,7 @@ interface CommentListProps {
 
 export default function CommentList({ feed, comments }: CommentListProps) {
   const { t } = useTranslation('feed');
-  const [comment, setComment] = useState({
+  const [comment, setComment] = useState<CommentType>({
     id: -1,
     isCommentOwner: false,
     isFeedOwner: false,
@@ -57,7 +57,7 @@ export default function CommentList({ feed, comments }: CommentListProps) {
   const handleModalOpen = useModalStore(state => state.handleOpen);
   const handleModalClose = useModalStore(state => state.handleClose);
 
-  const handleCommentOptions = (comment) => {
+  const handleCommentOptions = (comment: CommentType) => {
     setComment(comment);
     handleModalOpen('comment');
   }
