@@ -3,11 +3,16 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Alert, Keyboard, RefreshControl, ScrollView, TouchableOpacity } from 'react-native';
 import { useAuthCheck, useFeedDetail } from '@/hooks';
-import { CommentList, FeedItem, KeyboardLayout, Layout, CommentInput, Input } from '@/components';
+import { CommentList, FeedItem, KeyboardLayout, Layout, Input } from '@/components';
 import { FeedOptionModal } from '@/components/modal/BottomOption/FeedOptionModal';
 import { useModalStore } from '@/store';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { FeedStackParamList } from '@/navigation/navigationRef';
 
-export default function FeedDetailScreen({ navigation, route }) {
+type FeedDetailScreenProps = NativeStackScreenProps<FeedStackParamList, 'FeedDetail'>;
+
+export default function FeedDetailScreen({ navigation, route }: FeedDetailScreenProps) {
+
   const { feedId } = route.params;
   const [comment, setComment] = useState('');
   const { t } = useTranslation('feed');
@@ -21,18 +26,6 @@ export default function FeedDetailScreen({ navigation, route }) {
     useFeedDetail({
       feedId,
     });
-
-  const showDeleteAlert = (onConfirm: () => void) => {
-    Alert.alert(
-      t('delete.title'),
-      t('delete.description'),
-      [
-        { text: t('delete.cancel'), style: 'cancel' },
-        { text: t('delete.confirm'), style: 'destructive', onPress: onConfirm },
-      ],
-      { cancelable: true }
-    );
-  };
 
   const showFeedNotFoundAlert = () => {
     Alert.alert(
@@ -99,7 +92,6 @@ export default function FeedDetailScreen({ navigation, route }) {
                   onLike={handleFeedActions.like}
                   onBookmark={handleFeedActions.bookmark}
                   showAllContent
-                  disablePress
                 />
                 <CommentList feed={feed} comments={comments} />
               </>
