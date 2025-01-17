@@ -13,8 +13,6 @@ interface RoomListProps {
     onLoadMore?: () => void;
     refreshControl?: RefreshControlProps | null;
     emptyStateMessage?: string;
-    showBookmarkButton?: boolean;
-    disableActions?: boolean;
 }
 
 export default function RoomList({
@@ -26,8 +24,6 @@ export default function RoomList({
     onLoadMore,
     refreshControl,
     emptyStateMessage,
-    showBookmarkButton,
-    disableActions
 }: RoomListProps) {
 
     if (rooms.length === 0) {
