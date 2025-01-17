@@ -9,7 +9,7 @@ interface UseFeedListProps {
   fetchFn: (params: { page: number; size: number }) => Promise<FeedListResponse>;
   staleTime?: number;
   options?: {
-    size?: number;
+    size: number;
   };
 }
 

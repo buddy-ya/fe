@@ -1,4 +1,3 @@
-import { Feed } from '@/screens/home/types';
 import ThumbsUpActive from '@assets/icons/feed/like-active.svg';
 import { Bookmark, MessageSquare, ThumbsUp } from 'lucide-react-native';
 import { useEffect, useState } from 'react';
@@ -6,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { Dimensions, Image, TouchableOpacity, View } from 'react-native';
 import { getCountryFlag, getTimeAgo } from '@/utils';
 import { MyText } from '../common';
+import { Feed } from '@/model';
 
 const IMAGE_CONFIG_DETAIL = {
   containerClass: 'w-full',
