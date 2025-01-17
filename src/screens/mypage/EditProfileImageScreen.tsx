@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { View, Image, TouchableOpacity, ScrollView } from 'react-native';
 import { useProfileStore } from '@/store/profile';

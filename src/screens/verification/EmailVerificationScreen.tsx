@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { AuthRepository } from '@/api';
 import { ErrorMessage, FooterLayout, Heading, HeadingDescription, InnerLayout, KeyboardLayout, Label, Layout, LinkText, MyText, OTPInput } from '@/components';
 import { Send } from 'lucide-react-native';
