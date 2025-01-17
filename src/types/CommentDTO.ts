@@ -18,18 +18,18 @@ export interface DeleteDTO extends BaseDTO {
 export interface GetCommentsDTO extends BaseDTO { }
 
 // Response DTO
-export interface CommonResponse {
+export interface CommmentResponse {
     id: number;
+    profileImageUrl: string;
     content: string;
     name: string;
     country: string;
     university: string;
-    profileImageUrl: string;
     createdDate: string;
     isFeedOwner: boolean;
     isCommentOwner: boolean;
 }
 
-export interface UpdateResponse extends CommonResponse {
+export interface UpdateResponse extends CommmentResponse {
     updatedDate: string;
 }
