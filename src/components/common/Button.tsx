@@ -1,5 +1,5 @@
 import { ChevronRight, LucideIcon } from 'lucide-react-native';
-import React, { ReactNode } from 'react';
+import { ReactNode } from 'react';
 import { StyleProp, TouchableOpacity, ViewStyle } from 'react-native';
 
 interface ButtonProps {
