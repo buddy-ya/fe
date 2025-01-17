@@ -15,7 +15,9 @@ export const resetToOnboarding = () => {
 export type OnboardingStackParamList = {
     OnboardingWelcome: undefined;
     OnboardingPhone: undefined;
-    OnboardingPhoneVerification: undefined;
+    OnboardingPhoneVerification: {
+        phone: string;
+    };
     OnboardingNotification: {
         isExistingMember: boolean
     } | undefined;
