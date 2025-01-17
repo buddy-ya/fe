@@ -1,7 +1,15 @@
 import { Comment, Feed, Room } from "@/model";
 import { CommmentResponse } from "@/types/CommentDTO";
 
-export const convertToUser = (response: CommmentResponse): Comment => {
+export const convert = (response: CommmentResponse) => {
+
+}
+
+export const convertArray = (data: any[]): any[] => {
+    return data.map((item) => convert(item)); // 배열 순회하며 convert 적용
+}
+
+export const convertToComment = (response: CommmentResponse): Comment => {
     return {
         id: response.id,
         profileImageUrl: response.profileImageUrl,
