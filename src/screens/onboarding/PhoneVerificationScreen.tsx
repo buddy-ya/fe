@@ -8,14 +8,21 @@ import { formatPhone, logError } from '@/utils';
 import { AuthRepository } from '@/api';
 import { TokenService } from '@/service';
 import { ErrorMessage, FooterLayout, Heading, HeadingDescription, InnerLayout, KeyboardLayout, Label, Layout, LinkText, MyText, OTPInput } from '@/components';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { OnboardingStackParamList } from '@/navigation/navigationRef';
 
 const VERIFICATION_EXPIRE_SECONDS = 180;
 
-export default function PhoneVerificationScreen({ navigation, route }) {
+type OnboardingPhoneVerificationScreenProps = NativeStackScreenProps<
+  OnboardingStackParamList,
+  'OnboardingPhoneVerification'
+>;
+
+export default function PhoneVerificationScreen({ navigation, route }: OnboardingPhoneVerificationScreenProps) {
   const { t } = useTranslation('onboarding');
   const { updateOnboardingData } = useOnboardingStore();
 
-  const formattedPhone = route.params?.phone;
+  const formattedPhone = route.params.phone;
   const phoneNumber = formatPhone.removeHyphen(formattedPhone);
 
   const [verificationCode, setVerificationCode] = useState('');
