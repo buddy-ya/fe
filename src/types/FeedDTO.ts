@@ -1,4 +1,4 @@
-import { FeedFormData } from "@/utils/service/formData";
+import { FeedFormData } from "@/utils";
 
 interface BaseDTO {
     feedId: number;

@@ -27,7 +27,6 @@ import StudentIdCardCompleteScreen from '@/screens/verification/StudentIdComplet
 import StudentIdCardUploadScreen from '@/screens/verification/StudentIdUploadScreen';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import {
-  createNavigationContainerRef,
   getFocusedRouteNameFromRoute,
   NavigationContainer,
 } from '@react-navigation/native';
@@ -38,24 +37,17 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import WelcomeScreen from '../screens/onboarding/WelcomeScreen';
 import { getTabScreenOptions, tabScreenOptions, useTabBarAnimation } from './TabBar';
-import ChatScreen from '@/screens/chat/ChatScreen';
+import ChatRoomScreen from '@/screens/chat/ChatRoomScreen';
 import RoomListScreen from '@/screens/chat/RoomListScreen';
-
-export const navigationRef = createNavigationContainerRef();
-
-export const resetToOnboarding = () => {
-  if (navigationRef.isReady()) {
-    navigationRef.reset({
-      index: 0,
-      routes: [{ name: 'Onboarding' }],
-    });
-  }
-};
+import { navigationRef } from './navigationRef';
+import { StudentCertificationModal } from '@/components/modal/Common';
+import { useModalStore } from '@/store';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 const OnboardingStack = createNativeStackNavigator();
 const FeedStack = createNativeStackNavigator();
+const ChatStack = createNativeStackNavigator();
 const MyPageStack = createNativeStackNavigator();
 
 function TabNavigator() {
@@ -189,10 +181,10 @@ function ChatNavigator({ navigation, route }) {
   }, [route]);
 
   return (
-    <FeedStack.Navigator screenOptions={{ headerShown: false }}>
-      <FeedStack.Screen name="RoomList" component={RoomListScreen} />
-      <FeedStack.Screen name="ChatRoom" component={ChatScreen} />
-    </FeedStack.Navigator>
+    <ChatStack.Navigator screenOptions={{ headerShown: false }}>
+      <ChatStack.Screen name="RoomList" component={RoomListScreen} />
+      <ChatStack.Screen name="ChatRoom" component={ChatRoomScreen} />
+    </ChatStack.Navigator>
   );
 }
 
@@ -222,6 +214,10 @@ function MyPageNavigator({ navigation, route }) {
 }
 
 export default function Router() {
+
+  const modalVisible = useModalStore(state => state.visible.studentCertification);
+  const handleModalClose = useModalStore(state => state.handleClose)
+
   return (
     <NavigationContainer ref={navigationRef}>
       <Stack.Navigator screenOptions={{ headerShown: false, gestureEnabled: false }}>
@@ -230,6 +226,12 @@ export default function Router() {
         <Stack.Screen name="Tab" component={TabNavigator} />
         <Stack.Screen name="Chat" component={ChatNavigator} />
       </Stack.Navigator>
+
+      {/* 같은 형상을 공유하는 모달의 경우 상단으로 끌어올림. */}
+      <StudentCertificationModal
+        visible={modalVisible}
+        onClose={() => handleModalClose('studentCertification')}
+      />
     </NavigationContainer>
   );
 }

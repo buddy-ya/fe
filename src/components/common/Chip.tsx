@@ -1,5 +1,5 @@
 import { TouchableOpacity, View } from 'react-native';
-import { MyText } from '@/components';
+import MyText from './MyText';
 
 interface ChipProps {
   icon?: string;
@@ -7,11 +7,10 @@ interface ChipProps {
   selected?: boolean;
   onPress?: () => void;
   className?: string;
-  textClassName?: string;
   readOnly?: boolean;
 }
 
-export function Chip({ icon, label, selected, onPress, className, textClassName, readOnly, }: ChipProps) {
+export function Chip({ icon, label, selected, onPress, className, readOnly, }: ChipProps) {
   const Container = readOnly ? View : TouchableOpacity;
 
   return (
@@ -23,7 +22,6 @@ export function Chip({ icon, label, selected, onPress, className, textClassName,
         <MyText
           size="text-sm"
           color={readOnly ? undefined : selected ? 'text-active' : 'text-textDescription'}
-          className={textClassName || ''}
         >
           {label}
         </MyText>

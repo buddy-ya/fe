@@ -6,7 +6,7 @@ import RoomItem from './RoomItem';
 
 interface RoomListProps {
     rooms: Room[];
-    onPress: (id: number) => void;
+    onPress: (room: Room) => void;
     isLoading?: boolean;
     hasMore?: boolean;
     className?: string;
@@ -40,17 +40,17 @@ export default function RoomList({
                 <RoomItem
                     key={item.id}
                     room={item}
-                    onPress={() => onPress(item.id)}
+                    onPress={() => onPress(item)}
                 />
             )}
             className={`mt-1 pt-3 ${className}`}
             contentContainerStyle={{ paddingBottom: 60 }}
-            keyExtractor={(item) => `feed-${item.id}`}
+            keyExtractor={(item) => `room-${item.id}`}
             onEndReached={hasMore ? onLoadMore : null}
             onEndReachedThreshold={0.8}
             showsVerticalScrollIndicator={false}
-            initialNumToRender={5}
-            maxToRenderPerBatch={5}
+            initialNumToRender={10}
+            maxToRenderPerBatch={10}
             windowSize={5}
             removeClippedSubviews={true}
             refreshControl={refreshControl ? <RefreshControl {...refreshControl} /> : undefined}

@@ -4,8 +4,9 @@ import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 import { useOnboardingStore } from '@/store';
 import { useTimer } from '@/hooks';
-import { formatPhone, saveTokens, logError } from '@/utils';
+import { formatPhone, logError } from '@/utils';
 import { AuthRepository } from '@/api';
+import { TokenService } from '@/service';
 import { ErrorMessage, FooterLayout, Heading, HeadingDescription, InnerLayout, KeyboardLayout, Label, Layout, LinkText, MyText, OTPInput } from '@/components';
 
 const VERIFICATION_EXPIRE_SECONDS = 180;
@@ -46,7 +47,7 @@ export default function PhoneVerificationScreen({ navigation, route }) {
       setShowError(false);
       updateOnboardingData({ phoneNumber });
       if (data.status === 'EXISTING_MEMBER') {
-        await saveTokens(data.accessToken, data.refreshToken);
+        await TokenService.save(data.accessToken, data.refreshToken);
       }
       navigation.replace('OnboardingNotification', {
         isExistingMember: data.status === 'EXISTING_MEMBER',

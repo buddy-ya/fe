@@ -1,6 +1,8 @@
 import { Room } from '@/model';
-import { Image, View, Text, TouchableOpacity } from 'react-native';
-import { Chip, MyText } from '../common';
+import { Image, View, TouchableOpacity } from 'react-native';
+import { MyText } from '../common';
+import { UnreadCountChip } from './UnreadCountChip';
+import { getTimeAgo } from '@/utils';
 
 interface RoomItemProps {
     room: Room;
@@ -25,7 +27,7 @@ export default function RoomItem({ room, onPress }: RoomItemProps) {
     const computedUnreadCount = unreadCount > 999 ? unreadCount.toString().slice(0, 3) + '+' : unreadCount.toString();
 
     return (
-        <TouchableOpacity onPress={handleClick}>
+        <TouchableOpacity onPress={handleClick} activeOpacity={0.7}>
             <View className="flex-row flex-wrap items-center justify-between mt-3 rounded-[13px] w-full h-[60px]">
                 <View className='flex-row items-center w-3/4 h-full'>
                     <View>
@@ -38,9 +40,9 @@ export default function RoomItem({ room, onPress }: RoomItemProps) {
                 </View>
                 <View className='flex justify-between items-end mr-3 w-1/5 h-[38px]'>
                     <MyText size='text-sm'>
-                        {lastMessageDate}
+                        {getTimeAgo(lastMessageDate)}
                     </MyText>
-                    {unreadCount > 0 && <Chip className="py-0 h-[24px] bg-textWarning" label={computedUnreadCount} textClassName='leading-[1.0] text-white' readOnly />}
+                    {unreadCount > 0 && <UnreadCountChip className="py-0 h-[24px] bg-textWarning" label={computedUnreadCount} readOnly />}
                 </View>
             </View>
         </TouchableOpacity>

@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import { ReactNode } from 'react';
 import { KeyboardAvoidingView, Platform, View } from 'react-native';
 
 interface KeyboardLayoutProps {

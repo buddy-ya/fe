@@ -1,5 +1,5 @@
 import { Search } from 'lucide-react-native';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   Keyboard,
@@ -26,7 +26,7 @@ export default function SearchInput({
   const [isFocused, setIsFocused] = useState(false);
   const { t } = useTranslation('onboarding');
 
-  const DismissButton = ({ onPress }) => {
+  const DismissButton = ({ onPress }: { onPress: () => void }) => {
     return (
       <TouchableOpacity onPress={onPress}>
         <Text className="text-textDescription">{t('common.cancel')}</Text>

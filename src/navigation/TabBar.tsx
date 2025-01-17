@@ -1,9 +1,9 @@
 import { BottomTabNavigationOptions } from '@react-navigation/bottom-tabs';
 import { Home, User, Users, MessageCircle } from 'lucide-react-native';
 import React from 'react';
-import { Animated, Platform, StyleSheet } from 'react-native';
+import { Animated, StyleSheet } from 'react-native';
+import { isAndroid } from '@/utils';
 
-const isAndroid = Platform.OS === 'android';
 const TAB_CONFIG = {
   Home: {
     Icon: Home,

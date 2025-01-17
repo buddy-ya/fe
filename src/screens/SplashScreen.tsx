@@ -1,7 +1,8 @@
 import * as Font from 'expo-font';
 import { useEffect } from 'react';
 import { Image, View } from 'react-native';
-import { logError, getAccessToken } from '@/utils';
+import { logError } from '@/utils';
+import { TokenService } from '@/service';
 
 const FONTS = {
   'Pretendard-Thin': require('@assets/fonts/Pretendard-Thin.otf'),
@@ -25,7 +26,7 @@ export default function SplashScreen({ navigation }) {
   };
 
   const handleNavigation = async () => {
-    const accessToken = await getAccessToken();
+    const accessToken = await TokenService.getAccessToken();
     navigation.navigate(accessToken ? 'Tab' : 'Onboarding');
   };
 

@@ -1,5 +1,5 @@
 import { ChevronLeft } from 'lucide-react-native';
-import React, { ReactNode } from 'react';
+import { ReactNode } from 'react';
 import { TouchableOpacity, View } from 'react-native';
 
 interface HeaderProps {

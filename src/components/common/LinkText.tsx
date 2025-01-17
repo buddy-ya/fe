@@ -1,6 +1,5 @@
-import React from 'react';
 import { TouchableOpacity } from 'react-native';
-import { MyText } from '@/components';
+import MyText from './MyText';
 
 interface LinkTextProps {
   onPress: () => void;
