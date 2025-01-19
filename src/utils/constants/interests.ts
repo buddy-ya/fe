@@ -37,7 +37,7 @@ export const INTEREST_IDS = [
 
 export type InterestID = (typeof INTEREST_IDS)[number];
 
-export const INTEREST_ICONS: Record<InterestID, string> = {
+export const INTEREST_ICONS: Record<string, string> = {
   // culture
   kpop: '🎤',
   performance: '🎭',

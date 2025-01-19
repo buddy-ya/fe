@@ -7,8 +7,12 @@ import { logError, processImageForUpload } from '@/utils';
 import { AuthRepository } from '@/api';
 import { Button, Heading, HeadingDescription, InnerLayout, Layout, MyText } from '@/components';
 import { ImageFile } from '@/types';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { FeedStackParamList } from '@/navigation/navigationRef';
 
-export default function StudentIdCardUploadScreen({ navigation }) {
+type EmailVerificationScreenProps = NativeStackScreenProps<FeedStackParamList, 'StudentIdVerification'>;
+
+export default function StudentIdCardUploadScreen({ navigation }: EmailVerificationScreenProps) {
   const { t } = useTranslation('certification');
   const [selectedImage, setSelectedImage] = useState<ImagePicker.ImagePickerAsset | null>(null);
 

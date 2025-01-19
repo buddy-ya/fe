@@ -5,23 +5,32 @@ import { TextInput } from 'react-native';
 import { useOnboardingStore } from '@/store/onboarding';
 import { UserRepository } from '@/api';
 import { ErrorMessage, FooterLayout, Heading, HeadingDescription, InnerLayout, KeyboardLayout, Label, Layout, MyText } from '@/components';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { OnboardingStackParamList } from '@/navigation/navigationRef';
+import { NativeStackNavigationProp, NativeStackScreenProps } from '@react-navigation/native-stack';
+import { MyPageStackParamList, OnboardingStackParamList } from '@/navigation/navigationRef';
 
 const MIN_NAME_LENGTH = 2;
 const MAX_NAME_LENGTH = 15;
 
-type OnboardingNameScreenProps = NativeStackScreenProps<
-  OnboardingStackParamList,
-  'OnboardingName'
->;
+type NameScreenProps =
+  | NativeStackScreenProps<OnboardingStackParamList, 'OnboardingName'>
+  | NativeStackScreenProps<MyPageStackParamList, 'EditName'>;
 
-export default function NameScreen({ navigation, route }: OnboardingNameScreenProps) {
-  const { mode } = route.params;
-  const [name, setName] = useState('');
-  const [isNonEnglish, setIsNonEnglish] = useState(false);
+export default function NameScreen({ navigation, route }: NameScreenProps) {
   const { t } = useTranslation('onboarding');
   const { updateOnboardingData } = useOnboardingStore();
+
+  const isEditMode =
+  'params' in route && route.params && 'isEditMode' in route.params
+    ? route.params.isEditMode
+    : false;
+
+const initialName =
+  'params' in route && route.params && 'initialName' in route.params
+    ? route.params.initialName
+    : '';
+
+    const [name, setName] = useState(initialName);
+    const [isNonEnglish, setIsNonEnglish] = useState(false);
 
   const handleNameChange = (text: string) => {
     setName(text);
@@ -37,13 +46,15 @@ export default function NameScreen({ navigation, route }: OnboardingNameScreenPr
   const handleNavigation = async () => {
     const trimmedName = name.trim();
 
-    if (mode === 'edit') {
+    if (isEditMode) {
+      const myPageNav = navigation as NativeStackNavigationProp<MyPageStackParamList, 'EditName'>;
       await UserRepository.updateName(trimmedName);
-      navigation.goBack();
+      myPageNav.goBack();
     } else {
       updateOnboardingData({ name: trimmedName });
-      navigation.navigate('OnboardingCountrySelect');
-    }
+      const onboardNav = navigation as NativeStackNavigationProp<OnboardingStackParamList, 'OnboardingName'>;
+      onboardNav.navigate('OnboardingCountrySelect');
+    }    
   };
 
   const footer = (

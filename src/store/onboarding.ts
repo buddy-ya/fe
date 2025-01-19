@@ -1,7 +1,7 @@
 // store/onboarding.ts
 import { create } from 'zustand';
 
-type Gender = 'male' | 'female' | 'unknown';
+type Gender = 'male' | 'female' | 'unknown' | null;
 
 interface OnboardingStore {
   name: string;

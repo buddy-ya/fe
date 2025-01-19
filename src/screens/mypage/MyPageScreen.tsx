@@ -11,7 +11,13 @@ import { TokenService } from '@/service';
 import { MyPageStackParamList, resetToOnboarding } from '@/navigation/navigationRef';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
-const SettingItem = ({ label, onPress }) => (
+
+interface SettingItemProps {
+  label: string;
+  onPress: () => void;
+}
+
+const SettingItem = ({ label, onPress }: SettingItemProps) => (
   <TouchableOpacity
     onPress={onPress}
     className="flex-row items-center justify-between bg-white px-4 py-4"
@@ -88,7 +94,7 @@ export default function MyPageScreen({ navigation }: MyPageScreenProps) {
   ];
 
   const handleNotification = () => {
-    navigation.navigate('Notifications');
+    console.log('notification pressed!');
   };
 
   return (

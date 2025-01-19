@@ -25,11 +25,13 @@ export type OnboardingStackParamList = {
     OnboardingUniversitySelect: undefined;
     OnboardingStudentTypeSelect: undefined;
     OnboardingGenderSelect: undefined;
-    OnboardingName: { mode: string };
+    OnboardingName: undefined;
     OnboardingCountrySelect: undefined;
     OnboardingLanguageSelect: undefined;
     OnboardingMajorSelect: undefined;
     OnboardingInterestSelect: undefined;
+    UniversitySelect: undefined;
+    Tab: undefined;
 };
 
 export type FeedStackParamList = {
@@ -39,7 +41,7 @@ export type FeedStackParamList = {
     FeedDetail: { feedId: number };
     CommentEdit: { feedId: number, commentId: number, initialContent: string };
     EmailVerification: undefined;
-    EmailVerificationCode: { email: string };
+    EmailVerificationCode: { email: string, univName: string };
     EmailComplete: undefined;
     StudentIdVerification: undefined;
     StudentIdComplete: undefined;
@@ -55,11 +57,12 @@ export type MyPageStackParamList = {
     MyPageHome: undefined;
     MyProfile: undefined;
     EditProfileImage: undefined;
-    EditName: { mode: string, initialName: string };
-    EditLanguage: { mode: string, initialLanguages: string[] };
-    EditInterest: { mode: string, initialInterests: string[] };
+    EditName: { isEditMode: boolean, initialName: string };
+    EditLanguage: { isEditMode: boolean, initialLanguages: string[] };
+    EditInterest: { isEditMode: boolean, initialInterests: string[] };
     Bookmark: undefined;
     MyPosts: undefined;
+    Settings: undefined;
     FeedDetail: { feedId: number };
 };
 

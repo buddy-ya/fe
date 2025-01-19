@@ -41,7 +41,7 @@ type OnboardingPhoneScreenProps = NativeStackScreenProps<
 
 export default function PhoneScreen({ navigation }: OnboardingPhoneScreenProps) {
   const { t } = useTranslation('onboarding');
-  const inputRef = useRef(null);
+  const inputRef = useRef<TextInput>(null);
 
   const [phoneNumber, setPhoneNumber] = useState('');
   const [isLoading, setIsLoading] = useState(false);

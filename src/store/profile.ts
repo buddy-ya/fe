@@ -2,7 +2,7 @@ import UserRepository from "@/api/UserRepository";
 import { type CountryID } from "@/utils";
 import { create } from "zustand";
 
-type Gender = "male" | "female" | "unknown";
+type Gender = 'male' | 'female' | 'unknown' | null;
 
 interface Profile {
   name: string;
@@ -19,7 +19,7 @@ const defaultProfile: Profile = {
   name: "",
   university: "",
   country: "ko",
-  gender: "unknown",
+  gender: null,
   profileImageUrl: "",
   majors: [],
   languages: [],

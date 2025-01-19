@@ -7,30 +7,41 @@ import { INTEREST_CATEGORIES, INTEREST_ICONS, logError } from '@/utils';
 import { OnboardingRepository, UserRepository } from '@/api';
 import { Button, Chip, Heading, InnerLayout, Layout, MyText } from '@/components';
 import { TokenService } from '@/service';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { OnboardingStackParamList } from '@/navigation/navigationRef';
+import { NativeStackNavigationProp, NativeStackScreenProps } from '@react-navigation/native-stack';
+import { MyPageStackParamList, OnboardingStackParamList } from '@/navigation/navigationRef';
 
+const MAX_SELECT = 8;
 
 interface Interest {
   id: InterestID;
   icon: string;
 }
 
-type OnboardingInterestSelectScreenProps = NativeStackScreenProps<
-  OnboardingStackParamList,
-  'OnboardingInterestSelect'
->;
-export default function InterestSelectScreen({ navigation, route }: OnboardingInterestSelectScreenProps) {
-  const { mode, initialInterests, onComplete } = route.params || {};
-  const [selectedInterests, setSelectedInterests] = useState<Interest[]>(
-    initialInterests?.map((id) => ({
-      id,
-      icon: INTEREST_ICONS[id],
-    })) || []
-  );
+type InterestSelectProps =
+  | NativeStackScreenProps<OnboardingStackParamList, 'OnboardingInterestSelect'>
+  | NativeStackScreenProps<MyPageStackParamList, 'EditInterest'>;
+
+export default function InterestSelectScreen({ navigation, route }: InterestSelectProps) {
   const { t } = useTranslation(['onboarding', 'interests']);
   const { updateOnboardingData, ...onboardingData } = useOnboardingStore();
-  const MAX_SELECT = 8;
+
+  const isEditMode =
+  'params' in route && route.params && 'isEditMode' in route.params
+    ? route.params.isEditMode
+    : false;
+
+const initInterests =
+  'params' in route && route.params && 'initialInterests' in route.params
+    ? route.params.initialInterests
+    : [];
+
+  const [selectedInterests, setSelectedInterests] = useState(
+    initInterests.map((interestId) => ({
+      id: interestId,
+      icon: INTEREST_ICONS[interestId],
+    }))
+  );
+
 
   const handleToggleSelect = (interest: Interest) => {
     setSelectedInterests((prev) => {
@@ -45,17 +56,19 @@ export default function InterestSelectScreen({ navigation, route }: OnboardingIn
   const handleNavigateButton = async () => {
     try {
       const interests = selectedInterests.map((interest) => interest.id);
-      if (mode === 'edit') {
+      if (isEditMode) {
         await UserRepository.updateInterests(interests);
-        navigation.goBack();
-      } else {
+        const myPageNav = navigation as NativeStackNavigationProp<MyPageStackParamList, 'EditInterest'>;
+        myPageNav.goBack();
+      } else{
         updateOnboardingData({ interests });
         const { accessToken, refreshToken } = await OnboardingRepository.create({
           ...onboardingData,
           interests,
         });
         await TokenService.save(accessToken, refreshToken);
-        navigation.reset({
+        const onboardNav = navigation as NativeStackNavigationProp<OnboardingStackParamList, 'OnboardingInterestSelect'>;
+        onboardNav.reset({
           index: 0,
           routes: [{ name: 'Tab' }],
         });

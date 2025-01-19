@@ -4,8 +4,12 @@ import { ErrorMessage, FooterLayout, Heading, HeadingDescription, InnerLayout, K
 import { Send } from 'lucide-react-native';
 import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { FeedStackParamList } from '@/navigation/navigationRef';
 
-export default function EmailVerificationScreen({ navigation, route }) {
+type EmailVerificationScreenProps = NativeStackScreenProps<FeedStackParamList, 'EmailVerificationCode'>;
+
+export default function EmailVerificationScreen({ navigation, route }: EmailVerificationScreenProps) {
   const { t } = useTranslation('certification');
   const [code, setCode] = useState('');
   const [verificationError, setVerificationError] = useState(false);

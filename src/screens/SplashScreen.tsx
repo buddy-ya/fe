@@ -16,7 +16,7 @@ const FONTS = {
   'Pretendard-Black': require('@assets/fonts/Pretendard-Black.otf'),
 };
 
-export default function SplashScreen({ navigation }) {
+export default function SplashScreen({ navigation }: any) {
   useEffect(() => {
     initializeApp();
   }, []);

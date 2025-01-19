@@ -4,13 +4,21 @@ import { useTranslation } from 'react-i18next';
 import { View, ScrollView, Image, TouchableOpacity } from 'react-native';
 import { useProfileStore } from '@/store/profile';
 import { getCountryFlag } from '@/utils/constants/countries';
-import { INTEREST_ICONS } from '@/utils/constants/interests';
-import { MAJOR_ICONS } from '@/utils/constants/majors';
+import { INTEREST_ICONS, InterestID } from '@/utils/constants/interests';
+import { MAJOR_ICONS, MajorID } from '@/utils/constants/majors';
 import { UserRepository } from '@/api';
 import { Chip, InnerLayout, Layout, MyText } from '@/components';
 import { MyPageStackParamList } from '@/navigation/navigationRef';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
+interface Section {
+  title: string;
+  data: string[];
+  translationPrefix: string;
+  getIcon?: (id: string) => string; 
+  onEdit?: () => void;
+  editable: boolean;
+}
 
 type MyProfileScreenProps = NativeStackScreenProps<MyPageStackParamList, 'MyProfile'>;
 
@@ -38,31 +46,31 @@ export default function MyProfileScreen({ navigation, route }: MyProfileScreenPr
 
   const handleEditName = () => {
     navigation.navigate('EditName', {
-      mode: 'edit',
+      isEditMode: true,
       initialName: profile.name,
     });
   };
 
   const handleEditLanguages = () => {
     navigation.navigate('EditLanguage', {
-      mode: 'edit',
+      isEditMode: true,
       initialLanguages: profile.languages,
     });
   };
 
   const handleEditInterests = () => {
     navigation.navigate('EditInterest', {
-      mode: 'edit',
+      isEditMode: true,
       initialInterests: profile.interests,
     });
   };
 
-  const sections = [
+  const sections: Section[] = [
     {
       title: t('mypage:profile.sections.majors'),
       data: profile?.majors,
       translationPrefix: 'majors:majors',
-      getIcon: (id: string) => MAJOR_ICONS[id],
+      getIcon: (id) => MAJOR_ICONS[id],
       editable: false,
     },
     {
@@ -76,7 +84,7 @@ export default function MyProfileScreen({ navigation, route }: MyProfileScreenPr
       title: t('mypage:profile.sections.interests'),
       data: profile.interests,
       translationPrefix: 'interests:interests',
-      getIcon: (id: string) => INTEREST_ICONS[id],
+      getIcon: (id) => INTEREST_ICONS[id],
       onEdit: handleEditInterests,
       editable: true,
     },

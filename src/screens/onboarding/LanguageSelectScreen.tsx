@@ -5,28 +5,38 @@ import { useOnboardingStore } from '@/store';
 import { LANGUAGES } from '@/utils';
 import { UserRepository } from '@/api';
 import { Button, Heading, HeadingDescription, InnerLayout, Layout, MultiSelectItem, MyText, SearchInput } from '@/components';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { OnboardingStackParamList } from '@/navigation/navigationRef';
+import { NativeStackNavigationProp, NativeStackScreenProps } from '@react-navigation/native-stack';
+import { MyPageStackParamList, OnboardingStackParamList } from '@/navigation/navigationRef';
 
+const MAX_SELECT = 4;
 
 interface Language {
   id: string;
 }
 
-type OnboardingLanguageSelectScreenProps = NativeStackScreenProps<
-  OnboardingStackParamList,
-  'OnboardingLanguageSelect'
->;
+type LanguageSelectScreenProps =
+  | NativeStackScreenProps<OnboardingStackParamList, 'OnboardingLanguageSelect'>
+  | NativeStackScreenProps<MyPageStackParamList, 'EditLanguage'>;
 
-export default function LanguageSelectScreen({ navigation, route }: OnboardingLanguageSelectScreenProps) {
-  const { mode, initialLanguages, onComplete } = route.params || {};
-  const [selectedLanguages, setSelectedLanguages] = useState<Language[]>(
-    initialLanguages?.map((id) => ({ id })) || []
-  );
-  const [searchQuery, setSearchQuery] = useState('');
+export default function LanguageSelectScreen({ navigation, route }: LanguageSelectScreenProps) {
   const { t } = useTranslation('onboarding');
   const { updateOnboardingData } = useOnboardingStore();
-  const MAX_SELECT = 4;
+
+  const isEditMode =
+  'params' in route && route.params && 'isEditMode' in route.params
+    ? route.params.isEditMode
+    : false;
+
+const initialLangs =
+  'params' in route && route.params && 'initialLanguages' in route.params
+    ? route.params.initialLanguages
+    : [];
+
+    const [selectedLanguages, setSelectedLanguages] = useState<Language[]>(
+      initialLangs.map((id: string) => ({ id }))
+    );
+
+  const [searchQuery, setSearchQuery] = useState('');
 
   const handleSelect = (language: Language) => {
     setSelectedLanguages((prev) => {
@@ -44,12 +54,14 @@ export default function LanguageSelectScreen({ navigation, route }: OnboardingLa
 
   const handleNavigateButton = async () => {
     const languages = selectedLanguages.map((lang) => lang.id);
-    if (mode === 'edit') {
+    if (isEditMode) {
       await UserRepository.updateLanguages(languages);
-      navigation.goBack();
+      const myPageNav = navigation as NativeStackNavigationProp<MyPageStackParamList, 'EditLanguage'>;
+      myPageNav.goBack();
     } else {
       updateOnboardingData({ languages });
-      navigation.navigate('OnboardingMajorSelect');
+      const onboardNav = navigation as NativeStackNavigationProp<OnboardingStackParamList, 'OnboardingLanguageSelect'>;
+      onboardNav.navigate('OnboardingMajorSelect');
     }
   };
 

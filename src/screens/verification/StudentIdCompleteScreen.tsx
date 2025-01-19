@@ -1,12 +1,19 @@
 import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 import { Button, Heading, HeadingDescription, Layout } from '@/components';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { FeedStackParamList } from '@/navigation/navigationRef';
 
-export default function StudentIdCardCompleteScreen({ navigation }) {
+type EmailVerificationScreenProps = NativeStackScreenProps<FeedStackParamList, 'StudentIdComplete'>;
+
+export default function StudentIdCardCompleteScreen({ navigation }: EmailVerificationScreenProps) {
   const { t } = useTranslation('');
 
   const handleNavigationButton = () => {
-    navigation.reset('Home');
+    navigation.reset({
+      index: 0,
+      routes: [{ name: 'FeedHome' }],
+    });
   };
 
   return (
@@ -17,9 +24,7 @@ export default function StudentIdCardCompleteScreen({ navigation }) {
           {t('studentIdComplete.description1')}
           {t('studentIdComplete.description2')}
         </HeadingDescription>
-
         <View className="flex-1" />
-
         <Button onPress={handleNavigationButton}>{t('studentIdComplete.complete')}</Button>
       </View>
     </Layout>

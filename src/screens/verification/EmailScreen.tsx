@@ -5,8 +5,12 @@ import { View, TextInput } from 'react-native';
 import { AuthRepository } from '@/api';
 import { ErrorMessage, FooterLayout, Heading, HeadingDescription, InnerLayout, KeyboardLayout, Label, Layout, MyText } from '@/components';
 import { EMAIL_REGEX } from '@/utils';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { FeedStackParamList } from '@/navigation/navigationRef';
 
-export default function EmailScreen({ navigation }) {
+type EmailScreenProps = NativeStackScreenProps<FeedStackParamList, 'EmailVerification'>;
+
+export default function EmailScreen({ navigation }: EmailScreenProps) {
   const [email, setEmail] = useState('');
   const { t } = useTranslation('certification');
 

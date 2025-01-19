@@ -3,22 +3,24 @@ import { useTranslation } from 'react-i18next';
 import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import MyText from '../common/MyText';
 
-interface SelectOption {
+export interface BaseOption {
   id: string;
   icon?: string;
 }
 
-interface SelectItemProps {
-  options: SelectOption[];
-  selectedValues: SelectOption[];
-  onSelect: (value: SelectOption) => void;
+interface MultiSelectItemProps<T extends { id: string; icon?: string }> {
+  options: T[];               
+  selectedValues: T[];        
+  onSelect: (value: T) => void; 
   maxSelect?: number;
   multiple?: boolean;
   nameSpace: string;
   className?: string;
 }
 
-export default function MultiSelectItem({
+export default function MultiSelectItem<
+  T extends { id: string; icon?: string } = BaseOption 
+>({
   options,
   selectedValues,
   onSelect,
@@ -26,13 +28,13 @@ export default function MultiSelectItem({
   multiple = false,
   nameSpace,
   className,
-}: SelectItemProps) {
+}: MultiSelectItemProps<T>) {
   const { t } = useTranslation(nameSpace);
 
-  const isSelected = (option: SelectOption) =>
+  const isSelected = (option: T) =>
     selectedValues.some((selected) => selected.id === option.id);
 
-  const isDisabled = (option: SelectOption) =>
+  const isDisabled = (option: T) =>
     !multiple ? false : !isSelected(option) && selectedValues.length >= maxSelect;
 
   return (
@@ -53,8 +55,9 @@ export default function MultiSelectItem({
               <MyText size="text-base">{t(`${nameSpace}.${option.id}`)}</MyText>
             </View>
             <View
-              className={`h-6 w-6 items-center justify-center rounded-md ${isSelected(option) ? 'bg-primary' : 'border border-borderCheckbox'
-                } `}
+              className={`h-6 w-6 items-center justify-center rounded-md ${
+                isSelected(option) ? 'bg-primary' : 'border border-borderCheckbox'
+              }`}
             >
               {isSelected(option) && <Check size={16} color="white" />}
             </View>
