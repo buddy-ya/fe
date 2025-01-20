@@ -14,13 +14,13 @@ class AuthRepository {
         return data;
     }
 
-    async sendCodeByMail({ email, univName }: SendCodeByMailDTO): Promise<CommonResponse> {
-        const { data } = await API.post("/certification/email/send", { email, univName });
+    async sendCodeByMail({ email }: SendCodeByMailDTO): Promise<CommonResponse> {
+        const { data } = await API.post("/certification/email/send", { email });
         return data;
     };
 
-    async verifyCodeByMail({ email, univName, code }: VerifyCodeByMailDTO): Promise<CommonResponse> {
-        const { data } = await API.post("/certification/email/verify-code", { email, univName, code });
+    async verifyCodeByMail({ email, code }: VerifyCodeByMailDTO): Promise<CommonResponse> {
+        const { data } = await API.post("/certification/email/verify-code", { email, code });
         return data;
     };
 
