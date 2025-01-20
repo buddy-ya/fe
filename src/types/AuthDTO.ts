@@ -4,7 +4,6 @@ interface PhoneDTO {
 
 interface EmailDTO {
     email: string;
-    univName: string;
 }
 
 export interface CommonResponse {

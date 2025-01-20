@@ -38,7 +38,7 @@ export default function LanguageSelectScreen({ navigation, route }) {
   const handleNavigateButton = async () => {
     const languages = selectedLanguages.map((lang) => lang.id);
     if (mode === 'edit') {
-      await UserRepository.updateLanguages(languages);
+      await UserRepository.update({ key: "languages", values: languages });
       navigation.goBack();
     } else {
       updateOnboardingData({ languages });
