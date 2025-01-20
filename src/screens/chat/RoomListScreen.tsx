@@ -1,5 +1,8 @@
+import { RoomRepository } from '@/api';
 import { ChatPaper, InnerLayout, Layout, RoomList } from '@/components';
 import { Room } from '@/model';
+import { NavigationProp } from '@react-navigation/native';
+import { useSuspenseQuery } from '@tanstack/react-query';
 import { Fragment, useState } from 'react';
 import { Text, View } from 'react-native';
 
@@ -14,109 +17,13 @@ export const CATEGORIES = [
   },
 ];
 
-const rooms: Room[] = [
-  {
-    id: 1,
-    name: '방1',
-    lastMessage:
-      'hello worldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello world',
-    profileImageUrl: 'https://via.placeholder.com/150',
-    unreadCount: 123,
-    lastMessageDate: '2022-10-10',
-  },
-  {
-    id: 2,
-    name: '방2',
-    lastMessage: 'hello world',
-    profileImageUrl: 'https://via.placeholder.com/150',
-    unreadCount: 3,
-    lastMessageDate: '2022-10-10',
-  },
-  {
-    id: 3,
-    name: '방3',
-    lastMessage: 'hello world',
-    profileImageUrl: 'https://via.placeholder.com/150',
-    unreadCount: 0,
-    lastMessageDate: '2022-10-10',
-  },
-  {
-    id: 4,
-    name: '방4',
-    lastMessage: 'hello world',
-    profileImageUrl: 'https://via.placeholder.com/150',
-    unreadCount: 3,
-    lastMessageDate: '2022-10-10',
-  },
-  {
-    id: 5,
-    name: '방5',
-    lastMessage: 'hello world',
-    profileImageUrl: 'https://via.placeholder.com/150',
-    unreadCount: 9999,
-    lastMessageDate: '2022-10-10',
-  },
-  {
-    id: 6,
-    name: '방6',
-    lastMessage: 'hello world',
-    profileImageUrl: 'https://via.placeholder.com/150',
-    unreadCount: 9999,
-    lastMessageDate: '2022-10-10',
-  },
-  {
-    id: 7,
-    name: '방7',
-    lastMessage:
-      'hello worldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello world',
-    profileImageUrl: 'https://via.placeholder.com/150',
-    unreadCount: 123,
-    lastMessageDate: '2022-10-10',
-  },
-  {
-    id: 8,
-    name: '방8',
-    lastMessage: 'hello world',
-    profileImageUrl: 'https://via.placeholder.com/150',
-    unreadCount: 3,
-    lastMessageDate: '2022-10-10',
-  },
-  {
-    id: 9,
-    name: '방9',
-    lastMessage: 'hello world',
-    profileImageUrl: 'https://via.placeholder.com/150',
-    unreadCount: 0,
-    lastMessageDate: '2022-10-10',
-  },
-  {
-    id: 10,
-    name: '방10',
-    lastMessage: 'hello world',
-    profileImageUrl: 'https://via.placeholder.com/150',
-    unreadCount: 3,
-    lastMessageDate: '2022-10-10',
-  },
-  {
-    id: 11,
-    name: '방11',
-    lastMessage: 'hello world',
-    profileImageUrl: 'https://via.placeholder.com/150',
-    unreadCount: 9999,
-    lastMessageDate: '2022-10-10',
-  },
-  {
-    id: 12,
-    name: '방12',
-    lastMessage: 'hello world',
-    profileImageUrl: 'https://via.placeholder.com/150',
-    unreadCount: 9999,
-    lastMessageDate: '2022-10-10',
-  },
-];
-
 export default function RoomListScreen({ navigation }: { navigation: NavigationProp<any> }) {
   const [activeIndex, setActiveIndex] = useState(0);
+  // TODO: 스크롤 등 했을때 다시 불러오는 로직 필요
+  const { data } = useSuspenseQuery({
+    queryKey: ['roomList'],
+    queryFn: RoomRepository.getRoomList,
+  });
 
   const handleChipPress = (index: number) => {
     setActiveIndex(index);
@@ -139,7 +46,7 @@ export default function RoomListScreen({ navigation }: { navigation: NavigationP
                   </Text>
                 </View>
                 <View className="flex-1">
-                  <RoomList rooms={rooms} onPress={handlePressRoom} />
+                  <RoomList rooms={data} onPress={handlePressRoom} />
                 </View>
               </Fragment>
             ))}
