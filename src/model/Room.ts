@@ -1,8 +1,8 @@
 export interface Room {
-    id: number;
-    title: string;
-    content: string;
-    imageUrl: string;
+    roomId: number;
+    chatroomName: string;
+    lastMessage: string;
+    buddyProfileImage: string;
     unreadCount: number;
-    lastMessageDate: string;
+    lastMessageTime: string;
 }

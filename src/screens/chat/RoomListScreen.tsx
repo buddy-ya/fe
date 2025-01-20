@@ -1,6 +1,6 @@
 import LogoIcon from '@assets/icons/logo.svg';
 import { Bell, Search } from 'lucide-react-native';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Platform, ScrollView, TouchableOpacity, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useAuthCheck } from '@/hooks';
@@ -135,6 +135,10 @@ export default function RoomListScreen({ navigation }) {
   const handlePressRoom = (roomId: number) => {
     navigation.navigate('ChatRoom', { roomId })
   }
+
+  useEffect(() => {
+
+  }, [])
   return (
     <Layout
       hasTabBar={true}
