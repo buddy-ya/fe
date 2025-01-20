@@ -1,10 +1,10 @@
 import i18n from '@/i18n';
+import { resetToOnboarding } from '@/navigation/navigationRef';
 import axios from 'axios';
 import Constants from 'expo-constants';
-import { Alert } from 'react-native';
 import * as SecureStore from 'expo-secure-store';
+import { Alert } from 'react-native';
 import { TOKEN_KEYS } from '@/utils';
-import { resetToOnboarding } from '@/navigation/navigationRef';
 
 const BASE_URL = Constants?.expoConfig?.extra?.BASE_URL || '';
 
@@ -14,10 +14,7 @@ export const API = axios.create({
 });
 
 const reissueTokens = async (refreshToken: string) => {
-  const response = await API.post(
-    `${BASE_URL}/auth/reissue`,
-    { refreshToken },
-  );
+  const response = await API.post(`${BASE_URL}/auth/reissue`, { refreshToken });
   return response.data;
 };
 
