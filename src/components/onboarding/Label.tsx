@@ -1,6 +1,6 @@
 import React from 'react';
 import { View } from 'react-native';
-import { MyText } from '@/components';
+import { MyText } from '../common';
 
 interface LabelProps {
   children: React.ReactNode;

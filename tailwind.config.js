@@ -9,6 +9,7 @@ module.exports = {
       colors: {
         primary: '#00A176',
         active: '#004D39',
+        natural: '#F1F1F1',
 
         buttonPrimary: '#00A176',
         buttonDisabled: '#DFDFDF',

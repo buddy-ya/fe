@@ -5,22 +5,15 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { View, TouchableOpacity, TextInput, ScrollView, Alert } from 'react-native';
 import { feedKeys, FeedRepository } from '@/api';
-import { useModal } from '@/hooks';
-import { CATEGORIES } from '@/utils/constants/categories';
-import { Layout, BottomModal, InnerLayout, KeyboardLayout, Loading, MyText, CategorySelectModal, ImagePreview } from '@/components';
-
-interface ImageFile {
-  uri: string;
-  type: string;
-  fileName?: string;
-  width?: number;
-  height?: number;
-}
+import { CATEGORIES } from '@/utils';
+import { Layout, InnerLayout, KeyboardLayout, Loading, MyText, CategorySelectModal, ImagePreview } from '@/components';
+import { ImageFile } from '@/types';
+import { useModalStore } from '@/store';
 
 const FILTERED_CATEGORIES = CATEGORIES.filter((category) => category.id !== 'popular');
 
 const IMAGE_PICKER_OPTIONS: ImagePicker.ImagePickerOptions = {
-  mediaTypes: ImagePicker.MediaTypeOptions.Images,
+  mediaTypes: 'images',
   allowsEditing: false,
   quality: 0.7,
   allowsMultipleSelection: true,
@@ -30,6 +23,9 @@ const IMAGE_PICKER_OPTIONS: ImagePicker.ImagePickerOptions = {
 export default function FeedWriteScreen({ navigation, route }) {
   const feed = route.params?.feed;
   const isEdit = route.params?.isEdit;
+  const modalVisible = useModalStore(state => state.visible.category);
+  const handleModalOpen = useModalStore(state => state.handleOpen);
+  const handleModalClose = useModalStore(state => state.handleClose);
 
   const [selectedCategory, setSelectedCategory] = useState(
     feed
@@ -50,11 +46,10 @@ export default function FeedWriteScreen({ navigation, route }) {
   const { t } = useTranslation('feed');
 
   const queryClient = useQueryClient();
-  const categoryModal = useModal();
 
   const handleCategorySelect = (category: (typeof CATEGORIES)[0]) => {
     setSelectedCategory(category);
-    categoryModal.closeModal();
+    handleModalClose('category');
   };
 
   const pickImage = async () => {
@@ -87,6 +82,11 @@ export default function FeedWriteScreen({ navigation, route }) {
   const takePhoto = async () => {
     const { status } = await ImagePicker.requestCameraPermissionsAsync();
 
+    if (status !== 'granted') {
+      alert(t('studentId.permission.gallery'));
+      return;
+    }
+
     try {
       const result = await ImagePicker.launchCameraAsync({
         ...IMAGE_PICKER_OPTIONS,
@@ -113,19 +113,18 @@ export default function FeedWriteScreen({ navigation, route }) {
   };
 
   const handleOpenCategoryModal = () => {
-    const options = FILTERED_CATEGORIES.map((category) => ({
-      label: `${category.icon} ${category.label}`,
-      onPress: () => handleCategorySelect(category),
-      color: category.id === selectedCategory.id ? 'text-textActive' : '#797979',
-      icon:
-        category.id === selectedCategory.id ? (
-          <View className="h-4 w-4 rounded-full bg-primary" />
-        ) : (
-          <View className="h-4 w-4 rounded-full border border-gray-300" />
-        ),
-    }));
-
-    categoryModal.openModal(options);
+    handleModalOpen('category');
+    // const options = FILTERED_CATEGORIES.map((category) => ({
+    //   label: `${category.icon} ${category.label}`,
+    //   onPress: () => handleCategorySelect(category),
+    //   color: category.id === selectedCategory.id ? 'text-textActive' : '#797979',
+    //   icon:
+    //     category.id === selectedCategory.id ? (
+    //       <View className="h-4 w-4 rounded-full bg-primary" />
+    //     ) : (
+    //       <View className="h-4 w-4 rounded-full border border-gray-300" />
+    //     ),
+    // }));
   };
 
   const removeImage = (index: number) => {
@@ -246,9 +245,7 @@ export default function FeedWriteScreen({ navigation, route }) {
         </KeyboardLayout>
       )}
 
-      <BottomModal visible={categoryModal.visible} onClose={categoryModal.closeModal}>
-        <CategorySelectModal selectedCategory={selectedCategory} onSelect={handleCategorySelect} />
-      </BottomModal>
+      <CategorySelectModal visible={modalVisible} onClose={() => handleModalClose('category')} selectedCategory={selectedCategory} onSelect={handleCategorySelect} />
     </Layout>
   );
 }

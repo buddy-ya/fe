@@ -1,11 +1,10 @@
 import { Mail } from 'lucide-react-native';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { View, TextInput } from 'react-native';
 import { AuthRepository } from '@/api';
 import { ErrorMessage, FooterLayout, Heading, HeadingDescription, InnerLayout, KeyboardLayout, Label, Layout, MyText } from '@/components';
-
-const EMAIL_REGEX = /^[A-Za-z0-9]+$/;
+import { EMAIL_REGEX } from '@/utils';
 
 export default function EmailScreen({ navigation }) {
   const [email, setEmail] = useState('');
@@ -24,11 +23,13 @@ export default function EmailScreen({ navigation }) {
       email: fullEmail,
       univName,
     };
-    await AuthRepository.sendCodeByMail(requestBody);
-    navigation.navigate('EmailVerificationCode', {
-      email: fullEmail,
-      univName,
-    });
+    const { success } = await AuthRepository.sendCodeByMail(requestBody);
+    if (success) {
+      navigation.navigate('EmailVerificationCode', {
+        email: fullEmail,
+        univName,
+      })
+    };
   };
 
   const footer = (

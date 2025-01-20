@@ -38,7 +38,7 @@ export default function CustomBottomSheet({
   }, [onClose]);
 
   const renderBackdrop = useCallback(
-    (props) => (
+    (props: any) => (
       <BottomSheetBackdrop
         {...props}
         disappearsOnIndex={-1}

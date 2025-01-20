@@ -1,19 +1,20 @@
+import { UserRepository } from '@/api';
+import { Button, Chip, Heading, InnerLayout, Layout, MyText } from '@/components';
+import { TokenService } from '@/service';
+import { useOnboardingStore } from '@/store';
 import { useState } from 'react';
+import { memo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ScrollView, View } from 'react-native';
-import { useOnboardingStore } from '@/store';
 import type { InterestID } from '@/utils';
-import { saveTokens, INTEREST_CATEGORIES, INTEREST_ICONS, logError } from '@/utils';
-import { OnboardingRepository, UserRepository } from '@/api';
-import { Button, Chip, Heading, InnerLayout, Layout, MyText } from '@/components';
-
+import { INTEREST_CATEGORIES, INTEREST_ICONS, logError } from '@/utils';
 
 interface Interest {
   id: InterestID;
   icon: string;
 }
 
-export default function InterestSelectScreen({ navigation, route }) {
+function InterestSelectScreen({ navigation, route }) {
   const { mode, initialInterests, onComplete } = route.params || {};
   const [selectedInterests, setSelectedInterests] = useState<Interest[]>(
     initialInterests?.map((id) => ({
@@ -39,15 +40,15 @@ export default function InterestSelectScreen({ navigation, route }) {
     try {
       const interests = selectedInterests.map((interest) => interest.id);
       if (mode === 'edit') {
-        await UserRepository.updateInterests(interests);
+        await UserRepository.update({ key: 'interests', values: interests });
         navigation.goBack();
       } else {
         updateOnboardingData({ interests });
-        const { accessToken, refreshToken } = await OnboardingRepository.create({
+        const { accessToken, refreshToken } = await UserRepository.create({
           ...onboardingData,
           interests,
         });
-        await saveTokens(accessToken, refreshToken);
+        await TokenService.save(accessToken, refreshToken);
         navigation.reset({
           index: 0,
           routes: [{ name: 'Tab' }],
@@ -112,3 +113,5 @@ export default function InterestSelectScreen({ navigation, route }) {
     </Layout>
   );
 }
+
+export default memo(InterestSelectScreen);

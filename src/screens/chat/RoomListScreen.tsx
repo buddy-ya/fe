@@ -1,188 +1,151 @@
-import LogoIcon from '@assets/icons/logo.svg';
-import { Bell, Search } from 'lucide-react-native';
-import { useEffect, useRef, useState } from 'react';
-import { Platform, ScrollView, TouchableOpacity, View } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useAuthCheck } from '@/hooks';
-import { CategoryPager, ConfirmModal, InnerLayout, Layout, RoomList } from '@/components';
+import { ChatPaper, InnerLayout, Layout, RoomList } from '@/components';
 import { Room } from '@/model';
-
+import { Fragment, useState } from 'react';
+import { Text, View } from 'react-native';
 
 export const CATEGORIES = [
   {
-    "id": 1,
-    "label": "매칭"
+    id: 1,
+    label: '피드',
   },
   {
-    "id": 2,
-    "label": "피드"
+    id: 2,
+    label: '매칭',
   },
-]
+];
 
-export default function RoomListScreen({ navigation }) {
-  const { isModalVisible, setIsModalVisible, currentModalTexts, setCurrentModalTexts, checkAuth } =
-    useAuthCheck();
+const rooms: Room[] = [
+  {
+    id: 1,
+    name: '방1',
+    lastMessage:
+      'hello worldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello world',
+    profileImageUrl: 'https://via.placeholder.com/150',
+    unreadCount: 123,
+    lastMessageDate: '2022-10-10',
+  },
+  {
+    id: 2,
+    name: '방2',
+    lastMessage: 'hello world',
+    profileImageUrl: 'https://via.placeholder.com/150',
+    unreadCount: 3,
+    lastMessageDate: '2022-10-10',
+  },
+  {
+    id: 3,
+    name: '방3',
+    lastMessage: 'hello world',
+    profileImageUrl: 'https://via.placeholder.com/150',
+    unreadCount: 0,
+    lastMessageDate: '2022-10-10',
+  },
+  {
+    id: 4,
+    name: '방4',
+    lastMessage: 'hello world',
+    profileImageUrl: 'https://via.placeholder.com/150',
+    unreadCount: 3,
+    lastMessageDate: '2022-10-10',
+  },
+  {
+    id: 5,
+    name: '방5',
+    lastMessage: 'hello world',
+    profileImageUrl: 'https://via.placeholder.com/150',
+    unreadCount: 9999,
+    lastMessageDate: '2022-10-10',
+  },
+  {
+    id: 6,
+    name: '방6',
+    lastMessage: 'hello world',
+    profileImageUrl: 'https://via.placeholder.com/150',
+    unreadCount: 9999,
+    lastMessageDate: '2022-10-10',
+  },
+  {
+    id: 7,
+    name: '방7',
+    lastMessage:
+      'hello worldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello world',
+    profileImageUrl: 'https://via.placeholder.com/150',
+    unreadCount: 123,
+    lastMessageDate: '2022-10-10',
+  },
+  {
+    id: 8,
+    name: '방8',
+    lastMessage: 'hello world',
+    profileImageUrl: 'https://via.placeholder.com/150',
+    unreadCount: 3,
+    lastMessageDate: '2022-10-10',
+  },
+  {
+    id: 9,
+    name: '방9',
+    lastMessage: 'hello world',
+    profileImageUrl: 'https://via.placeholder.com/150',
+    unreadCount: 0,
+    lastMessageDate: '2022-10-10',
+  },
+  {
+    id: 10,
+    name: '방10',
+    lastMessage: 'hello world',
+    profileImageUrl: 'https://via.placeholder.com/150',
+    unreadCount: 3,
+    lastMessageDate: '2022-10-10',
+  },
+  {
+    id: 11,
+    name: '방11',
+    lastMessage: 'hello world',
+    profileImageUrl: 'https://via.placeholder.com/150',
+    unreadCount: 9999,
+    lastMessageDate: '2022-10-10',
+  },
+  {
+    id: 12,
+    name: '방12',
+    lastMessage: 'hello world',
+    profileImageUrl: 'https://via.placeholder.com/150',
+    unreadCount: 9999,
+    lastMessageDate: '2022-10-10',
+  },
+];
 
-  const isAndroid = Platform.OS === 'android';
-  const insets = useSafeAreaInsets();
-
+export default function RoomListScreen({ navigation }: { navigation: NavigationProp<any> }) {
   const [activeIndex, setActiveIndex] = useState(0);
-
-  const rooms: Room[] = [
-    {
-      id: 1,
-      title: "방1",
-      content: "hello worldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello world",
-      imageUrl: "https://via.placeholder.com/150",
-      unreadCount: 123,
-      lastMessageDate: "2022-10-10"
-    },
-    {
-      id: 2,
-      title: "방2",
-      content: "hello world",
-      imageUrl: "https://via.placeholder.com/150",
-      unreadCount: 3,
-      lastMessageDate: "2022-10-10"
-    },
-    {
-      id: 3,
-      title: "방3",
-      content: "hello world",
-      imageUrl: "https://via.placeholder.com/150",
-      unreadCount: 0,
-      lastMessageDate: "2022-10-10"
-    },
-    {
-      id: 4,
-      title: "방4",
-      content: "hello world",
-      imageUrl: "https://via.placeholder.com/150",
-      unreadCount: 3,
-      lastMessageDate: "2022-10-10"
-    },
-    {
-      id: 5,
-      title: "방5",
-      content: "hello world",
-      imageUrl: "https://via.placeholder.com/150",
-      unreadCount: 9999,
-      lastMessageDate: "2022-10-10"
-    },
-    {
-      id: 6,
-      title: "방5",
-      content: "hello world",
-      imageUrl: "https://via.placeholder.com/150",
-      unreadCount: 9999,
-      lastMessageDate: "2022-10-10"
-    },
-    {
-      id: 7,
-      title: "방1",
-      content: "hello worldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello world",
-      imageUrl: "https://via.placeholder.com/150",
-      unreadCount: 123,
-      lastMessageDate: "2022-10-10"
-    },
-    {
-      id: 8,
-      title: "방2",
-      content: "hello world",
-      imageUrl: "https://via.placeholder.com/150",
-      unreadCount: 3,
-      lastMessageDate: "2022-10-10"
-    },
-    {
-      id: 9,
-      title: "방3",
-      content: "hello world",
-      imageUrl: "https://via.placeholder.com/150",
-      unreadCount: 0,
-      lastMessageDate: "2022-10-10"
-    },
-    {
-      id: 10,
-      title: "방4",
-      content: "hello world",
-      imageUrl: "https://via.placeholder.com/150",
-      unreadCount: 3,
-      lastMessageDate: "2022-10-10"
-    },
-    {
-      id: 11,
-      title: "방5",
-      content: "hello world",
-      imageUrl: "https://via.placeholder.com/150",
-      unreadCount: 9999,
-      lastMessageDate: "2022-10-10"
-    },
-    {
-      id: 12,
-      title: "방5",
-      content: "hello world",
-      imageUrl: "https://via.placeholder.com/150",
-      unreadCount: 9999,
-      lastMessageDate: "2022-10-10"
-    }
-  ]
-  const scrollViewRef = useRef<ScrollView>(null);
 
   const handleChipPress = (index: number) => {
     setActiveIndex(index);
-  }
+  };
 
-  const handlePressRoom = (roomId: number) => {
-    navigation.navigate('ChatRoom', { roomId })
-  }
+  const handlePressRoom = (room: Room) => {
+    navigation.navigate('ChatRoom', { ...room });
+  };
 
-  useEffect(() => {
-
-  }, [])
   return (
-    <Layout
-      hasTabBar={true}
-      showHeader
-      headerLeft={<LogoIcon />}
-      headerRight={
-        <View className="flex-row items-center">
-          <TouchableOpacity onPress={() => navigation.navigate('FeedSearch')} className="mr-4">
-            <Search strokeWidth={2} size={24} color="#797977" />
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <Bell strokeWidth={2} size={24} color="#797977" />
-          </TouchableOpacity>
-        </View>
-      }
-    >
+    <Layout isBackgroundWhite>
       <InnerLayout>
-        <View className='flex-1'>
-          <CategoryPager categories={CATEGORIES} onPageChange={handleChipPress}>
+        <View className="flex-1">
+          <ChatPaper categories={CATEGORIES} onPageChange={handleChipPress}>
             {CATEGORIES.map((category) => (
-              <View key={category.id} className="flex-1">
-                <RoomList
-                  rooms={rooms}
-                  onPress={handlePressRoom} />
-              </View>
+              <Fragment key={`fragment_${category.id}`}>
+                <View className="flex h-[77px] items-center justify-center rounded-xl bg-primary">
+                  <Text className="text-base text-white">
+                    더 많은 글로벌 버디와 친구가 되고 싶다면?
+                  </Text>
+                </View>
+                <View className="flex-1">
+                  <RoomList rooms={rooms} onPress={handlePressRoom} />
+                </View>
+              </Fragment>
             ))}
-          </CategoryPager>
+          </ChatPaper>
         </View>
-
       </InnerLayout>
-      <ConfirmModal
-        visible={isModalVisible}
-        onClose={() => setIsModalVisible(false)}
-        onConfirm={() => {
-          setIsModalVisible(false);
-          currentModalTexts?.onConfirm();
-        }}
-        title={currentModalTexts?.title || ''}
-        description={currentModalTexts?.description || ''}
-        cancelText={currentModalTexts?.cancelText}
-        confirmText={currentModalTexts?.confirmText}
-        position="bottom"
-        size="default"
-      />
     </Layout>
   );
 }

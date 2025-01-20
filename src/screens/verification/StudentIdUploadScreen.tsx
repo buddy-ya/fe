@@ -4,9 +4,9 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { View, TouchableOpacity, Image } from 'react-native';
 import { logError, processImageForUpload } from '@/utils';
-import { ImageFile } from '../home/types';
 import { AuthRepository } from '@/api';
 import { Button, Heading, HeadingDescription, InnerLayout, Layout, MyText } from '@/components';
+import { ImageFile } from '@/types';
 
 export default function StudentIdCardUploadScreen({ navigation }) {
   const { t } = useTranslation('certification');
