@@ -17,7 +17,7 @@ export default function AuthProvider({ children }: Props) {
     return accessToken;
   };
 
-  const { data } = useSuspenseQuery({
+  useSuspenseQuery({
     queryKey: ['auth'],
     queryFn: initAuth,
     networkMode: 'always',

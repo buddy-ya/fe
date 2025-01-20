@@ -1,6 +1,5 @@
-import { CommentRepository, feedKeys, FeedRepository } from "@/api";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-
+import { CommentRepository, feedKeys, FeedRepository } from '@/api';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 interface UseFeedDetailProps {
   feedId: number;
@@ -21,7 +20,7 @@ export const useFeedDetail = ({ feedId, enabled = true }: UseFeedDetailProps) =>
   });
 
   const { data: comments, refetch: refetchComments } = useQuery({
-    queryKey: ["feedComments", feedId],
+    queryKey: ['feedComments', feedId],
     queryFn: () => CommentRepository.getComments({ feedId }),
     enabled,
   });
@@ -59,13 +58,8 @@ export const useFeedDetail = ({ feedId, enabled = true }: UseFeedDetailProps) =>
   });
 
   const updateCommentMutation = useMutation({
-    mutationFn: ({
-      commentId,
-      content,
-    }: {
-      commentId: number;
-      content: string;
-    }) => CommentRepository.update({ feedId, content, commentId }),
+    mutationFn: ({ commentId, content }: { commentId: number; content: string }) =>
+      CommentRepository.update({ feedId, content, commentId }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['feedComments', feedId] });
       queryClient.invalidateQueries({ queryKey: feedKeys.all });
