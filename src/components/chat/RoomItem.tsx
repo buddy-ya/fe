@@ -1,50 +1,49 @@
 import { Room } from '@/model';
 import { Image, View, TouchableOpacity } from 'react-native';
+import { getTimeAgo } from '@/utils';
 import { MyText } from '../common';
 import { UnreadCountChip } from './UnreadCountChip';
-import { getTimeAgo } from '@/utils';
 
 interface RoomItemProps {
-    room: Room;
-    onPress?: (id: number) => void;
+  room: Room;
+  onPress?: (id: number) => void;
 }
 
 export default function RoomItem({ room, onPress }: RoomItemProps) {
+  const { id, name, lastMessage, profileImageUrl, unreadCount, lastMessageDate } = room;
 
-    const {
-        id,
-        title,
-        content,
-        imageUrl,
-        unreadCount,
-        lastMessageDate
-    } = room
+  const handleClick = () => {
+    onPress?.(id);
+  };
 
-    const handleClick = () => {
-        onPress?.(id);
-    };
+  const computedUnreadCount =
+    unreadCount > 999 ? unreadCount.toString().slice(0, 3) + '+' : unreadCount.toString();
 
-    const computedUnreadCount = unreadCount > 999 ? unreadCount.toString().slice(0, 3) + '+' : unreadCount.toString();
-
-    return (
-        <TouchableOpacity onPress={handleClick} activeOpacity={0.7}>
-            <View className="flex-row flex-wrap items-center justify-between mt-3 rounded-[13px] w-full h-[60px]">
-                <View className='flex-row items-center w-3/4 h-full'>
-                    <View>
-                        <Image className="w-[49px] h-[49px] rounded-[12px]" source={{ uri: imageUrl }} />
-                    </View>
-                    <View className='flex justify-between ml-3 w-3/4 h-[40px]'>
-                        <MyText numberOfLines={1}>{title}</MyText>
-                        <MyText numberOfLines={1} size='text-sm'>{content}</MyText>
-                    </View>
-                </View>
-                <View className='flex justify-between items-end mr-3 w-1/5 h-[38px]'>
-                    <MyText size='text-sm'>
-                        {getTimeAgo(lastMessageDate)}
-                    </MyText>
-                    {unreadCount > 0 && <UnreadCountChip className="py-0 h-[24px] bg-textWarning" label={computedUnreadCount} readOnly />}
-                </View>
-            </View>
-        </TouchableOpacity>
-    )
+  return (
+    <TouchableOpacity onPress={handleClick} activeOpacity={0.7}>
+      <View className="mt-3 h-[60px] w-full flex-row flex-wrap items-center justify-between rounded-[13px]">
+        <View className="h-full w-3/4 flex-row items-center">
+          <View>
+            <Image className="h-[49px] w-[49px] rounded-[12px]" source={{ uri: profileImageUrl }} />
+          </View>
+          <View className="ml-3 flex h-[40px] w-3/4 justify-between">
+            <MyText numberOfLines={1}>{name}</MyText>
+            <MyText numberOfLines={1} size="text-sm">
+              {lastMessage}
+            </MyText>
+          </View>
+        </View>
+        <View className="mr-3 flex h-[38px] w-1/5 items-end justify-between">
+          <MyText size="text-sm">{getTimeAgo(lastMessageDate)}</MyText>
+          {unreadCount > 0 && (
+            <UnreadCountChip
+              className="h-[24px] bg-textWarning py-0"
+              label={computedUnreadCount}
+              readOnly
+            />
+          )}
+        </View>
+      </View>
+    </TouchableOpacity>
+  );
 }
