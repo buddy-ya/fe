@@ -1,7 +1,19 @@
-import React, { useState } from 'react';
 import { AuthRepository } from '@/api';
-import { ErrorMessage, FooterLayout, Heading, HeadingDescription, InnerLayout, KeyboardLayout, Label, Layout, LinkText, MyText, OTPInput } from '@/components';
+import {
+  ErrorMessage,
+  FooterLayout,
+  Heading,
+  HeadingDescription,
+  InnerLayout,
+  KeyboardLayout,
+  Label,
+  Layout,
+  LinkText,
+  MyText,
+  OTPInput,
+} from '@/components';
 import { Send } from 'lucide-react-native';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 
@@ -14,7 +26,7 @@ export default function EmailVerificationScreen({ navigation, route }) {
   const [isSubmiting, setisSubmiting] = useState(false);
 
   const handleResend = async () => {
-    await AuthRepository.sendCodeByMail({ email, univName });
+    await AuthRepository.sendCodeByMail({ email });
     setCode('');
     setVerificationError(false);
   };
@@ -24,7 +36,6 @@ export default function EmailVerificationScreen({ navigation, route }) {
     setisSubmiting(true);
     const { success } = await AuthRepository.verifyCodeByMail({
       email,
-      univName,
       code,
     });
     if (success) {
