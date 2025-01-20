@@ -40,7 +40,7 @@ export default function InterestSelectScreen({ navigation, route }) {
     try {
       const interests = selectedInterests.map((interest) => interest.id);
       if (mode === 'edit') {
-        await UserRepository.updateInterests(interests);
+        await UserRepository.update({ key: "interests", values: interests });
         navigation.goBack();
       } else {
         updateOnboardingData({ interests });

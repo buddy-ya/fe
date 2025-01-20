@@ -31,7 +31,7 @@ export default function NameScreen({ navigation, route }) {
     const trimmedName = name.trim();
 
     if (mode === 'edit') {
-      await UserRepository.updateName(trimmedName);
+      await UserRepository.update({ key: "name", values: [trimmedName] });
       navigation.goBack();
     } else {
       updateOnboardingData({ name: trimmedName });
