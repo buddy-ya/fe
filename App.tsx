@@ -8,11 +8,14 @@ import { AuthProvider } from '@/provider';
 import ErrorPage from '@/screens/ErrorPage';
 import { createNavigationContainerRef, NavigationContainer } from '@react-navigation/native';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import useNotification from '@/hooks/useNotification';
 
 export const navigationRef = createNavigationContainerRef();
 
 export default function App() {
   const queryClient = new QueryClient();
+
+  useNotification();
 
   return (
     <QueryClientProvider client={queryClient}>
