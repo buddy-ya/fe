@@ -4,7 +4,7 @@ import { ScrollView, View } from 'react-native';
 import { useOnboardingStore } from '@/store';
 import type { InterestID } from '@/utils';
 import { INTEREST_CATEGORIES, INTEREST_ICONS, logError } from '@/utils';
-import { OnboardingRepository, UserRepository } from '@/api';
+import { UserRepository } from '@/api';
 import { Button, Chip, Heading, InnerLayout, Layout, MyText } from '@/components';
 import { TokenService } from '@/service';
 
@@ -44,7 +44,7 @@ export default function InterestSelectScreen({ navigation, route }) {
         navigation.goBack();
       } else {
         updateOnboardingData({ interests });
-        const { accessToken, refreshToken } = await OnboardingRepository.create({
+        const { accessToken, refreshToken } = await UserRepository.create({
           ...onboardingData,
           interests,
         });

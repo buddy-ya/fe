@@ -1,3 +1,4 @@
+import { User } from "@/types";
 import API from "./API";
 
 class UserRepository {
@@ -6,6 +7,11 @@ class UserRepository {
         const { data } = await API.get(`/users`);
         return data;
     };
+
+    async create(dto: User.createInfoDTO) {
+        const { data } = await API.post("/users", dto);
+        return data;
+    }
 
     async update({ key, values }: { key: string, values: string[] }) {
         const { data } = await API.patch(`/users`, { key, values });
