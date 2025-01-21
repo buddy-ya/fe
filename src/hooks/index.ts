@@ -1,4 +1,3 @@
-export { useAuthCheck } from './useAuthCheck';
 export { useFeedDetail } from './useFeedDetail';
 export { useFeedImages } from './useFeedImages';
 export { useImageUpload } from './useImageUpload';
