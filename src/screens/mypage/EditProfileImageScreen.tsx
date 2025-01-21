@@ -1,9 +1,9 @@
-import React, { useMemo, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { View, Image, TouchableOpacity, ScrollView } from 'react-native';
-import { useProfileStore } from '@/store/profile';
 import { UserRepository } from '@/api';
 import { InnerLayout, Layout, MyText } from '@/components';
+import { useUserStore } from '@/store';
+import { useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { View, Image, TouchableOpacity, ScrollView } from 'react-native';
 
 const PROFILE_IMAGES = [
   'https://buddyya.s3.ap-northeast-2.amazonaws.com/default-profile-image/image1.png',
@@ -16,16 +16,17 @@ const PROFILE_IMAGES = [
 
 export default function EditProfileImageScreen({ navigation }) {
   const { t } = useTranslation('mypage');
-  const { profile } = useProfileStore();
-  const [selectedImage, setSelectedImage] = useState(profile.profileImageUrl);
+  const profileImageUrl = useUserStore((state) => state.profileImageUrl);
+
+  const [selectedImage, setSelectedImage] = useState(profileImageUrl);
 
   const handleSelectImage = (imageUrl: string) => {
     setSelectedImage(imageUrl);
   };
 
   const isChanged = useMemo(() => {
-    return selectedImage !== profile.profileImageUrl;
-  }, [selectedImage, profile.profileImageUrl]);
+    return selectedImage !== profileImageUrl;
+  }, [selectedImage, profileImageUrl]);
 
   const handleComplete = async () => {
     const imageKey = selectedImage.split('/').pop()?.replace('.png', '');
@@ -45,15 +46,23 @@ export default function EditProfileImageScreen({ navigation }) {
       }
       headerRight={
         <TouchableOpacity onPress={handleComplete}>
-          <MyText size="text-xl" color={isChanged ? '' : 'text-textLight'} className="font-semibold">
+          <MyText
+            size="text-xl"
+            color={isChanged ? '' : 'text-textLight'}
+            className="font-semibold"
+          >
             {t('common.complete')}
           </MyText>
         </TouchableOpacity>
       }
     >
       <InnerLayout>
-        <View className="items-center mt-20">
-          <Image source={{ uri: selectedImage }} className="w-[240px] h-[240px] rounded-[70px]" resizeMode="cover" />
+        <View className="mt-20 items-center">
+          <Image
+            source={{ uri: selectedImage }}
+            className="h-[240px] w-[240px] rounded-[70px]"
+            resizeMode="cover"
+          />
         </View>
 
         <ScrollView
@@ -61,15 +70,14 @@ export default function EditProfileImageScreen({ navigation }) {
           scrollEnabled={false}
           contentContainerStyle={{ paddingBottom: 20 }}
         >
-          <View className="p-6 mt-10 flex-row flex-wrap justify-between gap-y-4 bg-white rounded-[20px]">
+          <View className="mt-10 flex-row flex-wrap justify-between gap-y-4 rounded-[20px] bg-white p-6">
             {PROFILE_IMAGES.map((imageUrl, index) => (
               <TouchableOpacity
                 key={imageUrl}
                 onPress={() => handleSelectImage(imageUrl)}
-                className={`w-[86px] h-[86px] rounded-[27px] overflow-hidden
-                    ${selectedImage === imageUrl ? 'border-[1.5px] border-[#004D39]' : ''}`}
+                className={`h-[86px] w-[86px] overflow-hidden rounded-[27px] ${selectedImage === imageUrl ? 'border-[1.5px] border-[#004D39]' : ''}`}
               >
-                <Image source={{ uri: imageUrl }} className="w-full h-full" resizeMode="cover" />
+                <Image source={{ uri: imageUrl }} className="h-full w-full" resizeMode="cover" />
               </TouchableOpacity>
             ))}
           </View>
