@@ -1,15 +1,33 @@
-import { useState } from 'react';
 import { AuthRepository } from '@/api';
-import { ErrorMessage, FooterLayout, Heading, HeadingDescription, InnerLayout, KeyboardLayout, Label, Layout, LinkText, MyText, OTPInput } from '@/components';
+import {
+  ErrorMessage,
+  FooterLayout,
+  Heading,
+  HeadingDescription,
+  InnerLayout,
+  KeyboardLayout,
+  Label,
+  Layout,
+  LinkText,
+  MyText,
+  OTPInput,
+} from '@/components';
+import { FeedStackParamList } from '@/navigation/navigationRef';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { Send } from 'lucide-react-native';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { FeedStackParamList } from '@/navigation/navigationRef';
 
-type EmailVerificationScreenProps = NativeStackScreenProps<FeedStackParamList, 'EmailVerificationCode'>;
+type EmailVerificationScreenProps = NativeStackScreenProps<
+  FeedStackParamList,
+  'EmailVerificationCode'
+>;
 
-export default function EmailVerificationScreen({ navigation, route }: EmailVerificationScreenProps) {
+export default function EmailVerificationScreen({
+  navigation,
+  route,
+}: EmailVerificationScreenProps) {
   const { t } = useTranslation('certification');
   const [code, setCode] = useState('');
   const [verificationError, setVerificationError] = useState(false);
@@ -18,7 +36,7 @@ export default function EmailVerificationScreen({ navigation, route }: EmailVeri
   const [isSubmiting, setisSubmiting] = useState(false);
 
   const handleResend = async () => {
-    await AuthRepository.sendCodeByMail({ email, univName });
+    await AuthRepository.sendCodeByMail({ email });
     setCode('');
     setVerificationError(false);
   };
@@ -28,7 +46,6 @@ export default function EmailVerificationScreen({ navigation, route }: EmailVeri
     setisSubmiting(true);
     const { success } = await AuthRepository.verifyCodeByMail({
       email,
-      univName,
       code,
     });
     if (success) {
