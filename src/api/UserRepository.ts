@@ -3,8 +3,8 @@ import { UserResponseDTO } from '@/types/UserDTO';
 import API from './API';
 
 class UserRepository {
-  async get(): Promise<UserResponseDTO> {
-    const { data } = await API.get(`/users`);
+  async get(id: number): Promise<UserResponseDTO> {
+    const { data } = await API.get(`/users/${id}`);
     return data;
   }
 
