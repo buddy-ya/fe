@@ -1,13 +1,14 @@
 import { User } from '@/types';
+import { UserResponseDTO } from '@/types/UserDTO';
 import API from './API';
 
 class UserRepository {
-  async get() {
+  async get(): Promise<UserResponseDTO> {
     const { data } = await API.get(`/users`);
     return data;
   }
 
-  async create(dto: User.createInfoDTO) {
+  async create(dto: User.createInfoDTO): Promise<UserResponseDTO> {
     const { data } = await API.post('/users', dto);
     return data;
   }
