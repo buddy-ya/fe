@@ -1,21 +1,20 @@
+import { CommentList, FeedItem, KeyboardLayout, Layout, Input } from '@/components';
+import { useFeedDetail } from '@/hooks';
+import { useModalStore, useUserStore } from '@/store';
 import { MoreVertical } from 'lucide-react-native';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Alert, Keyboard, RefreshControl, ScrollView, TouchableOpacity } from 'react-native';
-import { useAuthCheck, useFeedDetail } from '@/hooks';
-import { CommentList, FeedItem, KeyboardLayout, Layout, CommentInput, Input } from '@/components';
 import { FeedOptionModal } from '@/components/modal/BottomOption/FeedOptionModal';
-import { useModalStore } from '@/store';
 
 export default function FeedDetailScreen({ navigation, route }) {
   const { feedId } = route.params;
+  const isCertificated = useUserStore((state) => state.isCertificated);
   const [comment, setComment] = useState('');
   const { t } = useTranslation('feed');
-  const modalVisible = useModalStore(state => state.visible);
-  const handleModalOpen = useModalStore(state => state.handleOpen);
-  const handleModalClose = useModalStore(state => state.handleClose);
-  const { checkAuth } =
-    useAuthCheck();
+  const modalVisible = useModalStore((state) => state.visible);
+  const handleModalOpen = useModalStore((state) => state.handleOpen);
+  const handleModalClose = useModalStore((state) => state.handleClose);
 
   const { feed, comments, isRefetching, handleFeedActions, handleCommentActions, handleRefresh } =
     useFeedDetail({
@@ -53,10 +52,12 @@ export default function FeedDetailScreen({ navigation, route }) {
     Keyboard.dismiss();
 
     try {
-      const { isCertificated } = await checkAuth();
-      !isCertificated && handleModalOpen('studentCertification');
-      isCertificated && await handleCommentActions.submit(comment);
-      setComment('');
+      if (isCertificated) {
+        isCertificated && (await handleCommentActions.submit(comment));
+        setComment('');
+      } else {
+        !isCertificated && handleModalOpen('studentCertification');
+      }
     } catch (error) {
       console.error('Comment submission failed:', error);
     }
@@ -71,15 +72,16 @@ export default function FeedDetailScreen({ navigation, route }) {
         disableBottomSafeArea
         onBack={() => navigation.goBack()}
         headerRight={
-          <TouchableOpacity onPress={() => handleModalOpen('feed')} hitSlop={{ bottom: 20, left: 20 }}>
+          <TouchableOpacity
+            onPress={() => handleModalOpen('feed')}
+            hitSlop={{ bottom: 20, left: 20 }}
+          >
             <MoreVertical size={24} color="#797979" />
           </TouchableOpacity>
         }
       >
         <KeyboardLayout
-          footer={
-            <Input value={comment} onChange={setComment} onSubmit={handleCommentSubmit} />
-          }
+          footer={<Input value={comment} onChange={setComment} onSubmit={handleCommentSubmit} />}
         >
           <ScrollView
             showsVerticalScrollIndicator={false}
@@ -113,7 +115,6 @@ export default function FeedDetailScreen({ navigation, route }) {
         feed={feed}
         onClose={() => handleModalClose('feed')}
       />
-
     </>
   );
 }

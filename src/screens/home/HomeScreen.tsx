@@ -1,19 +1,19 @@
+import { feedKeys, FeedRepository } from '@/api';
+import { Button, CategoryPager, FeedList, InnerLayout, Layout } from '@/components';
+import { useFeedList } from '@/hooks';
+import { useModalStore, useUserStore } from '@/store';
 import LogoIcon from '@assets/icons/logo.svg';
 import { Bell, Plus, Search } from 'lucide-react-native';
 import { useState } from 'react';
 import { TouchableOpacity, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { feedKeys, FeedRepository } from '@/api';
-import { useAuthCheck, useFeedList } from '@/hooks';
-import { Button, CategoryPager, FeedList, InnerLayout, Layout } from '@/components';
 import { isAndroid, CATEGORIES } from '@/utils';
-import { useModalStore } from '@/store';
 
 export default function HomeScreen({ navigation }) {
   const STALE_TIME = 1000 * 60;
-  const handleModalOpen = useModalStore(state => state.handleOpen);
+  const isCertificated = useUserStore((state) => state.isCertificated);
+  const handleModalOpen = useModalStore((state) => state.handleOpen);
   const [activeCategory, setActiveCategory] = useState(CATEGORIES[0].id);
-  const { checkAuth } = useAuthCheck();
 
   const feedListData = useFeedList({
     queryKey: feedKeys.lists(activeCategory),
@@ -34,7 +34,6 @@ export default function HomeScreen({ navigation }) {
   };
 
   const handleWriteButton = async () => {
-    const { isCertificated } = await checkAuth();
     isCertificated ? navigation.navigate('FeedWrite') : handleModalOpen('studentCertification');
   };
 
