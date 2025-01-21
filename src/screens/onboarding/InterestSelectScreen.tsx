@@ -1,16 +1,15 @@
+import { UserRepository } from '@/api';
+import { Button, Chip, Heading, InnerLayout, Layout, MyText } from '@/components';
+import { MyPageStackParamList, OnboardingStackParamList } from '@/navigation/navigationRef';
+import { TokenService } from '@/service';
+import { useOnboardingStore } from '@/store';
+import { NativeStackNavigationProp, NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useState } from 'react';
+import { memo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ScrollView, View } from 'react-native';
-import { useOnboardingStore } from '@/store';
 import type { InterestID } from '@/utils';
 import { INTEREST_CATEGORIES, INTEREST_ICONS, logError } from '@/utils';
-import { OnboardingRepository, UserRepository } from '@/api';
-import { Button, Chip, Heading, InnerLayout, Layout, MyText } from '@/components';
-import { TokenService } from '@/service';
-import { NativeStackNavigationProp, NativeStackScreenProps } from '@react-navigation/native-stack';
-import { MyPageStackParamList, OnboardingStackParamList } from '@/navigation/navigationRef';
-
-const MAX_SELECT = 8;
 
 interface Interest {
   id: InterestID;
@@ -21,19 +20,21 @@ type InterestSelectProps =
   | NativeStackScreenProps<OnboardingStackParamList, 'OnboardingInterestSelect'>
   | NativeStackScreenProps<MyPageStackParamList, 'EditInterest'>;
 
-export default function InterestSelectScreen({ navigation, route }: InterestSelectProps) {
+const MAX_SELECT = 8;
+
+function InterestSelectScreen({ navigation, route }: InterestSelectProps) {
   const { t } = useTranslation(['onboarding', 'interests']);
   const { updateOnboardingData, ...onboardingData } = useOnboardingStore();
 
   const isEditMode =
-  'params' in route && route.params && 'isEditMode' in route.params
-    ? route.params.isEditMode
-    : false;
+    'params' in route && route.params && 'isEditMode' in route.params
+      ? route.params.isEditMode
+      : false;
 
-const initInterests =
-  'params' in route && route.params && 'initialInterests' in route.params
-    ? route.params.initialInterests
-    : [];
+  const initInterests =
+    'params' in route && route.params && 'initialInterests' in route.params
+      ? route.params.initialInterests
+      : [];
 
   const [selectedInterests, setSelectedInterests] = useState(
     initInterests.map((interestId) => ({
@@ -41,7 +42,6 @@ const initInterests =
       icon: INTEREST_ICONS[interestId],
     }))
   );
-
 
   const handleToggleSelect = (interest: Interest) => {
     setSelectedInterests((prev) => {
@@ -57,17 +57,23 @@ const initInterests =
     try {
       const interests = selectedInterests.map((interest) => interest.id);
       if (isEditMode) {
-        await UserRepository.updateInterests(interests);
-        const myPageNav = navigation as NativeStackNavigationProp<MyPageStackParamList, 'EditInterest'>;
+        await UserRepository.update({ key: 'interests', values: interests });
+        const myPageNav = navigation as NativeStackNavigationProp<
+          MyPageStackParamList,
+          'EditInterest'
+        >;
         myPageNav.goBack();
-      } else{
+      } else {
         updateOnboardingData({ interests });
-        const { accessToken, refreshToken } = await OnboardingRepository.create({
+        const { accessToken, refreshToken } = await UserRepository.create({
           ...onboardingData,
           interests,
         });
         await TokenService.save(accessToken, refreshToken);
-        const onboardNav = navigation as NativeStackNavigationProp<OnboardingStackParamList, 'OnboardingInterestSelect'>;
+        const onboardNav = navigation as NativeStackNavigationProp<
+          OnboardingStackParamList,
+          'OnboardingInterestSelect'
+        >;
         onboardNav.reset({
           index: 0,
           routes: [{ name: 'Tab' }],
@@ -132,3 +138,5 @@ const initInterests =
     </Layout>
   );
 }
+
+export default memo(InterestSelectScreen);

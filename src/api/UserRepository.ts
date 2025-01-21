@@ -1,38 +1,33 @@
-import API from "./API";
+import { User } from '@/types';
+import API from './API';
 
 class UserRepository {
+  async get() {
+    const { data } = await API.get(`/users`);
+    return data;
+  }
 
-    async get() {
-        const { data } = await API.get(`/mypage`);
-        return data;
-    };
+  async create(dto: User.createInfoDTO) {
+    const { data } = await API.post('/users', dto);
+    return data;
+  }
 
-    async updateName(name: string) {
-        const { data } = await API.patch(`/mypage/update/name`, { name });
-        return data;
-    };
+  async update({ key, values }: { key: string; values: string[] }) {
+    const { data } = await API.patch(`/users`, { key, values });
+    return data;
+  }
 
-    async updateLanguages(languages: string[]) {
-        const { data } = await API.patch(`/mypage/update/languages`, { languages });
-        return data;
-    };
+  async updateProfileImage(imageKey: string) {
+    const { data } = await API.patch(
+      `/users/update/profile-default-image?profileImageKey=${imageKey}`
+    );
+    return data;
+  }
 
-    async updateInterests(interests: string[]) {
-        const { data } = await API.patch(`/mypage/update/interests`, { interests });
-        return data;
-    };
-
-    async updateProfileImage(imageKey: string) {
-        const { data } = await API.patch(
-            `/mypage/update/profile-default-image?profileImageKey=${imageKey}`
-        );
-        return data;
-    };
-
-    async delete() {
-        const { data } = await API.delete(`/mypage/delete`);
-        return data;
-    }
+  async delete() {
+    const { data } = await API.delete(`/users/delete`);
+    return data;
+  }
 }
 
 export default new UserRepository();

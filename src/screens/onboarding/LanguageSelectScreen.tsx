@@ -1,12 +1,21 @@
+import { UserRepository } from '@/api';
+import {
+  Button,
+  Heading,
+  HeadingDescription,
+  InnerLayout,
+  Layout,
+  MultiSelectItem,
+  MyText,
+  SearchInput,
+} from '@/components';
+import { MyPageStackParamList, OnboardingStackParamList } from '@/navigation/navigationRef';
+import { useOnboardingStore } from '@/store';
+import { NativeStackNavigationProp, NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Keyboard, TouchableWithoutFeedback, View } from 'react-native';
-import { useOnboardingStore } from '@/store';
 import { LANGUAGES } from '@/utils';
-import { UserRepository } from '@/api';
-import { Button, Heading, HeadingDescription, InnerLayout, Layout, MultiSelectItem, MyText, SearchInput } from '@/components';
-import { NativeStackNavigationProp, NativeStackScreenProps } from '@react-navigation/native-stack';
-import { MyPageStackParamList, OnboardingStackParamList } from '@/navigation/navigationRef';
 
 const MAX_SELECT = 4;
 
@@ -23,18 +32,18 @@ export default function LanguageSelectScreen({ navigation, route }: LanguageSele
   const { updateOnboardingData } = useOnboardingStore();
 
   const isEditMode =
-  'params' in route && route.params && 'isEditMode' in route.params
-    ? route.params.isEditMode
-    : false;
+    'params' in route && route.params && 'isEditMode' in route.params
+      ? route.params.isEditMode
+      : false;
 
-const initialLangs =
-  'params' in route && route.params && 'initialLanguages' in route.params
-    ? route.params.initialLanguages
-    : [];
+  const initialLangs =
+    'params' in route && route.params && 'initialLanguages' in route.params
+      ? route.params.initialLanguages
+      : [];
 
-    const [selectedLanguages, setSelectedLanguages] = useState<Language[]>(
-      initialLangs.map((id: string) => ({ id }))
-    );
+  const [selectedLanguages, setSelectedLanguages] = useState<Language[]>(
+    initialLangs.map((id: string) => ({ id }))
+  );
 
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -55,12 +64,18 @@ const initialLangs =
   const handleNavigateButton = async () => {
     const languages = selectedLanguages.map((lang) => lang.id);
     if (isEditMode) {
-      await UserRepository.updateLanguages(languages);
-      const myPageNav = navigation as NativeStackNavigationProp<MyPageStackParamList, 'EditLanguage'>;
+      await UserRepository.update({ key: 'languages', values: languages });
+      const myPageNav = navigation as NativeStackNavigationProp<
+        MyPageStackParamList,
+        'EditLanguage'
+      >;
       myPageNav.goBack();
     } else {
       updateOnboardingData({ languages });
-      const onboardNav = navigation as NativeStackNavigationProp<OnboardingStackParamList, 'OnboardingLanguageSelect'>;
+      const onboardNav = navigation as NativeStackNavigationProp<
+        OnboardingStackParamList,
+        'OnboardingLanguageSelect'
+      >;
       onboardNav.navigate('OnboardingMajorSelect');
     }
   };
