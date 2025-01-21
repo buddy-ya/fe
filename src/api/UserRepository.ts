@@ -25,7 +25,7 @@ class UserRepository {
   }
 
   async delete() {
-    const { data } = await API.delete(`/users/delete`);
+    const { data } = await API.delete(`/users`);
     return data;
   }
 }
