@@ -21,7 +21,7 @@ export default function RoomListScreen({ navigation }: { navigation: NavigationP
   const [activeIndex, setActiveIndex] = useState(0);
   // TODO: 스크롤 등 했을때 다시 불러오는 로직 필요
   const { data } = useSuspenseQuery({
-    queryKey: ['roomList'],
+    queryKey: ['roomList', activeIndex],
     queryFn: RoomRepository.getRoomList,
   });
 
