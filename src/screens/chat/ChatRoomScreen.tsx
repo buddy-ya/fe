@@ -3,10 +3,12 @@ import { ImagePickerOptions } from "expo-image-picker";
 import { InnerLayout, Input, KeyboardLayout, Layout, MessageItem, MyText } from "@/components";
 import { EllipsisVertical, ChevronLeft, Image } from "lucide-react-native";
 import { TouchableOpacity, FlatList, View } from "react-native";
-import { NavigationProp } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 import { useImageUpload } from "@/hooks";
 import { Message } from "@/model";
 import { useMessageStore } from "@/store";
+import { ChatStackParamList } from "@/navigation/navigationRef";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
 const IMAGE_PICKER_OPTIONS: ImagePickerOptions = {
   mediaTypes: ["images"],
@@ -119,14 +121,16 @@ const data: Message[] = [
   },
 ];
 
-const ChatRoomScreen = ({ navigation, route }: { navigation: NavigationProp<any>, route }) => {
+type ChatRoomScreenProps = NativeStackScreenProps<ChatStackParamList, 'ChatRoom'>;
 
+const ChatRoomScreen = ({ route }: ChatRoomScreenProps) => {
+
+  const navigation = useNavigation();
   const { handleUpload, loading } = useImageUpload({ options: IMAGE_PICKER_OPTIONS });
   const { text, messages, isLoading, error, handleChange, handleSubmit, setMessage, addMessage, deleteMessage } = useMessageStore();
   const flatListRef = useRef<FlatList>(null);
-  const title = route.params.title;
+  const title = route?.params?.title;
   const profileImageUrl = route.params.imageUrl;
-  const country = route.params.country;
 
   // TODO: 추후에 알림 등으로 바로 들어온 경우 뒤로가기 스택이 없으므로 룸리스트로 보내게끔 해야 할 듯
   const handleBack = () => {

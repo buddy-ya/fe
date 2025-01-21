@@ -31,8 +31,8 @@ export interface VerifyCodeByMailDTO extends EmailDTO {
 // Response DTO
 export interface VerifyCodeResponse extends PhoneDTO {
     status: string
-    accessToken: string | null,
-    refreshToken: string | null;
+    accessToken: string,
+    refreshToken: string;
 }
 
 export interface CheckCertificatedResponse {

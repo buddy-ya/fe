@@ -1,4 +1,4 @@
-type Gender = "male" | "female" | "unknown";
+type Gender = 'male' | 'female' | 'unknown' | null;
 
 export interface createInfoDTO {
     name: string;

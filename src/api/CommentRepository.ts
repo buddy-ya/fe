@@ -4,12 +4,12 @@ import { Comment } from "@/types";
 class CommentRepository {
 
     // TODO: get 으로 바꿔도 될 듯?
-    async getComments({ feedId }: Comment.GetCommentsDTO): Promise<Comment.CommonResponse[]> {
+    async getComments({ feedId }: Comment.GetCommentsDTO): Promise<Comment.CommmentResponse[]> {
         const { data } = await API.get(`/feeds/${feedId}/comments`);
         return data;
     };
 
-    async create({ feedId, content }: Comment.CreateDTO): Promise<Comment.CommonResponse> {
+    async create({ feedId, content }: Comment.CreateDTO): Promise<Comment.CommmentResponse> {
         const { data } = await API.post(`/feeds/${feedId}/comments`, {
             content,
         });

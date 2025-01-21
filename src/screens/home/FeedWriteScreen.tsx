@@ -9,6 +9,8 @@ import { CATEGORIES } from '@/utils';
 import { Layout, InnerLayout, KeyboardLayout, Loading, MyText, CategorySelectModal, ImagePreview } from '@/components';
 import { ImageFile } from '@/types';
 import { useModalStore } from '@/store';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { FeedStackParamList } from '@/navigation/navigationRef';
 
 const FILTERED_CATEGORIES = CATEGORIES.filter((category) => category.id !== 'popular');
 
@@ -20,7 +22,9 @@ const IMAGE_PICKER_OPTIONS: ImagePicker.ImagePickerOptions = {
   selectionLimit: 5,
 };
 
-export default function FeedWriteScreen({ navigation, route }) {
+type FeedWriteScreenProps = NativeStackScreenProps<FeedStackParamList, 'FeedWrite'>;
+
+export default function FeedWriteScreen({ navigation, route }: FeedWriteScreenProps) {
   const feed = route.params?.feed;
   const isEdit = route.params?.isEdit;
   const modalVisible = useModalStore(state => state.visible.category);

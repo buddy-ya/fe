@@ -1,6 +1,7 @@
 import { API } from '@/api';
 import { TokenService } from '@/service';
 import { useSuspenseQuery } from '@tanstack/react-query';
+import * as SecureStore from 'expo-secure-store';
 
 interface Props {
   children: React.ReactNode;

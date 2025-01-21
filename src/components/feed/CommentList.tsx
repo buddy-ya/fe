@@ -1,4 +1,3 @@
-import { CommentType } from '@/screens/home/types';
 import { MoreVertical } from 'lucide-react-native';
 import { useTranslation } from 'react-i18next';
 import { Image, TouchableOpacity, View } from 'react-native';
@@ -6,6 +5,7 @@ import { getCountryFlag, getTimeAgo } from '@/utils';
 import { CommentOptionModal, MyText } from '../common';
 import { useModalStore } from '@/store';
 import { useState } from 'react';
+import { Comment } from '@/model';
 
 interface CommentLabelProps {
   isFeedOwner: boolean;
@@ -37,12 +37,12 @@ const CommentLabel = ({ isFeedOwner, isCommentOwner }: CommentLabelProps) => {
 
 interface CommentListProps {
   feed: any;
-  comments: CommentType[];
+  comments: Comment[];
 }
 
 export default function CommentList({ feed, comments }: CommentListProps) {
   const { t } = useTranslation('feed');
-  const [comment, setComment] = useState({
+  const [comment, setComment] = useState<Comment>({
     id: -1,
     isCommentOwner: false,
     isFeedOwner: false,
@@ -57,7 +57,7 @@ export default function CommentList({ feed, comments }: CommentListProps) {
   const handleModalOpen = useModalStore(state => state.handleOpen);
   const handleModalClose = useModalStore(state => state.handleClose);
 
-  const handleCommentOptions = (comment) => {
+  const handleCommentOptions = (comment: Comment) => {
     setComment(comment);
     handleModalOpen('comment');
   }

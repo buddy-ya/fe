@@ -4,8 +4,15 @@ import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 import { useOnboardingStore } from '@/store';
 import { Button, Heading, HeadingDescription, InnerLayout, Layout, MyText } from '@/components';
+import { OnboardingStackParamList } from '@/navigation/navigationRef';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
-export default function NotificationScreen({ navigation, route }) {
+type OnboardingNotificationScreenProps = NativeStackScreenProps<
+  OnboardingStackParamList,
+  'OnboardingNotification'
+>;
+
+export default function NotificationScreen({ navigation, route }: OnboardingNotificationScreenProps) {
   const { t } = useTranslation('onboarding');
   const { updateOnboardingData } = useOnboardingStore();
   const isExistingMember = route.params?.isExistingMember;

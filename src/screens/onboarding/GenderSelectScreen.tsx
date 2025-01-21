@@ -3,10 +3,14 @@ import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 import { useOnboardingStore } from '@/store';
 import { Button, Heading, HeadingDescription, InnerLayout, Label, Layout, MyText, SelectItem } from '@/components';
+import { OnboardingStackParamList } from '@/navigation/navigationRef';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
 type Gender = 'male' | 'female' | 'unknown' | null;
 
-export default function GenderScreen({ navigation }) {
+export type OnboardingGenderSelectScreenProps = NativeStackScreenProps<OnboardingStackParamList, 'OnboardingGenderSelect'>;
+
+export default function GenderScreen({ navigation }: OnboardingGenderSelectScreenProps) {
   const [selectedGender, setSelectedGender] = useState<Gender>(null);
   const { t } = useTranslation('onboarding');
   const { updateOnboardingData } = useOnboardingStore();

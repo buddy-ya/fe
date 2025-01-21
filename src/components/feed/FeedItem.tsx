@@ -1,4 +1,3 @@
-import { Feed } from '@/screens/home/types';
 import ThumbsUpActive from '@assets/icons/feed/like-active.svg';
 import { Bookmark, MessageSquare, ThumbsUp } from 'lucide-react-native';
 import { useEffect, useState } from 'react';
@@ -6,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { Dimensions, Image, TouchableOpacity, View } from 'react-native';
 import { getCountryFlag, getTimeAgo } from '@/utils';
 import { MyText } from '../common';
+import { Feed } from '@/model';
 
 const IMAGE_CONFIG_DETAIL = {
   containerClass: 'w-full',
@@ -30,11 +30,10 @@ interface ImageDimensions {
 
 interface FeedItemProps {
   feed: Feed;
-  onLike: (id: number) => void;
-  onBookmark: (id: number) => void;
+  onLike?: (id: number) => void;
+  onBookmark?: (id: number) => void;
   onPress?: (id: number) => void;
-  showAllContent?: boolean;
-  disablePress?: boolean;
+  showAllContent?: boolean,
 }
 
 export default function FeedItem({
@@ -43,7 +42,6 @@ export default function FeedItem({
   onBookmark,
   onPress,
   showAllContent = false,
-  disablePress = false,
 }: FeedItemProps) {
   const [imageDimensions, setImageDimensions] = useState<Record<string, ImageDimensions>>({});
   const { t } = useTranslation('feed');
@@ -65,6 +63,42 @@ export default function FeedItem({
   } = feed;
 
   const screenWidth = Dimensions.get('window').width;
+
+  const actions = [
+    {
+      icon: ThumbsUp,
+      activeIcon: ThumbsUpActive,
+      label: t('action.like'),
+      count: likeCount,
+      isActive: isLiked,
+      onPress: () => onLike?.(id),
+    },
+    {
+      icon: MessageSquare,
+      label: t('action.comment'),
+      count: commentCount,
+      onPress: () => handleComment(id),
+    },
+    {
+      icon: Bookmark,
+      label: t('action.bookmark'),
+      isActive: isBookmarked,
+      onPress: () => onBookmark?.(id),
+    },
+  ];
+
+  const calculateImageHeight = (url: string) => {
+    const dims = imageDimensions[url];
+    if (!dims) return undefined;
+    const paddingWidth = 32;
+    const contentWidth = screenWidth - paddingWidth;
+    const aspectRatio = dims.height / dims.width;
+    return contentWidth * aspectRatio;
+  };
+
+  const handleComment = (commentId: number) => {
+    onPress?.(commentId);
+  };
 
   useEffect(() => {
     if (!showAllContent) return;
@@ -96,15 +130,6 @@ export default function FeedItem({
       isComponentMounted = false;
     };
   }, [showAllContent, imageUrls]);
-
-  const calculateImageHeight = (url: string) => {
-    const dims = imageDimensions[url];
-    if (!dims) return undefined;
-    const paddingWidth = 32;
-    const contentWidth = screenWidth - paddingWidth;
-    const aspectRatio = dims.height / dims.width;
-    return contentWidth * aspectRatio;
-  };
 
   const renderLimitedImages = () => {
     const limitedUrls = imageUrls.slice(0, 2);
@@ -156,32 +181,6 @@ export default function FeedItem({
     );
   };
 
-  const handleComment = (feedId: number) => {
-    onPress?.(id);
-  };
-
-  const actions = [
-    {
-      icon: ThumbsUp,
-      activeIcon: ThumbsUpActive,
-      label: t('action.like'),
-      count: likeCount,
-      isActive: isLiked,
-      onPress: () => onLike(id),
-    },
-    {
-      icon: MessageSquare,
-      label: t('action.comment'),
-      count: commentCount,
-      onPress: () => handleComment(id),
-    },
-    {
-      icon: Bookmark,
-      label: t('action.bookmark'),
-      isActive: isBookmarked,
-      onPress: () => onBookmark(id),
-    },
-  ];
 
   const renderContent = () => {
     return (
@@ -254,7 +253,7 @@ export default function FeedItem({
                     color="text-textDescription"
                     className={`ml-1 ${index !== actions.length - 1 ? 'min-w-[16px]' : ''}`}
                   >
-                    {count > 0 ? count : ''}
+                    {count && count > 0 ? count : ''}
                   </MyText>
                 </View>
               </TouchableOpacity>
@@ -265,7 +264,7 @@ export default function FeedItem({
     );
   };
 
-  if (disablePress) {
+  if (!onPress) {
     return renderContent();
   }
 

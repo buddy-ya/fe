@@ -2,11 +2,15 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Text, View } from 'react-native';
 import { Heading, InnerLayout, Layout, SelectItem, Button } from '@/components';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { OnboardingStackParamList } from '@/navigation/navigationRef';
 
 
 type StudentType = 'korean' | 'foreign' | null;
 
-export default function StudentTypeScreen({ navigation }) {
+type StudentTypeScreenProps = NativeStackScreenProps<OnboardingStackParamList, 'OnboardingStudentTypeSelect'>;
+
+export default function StudentTypeScreen({ navigation }: StudentTypeScreenProps) {
   const [selectedType, setSelectedType] = useState<StudentType>(null);
   const { t } = useTranslation('onboarding');
 

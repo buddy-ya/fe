@@ -16,7 +16,7 @@ export const MAJOR_IDS = [
 
 export type MajorID = (typeof MAJOR_IDS)[number];
 
-export const MAJOR_ICONS: Record<MajorID, string> = {
+export const MAJOR_ICONS: Record<string, string> = {
   humanities: "📚",
   social_sciences: "🌏",
   business: "💼",

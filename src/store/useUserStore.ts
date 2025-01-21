@@ -1,7 +1,6 @@
 import { create } from "zustand";
 
 
-type UpdateUserType = Partial<UserState>
 
 interface UserState {
     isCertificated: boolean,
@@ -10,7 +9,7 @@ interface UserState {
 }
 
 interface UserAction {
-    update: ({ isCertificated, isStudentIdCardRequested, isKorean }: UpdateUserType) => void;
+    update: ({ isCertificated, isStudentIdCardRequested, isKorean }: UserState) => void;
 }
 
 export const useUserStore = create<UserState & UserAction>((set) => ({

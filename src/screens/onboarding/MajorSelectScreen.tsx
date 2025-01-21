@@ -5,6 +5,8 @@ import { useOnboardingStore } from '@/store';
 import type { MajorID } from '@/utils';
 import { MAJORS } from '@/utils';
 import { Button, Heading, InnerLayout, Layout, MultiSelectItem, MyText } from '@/components';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { OnboardingStackParamList } from '@/navigation/navigationRef';
 
 
 interface Major {
@@ -12,7 +14,12 @@ interface Major {
   icon: string;
 }
 
-export default function MajorSelectScreen({ navigation }) {
+type OnboardingMajorSelectScreenProps = NativeStackScreenProps<
+  OnboardingStackParamList,
+  'OnboardingMajorSelect'
+>;
+
+export default function MajorSelectScreen({ navigation }: OnboardingMajorSelectScreenProps) {
   const [selectedMajors, setSelectedMajors] = useState<Major[]>([]);
   const { t } = useTranslation(['onboarding', 'majors']);
   const { updateOnboardingData } = useOnboardingStore();

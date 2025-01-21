@@ -1,13 +1,13 @@
-import { Feed } from '@/screens/home/types';
 import { FlatList, RefreshControl, RefreshControlProps } from 'react-native';
 import { memo } from 'react';
-import { EmptyState } from '../common';
 import FeedItem from './FeedItem';
+import { EmptyState } from '../common';
+import { Feed } from '@/model';
 
 interface FeedListProps {
   feeds: Feed[];
-  onLike: (id: number) => void;
-  onBookmark: (id: number) => void;
+  onLike?: (id: number) => void;
+  onBookmark?: (id: number) => void;
   onPress: (id: number) => void;
   isLoading: boolean;
   hasMore: boolean;
@@ -15,8 +15,6 @@ interface FeedListProps {
   onLoadMore: () => void;
   refreshControl?: RefreshControlProps | null;
   emptyStateMessage?: string;
-  showBookmarkButton?: boolean;
-  disableActions?: boolean;
 }
 
 function FeedList({
@@ -28,9 +26,7 @@ function FeedList({
   onLoadMore,
   refreshControl,
   hasMore,
-  emptyStateMessage,
-  showBookmarkButton = true,
-  disableActions = false,
+  emptyStateMessage
 }: FeedListProps) {
   if (feeds.length === 0) {
     return <EmptyState message={emptyStateMessage || '게시글이 없습니다'} />;
@@ -43,8 +39,8 @@ function FeedList({
         <FeedItem
           key={item.id}
           feed={item}
-          onLike={disableActions ? undefined : onLike}
-          onBookmark={disableActions || !showBookmarkButton ? undefined : onBookmark}
+          onLike={onLike}
+          onBookmark={onBookmark}
           onPress={onPress}
         />
       )}

@@ -4,22 +4,22 @@ import { useTranslation } from 'react-i18next';
 import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import MyText from '../common/MyText';
 
-interface SelectOption {
+export interface BaseOption {
   id: string;
   icon?: string;
 }
 
-interface SelectItemProps {
-  options: SelectOption[];
-  selectedValues: SelectOption[];
-  onSelect: (value: SelectOption) => void;
+interface MultiSelectItemProps<T extends { id: string; icon?: string }> {
+  options: T[];
+  selectedValues: T[];
+  onSelect: (value: T) => void;
   maxSelect?: number;
   multiple?: boolean;
   nameSpace: string;
   className?: string;
 }
 
-function MultiSelectItem({
+function MultiSelectItem<T extends { id: string; icon?: string } = BaseOption>({
   options,
   selectedValues,
   onSelect,
@@ -27,13 +27,12 @@ function MultiSelectItem({
   multiple = false,
   nameSpace,
   className,
-}: SelectItemProps) {
+}: MultiSelectItemProps<T>) {
   const { t } = useTranslation(nameSpace);
 
-  const isSelected = (option: SelectOption) =>
-    selectedValues.some((selected) => selected.id === option.id);
+  const isSelected = (option: T) => selectedValues.some((selected) => selected.id === option.id);
 
-  const isDisabled = (option: SelectOption) =>
+  const isDisabled = (option: T) =>
     !multiple ? false : !isSelected(option) && selectedValues.length >= maxSelect;
 
   return (

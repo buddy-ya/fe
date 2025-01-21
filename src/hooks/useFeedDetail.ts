@@ -1,28 +1,26 @@
 import { CommentRepository, feedKeys, FeedRepository } from '@/api';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQueryClient, useSuspenseQuery } from '@tanstack/react-query';
 
 interface UseFeedDetailProps {
   feedId: number;
   enabled?: boolean;
 }
 
-export const useFeedDetail = ({ feedId, enabled = true }: UseFeedDetailProps) => {
+export const useFeedDetail = ({ feedId }: UseFeedDetailProps) => {
   const queryClient = useQueryClient();
 
   const {
     data: feed,
     refetch: refetchFeed,
     isRefetching: isRefetchingFeed,
-  } = useQuery({
+  } = useSuspenseQuery({
     queryKey: feedKeys.detail(feedId),
     queryFn: () => FeedRepository.get({ feedId }),
-    enabled,
   });
 
-  const { data: comments, refetch: refetchComments } = useQuery({
+  const { data: comments, refetch: refetchComments } = useSuspenseQuery({
     queryKey: ['feedComments', feedId],
     queryFn: () => CommentRepository.getComments({ feedId }),
-    enabled,
   });
 
   const likeMutation = useMutation({

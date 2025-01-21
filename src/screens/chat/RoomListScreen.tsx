@@ -1,7 +1,8 @@
 import { RoomRepository } from '@/api';
 import { ChatPaper, InnerLayout, Layout, RoomList } from '@/components';
 import { Room } from '@/model';
-import { NavigationProp } from '@react-navigation/native';
+import { ChatStackParamList } from '@/navigation/navigationRef';
+import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { Fragment, useState } from 'react';
 import { Text, View } from 'react-native';
@@ -17,7 +18,9 @@ export const CATEGORIES = [
   },
 ];
 
-export default function RoomListScreen({ navigation }: { navigation: NavigationProp<any> }) {
+type RoomListNavigationProps = NativeStackScreenProps<ChatStackParamList, 'RoomList'>;
+
+export default function RoomListScreen({ navigation }: RoomListNavigationProps) {
   const [activeIndex, setActiveIndex] = useState(0);
   // TODO: 스크롤 등 했을때 다시 불러오는 로직 필요
   const { data } = useSuspenseQuery({

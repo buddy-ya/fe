@@ -4,8 +4,15 @@ import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 import { useOnboardingStore } from '@/store';
 import { Button, Heading, HeadingDescription, InnerLayout, Label, Layout, MyText, SelectItem } from '@/components';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { OnboardingStackParamList } from '@/navigation/navigationRef';
 
-export default function UniversitySelectScreen({ navigation }) {
+type OnboardingUniversitySelectScreenProps = NativeStackScreenProps<
+  OnboardingStackParamList,
+  'OnboardingUniversitySelect'
+>;
+
+export default function UniversitySelectScreen({ navigation }: OnboardingUniversitySelectScreenProps) {
   const [selected, setSelected] = useState(true);
   const { t } = useTranslation('onboarding');
   const { updateOnboardingData } = useOnboardingStore();

@@ -12,12 +12,22 @@ import {
   MyText,
   OTPInput,
 } from '@/components';
+import { FeedStackParamList } from '@/navigation/navigationRef';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { Send } from 'lucide-react-native';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 
-export default function EmailVerificationScreen({ navigation, route }) {
+type EmailVerificationScreenProps = NativeStackScreenProps<
+  FeedStackParamList,
+  'EmailVerificationCode'
+>;
+
+export default function EmailVerificationScreen({
+  navigation,
+  route,
+}: EmailVerificationScreenProps) {
   const { t } = useTranslation('certification');
   const [code, setCode] = useState('');
   const [verificationError, setVerificationError] = useState(false);

@@ -1,8 +1,13 @@
 import { useTranslation } from 'react-i18next';
 import { Text, View, Image } from 'react-native';
 import { Heading, HeadingDescription, InnerLayout, Layout, Button } from '@/components';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { OnboardingStackParamList } from '@/navigation/navigationRef';
 
-export default function StudentInfoScreen({ navigation }) {
+type StudentInfoScreenProps = NativeStackScreenProps<OnboardingStackParamList, 'OnboardingStudentInfo'>;
+
+export default function StudentInfoScreen({ navigation, route }: StudentInfoScreenProps) {
+
   const { t } = useTranslation('onboarding');
   const handleNavigate = () => {
     navigation.replace('OnboardingUniversitySelect');
