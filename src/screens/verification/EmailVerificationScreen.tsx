@@ -22,7 +22,6 @@ export default function EmailVerificationScreen({ navigation, route }) {
   const [code, setCode] = useState('');
   const [verificationError, setVerificationError] = useState(false);
   const email = route.params?.email;
-  const univName = route.params?.univName;
   const [isSubmiting, setisSubmiting] = useState(false);
 
   const handleResend = async () => {

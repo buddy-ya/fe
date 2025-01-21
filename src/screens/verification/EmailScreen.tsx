@@ -1,9 +1,19 @@
+import { AuthRepository } from '@/api';
+import {
+  ErrorMessage,
+  FooterLayout,
+  Heading,
+  HeadingDescription,
+  InnerLayout,
+  KeyboardLayout,
+  Label,
+  Layout,
+  MyText,
+} from '@/components';
 import { Mail } from 'lucide-react-native';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { View, TextInput } from 'react-native';
-import { AuthRepository } from '@/api';
-import { ErrorMessage, FooterLayout, Heading, HeadingDescription, InnerLayout, KeyboardLayout, Label, Layout, MyText } from '@/components';
 import { EMAIL_REGEX } from '@/utils';
 
 export default function EmailScreen({ navigation }) {
@@ -18,18 +28,12 @@ export default function EmailScreen({ navigation }) {
 
   const handleNavigation = async () => {
     const fullEmail = email + '@sju.ac.kr';
-    const univName = '세종대학교';
-    const requestBody = {
-      email: fullEmail,
-      univName,
-    };
-    const { success } = await AuthRepository.sendCodeByMail(requestBody);
+    const { success } = await AuthRepository.sendCodeByMail({ email: fullEmail });
     if (success) {
       navigation.navigate('EmailVerificationCode', {
         email: fullEmail,
-        univName,
-      })
-    };
+      });
+    }
   };
 
   const footer = (
