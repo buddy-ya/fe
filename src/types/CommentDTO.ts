@@ -15,7 +15,7 @@ export interface DeleteDTO extends BaseDTO {
   commentId: number;
 }
 
-export interface GetCommentsDTO extends BaseDTO {}
+export interface GetCommentListDTO extends BaseDTO {}
 
 // Response DTO
 export interface CommonResponse {

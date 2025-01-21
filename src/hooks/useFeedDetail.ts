@@ -21,7 +21,7 @@ export const useFeedDetail = ({ feedId, enabled = true }: UseFeedDetailProps) =>
 
   const { data: comments, refetch: refetchComments } = useQuery({
     queryKey: ['feedComments', feedId],
-    queryFn: () => CommentRepository.getComments({ feedId }),
+    queryFn: () => CommentRepository.getCommentList({ feedId }),
     enabled,
   });
 
