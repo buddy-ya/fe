@@ -25,4 +25,6 @@ export interface UserResponseDTO {
   majors: string[];
   languages: string[];
   interests: string[];
+  accessToken: string;
+  refreshToken: string;
 }
