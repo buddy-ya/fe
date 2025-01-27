@@ -1,4 +1,8 @@
+import React from 'react';
+import { useTranslation } from 'react-i18next';
 import SplashScreen from '@/screens/SplashScreen';
+import ChatRoomScreen from '@/screens/chat/ChatRoomScreen';
+import RoomListScreen from '@/screens/chat/RoomListScreen';
 import CommentEditScreen from '@/screens/home/CommentEditScreen';
 import FeedDetailScreen from '@/screens/home/FeedDetailScreen';
 import FeedSearchScreen from '@/screens/home/FeedSearchScreen';
@@ -25,6 +29,7 @@ import EmailScreen from '@/screens/verification/EmailScreen';
 import EmailVerificationScreen from '@/screens/verification/EmailVerificationScreen';
 import StudentIdCardCompleteScreen from '@/screens/verification/StudentIdCompleteScreen';
 import StudentIdCardUploadScreen from '@/screens/verification/StudentIdUploadScreen';
+import { useModalStore } from '@/store';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import {
   getFocusedRouteNameFromRoute,
@@ -35,15 +40,16 @@ import {
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import MatchingScreen from '@screens/matching/MatchingScreen';
 import MyPageScreen from '@screens/mypage/MyPageScreen';
-import React from 'react';
-import { useTranslation } from 'react-i18next';
+import { StudentCertificationModal } from '@/components/modal/Common';
 import WelcomeScreen from '../screens/onboarding/WelcomeScreen';
 import { getTabScreenOptions, tabScreenOptions, useTabBarAnimation } from './TabBar';
-import ChatRoomScreen from '@/screens/chat/ChatRoomScreen';
-import RoomListScreen from '@/screens/chat/RoomListScreen';
-import { ChatStackParamList, FeedStackParamList, MyPageStackParamList, navigationRef, OnboardingStackParamList } from './navigationRef';
-import { StudentCertificationModal } from '@/components/modal/Common';
-import { useModalStore } from '@/store';
+import {
+  ChatStackParamList,
+  FeedStackParamList,
+  MyPageStackParamList,
+  navigationRef,
+  OnboardingStackParamList,
+} from './navigationRef';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -93,7 +99,6 @@ function TabNavigator() {
   );
 }
 
-
 function OnboardingNavigator() {
   return (
     <OnboardingStack.Navigator screenOptions={{ headerShown: false }}>
@@ -133,18 +138,21 @@ function OnboardingNavigator() {
 }
 
 function FeedNavigator() {
-
   const navigation = useNavigation();
   const route = useRoute();
   const { animateTabBar } = useTabBarAnimation();
+
   React.useLayoutEffect(() => {
-    const routeName = getFocusedRouteNameFromRoute(route);
-    // FeedHome 일 때만 보임
-    const visible = routeName === 'FeedHome' || routeName === undefined;
-    navigation.setOptions({
-      tabBarStyle: animateTabBar(visible),
+    const unsubscribe = navigation.addListener('state', () => {
+      const routeName = getFocusedRouteNameFromRoute(route);
+      const visible = routeName === 'FeedHome' || routeName === undefined;
+      navigation.setOptions({
+        tabBarStyle: animateTabBar(!!visible),
+      });
     });
-  }, [route]);
+
+    return unsubscribe;
+  }, [navigation]);
 
   return (
     <FeedStack.Navigator screenOptions={{ headerShown: false }}>
@@ -180,12 +188,16 @@ function ChatNavigator() {
   const { animateTabBar } = useTabBarAnimation();
 
   React.useLayoutEffect(() => {
-    const routeName = getFocusedRouteNameFromRoute(route);
-    const visible = routeName === 'RoomList' || routeName === undefined;
-    navigation.setOptions({
-      tabBarStyle: animateTabBar(visible),
-    })
-  }, [route]);
+    const unsubscribe = navigation.addListener('state', () => {
+      const routeName = getFocusedRouteNameFromRoute(route);
+      const visible = routeName === 'RoomList';
+      navigation.setOptions({
+        tabBarStyle: animateTabBar(!!visible),
+      });
+    });
+
+    return unsubscribe;
+  }, [navigation]);
 
   return (
     <ChatStack.Navigator screenOptions={{ headerShown: false }}>
@@ -201,12 +213,17 @@ function MyPageNavigator() {
   const { animateTabBar } = useTabBarAnimation();
 
   React.useLayoutEffect(() => {
-    const routeName = getFocusedRouteNameFromRoute(route);
-    const visible = routeName === 'MyPageHome' || routeName === undefined;
-    navigation.setOptions({
-      tabBarStyle: animateTabBar(visible),
+    const unsubscribe = navigation.addListener('state', () => {
+      const routeName = getFocusedRouteNameFromRoute(route);
+      const visible = routeName === 'MyPageHome' || routeName === undefined;
+      navigation.setOptions({
+        tabBarStyle: animateTabBar(!!visible),
+      });
     });
-  }, [route]);
+
+    return unsubscribe;
+  }, [navigation]);
+
   return (
     <MyPageStack.Navigator screenOptions={{ headerShown: false }}>
       <MyPageStack.Screen name="MyPageHome" component={MyPageScreen} />
@@ -223,9 +240,8 @@ function MyPageNavigator() {
 }
 
 export default function Router() {
-
-  const modalVisible = useModalStore(state => state.visible.studentCertification);
-  const handleModalClose = useModalStore(state => state.handleClose)
+  const modalVisible = useModalStore((state) => state.visible.studentCertification);
+  const handleModalClose = useModalStore((state) => state.handleClose);
 
   return (
     <NavigationContainer ref={navigationRef}>
