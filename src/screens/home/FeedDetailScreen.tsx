@@ -1,26 +1,25 @@
-import { MoreVertical } from 'lucide-react-native';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Alert, Keyboard, RefreshControl, ScrollView, TouchableOpacity } from 'react-native';
-import { useAuthCheck, useFeedDetail } from '@/hooks';
+import { Alert, Keyboard, RefreshControl, ScrollView, TouchableOpacity, View } from 'react-native';
+import { RoomRepository } from '@/api';
 import { CommentList, FeedItem, KeyboardLayout, Layout, Input } from '@/components';
-import { FeedOptionModal } from '@/components/modal/BottomOption/FeedOptionModal';
+import { useAuthCheck, useFeedDetail } from '@/hooks';
+import { FeedStackParamList } from '@/navigation/navigationRef';
 import { useModalStore } from '@/store';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { FeedStackParamList } from '@/navigation/navigationRef';
+import { MoreVertical, Send } from 'lucide-react-native';
+import { FeedOptionModal } from '@/components/modal/BottomOption/FeedOptionModal';
 
 type FeedDetailScreenProps = NativeStackScreenProps<FeedStackParamList, 'FeedDetail'>;
 
 export default function FeedDetailScreen({ navigation, route }: FeedDetailScreenProps) {
-
   const { feedId } = route.params;
   const [comment, setComment] = useState('');
   const { t } = useTranslation('feed');
-  const modalVisible = useModalStore(state => state.visible);
-  const handleModalOpen = useModalStore(state => state.handleOpen);
-  const handleModalClose = useModalStore(state => state.handleClose);
-  const { checkAuth } =
-    useAuthCheck();
+  const modalVisible = useModalStore((state) => state.visible);
+  const handleModalOpen = useModalStore((state) => state.handleOpen);
+  const handleModalClose = useModalStore((state) => state.handleClose);
+  const { checkAuth } = useAuthCheck();
 
   const { feed, comments, isRefetching, handleFeedActions, handleCommentActions, handleRefresh } =
     useFeedDetail({
@@ -41,6 +40,11 @@ export default function FeedDetailScreen({ navigation, route }: FeedDetailScreen
     );
   };
 
+  const handleRoomCreate = async () => {
+    const data = await RoomRepository.create({ buddyId: feed.userId });
+    // navigation.navigate('ChatRoom');
+  };
+
   const handleCommentSubmit = async () => {
     if (!comment.trim()) return;
     Keyboard.dismiss();
@@ -48,7 +52,7 @@ export default function FeedDetailScreen({ navigation, route }: FeedDetailScreen
     try {
       const { isCertificated } = await checkAuth();
       !isCertificated && handleModalOpen('studentCertification');
-      isCertificated && await handleCommentActions.submit(comment);
+      isCertificated && (await handleCommentActions.submit(comment));
       setComment('');
     } catch (error) {
       console.error('Comment submission failed:', error);
@@ -64,15 +68,25 @@ export default function FeedDetailScreen({ navigation, route }: FeedDetailScreen
         disableBottomSafeArea
         onBack={() => navigation.goBack()}
         headerRight={
-          <TouchableOpacity onPress={() => handleModalOpen('feed')} hitSlop={{ bottom: 20, left: 20 }}>
-            <MoreVertical size={24} color="#797979" />
-          </TouchableOpacity>
+          <View className="flex-row">
+            <TouchableOpacity
+              onPress={() => handleModalOpen('feed')}
+              hitSlop={{ bottom: 20, left: 20 }}
+            >
+              <Send size={24} color="#797979" />
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => handleModalOpen('feed')}
+              hitSlop={{ bottom: 20, left: 20 }}
+              className="ml-2"
+            >
+              <MoreVertical size={24} color="#797979" />
+            </TouchableOpacity>
+          </View>
         }
       >
         <KeyboardLayout
-          footer={
-            <Input value={comment} onChange={setComment} onSubmit={handleCommentSubmit} />
-          }
+          footer={<Input value={comment} onChange={setComment} onSubmit={handleCommentSubmit} />}
         >
           <ScrollView
             showsVerticalScrollIndicator={false}
@@ -105,7 +119,6 @@ export default function FeedDetailScreen({ navigation, route }: FeedDetailScreen
         feed={feed}
         onClose={() => handleModalClose('feed')}
       />
-
     </>
   );
 }

@@ -1,21 +1,21 @@
-import { Pencil, RefreshCcw } from 'lucide-react-native';
 import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { View, ScrollView, Image, TouchableOpacity } from 'react-native';
-import { useProfileStore } from '@/store/profile';
-import { getCountryFlag } from '@/utils/constants/countries';
-import { INTEREST_ICONS, InterestID } from '@/utils/constants/interests';
-import { MAJOR_ICONS, MajorID } from '@/utils/constants/majors';
 import { UserRepository } from '@/api';
 import { Chip, InnerLayout, Layout, MyText } from '@/components';
 import { MyPageStackParamList } from '@/navigation/navigationRef';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { Pencil, RefreshCcw } from 'lucide-react-native';
+import { useProfileStore } from '@/store/profile';
+import { getCountryFlag } from '@/utils/constants/countries';
+import { INTEREST_ICONS } from '@/utils/constants/interests';
+import { MAJOR_ICONS } from '@/utils/constants/majors';
 
 interface Section {
   title: string;
   data: string[];
   translationPrefix: string;
-  getIcon?: (id: string) => string; 
+  getIcon?: (id: string) => string;
   onEdit?: () => void;
   editable: boolean;
 }
@@ -91,7 +91,7 @@ export default function MyProfileScreen({ navigation, route }: MyProfileScreenPr
   ];
 
   const renderSectionHeader = (title: string, onEdit?: () => void) => (
-    <View className="flex-row items-center justify-between mb-2">
+    <View className="mb-2 flex-row items-center justify-between">
       <MyText size="text-[12px]" color="text-textDescription" className="">
         {title}
       </MyText>
@@ -116,12 +116,15 @@ export default function MyProfileScreen({ navigation, route }: MyProfileScreenPr
     <Layout showHeader onBack={() => navigation.goBack()} className="bg-gray-600">
       <InnerLayout>
         <ScrollView showsVerticalScrollIndicator={false}>
-          <View className="rounded-[20px] mt-3">
+          <View className="mt-3 rounded-[20px]">
             <View className="items-center">
               <View className="relative">
-                <Image source={{ uri: profile.profileImageUrl }} className="w-[110px] h-[110px] rounded-[25px] mb-4" />
+                <Image
+                  source={{ uri: profile.profileImageUrl }}
+                  className="mb-4 h-[110px] w-[110px] rounded-[25px]"
+                />
                 <TouchableOpacity
-                  className="absolute -top-1.5 -right-3 bg-white p-1.5 rounded-full"
+                  className="absolute -right-3 -top-1.5 rounded-full bg-white p-1.5"
                   onPress={handleEditPhoto}
                 >
                   <RefreshCcw size={18} color={'#797979'} />
@@ -141,15 +144,15 @@ export default function MyProfileScreen({ navigation, route }: MyProfileScreenPr
             </View>
           </View>
 
-          <View className="bg-white rounded-[20px] mt-7">
-            <View className="py-4 px-5 flex-row justify-between items-start">
+          <View className="mt-7 rounded-[20px] bg-white">
+            <View className="flex-row items-start justify-between px-5 py-4">
               <View className="flex-1">
                 {renderSectionHeader(t('mypage:profile.sections.country'))}
                 <Chip
                   readOnly={true}
                   label={t(`countries:countries.${profile.country}`)}
                   icon={getCountryFlag(profile.country)}
-                  className="mr-0 pl-0 border-[0px]"
+                  className="mr-0 border-[0px] pl-0"
                 />
               </View>
 
@@ -159,7 +162,7 @@ export default function MyProfileScreen({ navigation, route }: MyProfileScreenPr
                   <Chip
                     readOnly={true}
                     label={t(`mypage:profile.gender.${profile.gender}`)}
-                    className="ml-[0.8px] pl-0 border-[0px]"
+                    className="ml-[0.8px] border-[0px] pl-0"
                   />
                 </View>
               )}
@@ -176,7 +179,7 @@ export default function MyProfileScreen({ navigation, route }: MyProfileScreenPr
                         key={item}
                         label={t(`${section.translationPrefix}.${item}`)}
                         icon={section.getIcon?.(item)}
-                        className="pl-0 border-[0px]"
+                        className="border-[0px] pl-0"
                       />
                     ))}
                   </View>,
