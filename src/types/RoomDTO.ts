@@ -5,7 +5,7 @@ export interface RoomDTO {
   feedName?: string;
 }
 
-export interface RoomResponseDTO {
+export interface Room {
   id: number;
   name?: string;
   buddyId?: number;

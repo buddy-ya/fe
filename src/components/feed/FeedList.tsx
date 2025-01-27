@@ -1,6 +1,6 @@
-import { Feed } from '@/model';
 import { memo } from 'react';
 import { FlatList, RefreshControl, RefreshControlProps } from 'react-native';
+import { Feed } from '@/types/FeedDTO';
 import { EmptyState } from '../common';
 import FeedItem from './FeedItem';
 

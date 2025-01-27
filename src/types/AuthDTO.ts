@@ -1,42 +1,31 @@
-interface PhoneDTO {
-    phoneNumber: string;
+export interface PhoneDTO {
+  phoneNumber: string;
+  code?: string;
 }
 
-interface EmailDTO {
-    email: string;
+export interface EmailDTO {
+  email: string;
+  code?: string;
 }
 
-export interface CommonResponse {
-    success: boolean;
-}
-
-export interface ErrorResponse {
-    code: number;
-    message: string;
-}
-
-// Request DTO
-export interface SendCodeByPhoneDTO extends PhoneDTO { }
-
-export interface VerifyCodeByPhoneDTO extends PhoneDTO {
-    code: string;
-}
-
-export interface SendCodeByMailDTO extends EmailDTO { }
-
-export interface VerifyCodeByMailDTO extends EmailDTO {
-    code: string;
+export interface AuthResponse {
+  success?: boolean;
+  code?: number;
+  message?: string;
 }
 
 // Response DTO
-export interface VerifyCodeResponse extends PhoneDTO {
-    status: string
-    accessToken: string,
-    refreshToken: string;
+export interface VerifyCodeResponse {
+  phoneNumber?: string;
+  email?: string;
+  code?: string;
+  status: string;
+  accessToken: string;
+  refreshToken: string;
 }
 
 export interface CheckCertificatedResponse {
-    isCertificated: boolean,
-    isStudentIdCardRequested: boolean
-    isKorean: boolean
+  isCertificated: boolean;
+  isStudentIdCardRequested: boolean;
+  isKorean: boolean;
 }
