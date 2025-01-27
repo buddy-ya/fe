@@ -1,8 +1,8 @@
-import { FlatList, RefreshControl, RefreshControlProps } from 'react-native';
-import { memo } from 'react';
-import FeedItem from './FeedItem';
-import { EmptyState } from '../common';
 import { Feed } from '@/model';
+import { memo } from 'react';
+import { FlatList, RefreshControl, RefreshControlProps } from 'react-native';
+import { EmptyState } from '../common';
+import FeedItem from './FeedItem';
 
 interface FeedListProps {
   feeds: Feed[];
@@ -26,7 +26,7 @@ function FeedList({
   onLoadMore,
   refreshControl,
   hasMore,
-  emptyStateMessage
+  emptyStateMessage,
 }: FeedListProps) {
   if (feeds.length === 0) {
     return <EmptyState message={emptyStateMessage || '게시글이 없습니다'} />;

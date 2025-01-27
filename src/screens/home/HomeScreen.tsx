@@ -1,22 +1,21 @@
-import LogoIcon from '@assets/icons/logo.svg';
-import { Bell, Plus, Search } from 'lucide-react-native';
 import { useState } from 'react';
 import { TouchableOpacity, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { feedKeys, FeedRepository } from '@/api';
-import { useAuthCheck, useFeedList } from '@/hooks';
 import { Button, CategoryPager, FeedList, InnerLayout, Layout } from '@/components';
-import { isAndroid, CATEGORIES } from '@/utils';
-import { useModalStore } from '@/store';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { useAuthCheck, useFeedList } from '@/hooks';
 import { FeedStackParamList } from '@/navigation/navigationRef';
+import { useModalStore } from '@/store';
+import LogoIcon from '@assets/icons/logo.svg';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { Bell, Plus, Search } from 'lucide-react-native';
+import { isAndroid, CATEGORIES } from '@/utils';
 
 type FeedHomeScreenProps = NativeStackScreenProps<FeedStackParamList, 'FeedHome'>;
 
 export default function HomeScreen({ navigation, route }: FeedHomeScreenProps) {
-
   const STALE_TIME = 1000 * 60;
-  const handleModalOpen = useModalStore(state => state.handleOpen);
+  const handleModalOpen = useModalStore((state) => state.handleOpen);
   const [activeCategory, setActiveCategory] = useState(CATEGORIES[0].id);
   const { checkAuth } = useAuthCheck();
 
