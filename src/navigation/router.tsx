@@ -190,7 +190,7 @@ function ChatNavigator() {
   React.useLayoutEffect(() => {
     const unsubscribe = navigation.addListener('state', () => {
       const routeName = getFocusedRouteNameFromRoute(route);
-      const visible = routeName === 'RoomList' || route === undefined;
+      const visible = routeName === 'RoomList' || routeName === undefined;
       navigation.setOptions({
         tabBarStyle: animateTabBar(!!visible),
       });
