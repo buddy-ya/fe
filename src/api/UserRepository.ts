@@ -7,7 +7,7 @@ class UserRepository {
     return data;
   }
 
-  async create(dto: User.createInfoDTO) {
+  async create(dto: User) {
     const { data } = await API.post('/users', dto);
     return data;
   }

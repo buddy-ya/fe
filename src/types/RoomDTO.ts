@@ -1,17 +1,19 @@
 export interface RoomDTO {
-  id: number;
-  buddyId?: string;
-  feedId?: string;
+  id?: number;
+  buddyId?: number;
+  feedId?: number;
   feedName?: string;
 }
 
-export interface RoomResponseDTO {
+export interface Room {
   id: number;
-  name: string;
+  name?: string;
   buddyId?: number;
   buddyName?: number;
-  lastMessage: string;
-  unreadCount: number;
-  profileImageUrl: string;
-  lastMessageDate: string;
+  country?: string;
+  lastMessage?: string;
+  unreadCount?: number;
+  profileImageUrl?: string;
+  lastMessageDate?: string;
+  isNew?: boolean;
 }

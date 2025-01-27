@@ -1,19 +1,19 @@
-import { RoomDTO, RoomResponseDTO } from '@/types/RoomDTO';
+import { Room, RoomDTO } from '@/types/RoomDTO';
 import API from './API';
 
 class RoomRepository {
-  async get({ id }: RoomDTO): Promise<RoomResponseDTO> {
+  async get({ id }: RoomDTO): Promise<Room> {
     const { data } = await API.get(`/chatrooms/${id}`);
     return data;
   }
 
-  async getRoomList(): Promise<RoomResponseDTO[]> {
+  async getRoomList(): Promise<Room[]> {
     const { data } = await API.get(`/chatrooms`);
     return data;
   }
 
-  async create({ buddyId, feedId, feedName }: RoomDTO): Promise<RoomResponseDTO> {
-    const { data } = await API.post('/chatrooms', { buddyId, feedId, feedName });
+  async create({ buddyId }: RoomDTO): Promise<Room> {
+    const { data } = await API.post('/chatrooms', { buddyId });
     return data;
   }
 

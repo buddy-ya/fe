@@ -1,11 +1,11 @@
-import { RoomRepository } from '@/api';
-import { ChatPaper, InnerLayout, Layout, RoomList } from '@/components';
-import { Room } from '@/model';
-import { ChatStackParamList } from '@/navigation/navigationRef';
-import type { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { useSuspenseQuery } from '@tanstack/react-query';
 import { Fragment, useState } from 'react';
 import { Text, View } from 'react-native';
+import { RoomRepository } from '@/api';
+import { ChatPaper, InnerLayout, Layout, RoomList } from '@/components';
+import { ChatStackParamList } from '@/navigation/navigationRef';
+import { Room } from '@/types/RoomDTO';
+import type { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { useSuspenseQuery } from '@tanstack/react-query';
 
 export const CATEGORIES = [
   {

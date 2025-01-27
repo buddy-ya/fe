@@ -1,34 +1,42 @@
-import { FeedFormData } from "@/utils";
+import { FeedFormData, ImageFile } from '@/utils';
 
 interface BaseDTO {
-    feedId: number;
+  feedId: number;
 }
 
-interface SearchDTO {
-    page?: number;
-    size?: number;
+export interface UpdateDTO extends BaseDTO, FeedFormData {}
+
+export interface FeedDTO {
+  feedId?: number;
+  category?: string;
+  keyword?: string;
+  page?: number;
+  size?: number;
 }
 
-export interface GetDTO extends BaseDTO { }
-
-export interface GetAllDTO extends SearchDTO {
-    category: string;
+export interface FeedUpdateDTO {
+  feedId: number;
+  title: string;
+  content: string;
+  category: string;
+  images?: ImageFile[];
 }
 
-export interface CreateDTO extends FeedFormData {
+// TODO: 나중에 필수 항목 아닌거 옵셔널로 하기
+export interface Feed {
+  id: number;
+  category?: string;
+  name: string;
+  university: string;
+  country: string;
+  title: string;
+  content: string;
+  profileImageUrl: string;
+  imageUrls: string[];
+  likeCount: number;
+  commentCount: number;
+  isFeedOwner: boolean;
+  isLiked: boolean;
+  isBookmarked: boolean;
+  createdDate: string;
 }
-
-export interface UpdateDTO extends BaseDTO, FeedFormData { }
-
-export interface DeleteDTO extends BaseDTO { }
-
-export interface SearchFeedsDTO extends SearchDTO {
-    category: string;
-    keyword: string;
-}
-
-export interface GetBookmarkedFeedsDTO extends SearchDTO { }
-
-export interface GetMyPostsDTO extends SearchDTO { }
-
-export interface ToggleDTO extends BaseDTO { }
