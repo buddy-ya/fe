@@ -12,8 +12,8 @@ class RoomRepository {
     return data;
   }
 
-  async create({ buddyId, feedId, feedName }: RoomDTO): Promise<RoomResponseDTO> {
-    const { data } = await API.post('/chatrooms', { buddyId, feedId, feedName });
+  async create({ buddyId }: RoomDTO): Promise<RoomResponseDTO> {
+    const { data } = await API.post('/chatrooms', { buddyId });
     return data;
   }
 
