@@ -1,7 +1,7 @@
-import { useRoute } from '@react-navigation/native';
 import { ReactNode } from 'react';
 import { StatusBar, View } from 'react-native';
 import { Edge, SafeAreaView } from 'react-native-safe-area-context';
+import { useRoute } from '@react-navigation/native';
 import Header, { BackButton } from '../Header';
 
 interface LayoutProps {
@@ -49,8 +49,9 @@ export default function Layout({
   return (
     <SafeAreaView
       edges={edges}
-      className={`flex-1 py-2 ${shouldUseWhiteBackground ? 'bg-white' : 'bg-mainBackground'
-        } ${className}`}
+      className={`flex-1 py-2 ${
+        shouldUseWhiteBackground ? 'bg-white' : 'bg-mainBackground'
+      } ${className}`}
     >
       <StatusBar barStyle="dark-content" backgroundColor="white" />
       {showHeader && (
