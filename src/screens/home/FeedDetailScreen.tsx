@@ -3,9 +3,9 @@ import { useTranslation } from 'react-i18next';
 import { Alert, Keyboard, RefreshControl, ScrollView, TouchableOpacity, View } from 'react-native';
 import { RoomRepository } from '@/api';
 import { CommentList, FeedItem, KeyboardLayout, Layout, Input } from '@/components';
-import { useAuthCheck, useFeedDetail } from '@/hooks';
+import { useFeedDetail } from '@/hooks';
 import { FeedStackParamList } from '@/navigation/navigationRef';
-import { useModalStore } from '@/store';
+import { useModalStore, useUserStore } from '@/store';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { MoreVertical, Send } from 'lucide-react-native';
 import { FeedOptionModal } from '@/components/modal/BottomOption/FeedOptionModal';
@@ -19,7 +19,7 @@ export default function FeedDetailScreen({ navigation, route }: FeedDetailScreen
   const modalVisible = useModalStore((state) => state.visible);
   const handleModalOpen = useModalStore((state) => state.handleOpen);
   const handleModalClose = useModalStore((state) => state.handleClose);
-  const { checkAuth } = useAuthCheck();
+  const isCertificated = useUserStore((state) => state.isCertificated);
 
   const { feed, comments, isRefetching, handleFeedActions, handleCommentActions, handleRefresh } =
     useFeedDetail({
@@ -50,7 +50,6 @@ export default function FeedDetailScreen({ navigation, route }: FeedDetailScreen
     Keyboard.dismiss();
 
     try {
-      const { isCertificated } = await checkAuth();
       !isCertificated && handleModalOpen('studentCertification');
       isCertificated && (await handleCommentActions.submit(comment));
       setComment('');

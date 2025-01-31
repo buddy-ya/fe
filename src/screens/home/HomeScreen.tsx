@@ -3,9 +3,9 @@ import { TouchableOpacity, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { feedKeys, FeedRepository } from '@/api';
 import { Button, CategoryPager, FeedList, InnerLayout, Layout } from '@/components';
-import { useAuthCheck, useFeedList } from '@/hooks';
+import { useFeedList } from '@/hooks';
 import { FeedStackParamList } from '@/navigation/navigationRef';
-import { useModalStore } from '@/store';
+import { useModalStore, useUserStore } from '@/store';
 import LogoIcon from '@assets/icons/logo.svg';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { Bell, Plus, Search } from 'lucide-react-native';
@@ -17,7 +17,7 @@ export default function HomeScreen({ navigation, route }: FeedHomeScreenProps) {
   const STALE_TIME = 1000 * 60;
   const handleModalOpen = useModalStore((state) => state.handleOpen);
   const [activeCategory, setActiveCategory] = useState(CATEGORIES[0].id);
-  const { checkAuth } = useAuthCheck();
+  const isCertificated = useUserStore((state) => state.isCertificated);
 
   const feedListData = useFeedList({
     queryKey: feedKeys.lists(activeCategory),
@@ -38,7 +38,6 @@ export default function HomeScreen({ navigation, route }: FeedHomeScreenProps) {
   };
 
   const handleWriteButton = async () => {
-    const { isCertificated } = await checkAuth();
     isCertificated ? navigation.navigate('FeedWrite') : handleModalOpen('studentCertification');
   };
 

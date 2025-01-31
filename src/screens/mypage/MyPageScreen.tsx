@@ -1,16 +1,15 @@
-import LogoIcon from '@assets/icons/logo.svg';
-import { Bell, Bookmark, ChevronRight, NotebookPen, Settings } from 'lucide-react-native';
-import { Fragment, useEffect } from 'react';
+import { Fragment } from 'react';
 import { useTranslation } from 'react-i18next';
 import { View, TouchableOpacity, Image } from 'react-native';
-import { useProfileStore } from '@/store';
-import { getCountryFlag } from '@/utils';
-import { InnerLayout, Layout, MyText } from '@/components';
 import { AuthRepository, UserRepository } from '@/api';
-import { TokenService } from '@/service';
+import { InnerLayout, Layout, MyText } from '@/components';
 import { MyPageStackParamList, resetToOnboarding } from '@/navigation/navigationRef';
+import { TokenService } from '@/service';
+import { useUserStore } from '@/store';
+import LogoIcon from '@assets/icons/logo.svg';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-
+import { Bell, Bookmark, ChevronRight, NotebookPen, Settings } from 'lucide-react-native';
+import { CountryID, getCountryFlag } from '@/utils';
 
 interface SettingItemProps {
   label: string;
@@ -31,24 +30,11 @@ type MyPageScreenProps = NativeStackScreenProps<MyPageStackParamList, 'MyPageHom
 
 export default function MyPageScreen({ navigation }: MyPageScreenProps) {
   const { t } = useTranslation('mypage');
-  const { profile, setProfile } = useProfileStore();
 
-  const fetchMyProfile = async () => {
-    const profileData = await UserRepository.get();
-    setProfile(profileData);
-  };
-
-  useEffect(() => {
-    fetchMyProfile();
-  }, []);
-
-  useEffect(() => {
-    const unsubscribe = navigation.addListener('focus', () => {
-      fetchMyProfile();
-    });
-
-    return unsubscribe;
-  }, [navigation]);
+  const profileImageUrl = useUserStore((state) => state.profileImageUrl);
+  const name = useUserStore((state) => state.name);
+  const country = useUserStore((state) => state.country);
+  const university = useUserStore((store) => store.university);
 
   const quickMenuItems = [
     {
@@ -79,7 +65,7 @@ export default function MyPageScreen({ navigation }: MyPageScreenProps) {
         await UserRepository.delete();
         await TokenService.remove();
         resetToOnboarding();
-      }
+      },
     },
     {
       key: 'refresh',
@@ -116,19 +102,19 @@ export default function MyPageScreen({ navigation }: MyPageScreenProps) {
         >
           <View className="flex-row items-center bg-white">
             <Image
-              source={{ uri: profile?.profileImageUrl }}
+              source={{ uri: profileImageUrl }}
               className="mr-3 h-[54] w-[54] rounded-[12px]"
             />
             <View className="flex-1">
               <MyText color="text-textProfile" className="font-semibold">
-                {t(`profile.university.${profile?.university}`)}
+                {t(`profile.university.${university}`)}
               </MyText>
               <View className="flex-row items-center">
                 <MyText size="text-base" color="text-textProfile">
-                  {profile?.name}
+                  {name}
                 </MyText>
                 <MyText size="text-lg" className="ml-1">
-                  {profile?.country && getCountryFlag(profile.country)}
+                  {country && getCountryFlag(country as CountryID)}
                 </MyText>
               </View>
             </View>
