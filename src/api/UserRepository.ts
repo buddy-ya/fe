@@ -2,8 +2,8 @@ import { User } from '@/types';
 import API from './API';
 
 class UserRepository {
-  async get() {
-    const { data } = await API.get(`/users`);
+  async get({ id }: { id: number }) {
+    const { data } = await API.get(`/users/${id}`);
     return data;
   }
 
