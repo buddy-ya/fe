@@ -1,9 +1,9 @@
+import { Alert } from 'react-native';
 import i18n from '@/i18n';
 import { resetToOnboarding } from '@/navigation/navigationRef';
 import axios from 'axios';
 import Constants from 'expo-constants';
 import * as SecureStore from 'expo-secure-store';
-import { Alert } from 'react-native';
 import { TOKEN_KEYS } from '@/utils';
 
 const BASE_URL = Constants?.expoConfig?.extra?.BASE_URL || '';
@@ -49,7 +49,7 @@ API.interceptors.response.use(
         const finalRefreshToken = newRefreshToken || refreshToken;
         await SecureStore.setItemAsync(TOKEN_KEYS.ACCESS, accessToken);
         await SecureStore.setItemAsync(TOKEN_KEYS.REFRESH, finalRefreshToken);
-        error.config.headers.Authorization = `Bearer ${accessToken}`;
+        error.config.headers.common.Authorization = `Bearer ${accessToken}`;
         return API(error.config);
       } catch (reissueError) {
         await SecureStore.deleteItemAsync(TOKEN_KEYS.ACCESS);
