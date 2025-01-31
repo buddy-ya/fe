@@ -1,6 +1,7 @@
 type Gender = 'male' | 'female' | 'unknown' | null;
 
 export interface User {
+  id?: number;
   name: string;
   country: string;
   isKorean: boolean;
