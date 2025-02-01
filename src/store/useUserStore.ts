@@ -13,6 +13,7 @@ type UserState = {
   isCertificated: boolean;
   isStudentIdCardRequested: boolean;
   isKorean: boolean;
+  isAuthenticated: boolean;
 };
 
 type UserAction = {
@@ -32,6 +33,7 @@ export const useUserStore = create(
     isCertificated: false,
     isStudentIdCardRequested: false,
     isKorean: false,
+    isAuthenticated: false,
 
     update: (user) =>
       set((state) => {
