@@ -6,7 +6,10 @@ import i18n from '@/i18n';
 import Router from '@/navigation/router';
 import { AuthProvider } from '@/provider';
 import ErrorPage from '@/screens/ErrorPage';
+import { createNavigationContainerRef, NavigationContainer } from '@react-navigation/native';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+export const navigationRef = createNavigationContainerRef();
 
 export default function App() {
   const queryClient = new QueryClient();
@@ -18,7 +21,9 @@ export default function App() {
           <Suspense fallback={<></>}>
             <GestureHandlerRootView>
               <AuthProvider>
-                <Router />
+                <NavigationContainer ref={navigationRef}>
+                  <Router />
+                </NavigationContainer>
               </AuthProvider>
             </GestureHandlerRootView>
           </Suspense>
