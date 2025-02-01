@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import SplashScreen from '@/screens/SplashScreen';
 import ChatRoomScreen from '@/screens/chat/ChatRoomScreen';
@@ -29,9 +29,10 @@ import EmailScreen from '@/screens/verification/EmailScreen';
 import EmailVerificationScreen from '@/screens/verification/EmailVerificationScreen';
 import StudentIdCardCompleteScreen from '@/screens/verification/StudentIdCompleteScreen';
 import StudentIdCardUploadScreen from '@/screens/verification/StudentIdUploadScreen';
-import { useModalStore } from '@/store';
+import { useModalStore, useUserStore } from '@/store';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import {
+  createNavigationContainerRef,
   getFocusedRouteNameFromRoute,
   NavigationContainer,
   useNavigation,
@@ -47,7 +48,6 @@ import {
   ChatStackParamList,
   FeedStackParamList,
   MyPageStackParamList,
-  navigationRef,
   OnboardingStackParamList,
 } from './navigationRef';
 
@@ -57,6 +57,8 @@ const OnboardingStack = createNativeStackNavigator<OnboardingStackParamList>();
 const FeedStack = createNativeStackNavigator<FeedStackParamList>();
 const ChatStack = createNativeStackNavigator<ChatStackParamList>();
 const MyPageStack = createNativeStackNavigator<MyPageStackParamList>();
+
+export const navigationRef = createNavigationContainerRef();
 
 function TabNavigator() {
   const { t } = useTranslation('common');
@@ -242,9 +244,20 @@ function MyPageNavigator() {
 export default function Router() {
   const modalVisible = useModalStore((state) => state.visible.studentCertification);
   const handleModalClose = useModalStore((state) => state.handleClose);
+  const isAuthenticated = useUserStore((state) => state.isAuthenticated);
+  // TODO: 타입 수정 필요..
+  const navigation = useNavigation<any>();
 
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigation.reset({
+        index: 0,
+        routes: [{ name: 'Onboarding' }],
+      });
+    }
+  }, [isAuthenticated]);
   return (
-    <NavigationContainer ref={navigationRef}>
+    <>
       <Stack.Navigator screenOptions={{ headerShown: false, gestureEnabled: false }}>
         <Stack.Screen name="Splash" component={SplashScreen} />
         <Stack.Screen name="Onboarding" component={OnboardingNavigator} />
@@ -257,6 +270,6 @@ export default function Router() {
         visible={modalVisible}
         onClose={() => handleModalClose('studentCertification')}
       />
-    </NavigationContainer>
+    </>
   );
 }

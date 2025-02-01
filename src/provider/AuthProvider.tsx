@@ -3,7 +3,6 @@ import { View, Image } from 'react-native';
 import { API, AuthRepository, UserRepository } from '@/api';
 import { TokenService } from '@/service';
 import { useUserStore } from '@/store';
-import { useQuery } from '@tanstack/react-query';
 import * as SecureStore from 'expo-secure-store';
 import { jwtDecode, JwtPayload } from 'jwt-decode';
 import { showErrorModal, TOKEN_KEYS } from '@/utils';
@@ -18,7 +17,7 @@ interface CustomJwtPayload extends JwtPayload {
 
 export default function AuthProvider({ children }: Props) {
   const [loading, setLoading] = useState(false);
-  const isAuthenticated = useUserStore((state) => state.isAuthenticated);
+  const [initLoading, setInitLoading] = useState(false);
   const updateUser = useUserStore((state) => state.update);
   const initAuth = async () => {
     // 토큰이 있으면 API 헤더에 추가. 없으면 그냥 통과
@@ -26,32 +25,19 @@ export default function AuthProvider({ children }: Props) {
 
     if (accessToken) {
       API.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+      const token: CustomJwtPayload = jwtDecode(accessToken);
+      const userId = token.studentId;
+      const user = await UserRepository.get({ id: userId });
+      updateUser({ ...user, isAuthenticated: true });
     }
     return accessToken;
   };
 
-  const getUser = async (accessToken: string) => {
-    const token: CustomJwtPayload = jwtDecode(accessToken);
-    const userId = token.studentId;
-    const user = await UserRepository.get({ id: userId });
-    updateUser({ ...user, isAuthenticated: true });
-    return user;
-  };
-
-  const { data: accessToken, isLoading: initAuthLoading } = useQuery({
-    queryKey: ['auth'],
-    queryFn: initAuth,
-    networkMode: 'always',
-    throwOnError: true,
-  });
-
-  const { isLoading: getUserLoading } = useQuery({
-    queryKey: ['user'],
-    queryFn: () => getUser(accessToken as string),
-    enabled: isAuthenticated,
-    throwOnError: true,
-    retryDelay: 1000,
-  });
+  useEffect(() => {
+    setInitLoading(true);
+    initAuth();
+    setInitLoading(false);
+  }, []);
 
   useEffect(() => {
     setLoading(true);
@@ -93,7 +79,7 @@ export default function AuthProvider({ children }: Props) {
     setLoading(false);
   }, []);
 
-  if (initAuthLoading || getUserLoading || loading)
+  if (initLoading || loading)
     return (
       <View className="flex-1 items-center justify-center">
         <Image source={require('@assets/images/splash.png')} className="h-full w-full" />
