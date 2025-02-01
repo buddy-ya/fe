@@ -18,6 +18,7 @@ interface CustomJwtPayload extends JwtPayload {
 export default function AuthProvider({ children }: Props) {
   const [loading, setLoading] = useState(false);
   const [initLoading, setInitLoading] = useState(false);
+  const isAuthenticated = useUserStore((state) => state.isAuthenticated);
   const updateUser = useUserStore((state) => state.update);
   const initAuth = async () => {
     // 토큰이 있으면 API 헤더에 추가. 없으면 그냥 통과
@@ -37,7 +38,7 @@ export default function AuthProvider({ children }: Props) {
     setInitLoading(true);
     initAuth();
     setInitLoading(false);
-  }, []);
+  }, [isAuthenticated]);
 
   useEffect(() => {
     setLoading(true);
