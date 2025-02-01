@@ -1,15 +1,27 @@
-import { Send } from 'lucide-react-native';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
-import { useOnboardingStore } from '@/store';
-import { useTimer } from '@/hooks';
-import { formatPhone, logError } from '@/utils';
 import { AuthRepository } from '@/api';
-import { TokenService } from '@/service';
-import { ErrorMessage, FooterLayout, Heading, HeadingDescription, InnerLayout, KeyboardLayout, Label, Layout, LinkText, MyText, OTPInput } from '@/components';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import {
+  ErrorMessage,
+  FooterLayout,
+  Heading,
+  HeadingDescription,
+  InnerLayout,
+  KeyboardLayout,
+  Label,
+  Layout,
+  LinkText,
+  MyText,
+  OTPInput,
+} from '@/components';
+import { useTimer } from '@/hooks';
 import { OnboardingStackParamList } from '@/navigation/navigationRef';
+import { TokenService } from '@/service';
+import { useOnboardingStore, useUserStore } from '@/store';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { Send } from 'lucide-react-native';
+import { formatPhone, logError } from '@/utils';
 
 const VERIFICATION_EXPIRE_SECONDS = 180;
 
@@ -18,9 +30,13 @@ type OnboardingPhoneVerificationScreenProps = NativeStackScreenProps<
   'OnboardingPhoneVerification'
 >;
 
-export default function PhoneVerificationScreen({ navigation, route }: OnboardingPhoneVerificationScreenProps) {
+export default function PhoneVerificationScreen({
+  navigation,
+  route,
+}: OnboardingPhoneVerificationScreenProps) {
   const { t } = useTranslation('onboarding');
   const { updateOnboardingData } = useOnboardingStore();
+  const update = useUserStore((state) => state.update);
 
   const formattedPhone = route.params.phone;
   const phoneNumber = formatPhone.removeHyphen(formattedPhone);
@@ -30,7 +46,7 @@ export default function PhoneVerificationScreen({ navigation, route }: Onboardin
 
   const { timeLeft, isExpired, restart } = useTimer({
     seconds: VERIFICATION_EXPIRE_SECONDS,
-    onExpire: () => { },
+    onExpire: () => {},
   });
 
   const resetVerification = () => {
@@ -55,6 +71,7 @@ export default function PhoneVerificationScreen({ navigation, route }: Onboardin
       updateOnboardingData({ phoneNumber });
       if (data.status === 'EXISTING_MEMBER') {
         await TokenService.save(data.accessToken, data.refreshToken);
+        update({ isAuthenticated: true });
       }
       navigation.replace('OnboardingNotification', {
         isExistingMember: data.status === 'EXISTING_MEMBER',

@@ -48,6 +48,11 @@ class AuthRepository {
     const { data } = await API.put(`/certification/refresh`);
     return data;
   }
+
+  async reissueToken(refreshToken: string) {
+    const { data } = await API.post('/auth/reissue', { refreshToken });
+    return data;
+  }
 }
 
 export default new AuthRepository();

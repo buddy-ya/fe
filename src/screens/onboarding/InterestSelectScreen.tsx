@@ -1,13 +1,13 @@
-import { UserRepository } from '@/api';
-import { Button, Chip, Heading, InnerLayout, Layout, MyText } from '@/components';
-import { MyPageStackParamList, OnboardingStackParamList } from '@/navigation/navigationRef';
-import { TokenService } from '@/service';
-import { useOnboardingStore } from '@/store';
-import { NativeStackNavigationProp, NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useState } from 'react';
 import { memo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ScrollView, View } from 'react-native';
+import { UserRepository } from '@/api';
+import { Button, Chip, Heading, InnerLayout, Layout, MyText } from '@/components';
+import { MyPageStackParamList, OnboardingStackParamList } from '@/navigation/navigationRef';
+import { TokenService } from '@/service';
+import { useOnboardingStore, useUserStore } from '@/store';
+import { NativeStackNavigationProp, NativeStackScreenProps } from '@react-navigation/native-stack';
 import type { InterestID } from '@/utils';
 import { INTEREST_CATEGORIES, INTEREST_ICONS, logError } from '@/utils';
 
@@ -25,6 +25,7 @@ const MAX_SELECT = 8;
 function InterestSelectScreen({ navigation, route }: InterestSelectProps) {
   const { t } = useTranslation(['onboarding', 'interests']);
   const { updateOnboardingData, ...onboardingData } = useOnboardingStore();
+  const update = useUserStore((state) => state.update);
 
   const isEditMode =
     'params' in route && route.params && 'isEditMode' in route.params
@@ -70,6 +71,7 @@ function InterestSelectScreen({ navigation, route }: InterestSelectProps) {
           interests,
         });
         await TokenService.save(accessToken, refreshToken);
+        update({ isAuthenticated: true });
         const onboardNav = navigation as NativeStackNavigationProp<
           OnboardingStackParamList,
           'OnboardingInterestSelect'

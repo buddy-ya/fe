@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { View, TouchableOpacity, Image } from 'react-native';
 import { AuthRepository, UserRepository } from '@/api';
 import { InnerLayout, Layout, MyText } from '@/components';
-import { MyPageStackParamList, resetToOnboarding } from '@/navigation/navigationRef';
+import { MyPageStackParamList } from '@/navigation/navigationRef';
 import { TokenService } from '@/service';
 import { useUserStore } from '@/store';
 import LogoIcon from '@assets/icons/logo.svg';
@@ -35,6 +35,7 @@ export default function MyPageScreen({ navigation }: MyPageScreenProps) {
   const name = useUserStore((state) => state.name);
   const country = useUserStore((state) => state.country);
   const university = useUserStore((store) => store.university);
+  const update = useUserStore((state) => state.update);
 
   const quickMenuItems = [
     {
@@ -64,7 +65,7 @@ export default function MyPageScreen({ navigation }: MyPageScreenProps) {
       onPress: async () => {
         await UserRepository.delete();
         await TokenService.remove();
-        resetToOnboarding();
+        update({ isAuthenticated: false });
       },
     },
     {
@@ -134,7 +135,7 @@ export default function MyPageScreen({ navigation }: MyPageScreenProps) {
         </View>
 
         <View className="mt-4 bg-white">
-          {settingsItems.map((item, index) => (
+          {settingsItems.map((item) => (
             <Fragment key={item.key}>
               <SettingItem label={item.label} onPress={item.onPress} />
             </Fragment>
