@@ -20,8 +20,10 @@ export default function AuthProvider({ children }: Props) {
   const [initLoading, setInitLoading] = useState(false);
   const isAuthenticated = useUserStore((state) => state.isAuthenticated);
   const updateUser = useUserStore((state) => state.update);
+
   const initAuth = async () => {
     // 토큰이 있으면 API 헤더에 추가. 없으면 그냥 통과
+    setInitLoading(true);
     const accessToken = await TokenService.getAccessToken();
 
     if (accessToken) {
@@ -31,13 +33,11 @@ export default function AuthProvider({ children }: Props) {
       const user = await UserRepository.get({ id: userId });
       updateUser({ ...user, isAuthenticated: true });
     }
-    return accessToken;
+    setInitLoading(false);
   };
 
   useEffect(() => {
-    setInitLoading(true);
     initAuth();
-    setInitLoading(false);
   }, [isAuthenticated]);
 
   useEffect(() => {
