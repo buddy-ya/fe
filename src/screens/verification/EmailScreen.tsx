@@ -1,17 +1,28 @@
-import { Mail } from 'lucide-react-native';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { View, TextInput } from 'react-native';
 import { AuthRepository } from '@/api';
-import { ErrorMessage, FooterLayout, Heading, HeadingDescription, InnerLayout, KeyboardLayout, Label, Layout, MyText } from '@/components';
-import { EMAIL_REGEX } from '@/utils';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import {
+  ErrorMessage,
+  FooterLayout,
+  Heading,
+  HeadingDescription,
+  InnerLayout,
+  KeyboardLayout,
+  Label,
+  Layout,
+  MyText,
+} from '@/components';
 import { FeedStackParamList } from '@/navigation/navigationRef';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { Mail } from 'lucide-react-native';
+import { EMAIL_REGEX } from '@/utils';
 
 type EmailScreenProps = NativeStackScreenProps<FeedStackParamList, 'EmailVerification'>;
 
 export default function EmailScreen({ navigation }: EmailScreenProps) {
   const [email, setEmail] = useState('');
+  const [loading, setLoading] = useState(false);
   const { t } = useTranslation('certification');
 
   const handleEmailChange = (text: string) => {
@@ -27,13 +38,16 @@ export default function EmailScreen({ navigation }: EmailScreenProps) {
       email: fullEmail,
       univName,
     };
+
+    setLoading(true);
     const { success } = await AuthRepository.sendCodeByMail(requestBody);
     if (success) {
       navigation.navigate('EmailVerificationCode', {
         email: fullEmail,
         univName,
-      })
-    };
+      });
+    }
+    setLoading(false);
   };
 
   const footer = (
@@ -45,7 +59,7 @@ export default function EmailScreen({ navigation }: EmailScreenProps) {
         </MyText>
       }
       onPress={handleNavigation}
-      disabled={!isValidEmail}
+      disabled={!isValidEmail || loading}
     />
   );
 
