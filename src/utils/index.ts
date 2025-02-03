@@ -6,3 +6,4 @@ export * from './formData';
 export * from './deviceCheck';
 export * from './regex';
 export * from './showErrorModal';
+export * from './removeNull';
