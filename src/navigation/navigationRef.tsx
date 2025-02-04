@@ -39,7 +39,7 @@ export type FeedStackParamList = {
 
 export type ChatStackParamList = {
   RoomList: undefined; // 파라미터 없음
-  ChatRoom: Room; // roomId를 파라미터로 받음
+  ChatRoom: Partial<Room>; // roomId를 파라미터로 받음
 };
 
 // MyPageStack Param List 정의
