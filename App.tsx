@@ -3,6 +3,7 @@ import { ErrorBoundary } from 'react-error-boundary';
 import { I18nextProvider } from 'react-i18next';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import i18n from '@/i18n';
+import linking from '@/navigation/Linking';
 import Router from '@/navigation/router';
 import { AuthProvider } from '@/provider';
 import ErrorPage from '@/screens/ErrorPage';
@@ -21,7 +22,7 @@ export default function App() {
           <Suspense fallback={<></>}>
             <GestureHandlerRootView>
               <AuthProvider>
-                <NavigationContainer ref={navigationRef}>
+                <NavigationContainer ref={navigationRef} linking={linking}>
                   <Router />
                 </NavigationContainer>
               </AuthProvider>
