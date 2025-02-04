@@ -6,7 +6,7 @@ import { ChatStackParamList, FeedStackParamList } from '@/navigation/navigationR
 import { Room } from '@/types/RoomDTO';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useSuspenseQuery } from '@tanstack/react-query';
-import { UserRoundPlus, Check } from 'lucide-react-native';
+import { UserRoundPlus } from 'lucide-react-native';
 
 type RoomListNavigationProps = NativeStackScreenProps<
   ChatStackParamList & FeedStackParamList,
@@ -21,12 +21,8 @@ export default function RoomListScreen({ navigation }: RoomListNavigationProps) 
     queryFn: RoomRepository.getRoomList,
   });
 
-  const handleChipPress = (index: number) => {
-    setActiveIndex(index);
-  };
-
   const handleGoToFeed = () => {
-    // navigation.navigate('FeedStack', { screen: 'FeedHome' });
+    navigation.navigate('FeedTab', { screen: 'FeedHome' } as any);
   };
 
   const handlePressRoom = (room: Room) => {
