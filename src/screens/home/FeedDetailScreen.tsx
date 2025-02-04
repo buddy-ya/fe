@@ -20,6 +20,7 @@ export default function FeedDetailScreen({ navigation, route }: FeedDetailScreen
   const handleModalOpen = useModalStore((state) => state.handleOpen);
   const handleModalClose = useModalStore((state) => state.handleClose);
   const isCertificated = useUserStore((state) => state.isCertificated);
+  const myUserId = useUserStore((state) => state.id);
 
   const { feed, comments, isRefetching, handleFeedActions, handleCommentActions, handleRefresh } =
     useFeedDetail({
@@ -68,13 +69,16 @@ export default function FeedDetailScreen({ navigation, route }: FeedDetailScreen
         onBack={() => navigation.goBack()}
         headerRight={
           <View className="flex-row">
-            <TouchableOpacity
-              onPress={handleRoomCreate}
-              hitSlop={{ bottom: 20, left: 20 }}
-              className="mr-4"
-            >
-              <Send size={24} color="#797979" />
-            </TouchableOpacity>
+            {feed.userId !== myUserId && (
+              <TouchableOpacity
+                onPress={handleRoomCreate}
+                hitSlop={{ bottom: 20, left: 20 }}
+                className="mr-4"
+              >
+                <Send size={24} color="#797979" />
+              </TouchableOpacity>
+            )}
+
             <TouchableOpacity
               onPress={() => handleModalOpen('feed')}
               hitSlop={{ bottom: 20, left: 20 }}
