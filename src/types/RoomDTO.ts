@@ -6,14 +6,15 @@ export interface RoomDTO {
 }
 
 export interface Room {
-  id: number;
+  id?: number;
   name?: string;
   buddyId?: number;
   buddyName?: number;
   country?: string;
   lastMessage?: string;
+  lastMessageDate?: string;
   unreadCount?: number;
   profileImageUrl?: string;
-  lastMessageDate?: string;
   isNew?: boolean;
+  isBuddyExited?: true;
 }
