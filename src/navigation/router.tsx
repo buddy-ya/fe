@@ -31,12 +31,7 @@ import StudentIdCardCompleteScreen from '@/screens/verification/StudentIdComplet
 import StudentIdCardUploadScreen from '@/screens/verification/StudentIdUploadScreen';
 import { useModalStore, useUserStore } from '@/store';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import {
-  createNavigationContainerRef,
-  getFocusedRouteNameFromRoute,
-  useNavigation,
-  useRoute,
-} from '@react-navigation/native';
+import { createNavigationContainerRef, useNavigation } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import MatchingScreen from '@screens/matching/MatchingScreen';
 import MyPageScreen from '@screens/mypage/MyPageScreen';
@@ -141,13 +136,14 @@ function OnboardingNavigator() {
 
 function FeedNavigator() {
   const navigation = useNavigation();
-  const route = useRoute();
   const { animateTabBar } = useTabBarAnimation();
 
   React.useLayoutEffect(() => {
+    const state = navigation.getState();
+    const activeTab = state?.routes[state.index]; // 현재 활성화된 탭
+    const activeScreen = activeTab?.state?.routes?.[activeTab?.state?.index as any]?.name;
     const unsubscribe = navigation.addListener('state', () => {
-      const routeName = getFocusedRouteNameFromRoute(route);
-      const visible = routeName === 'FeedHome' || routeName === undefined;
+      const visible = activeScreen === 'FeedHome' || activeScreen === undefined;
       navigation.setOptions({
         tabBarStyle: animateTabBar(!!visible),
       });
@@ -186,13 +182,15 @@ function FeedNavigator() {
 
 function ChatNavigator() {
   const navigation = useNavigation();
-  const route = useRoute();
   const { animateTabBar } = useTabBarAnimation();
 
   React.useLayoutEffect(() => {
     const unsubscribe = navigation.addListener('state', () => {
-      const routeName = getFocusedRouteNameFromRoute(route);
-      const visible = routeName === 'RoomList' || routeName === undefined;
+      const state = navigation.getState();
+      const activeTab = state?.routes[state.index]; // 현재 활성화된 탭
+      const activeScreen = activeTab?.state?.routes?.[activeTab?.state?.index as any]?.name;
+
+      const visible = activeScreen === 'RoomList' || activeScreen === undefined;
       navigation.setOptions({
         tabBarStyle: animateTabBar(!!visible),
       });
@@ -211,13 +209,15 @@ function ChatNavigator() {
 
 function MyPageNavigator() {
   const navigation = useNavigation();
-  const route = useRoute();
   const { animateTabBar } = useTabBarAnimation();
 
   React.useLayoutEffect(() => {
+    const state = navigation.getState();
+    const activeTab = state?.routes[state.index]; // 현재 활성화된 탭
+    const activeScreen = activeTab?.state?.routes?.[activeTab.state.index as any]?.name;
+
     const unsubscribe = navigation.addListener('state', () => {
-      const routeName = getFocusedRouteNameFromRoute(route);
-      const visible = routeName === 'MyPageHome' || routeName === undefined;
+      const visible = activeScreen === 'MyPageHome' || activeScreen === undefined;
       navigation.setOptions({
         tabBarStyle: animateTabBar(!!visible),
       });
