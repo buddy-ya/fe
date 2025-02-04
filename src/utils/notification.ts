@@ -4,13 +4,13 @@ import * as Notifications from 'expo-notifications';
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
     shouldShowAlert: true, // 알림을 화면에 표시
-    shouldPlaySound: false, // 소리를 재생
+    shouldPlaySound: true, // 소리를 재생
     shouldSetBadge: true, // 배지 업데이트
   }),
 });
 
 export async function registerForPushNotificationsAsync() {
-  let token: string;
+  let token: string | null = null;
 
   if (Device.isDevice) {
     // 권한 요청
@@ -31,18 +31,4 @@ export async function registerForPushNotificationsAsync() {
   }
 
   return token;
-}
-
-export async function sendPushNotification(expoPushToken) {
-  await fetch('https://exp.host/--/api/v2/push/send', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      to: expoPushToken,
-      title: 'Hello!',
-      body: 'This is a test notification.',
-    }),
-  });
 }

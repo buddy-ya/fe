@@ -1,16 +1,24 @@
-import * as Notifications from 'expo-notifications';
 import { useEffect, useState } from 'react';
+import { NotificationRepository } from '@/api';
+import * as Notifications from 'expo-notifications';
 import { registerForPushNotificationsAsync } from '@/utils';
 
 export default function useNotification() {
   const [expoPushToken, setExpoPushToken] = useState('');
 
-  useEffect(() => {
-    registerForPushNotificationsAsync().then((token) => {
+  const registerToken = async () => {
+    try {
+      const token = await registerForPushNotificationsAsync();
       if (token) {
         setExpoPushToken(token);
+        NotificationRepository.registerToken({ token });
       }
-    });
+    } catch (e) {
+      console.log(e);
+    }
+  };
+  useEffect(() => {
+    registerToken();
   }, []);
 
   useEffect(() => {
@@ -28,5 +36,5 @@ export default function useNotification() {
     };
   }, []);
 
-  return null;
+  return expoPushToken;
 }
