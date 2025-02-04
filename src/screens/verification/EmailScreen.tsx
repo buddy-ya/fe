@@ -15,6 +15,7 @@ import {
 } from '@/components';
 import { FeedStackParamList } from '@/navigation/navigationRef';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { useMutation } from '@tanstack/react-query';
 import { Mail } from 'lucide-react-native';
 import { EMAIL_REGEX } from '@/utils';
 
@@ -22,7 +23,7 @@ type EmailScreenProps = NativeStackScreenProps<FeedStackParamList, 'EmailVerific
 
 export default function EmailScreen({ navigation }: EmailScreenProps) {
   const [email, setEmail] = useState('');
-  const [loading, setLoading] = useState(false);
+
   const { t } = useTranslation('certification');
 
   const handleEmailChange = (text: string) => {
@@ -30,25 +31,28 @@ export default function EmailScreen({ navigation }: EmailScreenProps) {
   };
 
   const isValidEmail = email.length > 0 && EMAIL_REGEX.test(email);
+  const fullEmail = email + '@sju.ac.kr';
+  const univName = '세종대학교';
 
   const handleNavigation = async () => {
-    const fullEmail = email + '@sju.ac.kr';
-    const univName = '세종대학교';
     const requestBody = {
       email: fullEmail,
       univName,
     };
-
-    setLoading(true);
     const { success } = await AuthRepository.sendCodeByMail(requestBody);
-    if (success) {
+    return success;
+  };
+
+  const { isPending } = useMutation({
+    mutationFn: handleNavigation,
+    onSuccess: () => {
       navigation.navigate('EmailVerificationCode', {
         email: fullEmail,
         univName,
       });
-    }
-    setLoading(false);
-  };
+    },
+    onError: () => console.log('에러'),
+  });
 
   const footer = (
     <FooterLayout
@@ -59,7 +63,7 @@ export default function EmailScreen({ navigation }: EmailScreenProps) {
         </MyText>
       }
       onPress={handleNavigation}
-      disabled={!isValidEmail || loading}
+      disabled={!isValidEmail || isPending}
     />
   );
 
