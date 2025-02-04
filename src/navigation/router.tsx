@@ -34,13 +34,13 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import {
   createNavigationContainerRef,
   getFocusedRouteNameFromRoute,
-  NavigationContainer,
   useNavigation,
   useRoute,
 } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import MatchingScreen from '@screens/matching/MatchingScreen';
 import MyPageScreen from '@screens/mypage/MyPageScreen';
+import useNotification from '@/hooks/useNotification';
 import { StudentCertificationModal } from '@/components/modal/Common';
 import WelcomeScreen from '../screens/onboarding/WelcomeScreen';
 import { getTabScreenOptions, tabScreenOptions, useTabBarAnimation } from './TabBar';
@@ -256,13 +256,29 @@ export default function Router() {
       });
     }
   }, [isAuthenticated]);
+
+  useNotification();
+
+  // 클라이언트에서 테스트 용도로 만든 함수
+  // async function sendTestNotification() {
+  //   await Notifications.scheduleNotificationAsync({
+  //     content: {
+  //       title: '📢 테스트 알림',
+  //       body: '이것은 포그라운드에서 보내는 알림입니다!',
+  //       data: { feedId: 1 },
+  //     },
+  //     trigger: null, // 즉시 실행
+  //   });
+  // }
+
+  // sendTestNotification();
+
   return (
     <>
       <Stack.Navigator screenOptions={{ headerShown: false, gestureEnabled: false }}>
         <Stack.Screen name="Splash" component={SplashScreen} />
         <Stack.Screen name="Onboarding" component={OnboardingNavigator} />
         <Stack.Screen name="Tab" component={TabNavigator} />
-        <Stack.Screen name="Chat" component={ChatNavigator} />
       </Stack.Navigator>
 
       {/* 같은 형상을 공유하는 모달의 경우 상단으로 끌어올림. */}

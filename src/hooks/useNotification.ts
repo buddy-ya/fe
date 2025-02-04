@@ -1,10 +1,13 @@
 import { useEffect, useState } from 'react';
 import { NotificationRepository } from '@/api';
+import * as Linking from 'expo-linking';
 import * as Notifications from 'expo-notifications';
 import { registerForPushNotificationsAsync } from '@/utils';
 
 export default function useNotification() {
   const [expoPushToken, setExpoPushToken] = useState('');
+
+  const prefix = Linking.createURL('/'); // path 앞부분
 
   const registerToken = async () => {
     try {
@@ -22,17 +25,17 @@ export default function useNotification() {
   }, []);
 
   useEffect(() => {
-    const notificationListener = Notifications.addNotificationReceivedListener((notification) => {
-      console.log('Notification received:', notification);
-    });
-
-    const responseListener = Notifications.addNotificationResponseReceivedListener((response) => {
-      console.log('Notification response:', response);
+    const backgroundListener = Notifications.addNotificationResponseReceivedListener((response) => {
+      // 🔥 푸시 알림의 데이터 가져오기
+      const data = response.notification.request.content.data;
+      if (data.feedId) {
+        const deepLinkUrl = `${prefix}feeds/${data.feedId}`;
+        Linking.openURL(deepLinkUrl);
+      }
     });
 
     return () => {
-      Notifications.removeNotificationSubscription(notificationListener);
-      Notifications.removeNotificationSubscription(responseListener);
+      Notifications.removeNotificationSubscription(backgroundListener);
     };
   }, []);
 
