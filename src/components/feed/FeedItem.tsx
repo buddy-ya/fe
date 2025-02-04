@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { Image, TouchableOpacity, View } from 'react-native';
+import { Image, ScrollView, TouchableOpacity, View } from 'react-native';
 import { Feed } from '@/types/FeedDTO';
 import ThumbsUpActive from '@assets/icons/feed/like-active.svg';
 import { Bookmark, MessageSquare, ThumbsUp, Eye } from 'lucide-react-native';
@@ -10,7 +10,6 @@ interface FeedItemProps {
   feed: Feed;
   onLike?: (id: number) => void;
   onBookmark?: (id: number) => void;
-  onView?: (id: number) => void;
   onPress?: (id: number) => void;
   showAllContent?: boolean;
 }
@@ -19,7 +18,6 @@ export default function FeedItem({
   feed,
   onLike,
   onBookmark,
-  onView,
   onPress,
   showAllContent = false,
 }: FeedItemProps) {
@@ -74,12 +72,18 @@ export default function FeedItem({
   };
 
   const renderContent = () => {
+    const hasImage = imageUrls.length > 0;
+    console.log(showAllContent);
     return (
       <View className="mb-4 mt-[4px] rounded-[20px] border-[0.3px] border-b-[0px] border-borderFeed bg-white p-4 pb-5">
         <View className="flex-row justify-between">
           <View className="flex-row items-center">
             <View className="mr-3">
-              <Image className="h-12 w-12 rounded-[12px]" source={{ uri: profileImageUrl }} />
+              <Image
+                className="h-12 w-12 rounded-[12px]"
+                source={{ uri: profileImageUrl }}
+                resizeMode="contain"
+              />
             </View>
             <View>
               <MyText size="text-sm" className="font-semibold" color="text-textProfile">
@@ -104,14 +108,48 @@ export default function FeedItem({
           <MyText size="text-[16px]" className="font-semibold">
             {title}
           </MyText>
-          <MyText
-            size="text-[14px]"
-            color="text-textDescription"
-            className="mt-2 font-semibold"
-            numberOfLines={showAllContent ? 0 : 4}
-          >
-            {content}
-          </MyText>
+          <View className="mt-3 flex flex-row justify-between">
+            <MyText
+              size="text-[14px]"
+              color="text-textDescription"
+              className={`font-semibold ${!showAllContent && hasImage ? 'flex-1' : ''}`}
+              numberOfLines={showAllContent ? 0 : 4}
+            >
+              {content}
+            </MyText>
+            {hasImage && !showAllContent && (
+              <View className="relative ml-4 h-[100px] w-[100px]">
+                <Image
+                  className="h-full w-full rounded-[8px]"
+                  source={{ uri: imageUrls[0] }}
+                  resizeMode="cover"
+                />
+                {imageUrls.length > 1 && (
+                  <MyText
+                    size="text-sm"
+                    className="absolute bottom-0 right-0 rounded-md bg-black/50 bg-opacity-10 p-1 px-[5px] text-white"
+                  >
+                    +{imageUrls.length - 1}
+                  </MyText>
+                )}
+              </View>
+            )}
+          </View>
+          {hasImage && showAllContent && (
+            <View className="mt-5">
+              <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                {imageUrls.map((url, index) => (
+                  <View className="mr-2 h-[255px] w-[255px]" key={index}>
+                    <Image
+                      className="h-full w-full rounded-[12px]"
+                      source={{ uri: url }}
+                      resizeMode="cover"
+                    />
+                  </View>
+                ))}
+              </ScrollView>
+            </View>
+          )}
         </View>
 
         <View className="mt-[20px] flex-row items-center justify-between px-[12px]">

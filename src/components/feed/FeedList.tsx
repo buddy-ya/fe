@@ -43,7 +43,6 @@ function FeedList({
           feed={item}
           onLike={onLike}
           onBookmark={onBookmark}
-          onView={onView}
           onPress={onPress}
         />
       )}
