@@ -26,7 +26,7 @@ export const useFeedDetail = ({ feedId }: UseFeedDetailProps) => {
   const likeMutation = useMutation({
     mutationFn: FeedRepository.toggleLike,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: feedKeys.all });
+      queryClient.invalidateQueries({ queryKey: feedKeys.detail(feedId) });
     },
   });
 
@@ -39,10 +39,8 @@ export const useFeedDetail = ({ feedId }: UseFeedDetailProps) => {
 
   const commentMutation = useMutation({
     mutationFn: (content: string) => CommentRepository.create({ feedId, content }),
-    onSuccess: (newComment) => {
-      queryClient.setQueryData(['feedComments', feedId], (old: any) => {
-        return [...old, newComment];
-      });
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['feedComments', feedId] });
       queryClient.invalidateQueries({ queryKey: feedKeys.all });
     },
   });

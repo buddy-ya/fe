@@ -7,9 +7,9 @@ import { useFeedDetail } from '@/hooks';
 import { FeedStackParamList } from '@/navigation/navigationRef';
 import { useModalStore, useUserStore } from '@/store';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { useQueryClient } from '@tanstack/react-query';
 import { MoreVertical, Send } from 'lucide-react-native';
 import { FeedOptionModal } from '@/components/modal/BottomOption/FeedOptionModal';
-import { useQueryClient } from '@tanstack/react-query';
 
 type FeedDetailScreenProps = NativeStackScreenProps<FeedStackParamList, 'FeedDetail'>;
 
@@ -27,12 +27,6 @@ export default function FeedDetailScreen({ navigation, route }: FeedDetailScreen
     useFeedDetail({
       feedId,
     });
-
-
-    useEffect(() => {
-      if(feed){
-      }
-    }, [feed]);
 
   const showFeedNotFoundAlert = () => {
     Alert.alert(

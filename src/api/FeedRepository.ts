@@ -58,17 +58,18 @@ class FeedRepository {
   }
 
   async getBookmarkedFeeds({ page, size }: FeedDTO) {
-    const { data } = await API.get('/mypage/bookmark', {
+    const { data } = await API.get('/users/bookmark', {
       params: {
         page,
         size,
       },
     });
+    console.log(data);
     return data;
   }
 
   async getMyPosts({ page, size }: FeedDTO) {
-    const { data } = await API.get('/mypage/myfeed', {
+    const { data } = await API.get('/users/myfeed', {
       params: {
         page,
         size,

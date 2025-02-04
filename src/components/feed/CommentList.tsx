@@ -1,11 +1,11 @@
-import { MoreVertical } from 'lucide-react-native';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Image, TouchableOpacity, View } from 'react-native';
+import { useModalStore } from '@/store';
+import { Comment } from '@/types';
+import { MoreVertical } from 'lucide-react-native';
 import { getCountryFlag, getTimeAgo } from '@/utils';
 import { CommentOptionModal, MyText } from '../common';
-import { useModalStore } from '@/store';
-import { useState } from 'react';
-import { Comment } from '@/types';
 
 interface CommentLabelProps {
   isFeedOwner: boolean;
@@ -40,7 +40,6 @@ interface CommentListProps {
   comments: Comment[];
 }
 
-
 export default function CommentList({ feed, comments }: CommentListProps) {
   const { t } = useTranslation('feed');
   const [comment, setComment] = useState<Comment>({
@@ -57,17 +56,17 @@ export default function CommentList({ feed, comments }: CommentListProps) {
     isFeedOwner: false,
     isCommentOwner: false,
     isProfileImageUpload: false,
-    replies: []
+    replies: [],
   });
 
-  const modalVisible = useModalStore(state => state.visible);
-  const handleModalOpen = useModalStore(state => state.handleOpen);
-  const handleModalClose = useModalStore(state => state.handleClose);
+  const modalVisible = useModalStore((state) => state.visible);
+  const handleModalOpen = useModalStore((state) => state.handleOpen);
+  const handleModalClose = useModalStore((state) => state.handleClose);
 
   const handleCommentOptions = (comment: Comment) => {
     setComment(comment);
     handleModalOpen('comment');
-  }
+  };
 
   return (
     <>
@@ -78,7 +77,7 @@ export default function CommentList({ feed, comments }: CommentListProps) {
               <View className="flex-1 flex-row">
                 <View className="mr-3">
                   <Image
-                    className="h-10 w-10 rounded-[12px]"
+                    className="h-12 w-12 rounded-[12px]"
                     source={{ uri: item.profileImageUrl }}
                   />
                 </View>

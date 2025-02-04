@@ -73,7 +73,6 @@ export default function FeedItem({
 
   const renderContent = () => {
     const hasImage = imageUrls.length > 0;
-    console.log(showAllContent);
     return (
       <View className="mb-4 mt-[4px] rounded-[20px] border-[0.3px] border-b-[0px] border-borderFeed bg-white p-4 pb-5">
         <View className="flex-row justify-between">
