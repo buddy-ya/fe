@@ -1,5 +1,5 @@
-import { Feed } from "@/model";
-import { ReactNode } from "react";
+import { ReactNode } from 'react';
+import { Feed } from '@/types';
 
 export interface FeedListResponse {
   feeds: Feed[];

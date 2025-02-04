@@ -25,18 +25,21 @@ export interface FeedUpdateDTO {
 // TODO: 나중에 필수 항목 아닌거 옵셔널로 하기
 export interface Feed {
   id: number;
-  category?: string;
+  userId: number;
   name: string;
-  university: string;
-  country: string;
+  country?: string;
   title: string;
   content: string;
-  profileImageUrl: string;
-  imageUrls: string[];
-  likeCount: number;
-  commentCount: number;
-  isFeedOwner: boolean;
-  isLiked: boolean;
-  isBookmarked: boolean;
-  createdDate: string;
+  university?: string;
+  profileImageUrl?: string;
+  category?: string;
+  imageUrls?: string[];
+  likeCount?: number;
+  commentCount?: number;
+  viewCount?: number;
+  isFeedOwner?: boolean;
+  isLiked?: boolean;
+  isBookmarked?: boolean;
+  isProfileImageUpload?: boolean;
+  createdDate?: string;
 }
