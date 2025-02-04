@@ -5,15 +5,18 @@ export interface CommentDTO {
 }
 
 export interface Comment {
-  id?: number;
-  userId?: number;
-  content?: string;
-  name?: string;
-  country?: string;
-  university?: string;
-  profileImageUrl?: string;
-  createdDate?: string;
-  isFeedOwner?: boolean;
-  isCommentOwner?: boolean;
-  updateDate?: string;
+  id: number; 
+  userId: number; 
+  content: string;
+  name: string; 
+  country: string; 
+  university: string;
+  profileImageUrl: string; 
+  likeCount: number;
+  createdDate: string;
+  isDeleted: boolean; 
+  isFeedOwner: boolean;
+  isCommentOwner: boolean;
+  isProfileImageUpload: boolean; 
+  replies: Comment[]; 
 }

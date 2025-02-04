@@ -1,37 +1,16 @@
-import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Dimensions, Image, TouchableOpacity, View } from 'react-native';
+import { Image, TouchableOpacity, View } from 'react-native';
 import { Feed } from '@/types/FeedDTO';
 import ThumbsUpActive from '@assets/icons/feed/like-active.svg';
-import { Bookmark, MessageSquare, ThumbsUp } from 'lucide-react-native';
+import { Bookmark, MessageSquare, ThumbsUp, Eye } from 'lucide-react-native';
 import { getCountryFlag, getTimeAgo } from '@/utils';
 import { MyText } from '../common';
-
-const IMAGE_CONFIG_DETAIL = {
-  containerClass: 'w-full',
-  maxHeight: 3000,
-};
-
-const IMAGE_CONFIG = {
-  single: {
-    containerClass: 'w-full',
-    maxHeight: 150,
-  },
-  multiple: {
-    containerClass: 'w-[50%] aspect-[1/1]',
-    maxHeight: 150,
-  },
-};
-
-interface ImageDimensions {
-  width: number;
-  height: number;
-}
 
 interface FeedItemProps {
   feed: Feed;
   onLike?: (id: number) => void;
   onBookmark?: (id: number) => void;
+  onView?: (id: number) => void;
   onPress?: (id: number) => void;
   showAllContent?: boolean;
 }
@@ -40,12 +19,11 @@ export default function FeedItem({
   feed,
   onLike,
   onBookmark,
+  onView,
   onPress,
   showAllContent = false,
 }: FeedItemProps) {
-  const [imageDimensions, setImageDimensions] = useState<Record<string, ImageDimensions>>({});
   const { t } = useTranslation('feed');
-
   const {
     id,
     name,
@@ -57,14 +35,15 @@ export default function FeedItem({
     profileImageUrl,
     likeCount,
     commentCount,
+    viewCount,
+    isFeedOwner,
     isLiked,
     isBookmarked,
+    isProfileImageUpload,
     createdDate,
   } = feed;
 
-  const screenWidth = Dimensions.get('window').width;
-
-  const actions = [
+  const feedActions = [
     {
       icon: ThumbsUp,
       activeIcon: ThumbsUpActive,
@@ -75,110 +54,23 @@ export default function FeedItem({
     },
     {
       icon: MessageSquare,
-      label: t('action.comment'),
       count: commentCount,
       onPress: () => handleComment(id),
     },
     {
+      icon: Eye,
+      count: viewCount,
+      onPress: () => {},
+    },
+    {
       icon: Bookmark,
-      label: t('action.bookmark'),
       isActive: isBookmarked,
       onPress: () => onBookmark?.(id),
     },
   ];
 
-  const calculateImageHeight = (url: string) => {
-    const dims = imageDimensions[url];
-    if (!dims) return undefined;
-    const paddingWidth = 32;
-    const contentWidth = screenWidth - paddingWidth;
-    const aspectRatio = dims.height / dims.width;
-    return contentWidth * aspectRatio;
-  };
-
   const handleComment = (commentId: number) => {
     onPress?.(commentId);
-  };
-
-  useEffect(() => {
-    if (!showAllContent) return;
-
-    let isComponentMounted = true;
-
-    imageUrls.forEach((url) => {
-      if (imageDimensions[url]) return;
-
-      Image.getSize(
-        url,
-        (width, height) => {
-          if (isComponentMounted) {
-            setImageDimensions((prev) => ({
-              ...prev,
-              [url]: { width, height },
-            }));
-          }
-        },
-        (error) => {
-          if (isComponentMounted) {
-            console.error('Error getting image dimensions:', error);
-          }
-        }
-      );
-    });
-
-    return () => {
-      isComponentMounted = false;
-    };
-  }, [showAllContent, imageUrls]);
-
-  const renderLimitedImages = () => {
-    const limitedUrls = imageUrls.slice(0, 2);
-
-    return (
-      <View className="mt-5 flex-row flex-wrap justify-between">
-        {limitedUrls.map((url, index) => {
-          const totalImages = imageUrls.length;
-          const config = totalImages === 1 ? IMAGE_CONFIG.single : IMAGE_CONFIG.multiple;
-          return (
-            <View
-              key={`${url}-${index}`}
-              className={` ${config.containerClass} overflow-hidden rounded-[12px] border border-borderFeed`}
-              style={{ height: config.maxHeight }}
-            >
-              <Image source={{ uri: url }} className="h-full w-full" resizeMode="cover" />
-            </View>
-          );
-        })}
-
-        {imageUrls.length > 2 && (
-          <View className="absolute right-2 top-2 rounded bg-black/60 px-2 py-1">
-            <MyText color="text-white" size="text-sm">
-              +{imageUrls.length - 2}
-            </MyText>
-          </View>
-        )}
-      </View>
-    );
-  };
-
-  const renderAllImages = () => {
-    return (
-      <View className="mt-5">
-        {imageUrls.map((url, index) => {
-          const height = calculateImageHeight(url) || IMAGE_CONFIG_DETAIL.maxHeight;
-
-          return (
-            <View
-              key={`${url}-${index}`}
-              className={` ${IMAGE_CONFIG_DETAIL.containerClass} mb-2 overflow-hidden rounded-[12px] border border-borderFeed`}
-              style={{ height }}
-            >
-              <Image source={{ uri: url }} className="h-full w-full" resizeMode="contain" />
-            </View>
-          );
-        })}
-      </View>
-    );
   };
 
   const renderContent = () => {
@@ -190,11 +82,11 @@ export default function FeedItem({
               <Image className="h-12 w-12 rounded-[12px]" source={{ uri: profileImageUrl }} />
             </View>
             <View>
-              <MyText size="text-sm" className="font-semibold" color="text-[#474747]">
+              <MyText size="text-sm" className="font-semibold" color="text-textProfile">
                 {t(`profile.university.${university}`)}
               </MyText>
               <View className="flex-row items-center">
-                <MyText size="text-sm" color="text-[#474747]">
+                <MyText size="text-sm" color="text-textProfile">
                   {name}
                 </MyText>
                 <MyText size="text-sm" className="ml-[3px]">
@@ -216,19 +108,17 @@ export default function FeedItem({
             size="text-[14px]"
             color="text-textDescription"
             className="mt-2 font-semibold"
-            numberOfLines={showAllContent ? 0 : 3}
+            numberOfLines={showAllContent ? 0 : 4}
           >
             {content}
           </MyText>
         </View>
 
-        {imageUrls.length > 0 && (showAllContent ? renderAllImages() : renderLimitedImages())}
-
         <View className="mt-[20px] flex-row items-center justify-between px-[12px]">
-          {actions.map(
+          {feedActions.map(
             ({ icon: Icon, activeIcon: ActiveIcon, label, count, isActive, onPress }, index) => (
               <TouchableOpacity
-                key={label}
+                key={index}
                 onPress={onPress}
                 className="flex-row items-center"
                 hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
@@ -244,13 +134,10 @@ export default function FeedItem({
                   />
                 )}
                 <View className="ml-1 flex-row items-center">
-                  <MyText size="text-sm" color="text-textDescription">
-                    {label}
-                  </MyText>
                   <MyText
                     size="text-sm"
                     color="text-textDescription"
-                    className={`ml-1 ${index !== actions.length - 1 ? 'min-w-[16px]' : ''}`}
+                    className={`ml-1 ${index !== feedActions.length - 1 ? 'min-w-[16px]' : ''}`}
                   >
                     {count && count > 0 ? count : ''}
                   </MyText>

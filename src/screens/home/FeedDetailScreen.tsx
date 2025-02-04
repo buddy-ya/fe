@@ -1,7 +1,7 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Alert, Keyboard, RefreshControl, ScrollView, TouchableOpacity, View } from 'react-native';
-import { RoomRepository } from '@/api';
+import { feedKeys, RoomRepository } from '@/api';
 import { CommentList, FeedItem, KeyboardLayout, Layout, Input } from '@/components';
 import { useFeedDetail } from '@/hooks';
 import { FeedStackParamList } from '@/navigation/navigationRef';
@@ -9,11 +9,13 @@ import { useModalStore, useUserStore } from '@/store';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { MoreVertical, Send } from 'lucide-react-native';
 import { FeedOptionModal } from '@/components/modal/BottomOption/FeedOptionModal';
+import { useQueryClient } from '@tanstack/react-query';
 
 type FeedDetailScreenProps = NativeStackScreenProps<FeedStackParamList, 'FeedDetail'>;
 
 export default function FeedDetailScreen({ navigation, route }: FeedDetailScreenProps) {
   const { feedId } = route.params;
+  const queryClient = useQueryClient();
   const [comment, setComment] = useState('');
   const { t } = useTranslation('feed');
   const modalVisible = useModalStore((state) => state.visible);
@@ -25,6 +27,12 @@ export default function FeedDetailScreen({ navigation, route }: FeedDetailScreen
     useFeedDetail({
       feedId,
     });
+
+
+    useEffect(() => {
+      if(feed){
+      }
+    }, [feed]);
 
   const showFeedNotFoundAlert = () => {
     Alert.alert(
@@ -38,11 +46,6 @@ export default function FeedDetailScreen({ navigation, route }: FeedDetailScreen
       ],
       { cancelable: false }
     );
-  };
-
-  const handleRoomCreate = async () => {
-    const data = await RoomRepository.create({ buddyId: feed.userId });
-    // navigation.navigate('ChatRoom');
   };
 
   const handleCommentSubmit = async () => {

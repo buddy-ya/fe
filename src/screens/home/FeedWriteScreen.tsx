@@ -175,6 +175,7 @@ export default function FeedWriteScreen({ navigation, route }: FeedWriteScreenPr
   return (
     <Layout
       showHeader
+      isBackgroundWhite
       headerLeft={
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <X size={24} color="#797979" />

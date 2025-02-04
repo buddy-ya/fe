@@ -8,6 +8,7 @@ interface FeedListProps {
   feeds: Feed[];
   onLike?: (id: number) => void;
   onBookmark?: (id: number) => void;
+  onView?: (id:number) => void;
   onPress: (id: number) => void;
   isLoading: boolean;
   hasMore: boolean;
@@ -21,6 +22,7 @@ function FeedList({
   feeds,
   onLike,
   onBookmark,
+  onView,
   onPress,
   className,
   onLoadMore,
@@ -41,6 +43,7 @@ function FeedList({
           feed={item}
           onLike={onLike}
           onBookmark={onBookmark}
+          onView={onView}
           onPress={onPress}
         />
       )}

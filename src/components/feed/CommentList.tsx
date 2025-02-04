@@ -5,7 +5,7 @@ import { getCountryFlag, getTimeAgo } from '@/utils';
 import { CommentOptionModal, MyText } from '../common';
 import { useModalStore } from '@/store';
 import { useState } from 'react';
-import { Comment } from '@/model';
+import { Comment } from '@/types';
 
 interface CommentLabelProps {
   isFeedOwner: boolean;
@@ -40,19 +40,26 @@ interface CommentListProps {
   comments: Comment[];
 }
 
+
 export default function CommentList({ feed, comments }: CommentListProps) {
   const { t } = useTranslation('feed');
   const [comment, setComment] = useState<Comment>({
     id: -1,
-    isCommentOwner: false,
-    isFeedOwner: false,
-    name: '',
-    profileImageUrl: '',
-    university: '',
-    country: '',
+    userId: 0,
     content: '',
+    name: '',
+    country: '',
+    university: '',
+    profileImageUrl: '',
+    likeCount: 0,
     createdDate: '',
-  })
+    isDeleted: false,
+    isFeedOwner: false,
+    isCommentOwner: false,
+    isProfileImageUpload: false,
+    replies: []
+  });
+
   const modalVisible = useModalStore(state => state.visible);
   const handleModalOpen = useModalStore(state => state.handleOpen);
   const handleModalClose = useModalStore(state => state.handleClose);
