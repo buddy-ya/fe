@@ -1,35 +1,31 @@
-import { Fragment, useState } from 'react';
-import { Text, View } from 'react-native';
+import { TouchableOpacity, View } from 'react-native';
 import { RoomRepository } from '@/api';
-import { ChatPaper, InnerLayout, Layout, RoomList } from '@/components';
-import { ChatStackParamList } from '@/navigation/navigationRef';
+import { InnerLayout, Layout, MyText, RoomList } from '@/components';
+import { ChatStackParamList, FeedStackParamList } from '@/navigation/navigationRef';
 import { Room } from '@/types/RoomDTO';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { useSuspenseQuery } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
+import { UserRoundPlus } from 'lucide-react-native';
+import Skeleton from '../Skeleton';
 
-export const CATEGORIES = [
-  {
-    id: 1,
-    label: '피드',
-  },
-  {
-    id: 2,
-    label: '매칭',
-  },
-];
-
-type RoomListNavigationProps = NativeStackScreenProps<ChatStackParamList, 'RoomList'>;
+type RoomListNavigationProps = NativeStackScreenProps<
+  ChatStackParamList & FeedStackParamList,
+  'RoomList'
+>;
 
 export default function RoomListScreen({ navigation }: RoomListNavigationProps) {
-  const [activeIndex, setActiveIndex] = useState(0);
   // TODO: 스크롤 등 했을때 다시 불러오는 로직 필요
-  const { data } = useSuspenseQuery({
+  const { data, isPending, isError, isSuccess } = useQuery({
     queryKey: ['roomList'],
     queryFn: RoomRepository.getRoomList,
   });
 
-  const handleChipPress = (index: number) => {
-    setActiveIndex(index);
+  const handleGoToFeed = () => {
+    navigation.navigate('FeedTab', { screen: 'FeedHome' } as any);
+  };
+
+  const handleGoToRequests = () => {
+    navigation.navigate('ChatRequests');
   };
 
   const handlePressRoom = (room: Room) => {
@@ -37,23 +33,47 @@ export default function RoomListScreen({ navigation }: RoomListNavigationProps) 
   };
 
   return (
-    <Layout isBackgroundWhite>
+    <Layout
+      isBackgroundWhite
+      showHeader
+      headerLeft={
+        <View className="p-2">
+          <MyText className="font-bold" size="text-[22px]" color="text-[#282828]">
+            채팅
+          </MyText>
+        </View>
+      }
+      headerRight={
+        <TouchableOpacity
+          className="p-2"
+          onPress={handleGoToRequests}
+          hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}
+        >
+          <UserRoundPlus strokeWidth={2} size={24} color={'#797979'} />
+        </TouchableOpacity>
+      }
+    >
       <InnerLayout>
         <View className="flex-1">
-          <ChatPaper categories={CATEGORIES} onPageChange={handleChipPress}>
-            {CATEGORIES.map((category) => (
-              <Fragment key={`fragment_${category.id}`}>
-                <View className="flex h-[77px] items-center justify-center rounded-xl bg-primary">
-                  <Text className="text-base text-white">
-                    더 많은 글로벌 버디와 친구가 되고 싶다면?
-                  </Text>
-                </View>
-                <View className="flex-1">
-                  <RoomList rooms={data} onPress={handlePressRoom} />
-                </View>
-              </Fragment>
-            ))}
-          </ChatPaper>
+          <View className="flex h-[77px] flex-row items-center justify-between rounded-xl bg-primary px-6 py-4">
+            <View className="flex h-full flex-1 flex-row items-center">
+              <MyText className="text-white" size="text-lg">
+                더 많은 글로벌 버디와 친구가 되고 싶다면?
+              </MyText>
+            </View>
+            <View className="mt-6 flex h-full flex-1 flex-row items-center justify-end">
+              <TouchableOpacity onPress={handleGoToFeed}>
+                <MyText className="text-white" size="text-sm">
+                  {'피드 둘러보기 >'}
+                </MyText>
+              </TouchableOpacity>
+            </View>
+          </View>
+          <View className="flex-1">
+            {isPending && <Skeleton />}
+            {isError && <MyText>에러가 발생하였습니다.</MyText>}
+            {isSuccess && <RoomList rooms={data} onPress={handlePressRoom} />}
+          </View>
         </View>
       </InnerLayout>
     </Layout>

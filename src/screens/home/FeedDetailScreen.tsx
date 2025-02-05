@@ -20,6 +20,7 @@ export default function FeedDetailScreen({ navigation, route }: FeedDetailScreen
   const handleModalOpen = useModalStore((state) => state.handleOpen);
   const handleModalClose = useModalStore((state) => state.handleClose);
   const isCertificated = useUserStore((state) => state.isCertificated);
+  const myUserId = useUserStore((state) => state.id);
 
   const { feed, comments, isRefetching, handleFeedActions, handleCommentActions, handleRefresh } =
     useFeedDetail({
@@ -42,7 +43,7 @@ export default function FeedDetailScreen({ navigation, route }: FeedDetailScreen
 
   const handleRoomCreate = async () => {
     const data = await RoomRepository.create({ buddyId: feed.userId });
-    // navigation.navigate('ChatRoom');
+    navigation.navigate('Chat', { screen: 'ChatRoom', params: { ...data } } as any);
   };
 
   const handleCommentSubmit = async () => {
@@ -68,16 +69,19 @@ export default function FeedDetailScreen({ navigation, route }: FeedDetailScreen
         onBack={() => navigation.goBack()}
         headerRight={
           <View className="flex-row">
+            {feed.userId !== myUserId && (
+              <TouchableOpacity
+                onPress={handleRoomCreate}
+                hitSlop={{ bottom: 20, left: 20 }}
+                className="mr-4"
+              >
+                <Send size={24} color="#797979" />
+              </TouchableOpacity>
+            )}
+
             <TouchableOpacity
               onPress={() => handleModalOpen('feed')}
               hitSlop={{ bottom: 20, left: 20 }}
-            >
-              <Send size={24} color="#797979" />
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => handleModalOpen('feed')}
-              hitSlop={{ bottom: 20, left: 20 }}
-              className="ml-2"
             >
               <MoreVertical size={24} color="#797979" />
             </TouchableOpacity>
