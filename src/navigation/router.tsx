@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import SplashScreen from '@/screens/SplashScreen';
+import ChatRequestsScreen from '@/screens/chat/ChatRequestsScreen';
 import ChatRoomScreen from '@/screens/chat/ChatRoomScreen';
 import RoomListScreen from '@/screens/chat/RoomListScreen';
 import CommentEditScreen from '@/screens/home/CommentEditScreen';
@@ -203,6 +204,7 @@ function ChatNavigator() {
     <ChatStack.Navigator screenOptions={{ headerShown: false }}>
       <ChatStack.Screen name="RoomList" component={RoomListScreen} />
       <ChatStack.Screen name="ChatRoom" component={ChatRoomScreen} />
+      <ChatStack.Screen name="ChatRequests" component={ChatRequestsScreen} />
     </ChatStack.Navigator>
   );
 }
