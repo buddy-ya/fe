@@ -33,13 +33,13 @@ export interface Feed {
   university?: string;
   profileImageUrl?: string;
   category?: string;
-  imageUrls?: string[];
+  imageUrls: string[];
   likeCount?: number;
   commentCount?: number;
   viewCount?: number;
-  isFeedOwner?: boolean;
-  isLiked?: boolean;
-  isBookmarked?: boolean;
+  isFeedOwner: boolean;
+  isLiked: boolean;
+  isBookmarked: boolean;
   isProfileImageUpload?: boolean;
-  createdDate?: string;
+  createdDate: string;
 }
