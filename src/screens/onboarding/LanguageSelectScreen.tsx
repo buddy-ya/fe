@@ -1,3 +1,6 @@
+import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Keyboard, TouchableWithoutFeedback, View } from 'react-native';
 import { UserRepository } from '@/api';
 import {
   Button,
@@ -10,12 +13,9 @@ import {
   SearchInput,
 } from '@/components';
 import { MyPageStackParamList, OnboardingStackParamList } from '@/navigation/navigationRef';
-import { useOnboardingStore } from '@/store';
+import { useOnboardingStore, useUserStore } from '@/store';
 import { NativeStackNavigationProp, NativeStackScreenProps } from '@react-navigation/native-stack';
-import { useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { Keyboard, TouchableWithoutFeedback, View } from 'react-native';
-import { LANGUAGES } from '@/utils';
+import { LANGUAGES, removeNullValues } from '@/utils';
 
 const MAX_SELECT = 4;
 
@@ -30,6 +30,7 @@ type LanguageSelectScreenProps =
 export default function LanguageSelectScreen({ navigation, route }: LanguageSelectScreenProps) {
   const { t } = useTranslation('onboarding');
   const { updateOnboardingData } = useOnboardingStore();
+  const update = useUserStore((state) => state.update);
 
   const isEditMode =
     'params' in route && route.params && 'isEditMode' in route.params
@@ -64,7 +65,8 @@ export default function LanguageSelectScreen({ navigation, route }: LanguageSele
   const handleNavigateButton = async () => {
     const languages = selectedLanguages.map((lang) => lang.id);
     if (isEditMode) {
-      await UserRepository.update({ key: 'languages', values: languages });
+      const data = await UserRepository.update({ key: 'languages', values: languages });
+      update(removeNullValues(data));
       const myPageNav = navigation as NativeStackNavigationProp<
         MyPageStackParamList,
         'EditLanguage'
