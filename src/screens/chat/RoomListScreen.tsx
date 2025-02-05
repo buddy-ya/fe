@@ -1,12 +1,12 @@
-import { useState } from 'react';
 import { TouchableOpacity, View } from 'react-native';
 import { RoomRepository } from '@/api';
 import { InnerLayout, Layout, MyText, RoomList } from '@/components';
 import { ChatStackParamList, FeedStackParamList } from '@/navigation/navigationRef';
 import { Room } from '@/types/RoomDTO';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { useSuspenseQuery } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { UserRoundPlus } from 'lucide-react-native';
+import Skeleton from '../Skeleton';
 
 type RoomListNavigationProps = NativeStackScreenProps<
   ChatStackParamList & FeedStackParamList,
@@ -14,15 +14,18 @@ type RoomListNavigationProps = NativeStackScreenProps<
 >;
 
 export default function RoomListScreen({ navigation }: RoomListNavigationProps) {
-  const [activeIndex, setActiveIndex] = useState(0);
   // TODO: 스크롤 등 했을때 다시 불러오는 로직 필요
-  const { data } = useSuspenseQuery({
+  const { data, isPending, isError, isSuccess } = useQuery({
     queryKey: ['roomList'],
     queryFn: RoomRepository.getRoomList,
   });
 
   const handleGoToFeed = () => {
     navigation.navigate('FeedTab', { screen: 'FeedHome' } as any);
+  };
+
+  const handleGoToRequests = () => {
+    navigation.navigate('ChatRequests');
   };
 
   const handlePressRoom = (room: Room) => {
@@ -41,7 +44,11 @@ export default function RoomListScreen({ navigation }: RoomListNavigationProps) 
         </View>
       }
       headerRight={
-        <TouchableOpacity className="p-2">
+        <TouchableOpacity
+          className="p-2"
+          onPress={handleGoToRequests}
+          hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}
+        >
           <UserRoundPlus strokeWidth={2} size={24} color={'#797979'} />
         </TouchableOpacity>
       }
@@ -63,7 +70,9 @@ export default function RoomListScreen({ navigation }: RoomListNavigationProps) 
             </View>
           </View>
           <View className="flex-1">
-            <RoomList rooms={data} onPress={handlePressRoom} />
+            {isPending && <Skeleton />}
+            {isError && <MyText>에러가 발생하였습니다.</MyText>}
+            {isSuccess && <RoomList rooms={data} onPress={handlePressRoom} />}
           </View>
         </View>
       </InnerLayout>
