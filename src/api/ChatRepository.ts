@@ -17,12 +17,12 @@ class ChatRepository {
     return data;
   }
 
-  async create({ receiverId }: { receiverId: number }) {
+  async accept({ receiverId }: { receiverId: number }) {
     const { data } = await API.post(`${url}/${receiverId}`);
     return data;
   }
 
-  async delete({ chatRequestId }: { chatRequestId: number }) {
+  async decline({ chatRequestId }: { chatRequestId: number }) {
     const { data } = await API.delete(`${url}/${chatRequestId}`);
     return data;
   }
