@@ -1,7 +1,8 @@
-import { Room } from '@/model';
-import { Image, View, TouchableOpacity } from 'react-native';
+import { View, TouchableOpacity } from 'react-native';
+import { Room } from '@/types';
 import { getTimeAgo } from '@/utils';
 import { MyText } from '../common';
+import { ProfileImage } from './ProfileImage';
 import { UnreadCountChip } from './UnreadCountChip';
 
 interface RoomItemProps {
@@ -23,9 +24,7 @@ export default function RoomItem({ room, onPress }: RoomItemProps) {
     <TouchableOpacity onPress={handleClick} activeOpacity={0.7}>
       <View className="mt-3 h-[60px] w-full flex-row flex-wrap items-center justify-between rounded-[13px]">
         <View className="h-full w-3/4 flex-row items-center">
-          <View>
-            <Image className="h-[49px] w-[49px] rounded-[12px]" source={{ uri: profileImageUrl }} />
-          </View>
+          <ProfileImage imageUrl={profileImageUrl} />
           <View className="ml-3 flex h-[40px] w-3/4 justify-between">
             <MyText numberOfLines={1}>{name}</MyText>
             <MyText numberOfLines={1} size="text-sm">
