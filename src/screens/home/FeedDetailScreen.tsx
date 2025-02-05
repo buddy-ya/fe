@@ -14,7 +14,6 @@ import { useFeedDetail } from '@/hooks';
 import { FeedStackParamList } from '@/navigation/navigationRef';
 import { useModalStore, useUserStore } from '@/store';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { useQueryClient } from '@tanstack/react-query';
 import { MoreVertical, Send } from 'lucide-react-native';
 import { FeedOptionModal } from '@/components/modal/BottomOption/FeedOptionModal';
 
@@ -119,7 +118,12 @@ export default function FeedDetailScreen({ navigation, route }: FeedDetailScreen
                   onBookmark={handleFeedActions.bookmark}
                   showAllContent
                 />
-                <CommentList feed={feed} comments={comments} onReply={handleCommentReply} />
+                <CommentList
+                  feed={feed}
+                  comments={comments}
+                  onReply={handleCommentReply}
+                  onLike={handleCommentActions.like}
+                />
               </>
             )}
           </ScrollView>

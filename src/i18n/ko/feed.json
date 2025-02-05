@@ -10,7 +10,9 @@
     }
   },
   "comment": {
-    "placeholder": "댓글을 입력해주세요."
+    "placeholder": "댓글을 입력해주세요.",
+    "deleted": "삭제된 댓글입니다.",
+    "blocked": "차단한 사용자의 댓글입니다."
   },
   "action": {
     "like": "공감",

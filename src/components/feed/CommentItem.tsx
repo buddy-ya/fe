@@ -49,25 +49,36 @@ const CommentItem = ({
   onOptions,
 }: CommentItemProps) => {
   const { t } = useTranslation('feed');
-  const handleLike = (commentId: number) => {
-    // 좋아요 처리 로직 추가
-  };
-
   const commentActions = (comment: Comment) => [
     {
       icon: ThumbsUp,
       isActive: true,
-      count: comment.likeCount || 3,
-      onPress: () => handleLike(comment.id),
+      count: comment.likeCount,
+      onPress: () => onLike(comment.id),
     },
     {
       icon: MessageSquare,
       onPress: () => onReply(comment.id),
     },
   ];
+
+  const renderCommentText = (comment: Comment) => {
+    if (comment.isDeleted) {
+      return <MyText color={'text-[#797979]'}>{t('comment.deleted')}</MyText>;
+    }
+    // } else if (comment.isBlocked) {
+    //   return (
+    //     <MyText style={{ color: '#FF0000', textDecorationLine: 'line-through' }}>
+    //       {t('comment.blocked')}
+    //     </MyText>
+    //   );}
+    else {
+      return <MyText>{comment.content}</MyText>;
+    }
+  };
   return (
-    <View className={`bg-white px-4 py-3 pb-1 ${isReply ? 'pl-[60px]' : ''}`}>
-      <View className="mb-[14px] flex-row items-start justify-between">
+    <View className={`bg-white px-4 py-3 ${isReply ? 'py-2 pl-[60px]' : ''}`}>
+      <View className="flex-row items-start justify-between">
         <View className="flex-1 flex-row">
           <View className="mr-3">
             <Image
@@ -101,7 +112,7 @@ const CommentItem = ({
                 isCommentOwner={comment.isCommentOwner}
               />
             </View>
-            <MyText className="mt-2 flex-shrink">{comment.content}</MyText>
+            <View className="mt-2 flex-shrink">{renderCommentText(comment)}</View>
             <View className="mt-3 flex-row items-center">
               {commentActions(comment)
                 .filter(({ icon }) => !(isReply && icon === MessageSquare))
@@ -109,23 +120,23 @@ const CommentItem = ({
                   <TouchableOpacity
                     key={index}
                     onPress={onPress}
-                    className="mr-5 flex-row"
+                    className="mr-5 h-[20px] w-[30px] flex-row"
                     hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
                   >
                     <Icon size={16} color={isActive ? '#00A176' : '#797979'} />
-                    {count && count > 0 && (
-                      <MyText size="text-[12px]" color="text-textDescription" className="ml-1">
-                        {count}
-                      </MyText>
-                    )}
+                    <MyText size="text-[12px]" color="text-textDescription" className="ml-1">
+                      {count && count > 0 ? count : ''}
+                    </MyText>
                   </TouchableOpacity>
                 ))}
             </View>
           </View>
         </View>
-        <TouchableOpacity onPress={() => onOptions(comment)}>
-          <MoreVertical size={20} color="#797977" />
-        </TouchableOpacity>
+        {!comment.isDeleted && (
+          <TouchableOpacity onPress={() => onOptions(comment)}>
+            <MoreVertical size={20} color="#797977" />
+          </TouchableOpacity>
+        )}
       </View>
     </View>
   );

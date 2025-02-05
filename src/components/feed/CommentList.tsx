@@ -1,20 +1,19 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Image, TouchableOpacity, View } from 'react-native';
+import { View } from 'react-native';
 import { useModalStore } from '@/store';
 import { Comment, Feed } from '@/types';
-import { MoreVertical, ThumbsUp, MessageSquare } from 'lucide-react-native';
-import { getCountryFlag, getTimeAgo } from '@/utils';
-import { CommentOptionModal, MyText } from '../common';
+import { CommentOptionModal } from '../common';
 import CommentItem from './CommentItem';
 
 interface CommentListProps {
   feed: Feed;
   comments: Comment[];
+  onLike: (commentId: number) => void;
   onReply: (commentId: number) => void;
 }
 
-export default function CommentList({ feed, comments, onReply }: CommentListProps) {
+export default function CommentList({ feed, comments, onLike, onReply }: CommentListProps) {
   const { t } = useTranslation('feed');
   const [comment, setComment] = useState<Comment>({
     id: -1,
@@ -51,7 +50,7 @@ export default function CommentList({ feed, comments, onReply }: CommentListProp
             <CommentItem
               key={comment.id}
               comment={comment}
-              onLike={() => {}}
+              onLike={onLike}
               onReply={onReply}
               onOptions={handleCommentOptions}
             />
@@ -61,7 +60,7 @@ export default function CommentList({ feed, comments, onReply }: CommentListProp
                   key={reply.id}
                   comment={reply}
                   isReply
-                  onLike={() => {}}
+                  onLike={onLike}
                   onReply={onReply}
                   onOptions={handleCommentOptions}
                 />

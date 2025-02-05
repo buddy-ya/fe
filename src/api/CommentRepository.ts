@@ -28,6 +28,11 @@ class CommentRepository {
     const { data } = await API.delete(`/feeds/${feedId}/comments/${commentId}`);
     return data;
   }
+
+  async toggleLike({ feedId, commentId }: CommentDTO) {
+    const { data } = await API.put(`/feeds/${feedId}/comments/${commentId}/like`);
+    return data;
+  }
 }
 
 export default new CommentRepository();

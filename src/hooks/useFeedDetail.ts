@@ -39,12 +39,17 @@ export const useFeedDetail = ({ feedId }: UseFeedDetailProps) => {
 
   const commentMutation = useMutation({
     mutationFn: ({ content, parentId }: { content: string; parentId?: number }) => {
-      console.log(parentId, content);
       return CommentRepository.create({ feedId, parentId, content });
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['feedComments', feedId] });
-      queryClient.invalidateQueries({ queryKey: feedKeys.all });
+    },
+  });
+
+  const CommentLikeMutation = useMutation({
+    mutationFn: (commentId: number) => CommentRepository.toggleLike({ feedId, commentId }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['feedComments', feedId] });
     },
   });
 
@@ -52,7 +57,6 @@ export const useFeedDetail = ({ feedId }: UseFeedDetailProps) => {
     mutationFn: (commentId: number) => CommentRepository.delete({ feedId, commentId }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['feedComments', feedId] });
-      queryClient.invalidateQueries({ queryKey: feedKeys.all });
     },
   });
 
@@ -80,6 +84,9 @@ export const useFeedDetail = ({ feedId }: UseFeedDetailProps) => {
     },
     update: async (commentId: number, content: string) => {
       await updateCommentMutation.mutateAsync({ commentId, content });
+    },
+    like: async (commentId: number) => {
+      await CommentLikeMutation.mutateAsync(commentId);
     },
   };
 

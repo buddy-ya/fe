@@ -10,7 +10,9 @@
     }
   },
   "comment": {
-    "placeholder": "Please enter a comment"
+    "placeholder": "Please enter a comment",
+    "deleted": "This comment has been deleted.",
+    "blocked": "This comment is from a blocked user."
   },
   "action": {
     "like": "like",
