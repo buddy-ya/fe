@@ -140,18 +140,20 @@ function FeedNavigator() {
   const { animateTabBar } = useTabBarAnimation();
 
   React.useLayoutEffect(() => {
-    const state = navigation.getState();
-    const activeTab = state?.routes[state.index]; // 현재 활성화된 탭
-    const activeScreen = activeTab?.state?.routes?.[activeTab?.state?.index as any]?.name;
-    const unsubscribe = navigation.addListener('state', () => {
+    const onStateChange = () => {
+      const state = navigation.getState();
+      const activeTab = state?.routes[state.index]; // 현재 활성화된 탭
+      const activeScreen = activeTab?.state?.routes?.[activeTab.state.index as any]?.name;
       const visible = activeScreen === 'FeedHome' || activeScreen === undefined;
       navigation.setOptions({
         tabBarStyle: animateTabBar(!!visible),
       });
-    });
+    };
+
+    const unsubscribe = navigation.addListener('state', onStateChange);
 
     return unsubscribe;
-  }, [navigation]);
+  }, []);
 
   return (
     <FeedStack.Navigator screenOptions={{ headerShown: false }}>
@@ -186,19 +188,20 @@ function ChatNavigator() {
   const { animateTabBar } = useTabBarAnimation();
 
   React.useLayoutEffect(() => {
-    const unsubscribe = navigation.addListener('state', () => {
+    const onStateChange = () => {
       const state = navigation.getState();
       const activeTab = state?.routes[state.index]; // 현재 활성화된 탭
-      const activeScreen = activeTab?.state?.routes?.[activeTab?.state?.index as any]?.name;
-
+      const activeScreen = activeTab?.state?.routes?.[activeTab.state.index as any]?.name;
       const visible = activeScreen === 'RoomList' || activeScreen === undefined;
       navigation.setOptions({
         tabBarStyle: animateTabBar(!!visible),
       });
-    });
+    };
+
+    const unsubscribe = navigation.addListener('state', onStateChange);
 
     return unsubscribe;
-  }, [navigation]);
+  }, []);
 
   return (
     <ChatStack.Navigator screenOptions={{ headerShown: false }}>
@@ -214,19 +217,20 @@ function MyPageNavigator() {
   const { animateTabBar } = useTabBarAnimation();
 
   React.useLayoutEffect(() => {
-    const state = navigation.getState();
-    const activeTab = state?.routes[state.index]; // 현재 활성화된 탭
-    const activeScreen = activeTab?.state?.routes?.[activeTab.state.index as any]?.name;
-
-    const unsubscribe = navigation.addListener('state', () => {
+    const onStateChange = () => {
+      const state = navigation.getState();
+      const activeTab = state?.routes[state.index]; // 현재 활성화된 탭
+      const activeScreen = activeTab?.state?.routes?.[activeTab.state.index as any]?.name;
       const visible = activeScreen === 'MyPageHome' || activeScreen === undefined;
       navigation.setOptions({
         tabBarStyle: animateTabBar(!!visible),
       });
-    });
+    };
+
+    const unsubscribe = navigation.addListener('state', onStateChange);
 
     return unsubscribe;
-  }, [navigation]);
+  }, []);
 
   return (
     <MyPageStack.Navigator screenOptions={{ headerShown: false }}>
