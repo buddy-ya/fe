@@ -1,6 +1,7 @@
 import { TouchableOpacity, View } from 'react-native';
 import { RoomRepository } from '@/api';
 import { InnerLayout, Layout, MyText, RoomList } from '@/components';
+import { useBackButton } from '@/hooks';
 import { ChatStackParamList, FeedStackParamList } from '@/navigation/navigationRef';
 import { Room } from '@/types/RoomDTO';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
@@ -31,6 +32,8 @@ export default function RoomListScreen({ navigation }: RoomListNavigationProps) 
   const handlePressRoom = (room: Room) => {
     navigation.navigate('ChatRoom', { ...room });
   };
+
+  useBackButton();
 
   return (
     <Layout
