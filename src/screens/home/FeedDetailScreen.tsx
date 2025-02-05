@@ -1,7 +1,14 @@
-import { useEffect, useState } from 'react';
+import { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Alert, Keyboard, RefreshControl, ScrollView, TouchableOpacity, View } from 'react-native';
-import { feedKeys, RoomRepository } from '@/api';
+import {
+  Alert,
+  Keyboard,
+  RefreshControl,
+  ScrollView,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import { CommentList, FeedItem, KeyboardLayout, Layout, Input } from '@/components';
 import { useFeedDetail } from '@/hooks';
 import { FeedStackParamList } from '@/navigation/navigationRef';
@@ -15,13 +22,13 @@ type FeedDetailScreenProps = NativeStackScreenProps<FeedStackParamList, 'FeedDet
 
 export default function FeedDetailScreen({ navigation, route }: FeedDetailScreenProps) {
   const { feedId } = route.params;
-  const queryClient = useQueryClient();
   const [comment, setComment] = useState('');
   const { t } = useTranslation('feed');
   const modalVisible = useModalStore((state) => state.visible);
   const handleModalOpen = useModalStore((state) => state.handleOpen);
   const handleModalClose = useModalStore((state) => state.handleClose);
   const isCertificated = useUserStore((state) => state.isCertificated);
+  const [parentCommentId, setParentCommentId] = useState<number | null>(null);
 
   const { feed, comments, isRefetching, handleFeedActions, handleCommentActions, handleRefresh } =
     useFeedDetail({
@@ -42,14 +49,23 @@ export default function FeedDetailScreen({ navigation, route }: FeedDetailScreen
     );
   };
 
+  const handleCommentReply = (commentId: number) => {
+    setParentCommentId(commentId);
+  };
+
   const handleCommentSubmit = async () => {
     if (!comment.trim()) return;
     Keyboard.dismiss();
 
     try {
       !isCertificated && handleModalOpen('studentCertification');
-      isCertificated && (await handleCommentActions.submit(comment));
+      if (parentCommentId) {
+        isCertificated && (await handleCommentActions.submit(comment, parentCommentId));
+      } else {
+        isCertificated && (await handleCommentActions.submit(comment));
+      }
       setComment('');
+      setParentCommentId(null);
     } catch (error) {
       console.error('Comment submission failed:', error);
     }
@@ -103,7 +119,7 @@ export default function FeedDetailScreen({ navigation, route }: FeedDetailScreen
                   onBookmark={handleFeedActions.bookmark}
                   showAllContent
                 />
-                <CommentList feed={feed} comments={comments} />
+                <CommentList feed={feed} comments={comments} onReply={handleCommentReply} />
               </>
             )}
           </ScrollView>
