@@ -16,12 +16,13 @@ import { useModalStore, useUserStore } from '@/store';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { MoreVertical, Send } from 'lucide-react-native';
 import { FeedOptionModal } from '@/components/modal/BottomOption/FeedOptionModal';
+import { ChatRequestModal } from '@/components/modal/Common/ChatRequestModal';
 
 type FeedDetailScreenProps = NativeStackScreenProps<FeedStackParamList, 'FeedDetail'>;
 
 export default function FeedDetailScreen({ navigation, route }: FeedDetailScreenProps) {
   const { feedId } = route.params;
-  const [comment, setComment] = useState('');
+  const [commentInput, setCommentInput] = useState('');
   const { t } = useTranslation('feed');
   const modalVisible = useModalStore((state) => state.visible);
   const handleModalOpen = useModalStore((state) => state.handleOpen);
@@ -48,22 +49,28 @@ export default function FeedDetailScreen({ navigation, route }: FeedDetailScreen
     );
   };
 
+  const commentInputRef = useRef<TextInput | null>(null);
+
   const handleCommentReply = (commentId: number) => {
     setParentCommentId(commentId);
+    commentInputRef.current?.focus();
   };
 
+  const handleChatRequest = () => {
+    isCertificated ? handleModalOpen('chatRequest') : handleModalOpen('studentCertification');
+  };
   const handleCommentSubmit = async () => {
-    if (!comment.trim()) return;
+    if (!commentInput.trim()) return;
     Keyboard.dismiss();
 
     try {
       !isCertificated && handleModalOpen('studentCertification');
       if (parentCommentId) {
-        isCertificated && (await handleCommentActions.submit(comment, parentCommentId));
+        isCertificated && (await handleCommentActions.submit(commentInput, parentCommentId));
       } else {
-        isCertificated && (await handleCommentActions.submit(comment));
+        isCertificated && (await handleCommentActions.submit(commentInput));
       }
-      setComment('');
+      setCommentInput('');
       setParentCommentId(null);
     } catch (error) {
       console.error('Comment submission failed:', error);
@@ -71,7 +78,6 @@ export default function FeedDetailScreen({ navigation, route }: FeedDetailScreen
   };
 
   if (!(feed || isRefetching)) return null;
-
   return (
     <>
       <Layout
@@ -80,16 +86,15 @@ export default function FeedDetailScreen({ navigation, route }: FeedDetailScreen
         onBack={() => navigation.goBack()}
         headerRight={
           <View className="flex-row">
+            {!feed.isFeedOwner && (
+              <TouchableOpacity onPress={handleChatRequest} hitSlop={{ bottom: 20, left: 10 }}>
+                <Send size={24} color="#797979" />
+              </TouchableOpacity>
+            )}
             <TouchableOpacity
               onPress={() => handleModalOpen('feed')}
-              hitSlop={{ bottom: 20, left: 20 }}
-            >
-              <Send size={24} color="#797979" />
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => handleModalOpen('feed')}
-              hitSlop={{ bottom: 20, left: 20 }}
-              className="ml-2"
+              hitSlop={{ bottom: 20, left: 10 }}
+              className="ml-4"
             >
               <MoreVertical size={24} color="#797979" />
             </TouchableOpacity>
@@ -97,7 +102,14 @@ export default function FeedDetailScreen({ navigation, route }: FeedDetailScreen
         }
       >
         <KeyboardLayout
-          footer={<Input value={comment} onChange={setComment} onSubmit={handleCommentSubmit} />}
+          footer={
+            <Input
+              ref={commentInputRef}
+              value={commentInput}
+              onChange={setCommentInput}
+              onSubmit={handleCommentSubmit}
+            />
+          }
         >
           <ScrollView
             showsVerticalScrollIndicator={false}
@@ -134,6 +146,11 @@ export default function FeedDetailScreen({ navigation, route }: FeedDetailScreen
         visible={modalVisible.feed}
         feed={feed}
         onClose={() => handleModalClose('feed')}
+      />
+      <ChatRequestModal
+        visible={modalVisible.chatRequest}
+        data={feed}
+        onClose={() => handleModalClose('chatRequest')}
       />
     </>
   );

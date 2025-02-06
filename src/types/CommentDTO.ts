@@ -16,6 +16,7 @@ export interface Comment {
   likeCount: number;
   createdDate: string;
   isDeleted: boolean;
+  isLiked: boolean;
   isFeedOwner: boolean;
   isCommentOwner: boolean;
   isProfileImageUpload: boolean;

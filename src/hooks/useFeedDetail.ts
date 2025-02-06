@@ -43,6 +43,7 @@ export const useFeedDetail = ({ feedId }: UseFeedDetailProps) => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['feedComments', feedId] });
+      queryClient.invalidateQueries({ queryKey: feedKeys.all });
     },
   });
 
@@ -57,6 +58,7 @@ export const useFeedDetail = ({ feedId }: UseFeedDetailProps) => {
     mutationFn: (commentId: number) => CommentRepository.delete({ feedId, commentId }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['feedComments', feedId] });
+      queryClient.invalidateQueries({ queryKey: feedKeys.all });
     },
   });
 

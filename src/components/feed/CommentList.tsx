@@ -4,6 +4,7 @@ import { View } from 'react-native';
 import { useModalStore } from '@/store';
 import { Comment, Feed } from '@/types';
 import { CommentOptionModal } from '../common';
+import { ChatRequestModal } from '../modal/Common/ChatRequestModal';
 import CommentItem from './CommentItem';
 
 interface CommentListProps {
@@ -26,17 +27,24 @@ export default function CommentList({ feed, comments, onLike, onReply }: Comment
     likeCount: 0,
     createdDate: '',
     isDeleted: false,
+    isLiked: false,
     isFeedOwner: false,
     isCommentOwner: false,
     isProfileImageUpload: false,
     replies: [],
   });
+  const [selectedModalAction, setSelectedModalAction] = useState<String>();
 
   const modalVisible = useModalStore((state) => state.visible);
   const handleModalOpen = useModalStore((state) => state.handleOpen);
-
   const handleModalClose = useModalStore((state) => state.handleClose);
 
+  const handleSelectModalAction = (action: string) => {
+    setSelectedModalAction(action);
+    if (action == 'chat') {
+      handleModalOpen('chatRequest');
+    }
+  };
   const handleCommentOptions = (comment: Comment) => {
     setComment(comment);
     handleModalOpen('comment');
@@ -73,7 +81,13 @@ export default function CommentList({ feed, comments, onLike, onReply }: Comment
         feed={feed}
         comment={comment}
         onClose={() => handleModalClose('comment')}
+        onSelect={handleSelectModalAction}
       />
+      {/* <ChatRequestModal
+        visible={modalVisible.chatRequest}
+        data={comment}
+        onClose={() => handleModalClose('chatRequest')}
+      /> */}
     </>
   );
 }

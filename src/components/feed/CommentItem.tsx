@@ -52,7 +52,7 @@ const CommentItem = ({
   const commentActions = (comment: Comment) => [
     {
       icon: ThumbsUp,
-      isActive: true,
+      isActive: comment.isLiked,
       count: comment.likeCount,
       onPress: () => onLike(comment.id),
     },
