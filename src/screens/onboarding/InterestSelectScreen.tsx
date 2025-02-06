@@ -2,14 +2,12 @@ import { useState } from 'react';
 import { memo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ScrollView, View } from 'react-native';
-import { API, UserRepository } from '@/api';
+import { UserRepository } from '@/api';
 import { Button, Chip, Heading, InnerLayout, Layout, MyText } from '@/components';
 import { MyPageStackParamList, OnboardingStackParamList } from '@/navigation/navigationRef';
-import { CustomJwtPayload } from '@/provider/AuthProvider';
 import { TokenService } from '@/service';
 import { useOnboardingStore, useUserStore } from '@/store';
 import { NativeStackNavigationProp, NativeStackScreenProps } from '@react-navigation/native-stack';
-import { jwtDecode } from 'jwt-decode';
 import type { InterestID } from '@/utils';
 import { INTEREST_CATEGORIES, INTEREST_ICONS, logError, removeNullValues } from '@/utils';
 
@@ -68,29 +66,22 @@ function InterestSelectScreen({ navigation, route }: InterestSelectProps) {
         >;
         myPageNav.goBack();
       } else {
-        const { accessToken, refreshToken } = await UserRepository.create({
+        const { accessToken, refreshToken, ...rest } = await UserRepository.create({
           ...onboardingData,
           interests,
         });
+
         if (accessToken && refreshToken) {
           await TokenService.save(accessToken, refreshToken);
-          API.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
-          const token: CustomJwtPayload = jwtDecode(accessToken);
-          const userId = token.studentId;
-          try {
-            const user = await UserRepository.get({ id: userId });
-            update({ ...user, isAuthenticated: true });
-            const onboardNav = navigation as NativeStackNavigationProp<
-              OnboardingStackParamList,
-              'OnboardingInterestSelect'
-            >;
-            onboardNav.reset({
-              index: 0,
-              routes: [{ name: 'Tab' }],
-            });
-          } catch (e) {
-            console.log(e);
-          }
+          update({ ...removeNullValues(rest), isAuthenticated: true });
+          const onboardNav = navigation as NativeStackNavigationProp<
+            OnboardingStackParamList,
+            'OnboardingInterestSelect'
+          >;
+          onboardNav.reset({
+            index: 0,
+            routes: [{ name: 'Tab' }],
+          });
         }
       }
     } catch (error) {
