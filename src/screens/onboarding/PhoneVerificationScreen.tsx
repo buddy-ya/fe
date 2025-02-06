@@ -71,7 +71,6 @@ export default function PhoneVerificationScreen({
       updateOnboardingData({ phoneNumber });
       if (data.status === 'EXISTING_MEMBER') {
         await TokenService.save(data.accessToken, data.refreshToken);
-        update({ isAuthenticated: true });
       }
       navigation.replace('OnboardingNotification', {
         isExistingMember: data.status === 'EXISTING_MEMBER',

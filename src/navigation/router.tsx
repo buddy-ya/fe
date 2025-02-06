@@ -271,7 +271,7 @@ export default function Router() {
   //     content: {
   //       title: '📢 테스트 알림',
   //       body: '이것은 포그라운드에서 보내는 알림입니다!',
-  //       data: { feedId: 1 },
+  //       data: { type: 'FEED', feedId: 1 },
   //     },
   //     trigger: null, // 즉시 실행
   //   });

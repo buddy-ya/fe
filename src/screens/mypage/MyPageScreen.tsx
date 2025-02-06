@@ -74,6 +74,7 @@ export default function MyPageScreen({ navigation }: MyPageScreenProps) {
       label: t('menuItems.refresh'),
       onPress: async () => {
         await AuthRepository.refreshStudentCertification();
+        update({ isCertificated: false });
       },
     },
     { key: 'privacy', label: t('menuItems.privacy'), onPress: () => console.log('privacy') },
