@@ -1,8 +1,8 @@
-import * as Font from 'expo-font';
 import { useEffect } from 'react';
 import { Image, View } from 'react-native';
-import { logError } from '@/utils';
 import { TokenService } from '@/service';
+import * as Font from 'expo-font';
+import { logError } from '@/utils';
 
 const FONTS = {
   'Pretendard-Thin': require('@assets/fonts/Pretendard-Thin.otf'),

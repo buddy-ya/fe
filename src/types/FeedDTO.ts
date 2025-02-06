@@ -34,12 +34,12 @@ export interface Feed {
   profileImageUrl?: string;
   category?: string;
   imageUrls: string[];
-  likeCount?: number;
-  commentCount?: number;
-  viewCount?: number;
+  likeCount: number;
+  commentCount: number;
+  viewCount: number;
   isFeedOwner: boolean;
   isLiked: boolean;
   isBookmarked: boolean;
-  isProfileImageUpload?: boolean;
+  isProfileImageUpload: boolean;
   createdDate: string;
 }

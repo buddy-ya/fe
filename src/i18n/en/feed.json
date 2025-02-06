@@ -10,7 +10,9 @@
     }
   },
   "comment": {
-    "placeholder": "Please enter a comment"
+    "placeholder": "Please enter a comment",
+    "deleted": "This comment has been deleted.",
+    "blocked": "This comment is from a blocked user."
   },
   "action": {
     "like": "like",
@@ -58,6 +60,14 @@
     "edit": "Edit",
     "delete": "Delete",
     "report": "Report",
+    "cancel": "Cancel",
+    "chat": "Chat",
+    "block": "Block"
+  },
+  "chatRequestModal": {
+    "title": "Would you like to send a chat request?",
+    "description": "You'll be able to access their profile once they accept your chat request.",
+    "confirm": "Send Chat Request",
     "cancel": "Cancel"
   }
 }
