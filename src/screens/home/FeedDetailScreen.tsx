@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import { RoomRepository } from '@/api';
 import { CommentList, FeedItem, KeyboardLayout, Layout, Input } from '@/components';
 import { useFeedDetail } from '@/hooks';
 import { FeedStackParamList } from '@/navigation/navigationRef';
