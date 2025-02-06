@@ -41,6 +41,27 @@ export const FeedService = {
         });
     },
 
+    // view(queryClient: QueryClient, queryKey: string[], id: number) {
+    //     queryClient.setQueryData(queryKey, (old: any) => {
+    //         if (!old || !old.pages) {
+    //             return {
+    //                 pages: [{ feeds: [] }],
+    //             };
+    //         }
+    //         return {
+    //             ...old,
+    //             pages: old.pages.map((page: any) => ({
+    //                 ...page,
+    //                 feeds: page.feeds.map((feed: any) =>
+    //                     feed.id === id
+    //                         ? { ...feed, viewCount: feed.viewCount + 1 }
+    //                         : feed
+    //                 ),
+    //             })),
+    //         };
+    //     });
+    // },
+
     rollback(
         queryClient: QueryClient,
         queryKey: string[],

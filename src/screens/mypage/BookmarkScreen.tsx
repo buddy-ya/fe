@@ -1,12 +1,11 @@
-import { Bookmark } from 'lucide-react-native';
 import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 import { feedKeys, FeedRepository } from '@/api';
-import { useFeedList } from '@/hooks';
 import { FeedList, InnerLayout, Layout, MyText } from '@/components';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { useFeedList } from '@/hooks';
 import { MyPageStackParamList } from '@/navigation/navigationRef';
-
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { Bookmark } from 'lucide-react-native';
 
 type BookmarkScreenProps = NativeStackScreenProps<MyPageStackParamList, 'Bookmark'>;
 

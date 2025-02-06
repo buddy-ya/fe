@@ -9,8 +9,9 @@ class CommentRepository {
     return data;
   }
 
-  async create({ feedId, content }: CommentDTO): Promise<Comment> {
+  async create({ feedId, parentId, content }: CommentDTO): Promise<Comment> {
     const { data } = await API.post(`/feeds/${feedId}/comments`, {
+      parentId,
       content,
     });
     return data;
@@ -25,6 +26,11 @@ class CommentRepository {
 
   async delete({ feedId, commentId }: CommentDTO) {
     const { data } = await API.delete(`/feeds/${feedId}/comments/${commentId}`);
+    return data;
+  }
+
+  async toggleLike({ feedId, commentId }: CommentDTO) {
+    const { data } = await API.put(`/feeds/${feedId}/comments/${commentId}/like`);
     return data;
   }
 }

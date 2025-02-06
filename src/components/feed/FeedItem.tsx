@@ -1,32 +1,10 @@
-import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Dimensions, Image, TouchableOpacity, View } from 'react-native';
+import { Image, ScrollView, TouchableOpacity, View } from 'react-native';
 import { Feed } from '@/types/FeedDTO';
 import ThumbsUpActive from '@assets/icons/feed/like-active.svg';
-import { Bookmark, MessageSquare, ThumbsUp } from 'lucide-react-native';
+import { Bookmark, MessageSquare, ThumbsUp, Eye } from 'lucide-react-native';
 import { getCountryFlag, getTimeAgo } from '@/utils';
 import { MyText } from '../common';
-
-const IMAGE_CONFIG_DETAIL = {
-  containerClass: 'w-full',
-  maxHeight: 3000,
-};
-
-const IMAGE_CONFIG = {
-  single: {
-    containerClass: 'w-full',
-    maxHeight: 150,
-  },
-  multiple: {
-    containerClass: 'w-[50%] aspect-[1/1]',
-    maxHeight: 150,
-  },
-};
-
-interface ImageDimensions {
-  width: number;
-  height: number;
-}
 
 interface FeedItemProps {
   feed: Feed;
@@ -43,9 +21,7 @@ export default function FeedItem({
   onPress,
   showAllContent = false,
 }: FeedItemProps) {
-  const [imageDimensions, setImageDimensions] = useState<Record<string, ImageDimensions>>({});
   const { t } = useTranslation('feed');
-
   const {
     id,
     name,
@@ -57,14 +33,15 @@ export default function FeedItem({
     profileImageUrl,
     likeCount,
     commentCount,
+    viewCount,
+    isFeedOwner,
     isLiked,
     isBookmarked,
+    isProfileImageUpload,
     createdDate,
   } = feed;
 
-  const screenWidth = Dimensions.get('window').width;
-
-  const actions = [
+  const feedActions = [
     {
       icon: ThumbsUp,
       activeIcon: ThumbsUpActive,
@@ -75,126 +52,44 @@ export default function FeedItem({
     },
     {
       icon: MessageSquare,
-      label: t('action.comment'),
       count: commentCount,
       onPress: () => handleComment(id),
     },
     {
+      icon: Eye,
+      count: viewCount,
+      onPress: () => {},
+    },
+    {
       icon: Bookmark,
-      label: t('action.bookmark'),
       isActive: isBookmarked,
       onPress: () => onBookmark?.(id),
     },
   ];
 
-  const calculateImageHeight = (url: string) => {
-    const dims = imageDimensions[url];
-    if (!dims) return undefined;
-    const paddingWidth = 32;
-    const contentWidth = screenWidth - paddingWidth;
-    const aspectRatio = dims.height / dims.width;
-    return contentWidth * aspectRatio;
-  };
-
   const handleComment = (commentId: number) => {
     onPress?.(commentId);
   };
 
-  useEffect(() => {
-    if (!showAllContent) return;
-
-    let isComponentMounted = true;
-
-    imageUrls.forEach((url) => {
-      if (imageDimensions[url]) return;
-
-      Image.getSize(
-        url,
-        (width, height) => {
-          if (isComponentMounted) {
-            setImageDimensions((prev) => ({
-              ...prev,
-              [url]: { width, height },
-            }));
-          }
-        },
-        (error) => {
-          if (isComponentMounted) {
-            console.error('Error getting image dimensions:', error);
-          }
-        }
-      );
-    });
-
-    return () => {
-      isComponentMounted = false;
-    };
-  }, [showAllContent, imageUrls]);
-
-  const renderLimitedImages = () => {
-    const limitedUrls = imageUrls.slice(0, 2);
-
-    return (
-      <View className="mt-5 flex-row flex-wrap justify-between">
-        {limitedUrls.map((url, index) => {
-          const totalImages = imageUrls.length;
-          const config = totalImages === 1 ? IMAGE_CONFIG.single : IMAGE_CONFIG.multiple;
-          return (
-            <View
-              key={`${url}-${index}`}
-              className={` ${config.containerClass} overflow-hidden rounded-[12px] border border-borderFeed`}
-              style={{ height: config.maxHeight }}
-            >
-              <Image source={{ uri: url }} className="h-full w-full" resizeMode="cover" />
-            </View>
-          );
-        })}
-
-        {imageUrls.length > 2 && (
-          <View className="absolute right-2 top-2 rounded bg-black/60 px-2 py-1">
-            <MyText color="text-white" size="text-sm">
-              +{imageUrls.length - 2}
-            </MyText>
-          </View>
-        )}
-      </View>
-    );
-  };
-
-  const renderAllImages = () => {
-    return (
-      <View className="mt-5">
-        {imageUrls.map((url, index) => {
-          const height = calculateImageHeight(url) || IMAGE_CONFIG_DETAIL.maxHeight;
-
-          return (
-            <View
-              key={`${url}-${index}`}
-              className={` ${IMAGE_CONFIG_DETAIL.containerClass} mb-2 overflow-hidden rounded-[12px] border border-borderFeed`}
-              style={{ height }}
-            >
-              <Image source={{ uri: url }} className="h-full w-full" resizeMode="contain" />
-            </View>
-          );
-        })}
-      </View>
-    );
-  };
-
   const renderContent = () => {
+    const hasImage = imageUrls.length > 0;
     return (
       <View className="mb-4 mt-[4px] rounded-[20px] border-[0.3px] border-b-[0px] border-borderFeed bg-white p-4 pb-5">
         <View className="flex-row justify-between">
           <View className="flex-row items-center">
             <View className="mr-3">
-              <Image className="h-12 w-12 rounded-[12px]" source={{ uri: profileImageUrl }} />
+              <Image
+                className="h-12 w-12 rounded-[12px]"
+                source={{ uri: profileImageUrl }}
+                resizeMode="contain"
+              />
             </View>
             <View>
-              <MyText size="text-sm" className="font-semibold" color="text-[#474747]">
+              <MyText size="text-sm" className="font-semibold" color="text-textProfile">
                 {t(`profile.university.${university}`)}
               </MyText>
               <View className="flex-row items-center">
-                <MyText size="text-sm" color="text-[#474747]">
+                <MyText size="text-sm" color="text-textProfile">
                   {name}
                 </MyText>
                 <MyText size="text-sm" className="ml-[3px]">
@@ -212,23 +107,55 @@ export default function FeedItem({
           <MyText size="text-[16px]" className="font-semibold">
             {title}
           </MyText>
-          <MyText
-            size="text-[14px]"
-            color="text-textDescription"
-            className="mt-2 font-semibold"
-            numberOfLines={showAllContent ? 0 : 3}
-          >
-            {content}
-          </MyText>
+          <View className="mt-3 flex flex-row justify-between">
+            <MyText
+              size="text-[14px]"
+              color="text-textDescription"
+              className={`font-semibold ${!showAllContent && hasImage ? 'flex-1' : ''}`}
+              numberOfLines={showAllContent ? 0 : 4}
+            >
+              {content}
+            </MyText>
+            {hasImage && !showAllContent && (
+              <View className="relative ml-4 h-[100px] w-[100px]">
+                <Image
+                  className="h-full w-full rounded-[8px]"
+                  source={{ uri: imageUrls[0] }}
+                  resizeMode="cover"
+                />
+                {imageUrls.length > 1 && (
+                  <MyText
+                    size="text-sm"
+                    className="absolute bottom-0 right-0 rounded-md bg-black/50 bg-opacity-10 p-1 px-[5px] text-white"
+                  >
+                    +{imageUrls.length - 1}
+                  </MyText>
+                )}
+              </View>
+            )}
+          </View>
+          {hasImage && showAllContent && (
+            <View className="mt-5">
+              <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                {imageUrls.map((url, index) => (
+                  <View className="mr-2 h-[255px] w-[255px]" key={index}>
+                    <Image
+                      className="h-full w-full rounded-[12px]"
+                      source={{ uri: url }}
+                      resizeMode="cover"
+                    />
+                  </View>
+                ))}
+              </ScrollView>
+            </View>
+          )}
         </View>
 
-        {imageUrls.length > 0 && (showAllContent ? renderAllImages() : renderLimitedImages())}
-
         <View className="mt-[20px] flex-row items-center justify-between px-[12px]">
-          {actions.map(
+          {feedActions.map(
             ({ icon: Icon, activeIcon: ActiveIcon, label, count, isActive, onPress }, index) => (
               <TouchableOpacity
-                key={label}
+                key={index}
                 onPress={onPress}
                 className="flex-row items-center"
                 hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
@@ -244,13 +171,10 @@ export default function FeedItem({
                   />
                 )}
                 <View className="ml-1 flex-row items-center">
-                  <MyText size="text-sm" color="text-textDescription">
-                    {label}
-                  </MyText>
                   <MyText
                     size="text-sm"
                     color="text-textDescription"
-                    className={`ml-1 ${index !== actions.length - 1 ? 'min-w-[16px]' : ''}`}
+                    className={`ml-1 ${index !== feedActions.length - 1 ? 'min-w-[16px]' : ''}`}
                   >
                     {count && count > 0 ? count : ''}
                   </MyText>
