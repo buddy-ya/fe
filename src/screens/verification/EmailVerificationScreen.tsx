@@ -33,7 +33,6 @@ export default function EmailVerificationScreen({
   const [code, setCode] = useState('');
   const [verificationError, setVerificationError] = useState(false);
   const email = route.params?.email;
-  const univName = route.params?.univName;
   const update = useUserStore((state) => state.update);
   const [isSubmiting, setisSubmiting] = useState(false);
 

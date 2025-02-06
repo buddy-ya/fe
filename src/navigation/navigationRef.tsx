@@ -31,7 +31,7 @@ export type FeedStackParamList = {
   FeedDetail: { feedId: number };
   CommentEdit: { feedId: number; commentId: number; initialContent: string };
   EmailVerification: undefined;
-  EmailVerificationCode: { email: string; univName: string };
+  EmailVerificationCode: { email: string };
   EmailComplete: undefined;
   StudentIdVerification: undefined;
   StudentIdComplete: undefined;
