@@ -1,9 +1,9 @@
-import { FeedDTO, FeedUpdateDTO } from '@/types/FeedDTO';
+import { Feed, FeedDTO, FeedUpdateDTO } from '@/types/FeedDTO';
 import { createFeedFormData, FeedFormData } from '@/utils';
 import API from './API';
 
 class FeedRepository {
-  async get({ feedId }: FeedDTO) {
+  async get({ feedId }: FeedDTO): Promise<Feed> {
     const { data } = await API.get(`/feeds/${feedId}`);
     return data;
   }

@@ -4,3 +4,4 @@ export { default as MessageItem } from './MessageItem';
 export { default as ChatPaper } from './ChatPaper';
 export * from './UnreadCountChip';
 export * from './Input';
+export * from './ProfileImage';

@@ -9,7 +9,7 @@ import { TokenService } from '@/service';
 import { useOnboardingStore, useUserStore } from '@/store';
 import { NativeStackNavigationProp, NativeStackScreenProps } from '@react-navigation/native-stack';
 import type { InterestID } from '@/utils';
-import { INTEREST_CATEGORIES, INTEREST_ICONS, logError } from '@/utils';
+import { INTEREST_CATEGORIES, INTEREST_ICONS, logError, removeNullValues } from '@/utils';
 
 interface Interest {
   id: InterestID;
@@ -58,7 +58,8 @@ function InterestSelectScreen({ navigation, route }: InterestSelectProps) {
     try {
       const interests = selectedInterests.map((interest) => interest.id);
       if (isEditMode) {
-        await UserRepository.update({ key: 'interests', values: interests });
+        const data = await UserRepository.update({ key: 'interests', values: interests });
+        update(removeNullValues(data));
         const myPageNav = navigation as NativeStackNavigationProp<
           MyPageStackParamList,
           'EditInterest'
@@ -70,16 +71,18 @@ function InterestSelectScreen({ navigation, route }: InterestSelectProps) {
           ...onboardingData,
           interests,
         });
-        await TokenService.save(accessToken, refreshToken);
-        update({ isAuthenticated: true });
-        const onboardNav = navigation as NativeStackNavigationProp<
-          OnboardingStackParamList,
-          'OnboardingInterestSelect'
-        >;
-        onboardNav.reset({
-          index: 0,
-          routes: [{ name: 'Tab' }],
-        });
+        if (accessToken && refreshToken) {
+          await TokenService.save(accessToken, refreshToken);
+          update({ isAuthenticated: true });
+          const onboardNav = navigation as NativeStackNavigationProp<
+            OnboardingStackParamList,
+            'OnboardingInterestSelect'
+          >;
+          onboardNav.reset({
+            index: 0,
+            routes: [{ name: 'Tab' }],
+          });
+        }
       }
     } catch (error) {
       logError(error);

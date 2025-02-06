@@ -2,18 +2,23 @@ import { create } from 'zustand';
 import { immer } from 'zustand/middleware/immer';
 
 type UserState = {
+  id: number;
   name: string;
-  university: string;
   country: string;
+  university: string;
   gender: string | null;
   profileImageUrl: string;
+  phoneNumber?: string;
   majors: string[];
   languages: string[];
   interests: string[];
+  status?: string;
   isCertificated: boolean;
   isStudentIdCardRequested: boolean;
   isKorean: boolean;
   isAuthenticated: boolean;
+  accessToken?: string;
+  refreshToken?: string;
 };
 
 type UserAction = {
@@ -22,6 +27,7 @@ type UserAction = {
 
 export const useUserStore = create(
   immer<UserState & UserAction>((set) => ({
+    id: -1,
     name: '',
     university: '',
     country: 'ko',

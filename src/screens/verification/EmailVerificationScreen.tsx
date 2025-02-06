@@ -1,3 +1,6 @@
+import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { View } from 'react-native';
 import { AuthRepository } from '@/api';
 import {
   ErrorMessage,
@@ -13,11 +16,9 @@ import {
   OTPInput,
 } from '@/components';
 import { FeedStackParamList } from '@/navigation/navigationRef';
+import { useUserStore } from '@/store';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { Send } from 'lucide-react-native';
-import { useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { View } from 'react-native';
 
 type EmailVerificationScreenProps = NativeStackScreenProps<
   FeedStackParamList,
@@ -33,6 +34,7 @@ export default function EmailVerificationScreen({
   const [verificationError, setVerificationError] = useState(false);
   const email = route.params?.email;
   const univName = route.params?.univName;
+  const update = useUserStore((state) => state.update);
   const [isSubmiting, setisSubmiting] = useState(false);
 
   const handleResend = async () => {
@@ -42,7 +44,6 @@ export default function EmailVerificationScreen({
   };
 
   const handleNavigateButton = async () => {
-    if (isSubmiting) return;
     setisSubmiting(true);
     const { success } = await AuthRepository.verifyCodeByMail({
       email,
@@ -50,6 +51,7 @@ export default function EmailVerificationScreen({
     });
     if (success) {
       setVerificationError(false);
+      update({ isCertificated: true });
       navigation.navigate('EmailComplete');
     } else {
       setVerificationError(true);

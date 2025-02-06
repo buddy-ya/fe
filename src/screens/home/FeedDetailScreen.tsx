@@ -29,6 +29,7 @@ export default function FeedDetailScreen({ navigation, route }: FeedDetailScreen
   const handleModalClose = useModalStore((state) => state.handleClose);
   const isCertificated = useUserStore((state) => state.isCertificated);
   const [parentCommentId, setParentCommentId] = useState<number | null>(null);
+  const myUserId = useUserStore((state) => state.id);
 
   const { feed, comments, isRefetching, handleFeedActions, handleCommentActions, handleRefresh } =
     useFeedDetail({
@@ -47,6 +48,11 @@ export default function FeedDetailScreen({ navigation, route }: FeedDetailScreen
       ],
       { cancelable: false }
     );
+  };
+
+  const handleRoomCreate = async () => {
+    const data = await RoomRepository.create({ buddyId: feed.userId });
+    navigation.navigate('Chat', { screen: 'ChatRoom', params: { ...data } } as any);
   };
 
   const commentInputRef = useRef<TextInput | null>(null);

@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import SplashScreen from '@/screens/SplashScreen';
+import ChatRequestsScreen from '@/screens/chat/ChatRequestsScreen';
 import ChatRoomScreen from '@/screens/chat/ChatRoomScreen';
 import RoomListScreen from '@/screens/chat/RoomListScreen';
 import CommentEditScreen from '@/screens/home/CommentEditScreen';
@@ -31,16 +32,11 @@ import StudentIdCardCompleteScreen from '@/screens/verification/StudentIdComplet
 import StudentIdCardUploadScreen from '@/screens/verification/StudentIdUploadScreen';
 import { useModalStore, useUserStore } from '@/store';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import {
-  createNavigationContainerRef,
-  getFocusedRouteNameFromRoute,
-  NavigationContainer,
-  useNavigation,
-  useRoute,
-} from '@react-navigation/native';
+import { createNavigationContainerRef, useNavigation } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import MatchingScreen from '@screens/matching/MatchingScreen';
 import MyPageScreen from '@screens/mypage/MyPageScreen';
+import useNotification from '@/hooks/useNotification';
 import { StudentCertificationModal } from '@/components/modal/Common';
 import WelcomeScreen from '../screens/onboarding/WelcomeScreen';
 import { getTabScreenOptions, tabScreenOptions, useTabBarAnimation } from './TabBar';
@@ -141,20 +137,23 @@ function OnboardingNavigator() {
 
 function FeedNavigator() {
   const navigation = useNavigation();
-  const route = useRoute();
   const { animateTabBar } = useTabBarAnimation();
 
   React.useLayoutEffect(() => {
-    const unsubscribe = navigation.addListener('state', () => {
-      const routeName = getFocusedRouteNameFromRoute(route);
-      const visible = routeName === 'FeedHome' || routeName === undefined;
+    const onStateChange = () => {
+      const state = navigation.getState();
+      const activeTab = state?.routes[state.index]; // 현재 활성화된 탭
+      const activeScreen = activeTab?.state?.routes?.[activeTab.state.index as any]?.name;
+      const visible = activeScreen === 'FeedHome' || activeScreen === undefined;
       navigation.setOptions({
         tabBarStyle: animateTabBar(!!visible),
       });
-    });
+    };
+
+    const unsubscribe = navigation.addListener('state', onStateChange);
 
     return unsubscribe;
-  }, [navigation]);
+  }, []);
 
   return (
     <FeedStack.Navigator screenOptions={{ headerShown: false }}>
@@ -186,45 +185,52 @@ function FeedNavigator() {
 
 function ChatNavigator() {
   const navigation = useNavigation();
-  const route = useRoute();
   const { animateTabBar } = useTabBarAnimation();
 
   React.useLayoutEffect(() => {
-    const unsubscribe = navigation.addListener('state', () => {
-      const routeName = getFocusedRouteNameFromRoute(route);
-      const visible = routeName === 'RoomList' || routeName === undefined;
+    const onStateChange = () => {
+      const state = navigation.getState();
+      const activeTab = state?.routes[state.index]; // 현재 활성화된 탭
+      const activeScreen = activeTab?.state?.routes?.[activeTab.state.index as any]?.name;
+      const visible = activeScreen === 'RoomList' || activeScreen === undefined;
       navigation.setOptions({
         tabBarStyle: animateTabBar(!!visible),
       });
-    });
+    };
+
+    const unsubscribe = navigation.addListener('state', onStateChange);
 
     return unsubscribe;
-  }, [navigation]);
+  }, []);
 
   return (
     <ChatStack.Navigator screenOptions={{ headerShown: false }}>
       <ChatStack.Screen name="RoomList" component={RoomListScreen} />
       <ChatStack.Screen name="ChatRoom" component={ChatRoomScreen} />
+      <ChatStack.Screen name="ChatRequests" component={ChatRequestsScreen} />
     </ChatStack.Navigator>
   );
 }
 
 function MyPageNavigator() {
   const navigation = useNavigation();
-  const route = useRoute();
   const { animateTabBar } = useTabBarAnimation();
 
   React.useLayoutEffect(() => {
-    const unsubscribe = navigation.addListener('state', () => {
-      const routeName = getFocusedRouteNameFromRoute(route);
-      const visible = routeName === 'MyPageHome' || routeName === undefined;
+    const onStateChange = () => {
+      const state = navigation.getState();
+      const activeTab = state?.routes[state.index]; // 현재 활성화된 탭
+      const activeScreen = activeTab?.state?.routes?.[activeTab.state.index as any]?.name;
+      const visible = activeScreen === 'MyPageHome' || activeScreen === undefined;
       navigation.setOptions({
         tabBarStyle: animateTabBar(!!visible),
       });
-    });
+    };
+
+    const unsubscribe = navigation.addListener('state', onStateChange);
 
     return unsubscribe;
-  }, [navigation]);
+  }, []);
 
   return (
     <MyPageStack.Navigator screenOptions={{ headerShown: false }}>
@@ -256,13 +262,29 @@ export default function Router() {
       });
     }
   }, [isAuthenticated]);
+
+  useNotification();
+
+  // 클라이언트에서 테스트 용도로 만든 함수
+  // async function sendTestNotification() {
+  //   await Notifications.scheduleNotificationAsync({
+  //     content: {
+  //       title: '📢 테스트 알림',
+  //       body: '이것은 포그라운드에서 보내는 알림입니다!',
+  //       data: { feedId: 1 },
+  //     },
+  //     trigger: null, // 즉시 실행
+  //   });
+  // }
+
+  // sendTestNotification();
+
   return (
     <>
       <Stack.Navigator screenOptions={{ headerShown: false, gestureEnabled: false }}>
         <Stack.Screen name="Splash" component={SplashScreen} />
         <Stack.Screen name="Onboarding" component={OnboardingNavigator} />
         <Stack.Screen name="Tab" component={TabNavigator} />
-        <Stack.Screen name="Chat" component={ChatNavigator} />
       </Stack.Navigator>
 
       {/* 같은 형상을 공유하는 모달의 경우 상단으로 끌어올림. */}

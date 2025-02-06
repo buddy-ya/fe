@@ -11,9 +11,10 @@ export interface Room {
   buddyId?: number;
   buddyName?: number;
   country?: string;
-  lastMessage?: string;
-  unreadCount?: number;
+  lastMessage: string;
+  lastMessageDate: string;
+  unreadCount: number;
   profileImageUrl?: string;
-  lastMessageDate?: string;
   isNew?: boolean;
+  isBuddyExited?: true;
 }

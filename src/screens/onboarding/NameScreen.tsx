@@ -1,3 +1,6 @@
+import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { TextInput } from 'react-native';
 import { UserRepository } from '@/api';
 import {
   ErrorMessage,
@@ -11,12 +14,11 @@ import {
   MyText,
 } from '@/components';
 import { MyPageStackParamList, OnboardingStackParamList } from '@/navigation/navigationRef';
+import { useUserStore } from '@/store';
 import { NativeStackNavigationProp, NativeStackScreenProps } from '@react-navigation/native-stack';
 import { IdCard } from 'lucide-react-native';
-import { useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { TextInput } from 'react-native';
 import { useOnboardingStore } from '@/store/onboarding';
+import { removeNullValues } from '@/utils';
 
 const MIN_NAME_LENGTH = 2;
 const MAX_NAME_LENGTH = 15;
@@ -28,6 +30,7 @@ type NameScreenProps =
 export default function NameScreen({ navigation, route }: NameScreenProps) {
   const { t } = useTranslation('onboarding');
   const { updateOnboardingData } = useOnboardingStore();
+  const update = useUserStore((state) => state.update);
 
   const isEditMode =
     'params' in route && route.params && 'isEditMode' in route.params
@@ -58,7 +61,8 @@ export default function NameScreen({ navigation, route }: NameScreenProps) {
 
     if (isEditMode) {
       const myPageNav = navigation as NativeStackNavigationProp<MyPageStackParamList, 'EditName'>;
-      await UserRepository.update({ key: 'name', values: [trimmedName] });
+      const response = await UserRepository.update({ key: 'name', values: [trimmedName] });
+      update(removeNullValues(response));
       myPageNav.goBack();
     } else {
       updateOnboardingData({ name: trimmedName });
