@@ -3,7 +3,7 @@ import { TouchableOpacity, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { feedKeys, FeedRepository } from '@/api';
 import { Button, CategoryPager, FeedList, InnerLayout, Layout } from '@/components';
-import { useFeedList } from '@/hooks';
+import { useFeedList, useBackButton } from '@/hooks';
 import { FeedStackParamList } from '@/navigation/navigationRef';
 import { useModalStore, useUserStore } from '@/store';
 import LogoIcon from '@assets/icons/logo.svg';
@@ -43,6 +43,8 @@ export default function HomeScreen({ navigation, route }: FeedHomeScreenProps) {
 
   const insets = useSafeAreaInsets();
   const writeButtonPosition = isAndroid ? insets.bottom + 80 : insets.bottom + 40;
+
+  useBackButton();
 
   return (
     <Layout

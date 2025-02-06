@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { View, TouchableOpacity, Image } from 'react-native';
 import { AuthRepository, UserRepository } from '@/api';
 import { InnerLayout, Layout, MyText } from '@/components';
+import { useBackButton } from '@/hooks';
 import { MyPageStackParamList } from '@/navigation/navigationRef';
 import { TokenService } from '@/service';
 import { useUserStore } from '@/store';
@@ -73,6 +74,7 @@ export default function MyPageScreen({ navigation }: MyPageScreenProps) {
       label: t('menuItems.refresh'),
       onPress: async () => {
         await AuthRepository.refreshStudentCertification();
+        update({ isCertificated: false });
       },
     },
     { key: 'privacy', label: t('menuItems.privacy'), onPress: () => console.log('privacy') },
@@ -83,6 +85,8 @@ export default function MyPageScreen({ navigation }: MyPageScreenProps) {
   const handleNotification = () => {
     console.log('notification pressed!');
   };
+
+  useBackButton();
 
   return (
     <Layout
