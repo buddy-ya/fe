@@ -51,17 +51,6 @@ ios/*.xcodeproj/*
 !ios/*.xcworkspace/contents.xcworkspacedata
 
 # Android
-android/app/build/
-android/.gradle/
-android/local.properties
-android/.idea/
-android/build/
-android/app/debug/
-android/app/release/
-android/captures/
-android/gradle/
-android/gradlew
-android/gradlew.bat
 
 # Firebase specific
 google-services.json
