@@ -5,6 +5,7 @@ import {
   PhoneDTO,
   VerifyCodeResponse,
 } from '@/types/AuthDTO';
+import axios from 'axios';
 import API from './API';
 
 // 인증/인가 관련 API를 다루는 클래스
@@ -50,7 +51,7 @@ class AuthRepository {
   }
 
   async reissueToken(refreshToken: string) {
-    const { data } = await API.post('/auth/reissue', { refreshToken });
+    const { data } = await axios.post('/auth/reissue', { refreshToken });
     return data;
   }
 }
