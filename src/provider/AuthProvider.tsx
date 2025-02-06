@@ -9,7 +9,7 @@ interface Props {
   children: React.ReactNode;
 }
 
-interface CustomJwtPayload extends JwtPayload {
+export interface CustomJwtPayload extends JwtPayload {
   studentId: number;
 }
 
