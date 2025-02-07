@@ -68,6 +68,15 @@ function TabNavigator() {
           ...getTabScreenOptions('Home'),
           tabBarLabel: t('tab.home'),
         })}
+        listeners={({ navigation }) => ({
+          tabPress: (e) => {
+            e.preventDefault(); // 기본 동작 막기
+            navigation.reset({
+              index: 0,
+              routes: [{ name: 'FeedTab', params: { screen: 'FeedHome' } }], // ✅ HomeStack 내부 첫 화면 지정
+            });
+          },
+        })}
       />
       <Tab.Screen
         name="Matching"
@@ -84,6 +93,15 @@ function TabNavigator() {
           ...getTabScreenOptions('Chat'),
           tabBarLabel: t('tab.chat'),
         })}
+        listeners={({ navigation }) => ({
+          tabPress: (e) => {
+            e.preventDefault(); // 기본 동작 막기
+            navigation.reset({
+              index: 0,
+              routes: [{ name: 'Chat', params: { screen: 'RoomList' } }], // ✅ HomeStack 내부 첫 화면 지정
+            });
+          },
+        })}
       />
       <Tab.Screen
         name="MyPage"
@@ -91,6 +109,15 @@ function TabNavigator() {
         options={() => ({
           ...getTabScreenOptions('MyPage'),
           tabBarLabel: t('tab.my'),
+        })}
+        listeners={({ navigation }) => ({
+          tabPress: (e) => {
+            e.preventDefault(); // 기본 동작 막기
+            navigation.reset({
+              index: 0,
+              routes: [{ name: 'MyPage', params: { screen: 'MyPageHome' } }], // ✅ HomeStack 내부 첫 화면 지정
+            });
+          },
         })}
       />
     </Tab.Navigator>
@@ -208,6 +235,7 @@ function ChatNavigator() {
       <ChatStack.Screen name="RoomList" component={RoomListScreen} />
       <ChatStack.Screen name="ChatRoom" component={ChatRoomScreen} />
       <ChatStack.Screen name="ChatRequests" component={ChatRequestsScreen} />
+      <ChatStack.Screen name="Profile" component={MyProfileScreen} />
     </ChatStack.Navigator>
   );
 }
