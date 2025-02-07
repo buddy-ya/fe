@@ -41,6 +41,7 @@ export type ChatStackParamList = {
   RoomList: undefined; // 파라미터 없음
   ChatRoom: Partial<Room>; // roomId를 파라미터로 받음
   ChatRequests: undefined;
+  Profile: { id: number };
 };
 
 // MyPageStack Param List 정의
