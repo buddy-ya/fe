@@ -28,7 +28,6 @@ API.interceptors.response.use(
       return Promise.reject(error);
     }
     const errorCode = error.response?.data?.code;
-    console.log('errorCode', error.config._retry);
     if (error.response?.status === 401 && errorCode === 3002 && !error.config._retry) {
       error.config._retry = true;
       try {
