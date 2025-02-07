@@ -1,7 +1,7 @@
 import { TouchableOpacity, View } from 'react-native';
+import { ChatRepository } from '@/api';
 import { InnerLayout, Layout, MyText } from '@/components';
 import { ChatStackParamList } from '@/navigation/navigationRef';
-import { Room } from '@/types/RoomDTO';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { ChevronLeft } from 'lucide-react-native';
 import RequestList from '@/components/chat/RequestList';
@@ -11,103 +11,111 @@ type ChatRequestsNavigationProps = NativeStackScreenProps<ChatStackParamList, 'C
 export const chatRequests = [
   {
     id: 1,
-    senderId: 101,
+    senderId: 1,
     university: 'Harvard University',
     name: 'John Doe',
-    country: 'USA',
+    country: 'us',
     profileImageUrl: 'https://randomuser.me/api/portraits/men/1.jpg',
     createdDate: '2024-02-05T12:00:00Z',
   },
   {
     id: 2,
-    senderId: 102,
+    senderId: 2,
     university: 'Stanford University',
     name: 'Alice Smith',
-    country: 'USA',
+    country: 'us',
     profileImageUrl: 'https://randomuser.me/api/portraits/women/2.jpg',
     createdDate: '2024-02-05T12:05:00Z',
   },
   {
     id: 3,
-    senderId: 103,
+    senderId: 1,
     university: 'University of Oxford',
     name: 'Robert Johnson',
-    country: 'UK',
+    country: 'ko',
     profileImageUrl: 'https://randomuser.me/api/portraits/men/3.jpg',
     createdDate: '2024-02-05T12:10:00Z',
   },
   {
     id: 4,
-    senderId: 104,
+    senderId: 2,
     university: 'MIT',
     name: 'Emily Davis',
-    country: 'USA',
+    country: 'us',
     profileImageUrl: 'https://randomuser.me/api/portraits/women/4.jpg',
     createdDate: '2024-02-05T12:15:00Z',
   },
   {
     id: 5,
-    senderId: 105,
+    senderId: 1,
     university: 'University of Cambridge',
     name: 'Michael Brown',
-    country: 'UK',
+    country: 'pa',
     profileImageUrl: 'https://randomuser.me/api/portraits/men/5.jpg',
     createdDate: '2024-02-05T12:20:00Z',
   },
   {
     id: 6,
-    senderId: 106,
+    senderId: 2,
     university: 'Yale University',
     name: 'Sophia Wilson',
-    country: 'USA',
+    country: 'ar',
     profileImageUrl: 'https://randomuser.me/api/portraits/women/6.jpg',
     createdDate: '2024-02-05T12:25:00Z',
   },
   {
     id: 7,
-    senderId: 107,
+    senderId: 1,
     university: 'Seoul National University',
     name: 'Minho Kim',
-    country: 'South Korea',
+    country: 'bo',
     profileImageUrl: 'https://randomuser.me/api/portraits/men/7.jpg',
     createdDate: '2024-02-05T12:30:00Z',
   },
   {
     id: 8,
-    senderId: 108,
+    senderId: 2,
     university: 'National University of Singapore',
     name: 'Wei Zhang',
-    country: 'Singapore',
+    country: 'cn',
     profileImageUrl: 'https://randomuser.me/api/portraits/women/8.jpg',
     createdDate: '2024-02-05T12:35:00Z',
   },
   {
     id: 9,
-    senderId: 109,
+    senderId: 1,
     university: 'University of Tokyo',
     name: 'Taro Yamada',
-    country: 'Japan',
+    country: 'mx',
     profileImageUrl: 'https://randomuser.me/api/portraits/men/9.jpg',
     createdDate: '2024-02-05T12:40:00Z',
   },
   {
     id: 10,
-    senderId: 110,
+    senderId: 2,
     university: 'ETH Zurich',
     name: 'Anna Müller',
-    country: 'Switzerland',
+    country: 'de',
     profileImageUrl: 'https://randomuser.me/api/portraits/women/10.jpg',
     createdDate: '2024-02-05T12:45:00Z',
   },
-];
+] as const;
 
 export default function ChatRequestsScreen({ navigation }: ChatRequestsNavigationProps) {
   const handleBack = () => {
     navigation.goBack();
   };
 
-  const handlePressRoom = (room: Room) => {
-    navigation.goBack();
+  const handleProfilePress = (senderId: number) => {
+    navigation.navigate('Profile', { id: senderId });
+  };
+
+  const handleAccept = async (receiverId: number) => {
+    await ChatRepository.accept({ receiverId });
+  };
+
+  const handleDecline = async (chatRequestId: number) => {
+    await ChatRepository.decline({ chatRequestId });
   };
 
   return (
@@ -138,7 +146,12 @@ export default function ChatRequestsScreen({ navigation }: ChatRequestsNavigatio
             </View>
           </View>
           <View className="flex-1">
-            <RequestList requests={chatRequests} />
+            <RequestList
+              requests={chatRequests}
+              onProfilePress={handleProfilePress}
+              onAccept={handleAccept}
+              onDecline={handleDecline}
+            />
           </View>
         </View>
       </InnerLayout>
