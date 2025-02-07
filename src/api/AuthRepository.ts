@@ -52,11 +52,6 @@ class AuthRepository {
     const { data } = await API.put(`/certification/refresh`);
     return data;
   }
-
-  async reissueToken(refreshToken: string): Promise<{ accessToken: string; refreshToken: null }> {
-    const { data } = await axios.post(`${BASE_URL}/auth/reissue`, { refreshToken });
-    return data;
-  }
 }
 
 export default new AuthRepository();
