@@ -6,13 +6,12 @@ module.exports = {
   expo: {
     name: 'buddyya',
     owner: 'buddyya',
-    scheme: 'buddyya',
     description: 'A friendly app for buddy management.',
     slug: 'buddyya',
-    version: '1.0.0',
+    version: '1.0.1',
     orientation: 'portrait',
     userInterfaceStyle: 'light',
-    newArchEnabled: true,
+    newArchEnabled: false,
     splash: {
       image: './assets/images/logo.png',
       resizeMode: 'contain',
@@ -35,15 +34,12 @@ module.exports = {
           android: {
             usesCleartextTraffic: true,
           },
-          ios: {
-            useFrameworks: 'static',
-          },
         },
       ],
     ],
     ios: {
-      supportsTablet: true,
       bundleIdentifier: 'com.buddyya.app',
+      supportsTablet: true,
       infoPlist: {
         UIBackgroundModes: ['remote-notification'],
         'aps-environment': 'development',

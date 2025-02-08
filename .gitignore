@@ -43,14 +43,13 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# iOS
-ios/Pods/
-ios/build/
-ios/*.xcodeproj/*
-!ios/*.xcodeproj/project.pbxproj
-!ios/*.xcworkspace/contents.xcworkspacedata
+# iOS (prebuild 관련 파일 제외)
+ios/
+!ios/.gitkeep
 
-# Android
+# Android (prebuild 관련 파일 제외)
+android/
+!android/.gitkeep
 
 # Firebase specific
 google-services.json

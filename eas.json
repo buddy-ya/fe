@@ -8,16 +8,25 @@
       "developmentClient": true,
       "distribution": "internal",
       "ios": {
+        "buildConfiguration": "Debug",
         "scheme": "buddyya"
       }
     },
     "preview": {
-      "distribution": "internal"
+      "distribution": "internal",
+      "ios": {
+        "buildConfiguration": "Release",
+        "scheme": "buddyya"
+      }
     },
     "production": {
       "autoIncrement": true,
       "android": {
         "buildType": "apk"
+      },
+      "ios": {
+        "buildConfiguration": "Release",
+        "scheme": "buddyya"
       }
     }
   },
