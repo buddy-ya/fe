@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { View, TouchableOpacity } from 'react-native';
 import { ChatRequest } from '@/types';
 import { COUNTRY_FLAGS } from '@/utils';
@@ -18,6 +19,8 @@ export default function RequestItem({
   onDecline,
 }: RequestItemProps) {
   const { id, senderId, university, name, country, profileImageUrl, createdDate } = request;
+
+  const { t } = useTranslation('chat');
 
   const handleProfilePress = () => {
     onProfilePress?.(senderId);
@@ -50,14 +53,14 @@ export default function RequestItem({
           className="flex h-[30px] w-[52px] items-center justify-center rounded-lg bg-[#DFDFDF]"
           onPress={handleDecline}
         >
-          <MyText className="font-semibold text-white">거절</MyText>
+          <MyText className="font-semibold text-white">{t('requests.decline')}</MyText>
         </TouchableOpacity>
         <TouchableOpacity
           activeOpacity={0.7}
           className="flex h-[30px] w-[52px] items-center justify-center rounded-lg bg-[#00A176]"
           onPress={handleAccept}
         >
-          <MyText className="font-semibold text-white">수락</MyText>
+          <MyText className="font-semibold text-white">{t('requests.accept')}</MyText>
         </TouchableOpacity>
       </View>
     </View>

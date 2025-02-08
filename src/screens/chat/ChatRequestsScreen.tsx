@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { TouchableOpacity, View } from 'react-native';
 import { ChatRepository } from '@/api';
 import { InnerLayout, Layout, MyText } from '@/components';
@@ -102,6 +103,8 @@ export const chatRequests = [
 ] as const;
 
 export default function ChatRequestsScreen({ navigation }: ChatRequestsNavigationProps) {
+  const { t } = useTranslation('chat');
+
   const handleBack = () => {
     navigation.goBack();
   };
@@ -132,7 +135,7 @@ export default function ChatRequestsScreen({ navigation }: ChatRequestsNavigatio
       }
       headerCenter={
         <MyText size="text-lg" className="font-bold" color="text-[#282828]">
-          받은 요청
+          {t('requests.title')}
         </MyText>
       }
     >
@@ -141,7 +144,7 @@ export default function ChatRequestsScreen({ navigation }: ChatRequestsNavigatio
           <View className="flex h-[30px] flex-row items-center justify-between rounded-lg bg-[#DFDFDF]">
             <View className="flex h-full flex-1 flex-row items-center justify-center">
               <MyText size="text-sm" color="text-[#636363]">
-                요청은 24시간이 지나면 사라집니다.
+                {t('requests.banner.description')}
               </MyText>
             </View>
           </View>
