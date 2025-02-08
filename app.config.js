@@ -11,7 +11,7 @@ module.exports = {
     version: '1.0.0',
     orientation: 'portrait',
     userInterfaceStyle: 'light',
-    newArchEnabled: true,
+    newArchEnabled: false,
     splash: {
       image: './assets/images/logo.png',
       resizeMode: 'contain',
@@ -38,6 +38,7 @@ module.exports = {
       ],
     ],
     ios: {
+      bundleIdentifier: 'com.buddyya.app',
       supportsTablet: true,
       infoPlist: {
         UIBackgroundModes: ['remote-notification'],

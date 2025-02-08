@@ -8,7 +8,6 @@
       "developmentClient": true,
       "distribution": "internal",
       "ios": {
-        "bundleIdentifier": "com.buddyya.app",
         "buildConfiguration": "Debug",
         "scheme": "buddyya"
       }
@@ -16,7 +15,6 @@
     "preview": {
       "distribution": "internal",
       "ios": {
-        "bundleIdentifier": "com.buddyya.app",
         "buildConfiguration": "Release",
         "scheme": "buddyya"
       }
@@ -27,7 +25,6 @@
         "buildType": "apk"
       },
       "ios": {
-        "bundleIdentifier": "com.buddyya.app",
         "buildConfiguration": "Release",
         "scheme": "buddyya"
       }
