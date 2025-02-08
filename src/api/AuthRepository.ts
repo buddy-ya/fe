@@ -5,7 +5,11 @@ import {
   PhoneDTO,
   VerifyCodeResponse,
 } from '@/types/AuthDTO';
+import axios from 'axios';
+import Constants from 'expo-constants';
 import API from './API';
+
+const BASE_URL = Constants?.expoConfig?.extra?.BASE_URL || '';
 
 // 인증/인가 관련 API를 다루는 클래스
 class AuthRepository {
@@ -46,11 +50,6 @@ class AuthRepository {
 
   async refreshStudentCertification() {
     const { data } = await API.put(`/certification/refresh`);
-    return data;
-  }
-
-  async reissueToken(refreshToken: string) {
-    const { data } = await API.post('/auth/reissue', { refreshToken });
     return data;
   }
 }
