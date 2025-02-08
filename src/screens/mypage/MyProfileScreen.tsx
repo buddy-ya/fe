@@ -37,12 +37,12 @@ export default function MyProfileScreen({ navigation, route }: any) {
   const university = useUserStore((state) => state.university);
   const country = useUserStore((state) => state.country);
   const gender = useUserStore((state) => state.gender);
-  const myProfile = id === route.params?.id;
+  const isMyProfile = route.params?.id == null || route.params.id === id;
 
   const { data } = useQuery({
-    queryKey: ['users', route.params.id],
+    queryKey: ['users', route.params?.id],
     queryFn: () => UserRepository.get({ id: route.params.id }),
-    enabled: !myProfile,
+    enabled: !isMyProfile,
   });
 
   const user = {
@@ -112,7 +112,7 @@ export default function MyProfileScreen({ navigation, route }: any) {
       <MyText size="text-[12px]" color="text-textDescription" className="">
         {title}
       </MyText>
-      {myProfile && onEdit && (
+      {isMyProfile && onEdit && (
         <TouchableOpacity className="" onPress={onEdit}>
           <MyText size="text-[12px]" color="text-textLight" className="">
             {t('mypage:profile.edit')}
@@ -140,7 +140,7 @@ export default function MyProfileScreen({ navigation, route }: any) {
                   source={{ uri: user.profileImageUrl }}
                   className="mb-4 h-[110px] w-[110px] rounded-[25px]"
                 />
-                {myProfile && (
+                {isMyProfile && (
                   <TouchableOpacity
                     className="absolute -right-3 -top-1.5 rounded-full bg-white p-1.5"
                     onPress={handleEditPhoto}
@@ -153,7 +153,7 @@ export default function MyProfileScreen({ navigation, route }: any) {
                 <MyText size="text-3xl" className="font-bold">
                   {user.name}
                 </MyText>
-                {myProfile && (
+                {isMyProfile && (
                   <TouchableOpacity className="ml-2" onPress={handleEditName}>
                     <Pencil size={18} color="#797979" />
                   </TouchableOpacity>
