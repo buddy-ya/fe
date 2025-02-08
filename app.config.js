@@ -5,6 +5,7 @@ require('dotenv').config({ path: path.resolve(__dirname, '.env') });
 module.exports = {
   expo: {
     name: 'buddyya',
+    owner: 'buddyya',
     scheme: 'buddyya',
     description: 'A friendly app for buddy management.',
     slug: 'buddyya',
@@ -60,7 +61,7 @@ module.exports = {
     extra: {
       BASE_URL: process.env.BASE_URL,
       eas: {
-        projectId: '6623b9dc-65be-4af9-b342-a33c0dc8cab6',
+        projectId: 'ae3e9ea5-3d73-4892-894d-2308ea11ed5c',
       },
     },
   },
