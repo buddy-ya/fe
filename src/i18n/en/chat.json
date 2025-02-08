@@ -1,0 +1,17 @@
+{
+  "roomList": {
+    "title": "Chat",
+    "banner": {
+      "title": "Want to make more global buddies?",
+      "description": "Browse the feed >"
+    }
+  },
+  "requests": {
+    "title": "Received Requests",
+    "banner": {
+      "description": "Requests will disappear after 24 hours."
+    },
+    "accept": "Accept",
+    "decline": "Decline"
+  }
+}
