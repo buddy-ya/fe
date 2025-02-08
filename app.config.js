@@ -4,6 +4,7 @@ require('dotenv').config({ path: path.resolve(__dirname, '.env') });
 
 module.exports = {
   expo: {
+    scheme: 'buddyya',
     name: 'buddyya',
     owner: 'buddyya',
     description: 'A friendly app for buddy management.',
