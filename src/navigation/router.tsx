@@ -166,7 +166,7 @@ function FeedNavigator() {
   const navigation = useNavigation();
   const { animateTabBar } = useTabBarAnimation();
 
-  React.useLayoutEffect(() => {
+  React.useEffect(() => {
     const onStateChange = () => {
       const state = navigation.getState();
       const activeTab = state?.routes[state.index]; // 현재 활성화된 탭
@@ -214,7 +214,7 @@ function ChatNavigator() {
   const navigation = useNavigation();
   const { animateTabBar } = useTabBarAnimation();
 
-  React.useLayoutEffect(() => {
+  React.useEffect(() => {
     const onStateChange = () => {
       const state = navigation.getState();
       const activeTab = state?.routes[state.index]; // 현재 활성화된 탭
@@ -244,7 +244,7 @@ function MyPageNavigator() {
   const navigation = useNavigation();
   const { animateTabBar } = useTabBarAnimation();
 
-  React.useLayoutEffect(() => {
+  React.useEffect(() => {
     const onStateChange = () => {
       const state = navigation.getState();
       const activeTab = state?.routes[state.index]; // 현재 활성화된 탭
