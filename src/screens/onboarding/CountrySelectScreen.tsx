@@ -1,12 +1,20 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Keyboard, TouchableWithoutFeedback } from 'react-native';
-import { useOnboardingStore } from '@/store';
-import { COUNTRIES } from '@/utils';
-import { Button, Heading, HeadingDescription, InnerLayout, Layout, MultiSelectItem, MyText, SearchInput } from '@/components';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import {
+  Button,
+  Heading,
+  HeadingDescription,
+  InnerLayout,
+  Layout,
+  MultiSelectItem,
+  MyText,
+  SearchInput,
+} from '@/components';
 import { OnboardingStackParamList } from '@/navigation/navigationRef';
-
+import { useOnboardingStore } from '@/store';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { COUNTRIES } from '@/utils';
 
 type CountryID = (typeof COUNTRIES)[number]['id'];
 
@@ -16,7 +24,10 @@ interface Country {
   // name: string;
 }
 
-type CountrySelectScreenProps = NativeStackScreenProps<OnboardingStackParamList, 'OnboardingCountrySelect'>;
+type CountrySelectScreenProps = NativeStackScreenProps<
+  OnboardingStackParamList,
+  'OnboardingCountrySelect'
+>;
 
 export default function CountrySelectScreen({ navigation }: CountrySelectScreenProps) {
   const [selectedCountry, setSelectedCountry] = useState<Country | null>(null);
@@ -24,8 +35,11 @@ export default function CountrySelectScreen({ navigation }: CountrySelectScreenP
   const { t } = useTranslation('onboarding');
   const { updateOnboardingData } = useOnboardingStore();
 
-  const handleSelect = (country: Country) => {
-    setSelectedCountry(country);
+  const handleSelect = (value: { id: string; icon?: string }) => {
+    const country = COUNTRIES.find((c) => c.id === value.id);
+    if (country) {
+      setSelectedCountry(country);
+    }
   };
 
   const filteredOptions = COUNTRIES.filter((option) =>
