@@ -56,6 +56,7 @@ export const tabScreenOptions: BottomTabNavigationOptions = {
   tabBarInactiveTintColor: '#797977',
   tabBarLabelStyle: tabBarStyle.label,
   tabBarIconStyle: tabBarStyle.iconContainer,
+  lazy: true,
 };
 
 export const getTabScreenOptions = (routeName: keyof typeof TAB_CONFIG) => {
@@ -73,24 +74,17 @@ export const useTabBarAnimation = () => {
   const opacity = React.useRef(new Animated.Value(1)).current;
 
   const animateTabBar = (visible: boolean) => {
-    if (visible) {
-      translateY.setValue(100);
-      opacity.setValue(0);
-    }
-
     Animated.parallel([
-      Animated.spring(translateY, {
+      Animated.timing(translateY, {
         toValue: visible ? 0 : 100,
         useNativeDriver: true,
-        friction: 8,
-        tension: 65,
-        velocity: 0.5,
+        duration: 100, // 🚀 빠르게 설정 (기본값 150 → 100ms)
       }),
 
       Animated.timing(opacity, {
         toValue: visible ? 1 : 0,
-        duration: 150,
         useNativeDriver: true,
+        duration: 100, // 🚀 더 빠르게 (기본값 150 → 100ms)
       }),
     ]).start();
 

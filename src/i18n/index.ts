@@ -1,30 +1,32 @@
-import i18n from "i18next";
-import { initReactI18next } from "react-i18next";
-import * as Localization from "expo-localization";
-
-import ko_onboarding from "./ko/onboarding.json";
-import en_onboarding from "./en/onboarding.json";
-import ko_countries from "./ko/countries.json";
-import en_countries from "./en/countries.json";
-import ko_languages from "./ko/languages.json";
-import en_languages from "./en/languages.json";
-import ko_interests from "./ko/interests.json";
-import en_interests from "./en/interests.json";
-import ko_majors from "./ko/majors.json";
-import en_majors from "./en/majors.json";
-import ko_common from "./ko/common.json";
-import en_common from "./en/common.json";
-import ko_feed from "./ko/feed.json";
-import en_feed from "./en/feed.json";
-import ko_certification from "./ko/certification.json";
-import en_certification from "./en/certification.json";
-import ko_mypage from "./ko/mypage.json";
-import en_mypage from "./ko/mypage.json";
-import ko_error from "./ko/error.json";
-import en_error from "./en/error.json";
+import { initReactI18next } from 'react-i18next';
+import * as Localization from 'expo-localization';
+import i18n from 'i18next';
+import en_certification from './en/certification.json';
+import en_chat from './en/chat.json';
+import en_common from './en/common.json';
+import en_countries from './en/countries.json';
+import en_error from './en/error.json';
+import en_feed from './en/feed.json';
+import en_interests from './en/interests.json';
+import en_languages from './en/languages.json';
+import en_majors from './en/majors.json';
+import en_onboarding from './en/onboarding.json';
+import ko_certification from './ko/certification.json';
+import ko_chat from './ko/chat.json';
+import ko_common from './ko/common.json';
+import ko_countries from './ko/countries.json';
+import ko_error from './ko/error.json';
+import ko_feed from './ko/feed.json';
+import ko_interests from './ko/interests.json';
+import ko_languages from './ko/languages.json';
+import ko_majors from './ko/majors.json';
+import ko_mypage from './ko/mypage.json';
+import en_mypage from './ko/mypage.json';
+import ko_onboarding from './ko/onboarding.json';
 
 const resources = {
   ko: {
+    chat: ko_chat,
     onboarding: ko_onboarding,
     majors: ko_majors,
     countries: ko_countries,
@@ -37,6 +39,7 @@ const resources = {
     error: ko_error,
   },
   en: {
+    chat: en_chat,
     onboarding: en_onboarding,
     majors: en_majors,
     countries: en_countries,
@@ -52,9 +55,9 @@ const resources = {
 
 i18n.use(initReactI18next).init({
   resources,
-  lng: Localization.locale.startsWith("ko") ? "ko" : "en",
-  fallbackLng: "en",
-  compatibilityJSON: "v3",
+  lng: Localization.locale.startsWith('ko') ? 'ko' : 'en',
+  fallbackLng: 'en',
+  compatibilityJSON: 'v3',
   react: {
     useSuspense: true,
   },

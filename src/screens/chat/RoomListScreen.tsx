@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { TouchableOpacity, View } from 'react-native';
 import { RoomRepository } from '@/api';
 import { InnerLayout, Layout, MyText, RoomList } from '@/components';
@@ -21,6 +22,8 @@ export default function RoomListScreen({ navigation }: RoomListNavigationProps) 
     queryFn: RoomRepository.getRoomList,
   });
 
+  const { t } = useTranslation('chat');
+
   const handleGoToFeed = () => {
     navigation.navigate('FeedTab', { screen: 'FeedHome' } as any);
   };
@@ -42,7 +45,7 @@ export default function RoomListScreen({ navigation }: RoomListNavigationProps) 
       headerLeft={
         <View className="p-2">
           <MyText className="font-bold" size="text-[22px]" color="text-[#282828]">
-            채팅
+            {t('roomList.title')}
           </MyText>
         </View>
       }
@@ -61,13 +64,13 @@ export default function RoomListScreen({ navigation }: RoomListNavigationProps) 
           <View className="flex h-[77px] flex-row items-center justify-between rounded-xl bg-primary px-6 py-4">
             <View className="flex h-full flex-1 flex-row items-center">
               <MyText className="text-white" size="text-lg">
-                더 많은 글로벌 버디와 친구가 되고 싶다면?
+                {t('roomList.banner.title')}
               </MyText>
             </View>
             <View className="mt-6 flex h-full flex-1 flex-row items-center justify-end">
               <TouchableOpacity onPress={handleGoToFeed}>
                 <MyText className="text-white" size="text-sm">
-                  {'피드 둘러보기 >'}
+                  {t('roomList.banner.description')}
                 </MyText>
               </TouchableOpacity>
             </View>

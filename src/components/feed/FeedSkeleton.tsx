@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
 import { View, StyleSheet, Animated } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 
-const Skeleton = () => {
+const FeedSkeleton = () => {
   const [fadeAnim] = useState(new Animated.Value(0.3)); // 애니메이션 초기값 설정
 
   useEffect(() => {
@@ -24,21 +23,18 @@ const Skeleton = () => {
   }, [fadeAnim]);
 
   return (
-    // TODO: android, ios 분기  필요
-    <SafeAreaView>
-      <View style={styles.container}>
-        {/* 카드 리스트 스켈레톤 */}
-        {[...Array(9)].map((_, index) => (
-          <View key={index} style={styles.card}>
-            <Animated.View style={[styles.cardImage, { opacity: fadeAnim }]} />
-            <View style={styles.cardTextContainer}>
-              <Animated.View style={[styles.line, { opacity: fadeAnim }]} />
-              <Animated.View style={[styles.shortLine, { opacity: fadeAnim }]} />
-            </View>
+    <View style={styles.container}>
+      {/* 카드 리스트 스켈레톤 */}
+      {[...Array(8)].map((_, index) => (
+        <View key={index} style={styles.card}>
+          <Animated.View style={[styles.cardImage, { opacity: fadeAnim }]} />
+          <View style={styles.cardTextContainer}>
+            <Animated.View style={[styles.line, { opacity: fadeAnim }]} />
+            <Animated.View style={[styles.shortLine, { opacity: fadeAnim }]} />
           </View>
-        ))}
-      </View>
-    </SafeAreaView>
+        </View>
+      ))}
+    </View>
   );
 };
 
@@ -46,6 +42,9 @@ const styles = StyleSheet.create({
   container: {
     padding: 8,
     marginTop: 8,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   line: {
     height: 20,
@@ -77,4 +76,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Skeleton;
+export default FeedSkeleton;

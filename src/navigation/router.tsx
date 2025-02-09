@@ -5,7 +5,7 @@ import ChatRequestsScreen from '@/screens/chat/ChatRequestsScreen';
 import ChatRoomScreen from '@/screens/chat/ChatRoomScreen';
 import RoomListScreen from '@/screens/chat/RoomListScreen';
 import CommentEditScreen from '@/screens/home/CommentEditScreen';
-import FeedDetailScreen from '@/screens/home/FeedDetailScreen';
+import { SuspendedFeedDetailScreen } from '@/screens/home/FeedDetailScreen';
 import FeedSearchScreen from '@/screens/home/FeedSearchScreen';
 import FeedWriteScreen from '@/screens/home/FeedWriteScreen';
 import HomeScreen from '@/screens/home/HomeScreen';
@@ -68,6 +68,15 @@ function TabNavigator() {
           ...getTabScreenOptions('Home'),
           tabBarLabel: t('tab.home'),
         })}
+        listeners={({ navigation }) => ({
+          tabPress: (e) => {
+            e.preventDefault(); // 기본 동작 막기
+            navigation.reset({
+              index: 0,
+              routes: [{ name: 'FeedTab', params: { screen: 'FeedHome' } }], // ✅ HomeStack 내부 첫 화면 지정
+            });
+          },
+        })}
       />
       <Tab.Screen
         name="Matching"
@@ -84,6 +93,15 @@ function TabNavigator() {
           ...getTabScreenOptions('Chat'),
           tabBarLabel: t('tab.chat'),
         })}
+        listeners={({ navigation }) => ({
+          tabPress: (e) => {
+            e.preventDefault(); // 기본 동작 막기
+            navigation.reset({
+              index: 0,
+              routes: [{ name: 'Chat', params: { screen: 'RoomList' } }], // ✅ HomeStack 내부 첫 화면 지정
+            });
+          },
+        })}
       />
       <Tab.Screen
         name="MyPage"
@@ -91,6 +109,15 @@ function TabNavigator() {
         options={() => ({
           ...getTabScreenOptions('MyPage'),
           tabBarLabel: t('tab.my'),
+        })}
+        listeners={({ navigation }) => ({
+          tabPress: (e) => {
+            e.preventDefault(); // 기본 동작 막기
+            navigation.reset({
+              index: 0,
+              routes: [{ name: 'MyPage', params: { screen: 'MyPageHome' } }], // ✅ HomeStack 내부 첫 화면 지정
+            });
+          },
         })}
       />
     </Tab.Navigator>
@@ -139,7 +166,7 @@ function FeedNavigator() {
   const navigation = useNavigation();
   const { animateTabBar } = useTabBarAnimation();
 
-  React.useLayoutEffect(() => {
+  React.useEffect(() => {
     const onStateChange = () => {
       const state = navigation.getState();
       const activeTab = state?.routes[state.index]; // 현재 활성화된 탭
@@ -160,7 +187,7 @@ function FeedNavigator() {
       <FeedStack.Screen name="FeedHome" component={HomeScreen} />
       <FeedStack.Screen name="FeedSearch" component={FeedSearchScreen} />
       <FeedStack.Screen name="FeedWrite" component={FeedWriteScreen} />
-      <FeedStack.Screen name="FeedDetail" component={FeedDetailScreen} />
+      <FeedStack.Screen name="FeedDetail" component={SuspendedFeedDetailScreen} />
       <FeedStack.Screen name="CommentEdit" component={CommentEditScreen} />
       <FeedStack.Screen name="EmailVerification" component={EmailScreen} />
       <FeedStack.Screen
@@ -187,7 +214,7 @@ function ChatNavigator() {
   const navigation = useNavigation();
   const { animateTabBar } = useTabBarAnimation();
 
-  React.useLayoutEffect(() => {
+  React.useEffect(() => {
     const onStateChange = () => {
       const state = navigation.getState();
       const activeTab = state?.routes[state.index]; // 현재 활성화된 탭
@@ -208,6 +235,7 @@ function ChatNavigator() {
       <ChatStack.Screen name="RoomList" component={RoomListScreen} />
       <ChatStack.Screen name="ChatRoom" component={ChatRoomScreen} />
       <ChatStack.Screen name="ChatRequests" component={ChatRequestsScreen} />
+      <ChatStack.Screen name="Profile" component={MyProfileScreen} />
     </ChatStack.Navigator>
   );
 }
@@ -216,7 +244,7 @@ function MyPageNavigator() {
   const navigation = useNavigation();
   const { animateTabBar } = useTabBarAnimation();
 
-  React.useLayoutEffect(() => {
+  React.useEffect(() => {
     const onStateChange = () => {
       const state = navigation.getState();
       const activeTab = state?.routes[state.index]; // 현재 활성화된 탭
@@ -242,7 +270,7 @@ function MyPageNavigator() {
       <MyPageStack.Screen name="EditInterest" component={InterestSelectScreen} />
       <MyPageStack.Screen name="Bookmark" component={BookmarkScreen} />
       <MyPageStack.Screen name="MyPosts" component={MyPostsScreen} />
-      <MyPageStack.Screen name="FeedDetail" component={FeedDetailScreen} />
+      <MyPageStack.Screen name="FeedDetail" component={SuspendedFeedDetailScreen} />
     </MyPageStack.Navigator>
   );
 }

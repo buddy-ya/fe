@@ -34,7 +34,12 @@ export default function EmailVerificationScreen({
   const [verificationError, setVerificationError] = useState(false);
   const email = route.params?.email;
   const update = useUserStore((state) => state.update);
-  const [isSubmiting, setisSubmiting] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  const handleCode = (code: string) => {
+    setCode(code);
+    setVerificationError(false);
+  };
 
   const handleResend = async () => {
     await AuthRepository.sendCodeByMail({ email });
@@ -43,20 +48,25 @@ export default function EmailVerificationScreen({
   };
 
   const handleNavigateButton = async () => {
-    setisSubmiting(true);
-    const { success } = await AuthRepository.verifyCodeByMail({
-      email,
-      code,
-    });
-    if (success) {
-      setVerificationError(false);
-      update({ isCertificated: true });
-      navigation.navigate('EmailComplete');
-    } else {
+    setLoading(true);
+    try {
+      const { success } = await AuthRepository.verifyCodeByMail({
+        email,
+        code,
+      });
+      if (success) {
+        setVerificationError(false);
+        update({ isCertificated: true });
+        navigation.navigate('EmailComplete');
+      } else {
+        setVerificationError(true);
+        setCode('');
+      }
+    } catch (e) {
       setVerificationError(true);
-      setCode('');
+    } finally {
+      setLoading(false);
     }
-    setisSubmiting(false);
   };
 
   const renderFooterContent = () => {
@@ -75,7 +85,7 @@ export default function EmailVerificationScreen({
       icon={<Send strokeWidth={1} size={23} color="#797979" />}
       content={<View className="mx-3">{renderFooterContent()}</View>}
       onPress={handleNavigateButton}
-      disabled={code.length < 4 || isSubmiting}
+      disabled={code.length < 4 || loading || verificationError}
     />
   );
 
@@ -86,7 +96,7 @@ export default function EmailVerificationScreen({
           <Heading>{t('verification.title')}</Heading>
           <HeadingDescription>{t('verification.titleDescription', { email })}</HeadingDescription>
           <Label>{t('verification.label')}</Label>
-          <OTPInput value={code} onChange={setCode} length={4} />
+          <OTPInput value={code} onChange={handleCode} length={4} />
           {verificationError && (
             <ErrorMessage className="mt-2">{t('verification.warning')}</ErrorMessage>
           )}
