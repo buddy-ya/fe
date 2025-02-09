@@ -5,7 +5,7 @@ import ChatRequestsScreen from '@/screens/chat/ChatRequestsScreen';
 import ChatRoomScreen from '@/screens/chat/ChatRoomScreen';
 import RoomListScreen from '@/screens/chat/RoomListScreen';
 import CommentEditScreen from '@/screens/home/CommentEditScreen';
-import FeedDetailScreen from '@/screens/home/FeedDetailScreen';
+import { SuspendedFeedDetailScreen } from '@/screens/home/FeedDetailScreen';
 import FeedSearchScreen from '@/screens/home/FeedSearchScreen';
 import FeedWriteScreen from '@/screens/home/FeedWriteScreen';
 import HomeScreen from '@/screens/home/HomeScreen';
@@ -187,7 +187,7 @@ function FeedNavigator() {
       <FeedStack.Screen name="FeedHome" component={HomeScreen} />
       <FeedStack.Screen name="FeedSearch" component={FeedSearchScreen} />
       <FeedStack.Screen name="FeedWrite" component={FeedWriteScreen} />
-      <FeedStack.Screen name="FeedDetail" component={FeedDetailScreen} />
+      <FeedStack.Screen name="FeedDetail" component={SuspendedFeedDetailScreen} />
       <FeedStack.Screen name="CommentEdit" component={CommentEditScreen} />
       <FeedStack.Screen name="EmailVerification" component={EmailScreen} />
       <FeedStack.Screen
@@ -270,7 +270,7 @@ function MyPageNavigator() {
       <MyPageStack.Screen name="EditInterest" component={InterestSelectScreen} />
       <MyPageStack.Screen name="Bookmark" component={BookmarkScreen} />
       <MyPageStack.Screen name="MyPosts" component={MyPostsScreen} />
-      <MyPageStack.Screen name="FeedDetail" component={FeedDetailScreen} />
+      <MyPageStack.Screen name="FeedDetail" component={SuspendedFeedDetailScreen} />
     </MyPageStack.Navigator>
   );
 }
