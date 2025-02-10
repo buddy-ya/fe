@@ -26,7 +26,18 @@
   "quickMenu": {
     "bookmark": "북마크",
     "myPosts": "내 글",
-    "settings": "설정"
+    "verification": "인증"
+  },
+  "verification": {
+    "description": "인증 방법을 선택하세요.",
+    "email": {
+      "title": "이메일 인증",
+      "description": "학교 도메인 이메일로 인증을 받습니다."
+    },
+    "students": {
+      "title": "학생 인증",
+      "description": "실물 학생증, 온라인 학생증, 재학증명서, 입학증 등 학생임을 보여주는 모든 수단으로 인증을 받습니다."
+    }
   },
   "menuItems": {
     "title": "각종 설정들 레이아웃",

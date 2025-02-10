@@ -28,7 +28,18 @@
   "quickMenu": {
     "bookmark": "Bookmarks",
     "myPosts": "My Posts",
-    "settings": "Settings"
+    "verification": "verification"
+  },
+  "verification": {
+    "description": "Please select a verification method.",
+    "email": {
+      "title": "Email Verification",
+      "description": "Verify using a school domain email."
+    },
+    "students": {
+      "title": "Student Verification",
+      "description": "Verify using any proof of student status, such as a physical student ID, digital student ID, enrollment certificate, or admission letter."
+    }
   },
   "menuItems": {
     "title": "Settings Layout",
