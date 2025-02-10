@@ -9,7 +9,14 @@ import { TokenService } from '@/service';
 import { useUserStore } from '@/store';
 import LogoIcon from '@assets/icons/logo.svg';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { Bookmark, ChevronRight, NotebookPen, Settings, ShieldAlert } from 'lucide-react-native';
+import {
+  Bookmark,
+  ChevronRight,
+  NotebookPen,
+  Settings,
+  ShieldAlert,
+  ShieldCheck,
+} from 'lucide-react-native';
 import { CountryID, getCountryFlag } from '@/utils';
 
 interface SettingItemProps {
@@ -37,6 +44,7 @@ export default function MyPageScreen({ navigation }: MyPageScreenProps) {
   const country = useUserStore((state) => state.country);
   const university = useUserStore((store) => store.university);
   const update = useUserStore((state) => state.update);
+  const isCertificated = useUserStore((state) => state.isCertificated);
 
   const quickMenuItems = [
     {
@@ -54,8 +62,8 @@ export default function MyPageScreen({ navigation }: MyPageScreenProps) {
     {
       key: 'settings',
       label: t('quickMenu.verification'),
-      icon: ShieldAlert,
-      onPress: () => navigation.navigate('Verification'),
+      icon: isCertificated ? ShieldCheck : ShieldAlert,
+      onPress: isCertificated ? () => {} : () => navigation.navigate('Verification'),
     },
   ];
 
