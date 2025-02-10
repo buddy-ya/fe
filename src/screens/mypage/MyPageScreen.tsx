@@ -9,7 +9,7 @@ import { TokenService } from '@/service';
 import { useUserStore } from '@/store';
 import LogoIcon from '@assets/icons/logo.svg';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { Bell, Bookmark, ChevronRight, NotebookPen, Settings } from 'lucide-react-native';
+import { Bookmark, ChevronRight, NotebookPen, Settings, ShieldAlert } from 'lucide-react-native';
 import { CountryID, getCountryFlag } from '@/utils';
 
 interface SettingItemProps {
@@ -53,9 +53,9 @@ export default function MyPageScreen({ navigation }: MyPageScreenProps) {
     },
     {
       key: 'settings',
-      label: t('quickMenu.settings'),
-      icon: Settings,
-      onPress: () => navigation.navigate('Settings'),
+      label: t('quickMenu.verification'),
+      icon: ShieldAlert,
+      onPress: () => navigation.navigate('Verification'),
     },
   ];
 
@@ -83,7 +83,7 @@ export default function MyPageScreen({ navigation }: MyPageScreenProps) {
   ];
 
   const handleNotification = () => {
-    console.log('notification pressed!');
+    navigation.navigate('Settings');
   };
 
   useBackButton();
@@ -95,7 +95,7 @@ export default function MyPageScreen({ navigation }: MyPageScreenProps) {
       headerRight={
         <View className="flex-row items-center">
           <TouchableOpacity onPress={handleNotification}>
-            <Bell strokeWidth={2} size={24} color="#797977" />
+            <Settings strokeWidth={2} size={24} color="#797977" />
           </TouchableOpacity>
         </View>
       }

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import SplashScreen from '@/screens/SplashScreen';
-import ChatRequestsScreen from '@/screens/chat/ChatRequestsScreen';
+import { SuspendedRequestsScreen } from '@/screens/chat/ChatRequestsScreen';
 import ChatRoomScreen from '@/screens/chat/ChatRoomScreen';
 import RoomListScreen from '@/screens/chat/RoomListScreen';
 import CommentEditScreen from '@/screens/home/CommentEditScreen';
@@ -13,6 +13,7 @@ import BookmarkScreen from '@/screens/mypage/BookmarkScreen';
 import EditProfileImageScreen from '@/screens/mypage/EditProfileImageScreen';
 import MyPostsScreen from '@/screens/mypage/MyPostsScreen';
 import MyProfileScreen from '@/screens/mypage/MyProfileScreen';
+import VerificationScreen from '@/screens/mypage/VerificationScreen';
 import CountrySelectScreen from '@/screens/onboarding/CountrySelectScreen';
 import GenderSelectScreen from '@/screens/onboarding/GenderSelectScreen';
 import InterestSelectScreen from '@/screens/onboarding/InterestSelectScreen';
@@ -234,7 +235,7 @@ function ChatNavigator() {
     <ChatStack.Navigator screenOptions={{ headerShown: false }}>
       <ChatStack.Screen name="RoomList" component={RoomListScreen} />
       <ChatStack.Screen name="ChatRoom" component={ChatRoomScreen} />
-      <ChatStack.Screen name="ChatRequests" component={ChatRequestsScreen} />
+      <ChatStack.Screen name="ChatRequests" component={SuspendedRequestsScreen} />
       <ChatStack.Screen name="Profile" component={MyProfileScreen} />
     </ChatStack.Navigator>
   );
@@ -271,6 +272,7 @@ function MyPageNavigator() {
       <MyPageStack.Screen name="Bookmark" component={BookmarkScreen} />
       <MyPageStack.Screen name="MyPosts" component={MyPostsScreen} />
       <MyPageStack.Screen name="FeedDetail" component={SuspendedFeedDetailScreen} />
+      <MyPageStack.Screen name="Verification" component={VerificationScreen} />
     </MyPageStack.Navigator>
   );
 }
