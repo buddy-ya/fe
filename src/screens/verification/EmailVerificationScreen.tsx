@@ -86,6 +86,7 @@ export default function EmailVerificationScreen({
       content={<View className="mx-3">{renderFooterContent()}</View>}
       onPress={handleNavigateButton}
       disabled={code.length < 4 || loading || verificationError}
+      loading={loading}
     />
   );
 
