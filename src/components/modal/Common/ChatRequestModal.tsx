@@ -82,7 +82,7 @@ export function ChatRequestModal({ visible, data, onClose }: CommonModalProps) {
                 }}
               >
                 <MyText size="text-[16px]" className="text-center font-semibold text-white">
-                  {confirmText}
+                  ♡ {confirmText}
                 </MyText>
               </TouchableOpacity>
             </View>

@@ -57,6 +57,7 @@ export default function EmailScreen({ navigation }: EmailScreenProps) {
       }
       onPress={handleNavigation}
       disabled={!isValidEmail || loading}
+      loading={loading}
     />
   );
 

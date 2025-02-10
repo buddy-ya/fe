@@ -2,7 +2,6 @@ import { useEffect, useRef } from 'react';
 import { TouchableOpacity, FlatList, View } from 'react-native';
 import { InnerLayout, Input, KeyboardLayout, Layout, MessageItem, MyText } from '@/components';
 import { useImageUpload } from '@/hooks';
-import { Message } from '@/model';
 import { ChatStackParamList } from '@/navigation/navigationRef';
 import { useMessageStore } from '@/store';
 import { useNavigation } from '@react-navigation/native';
@@ -17,109 +16,6 @@ const IMAGE_PICKER_OPTIONS: ImagePickerOptions = {
   allowsMultipleSelection: true,
   selectionLimit: 3,
 };
-
-const data: Message[] = [
-  {
-    id: 1,
-    sender: 'other',
-    content: '안녕하세요',
-  },
-  {
-    id: 2,
-    sender: 'other',
-    content: '안녕하세요2',
-  },
-  {
-    id: 3,
-    sender: 'other',
-    content: '안녕하세요3',
-  },
-  {
-    id: 4,
-    sender: 'other',
-    content: '안녕하세요4',
-  },
-  {
-    id: 5,
-    sender: 'me',
-    content: '안녕하세요',
-  },
-  {
-    id: 6,
-    sender: 'me',
-    content: '안녕하세요2',
-  },
-  {
-    id: 7,
-    sender: 'me',
-    content: '안녕하세요3',
-  },
-  {
-    id: 8,
-    sender: 'other',
-    content: '안녕하세요',
-  },
-  {
-    id: 9,
-    sender: 'other',
-    content: '안녕하세요',
-  },
-  {
-    id: 10,
-    sender: 'other',
-    content: '안녕하세요',
-  },
-  {
-    id: 11,
-    sender: 'me',
-    content: '안녕하세요',
-  },
-  {
-    id: 12,
-    sender: 'other',
-    content: '안녕하세요',
-  },
-  {
-    id: 13,
-    sender: 'other',
-    content: '안녕하세요',
-  },
-  {
-    id: 14,
-    sender: 'me',
-    content: '안녕하세요',
-  },
-  {
-    id: 15,
-    sender: 'me',
-    content: '안녕하세요',
-  },
-  {
-    id: 16,
-    sender: 'other',
-    content: '안녕하세요',
-  },
-  {
-    id: 17,
-    sender: 'other',
-    content: '안녕하세요',
-  },
-  {
-    id: 18,
-    sender: 'other',
-    content: '안녕하세요',
-  },
-  {
-    id: 19,
-    sender: 'other',
-    content: '안녕하세요',
-  },
-  {
-    id: 20,
-    sender: 'other',
-    content: '안녕하세요',
-  },
-];
 
 type ChatRoomScreenProps = NativeStackScreenProps<ChatStackParamList, 'ChatRoom'>;
 
@@ -153,10 +49,6 @@ const ChatRoomScreen = ({ route }: ChatRoomScreenProps) => {
   useEffect(() => {
     setTimeout(() => flatListRef.current?.scrollToEnd({ animated: true }), 0);
   }, [messages]);
-
-  useEffect(() => {
-    setMessage(data);
-  }, []);
 
   return (
     <Layout

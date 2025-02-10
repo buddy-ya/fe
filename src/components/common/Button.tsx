@@ -1,11 +1,14 @@
-import { ChevronRight, LucideIcon } from 'lucide-react-native';
 import { ReactNode } from 'react';
-import { StyleProp, TouchableOpacity, ViewStyle } from 'react-native';
+import { StyleProp, TouchableOpacity, View, ViewStyle } from 'react-native';
+import { ChevronRight, LucideIcon, LoaderCircle, icons } from 'lucide-react-native';
+
+// CSS 파일 불러오기
 
 interface ButtonProps {
   onPress: () => void;
   children?: ReactNode;
   type?: 'circle' | 'box';
+  loading?: boolean;
   disabled?: boolean;
   color?: 'primary' | 'disabled';
   className?: string;
@@ -19,6 +22,7 @@ export default function Button({
   onPress,
   children,
   type = 'box',
+  loading = false,
   disabled = false,
   className = '',
   icon: Icon = ChevronRight,
@@ -40,6 +44,20 @@ export default function Button({
     return 'bg-primary active:bg-active';
   };
 
+  if (loading)
+    return (
+      <TouchableOpacity
+        onPress={onPress}
+        disabled={disabled}
+        className={`${getTypeStyles()} bg-primary active:bg-active ${className}`}
+        style={containerStyle}
+        activeOpacity={0.9}
+      >
+        <View className="flex animate-spin">
+          <LoaderCircle strokeWidth={2} size={26} color={iconColor} />
+        </View>
+      </TouchableOpacity>
+    );
   return (
     <TouchableOpacity
       onPress={onPress}

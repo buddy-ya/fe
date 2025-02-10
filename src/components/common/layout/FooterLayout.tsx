@@ -7,6 +7,7 @@ interface FooterLayoutProps {
   content: ReactNode;
   onPress: () => void;
   disabled?: boolean;
+  loading?: boolean;
 }
 
 export default function FooterLayout({
@@ -14,6 +15,7 @@ export default function FooterLayout({
   content,
   onPress,
   disabled = false,
+  loading = false,
 }: FooterLayoutProps) {
   return (
     <View className="w-full flex-row items-center justify-between rounded-t-3xl border-[0.3px] border-b-0 border-borderFooter bg-footerBackground px-4 py-4">
@@ -21,7 +23,7 @@ export default function FooterLayout({
         {icon}
         {content}
       </View>
-      <Button type="circle" onPress={onPress} disabled={disabled} />
+      <Button type="circle" onPress={onPress} disabled={disabled} loading={loading} />
     </View>
   );
 }

@@ -56,4 +56,5 @@ export type MyPageStackParamList = {
   MyPosts: undefined;
   Settings: undefined;
   FeedDetail: { feedId: number };
+  Verification: undefined;
 };
