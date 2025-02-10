@@ -1,106 +1,17 @@
+import { Suspense } from 'react';
+import { ErrorBoundary } from 'react-error-boundary';
 import { useTranslation } from 'react-i18next';
 import { TouchableOpacity, View } from 'react-native';
 import { ChatRepository } from '@/api';
 import { InnerLayout, Layout, MyText } from '@/components';
 import { ChatStackParamList } from '@/navigation/navigationRef';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { useSuspenseQuery } from '@tanstack/react-query';
 import { ChevronLeft } from 'lucide-react-native';
+import ChatSkeleton from '@/components/chat/ChatSkeleton';
 import RequestList from '@/components/chat/RequestList';
 
 type ChatRequestsNavigationProps = NativeStackScreenProps<ChatStackParamList, 'ChatRequests'>;
-
-export const chatRequests = [
-  {
-    id: 1,
-    senderId: 1,
-    university: 'Harvard University',
-    name: 'John Doe',
-    country: 'us',
-    profileImageUrl: 'https://randomuser.me/api/portraits/men/1.jpg',
-    createdDate: '2024-02-05T12:00:00Z',
-  },
-  {
-    id: 2,
-    senderId: 2,
-    university: 'Stanford University',
-    name: 'Alice Smith',
-    country: 'us',
-    profileImageUrl: 'https://randomuser.me/api/portraits/women/2.jpg',
-    createdDate: '2024-02-05T12:05:00Z',
-  },
-  {
-    id: 3,
-    senderId: 1,
-    university: 'University of Oxford',
-    name: 'Robert Johnson',
-    country: 'ko',
-    profileImageUrl: 'https://randomuser.me/api/portraits/men/3.jpg',
-    createdDate: '2024-02-05T12:10:00Z',
-  },
-  {
-    id: 4,
-    senderId: 2,
-    university: 'MIT',
-    name: 'Emily Davis',
-    country: 'us',
-    profileImageUrl: 'https://randomuser.me/api/portraits/women/4.jpg',
-    createdDate: '2024-02-05T12:15:00Z',
-  },
-  {
-    id: 5,
-    senderId: 1,
-    university: 'University of Cambridge',
-    name: 'Michael Brown',
-    country: 'pa',
-    profileImageUrl: 'https://randomuser.me/api/portraits/men/5.jpg',
-    createdDate: '2024-02-05T12:20:00Z',
-  },
-  {
-    id: 6,
-    senderId: 2,
-    university: 'Yale University',
-    name: 'Sophia Wilson',
-    country: 'ar',
-    profileImageUrl: 'https://randomuser.me/api/portraits/women/6.jpg',
-    createdDate: '2024-02-05T12:25:00Z',
-  },
-  {
-    id: 7,
-    senderId: 1,
-    university: 'Seoul National University',
-    name: 'Minho Kim',
-    country: 'bo',
-    profileImageUrl: 'https://randomuser.me/api/portraits/men/7.jpg',
-    createdDate: '2024-02-05T12:30:00Z',
-  },
-  {
-    id: 8,
-    senderId: 2,
-    university: 'National University of Singapore',
-    name: 'Wei Zhang',
-    country: 'cn',
-    profileImageUrl: 'https://randomuser.me/api/portraits/women/8.jpg',
-    createdDate: '2024-02-05T12:35:00Z',
-  },
-  {
-    id: 9,
-    senderId: 1,
-    university: 'University of Tokyo',
-    name: 'Taro Yamada',
-    country: 'mx',
-    profileImageUrl: 'https://randomuser.me/api/portraits/men/9.jpg',
-    createdDate: '2024-02-05T12:40:00Z',
-  },
-  {
-    id: 10,
-    senderId: 2,
-    university: 'ETH Zurich',
-    name: 'Anna Müller',
-    country: 'de',
-    profileImageUrl: 'https://randomuser.me/api/portraits/women/10.jpg',
-    createdDate: '2024-02-05T12:45:00Z',
-  },
-] as const;
 
 export default function ChatRequestsScreen({ navigation }: ChatRequestsNavigationProps) {
   const { t } = useTranslation('chat');
@@ -120,6 +31,11 @@ export default function ChatRequestsScreen({ navigation }: ChatRequestsNavigatio
   const handleDecline = async (chatRequestId: number) => {
     await ChatRepository.decline({ chatRequestId });
   };
+
+  const { data: requests } = useSuspenseQuery({
+    queryKey: ['requests'],
+    queryFn: ChatRepository.getRequestList,
+  });
 
   return (
     <Layout
@@ -150,7 +66,7 @@ export default function ChatRequestsScreen({ navigation }: ChatRequestsNavigatio
           </View>
           <View className="flex-1">
             <RequestList
-              requests={chatRequests}
+              requests={requests}
               onProfilePress={handleProfilePress}
               onAccept={handleAccept}
               onDecline={handleDecline}
@@ -161,3 +77,19 @@ export default function ChatRequestsScreen({ navigation }: ChatRequestsNavigatio
     </Layout>
   );
 }
+
+export const SuspendedRequestsScreen = (props: ChatRequestsNavigationProps) => {
+  return (
+    <ErrorBoundary fallback={<></>}>
+      <Suspense
+        fallback={
+          <Layout showHeader disableBottomSafeArea onBack={() => props.navigation.goBack()}>
+            <ChatSkeleton />
+          </Layout>
+        }
+      >
+        <ChatRequestsScreen {...props} />
+      </Suspense>
+    </ErrorBoundary>
+  );
+};
