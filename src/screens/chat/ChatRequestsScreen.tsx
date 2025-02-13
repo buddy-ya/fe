@@ -84,7 +84,9 @@ export const SuspendedRequestsScreen = (props: ChatRequestsNavigationProps) => {
       <Suspense
         fallback={
           <Layout showHeader disableBottomSafeArea onBack={() => props.navigation.goBack()}>
-            <ChatSkeleton />
+            <InnerLayout>
+              <ChatSkeleton />
+            </InnerLayout>
           </Layout>
         }
       >

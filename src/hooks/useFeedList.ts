@@ -1,8 +1,8 @@
-import { FeedListResponse } from '@/screens/home/types';
-import { useInfiniteQuery, useQueryClient } from '@tanstack/react-query';
-import { logError } from '@/utils';
-import { FeedService } from '@/service';
 import { FeedRepository } from '@/api';
+import { FeedListResponse } from '@/screens/home/types';
+import { FeedService } from '@/service';
+import { useQueryClient, useSuspenseInfiniteQuery } from '@tanstack/react-query';
+import { logError } from '@/utils';
 
 interface UseFeedListProps {
   queryKey: string[];
@@ -24,7 +24,7 @@ export const useFeedList = ({
   const queryClient = useQueryClient();
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading, refetch } =
-    useInfiniteQuery<FeedListResponse, Error, FeedListResponse, string[], number>({
+    useSuspenseInfiniteQuery<FeedListResponse, Error, FeedListResponse, string[], number>({
       queryKey,
       queryFn: async ({ pageParam = 0 }) => {
         return fetchFn({

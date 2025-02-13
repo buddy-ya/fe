@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { Suspense, useState } from 'react';
+import { ErrorBoundary } from 'react-error-boundary';
 import { TouchableOpacity, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { feedKeys, FeedRepository } from '@/api';
@@ -10,10 +11,11 @@ import LogoIcon from '@assets/icons/logo.svg';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { Bell, Plus, Search } from 'lucide-react-native';
 import { isAndroid, CATEGORIES } from '@/utils';
+import Skeleton from '../Skeleton';
 
 type FeedHomeScreenProps = NativeStackScreenProps<FeedStackParamList, 'FeedHome'>;
 
-export default function HomeScreen({ navigation, route }: FeedHomeScreenProps) {
+export function HomeScreen({ navigation, route }: FeedHomeScreenProps) {
   const STALE_TIME = 1000 * 60;
   const handleModalOpen = useModalStore((state) => state.handleOpen);
   const [activeCategory, setActiveCategory] = useState(CATEGORIES[0].id);
@@ -43,8 +45,6 @@ export default function HomeScreen({ navigation, route }: FeedHomeScreenProps) {
 
   const insets = useSafeAreaInsets();
   const writeButtonPosition = isAndroid ? insets.bottom + 80 : insets.bottom + 40;
-
-  useBackButton();
 
   return (
     <Layout
@@ -100,3 +100,30 @@ export default function HomeScreen({ navigation, route }: FeedHomeScreenProps) {
     </Layout>
   );
 }
+
+export const SuspendedHomeScreen = (props: FeedHomeScreenProps) => {
+  const SkeletonChip = () => {
+    return <View className="mr-4 h-10 w-20 animate-pulse rounded-full bg-[#e0e0e0]"></View>;
+  };
+  useBackButton();
+  return (
+    <ErrorBoundary fallback={<></>}>
+      <Suspense
+        fallback={
+          <Layout showHeader disableBottomSafeArea onBack={() => props.navigation.goBack()}>
+            <InnerLayout>
+              <View className="w-full flex-row">
+                {[...Array(3)].map((_, index) => (
+                  <SkeletonChip key={index} />
+                ))}
+              </View>
+              <Skeleton />
+            </InnerLayout>
+          </Layout>
+        }
+      >
+        <HomeScreen {...props} />
+      </Suspense>
+    </ErrorBoundary>
+  );
+};

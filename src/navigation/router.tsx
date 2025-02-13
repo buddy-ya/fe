@@ -3,12 +3,12 @@ import { useTranslation } from 'react-i18next';
 import SplashScreen from '@/screens/SplashScreen';
 import { SuspendedRequestsScreen } from '@/screens/chat/ChatRequestsScreen';
 import ChatRoomScreen from '@/screens/chat/ChatRoomScreen';
-import RoomListScreen from '@/screens/chat/RoomListScreen';
+import RoomListScreen, { SuspendedRoomListScreen } from '@/screens/chat/RoomListScreen';
 import CommentEditScreen from '@/screens/home/CommentEditScreen';
 import { SuspendedFeedDetailScreen } from '@/screens/home/FeedDetailScreen';
 import FeedSearchScreen from '@/screens/home/FeedSearchScreen';
 import FeedWriteScreen from '@/screens/home/FeedWriteScreen';
-import HomeScreen from '@/screens/home/HomeScreen';
+import { SuspendedHomeScreen } from '@/screens/home/HomeScreen';
 import BookmarkScreen from '@/screens/mypage/BookmarkScreen';
 import EditProfileImageScreen from '@/screens/mypage/EditProfileImageScreen';
 import MyPostsScreen from '@/screens/mypage/MyPostsScreen';
@@ -185,7 +185,7 @@ function FeedNavigator() {
 
   return (
     <FeedStack.Navigator screenOptions={{ headerShown: false }}>
-      <FeedStack.Screen name="FeedHome" component={HomeScreen} />
+      <FeedStack.Screen name="FeedHome" component={SuspendedHomeScreen} />
       <FeedStack.Screen name="FeedSearch" component={FeedSearchScreen} />
       <FeedStack.Screen name="FeedWrite" component={FeedWriteScreen} />
       <FeedStack.Screen name="FeedDetail" component={SuspendedFeedDetailScreen} />
@@ -233,7 +233,7 @@ function ChatNavigator() {
 
   return (
     <ChatStack.Navigator screenOptions={{ headerShown: false }}>
-      <ChatStack.Screen name="RoomList" component={RoomListScreen} />
+      <ChatStack.Screen name="RoomList" component={SuspendedRoomListScreen} />
       <ChatStack.Screen name="ChatRoom" component={ChatRoomScreen} />
       <ChatStack.Screen name="ChatRequests" component={SuspendedRequestsScreen} />
       <ChatStack.Screen name="Profile" component={MyProfileScreen} />
