@@ -9,15 +9,9 @@ import { TokenService } from '@/service';
 import { useUserStore } from '@/store';
 import LogoIcon from '@assets/icons/logo.svg';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import {
-  Bookmark,
-  ChevronRight,
-  NotebookPen,
-  Settings,
-  ShieldAlert,
-  ShieldCheck,
-} from 'lucide-react-native';
+import { Bookmark, ChevronRight, NotebookPen, Settings, ShieldAlert } from 'lucide-react-native';
 import { CountryID, getCountryFlag } from '@/utils';
+import ShieldCheck from './shieldCheck.svg';
 
 interface SettingItemProps {
   label: string;
@@ -49,20 +43,20 @@ export default function MyPageScreen({ navigation }: MyPageScreenProps) {
   const quickMenuItems = [
     {
       key: 'bookmark',
-      label: t('quickMenu.bookmark'),
-      icon: Bookmark,
+      label: <MyText>{t('quickMenu.bookmark')}</MyText>,
+      icon: <Bookmark size={24} color="#282828" />,
       onPress: () => navigation.navigate('Bookmark'),
     },
     {
       key: 'myPosts',
-      label: t('quickMenu.myPosts'),
-      icon: NotebookPen,
+      label: <MyText>{t('quickMenu.myPosts')}</MyText>,
+      icon: <NotebookPen size={24} color="#282828" />,
       onPress: () => navigation.navigate('MyPosts'),
     },
     {
       key: 'verification',
-      label: t('quickMenu.verification'),
-      icon: isCertificated ? ShieldCheck : ShieldAlert,
+      label: <MyText color="text-[#CBCBCB]">{t('quickMenu.verification')}</MyText>,
+      icon: isCertificated ? <ShieldCheck /> : <ShieldAlert size={24} color="#282828" />,
       onPress: isCertificated
         ? () => {}
         : () => navigation.navigate('Verification', { screen: 'Verification' } as any),
@@ -138,12 +132,10 @@ export default function MyPageScreen({ navigation }: MyPageScreenProps) {
         </TouchableOpacity>
 
         <View className="mt-3 flex-row justify-around rounded-[20px] bg-white py-5">
-          {quickMenuItems.map(({ key, label, icon: Icon, onPress }) => (
+          {quickMenuItems.map(({ key, label, icon, onPress }) => (
             <TouchableOpacity key={key} className="items-center" onPress={onPress}>
-              <View className="mb-1">
-                <Icon size={24} color="#282828" />
-              </View>
-              <MyText>{label}</MyText>
+              <View className="mb-1">{icon}</View>
+              {label}
             </TouchableOpacity>
           ))}
         </View>
