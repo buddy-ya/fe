@@ -35,7 +35,7 @@ export default function RoomListScreen({ navigation }: RoomListNavigationProps) 
   };
 
   const handlePressRoom = (room: Room) => {
-    navigation.navigate('ChatRoom', { ...room });
+    navigation.navigate('ChatRoom', { id: room.id });
   };
 
   return (
