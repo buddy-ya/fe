@@ -37,9 +37,17 @@ export type FeedStackParamList = {
   StudentIdComplete: undefined;
 };
 
+export type VerificationStackParamList = {
+  EmailVerification: undefined;
+  EmailVerificationCode: { email: string };
+  EmailComplete: undefined;
+  StudentIdVerification: undefined;
+  StudentIdComplete: undefined;
+};
+
 export type ChatStackParamList = {
   RoomList: undefined; // 파라미터 없음
-  ChatRoom: Partial<Room>; // roomId를 파라미터로 받음
+  ChatRoom: { id: number }; // roomId를 파라미터로 받음
   ChatRequests: undefined;
   Profile: { id: number };
 };
