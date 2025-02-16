@@ -55,7 +55,11 @@ export default function MyPageScreen({ navigation }: MyPageScreenProps) {
     },
     {
       key: 'verification',
-      label: <MyText color="text-[#CBCBCB]">{t('quickMenu.verification')}</MyText>,
+      label: (
+        <MyText color={`${isCertificated && 'text-[#CBCBCB]'}`}>
+          {t('quickMenu.verification')}
+        </MyText>
+      ),
       icon: isCertificated ? <ShieldCheck /> : <ShieldAlert size={24} color="#282828" />,
       onPress: isCertificated
         ? () => {}
