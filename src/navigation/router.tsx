@@ -216,6 +216,7 @@ function FeedNavigator() {
 function VerificationNavigator() {
   return (
     <VerificationStack.Navigator screenOptions={{ headerShown: false }}>
+      <VerificationStack.Screen name="VerificationSelect" component={VerificationScreen} />
       <VerificationStack.Screen name="EmailVerification" component={EmailScreen} />
       <VerificationStack.Screen
         name="EmailVerificationCode"
@@ -301,7 +302,6 @@ function MyPageNavigator() {
       <MyPageStack.Screen name="Bookmark" component={BookmarkScreen} />
       <MyPageStack.Screen name="MyPosts" component={MyPostsScreen} />
       <MyPageStack.Screen name="FeedDetail" component={SuspendedFeedDetailScreen} />
-      <MyPageStack.Screen name="Verification" component={VerificationScreen} />
     </MyPageStack.Navigator>
   );
 }

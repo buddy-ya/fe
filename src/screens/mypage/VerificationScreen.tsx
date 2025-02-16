@@ -1,10 +1,13 @@
 import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 import { HeadingDescription, InnerLayout, Layout, MyText } from '@/components';
-import { MyPageStackParamList } from '@/navigation/navigationRef';
+import { VerificationStackParamList } from '@/navigation/navigationRef';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
-type VerificationScreenProps = NativeStackScreenProps<MyPageStackParamList, 'Verification'>;
+type VerificationScreenProps = NativeStackScreenProps<
+  VerificationStackParamList,
+  'VerificationSelect'
+>;
 
 export default function VerificationScreen({ navigation }: VerificationScreenProps) {
   const { t } = useTranslation('mypage');

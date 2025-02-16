@@ -38,6 +38,7 @@ export type FeedStackParamList = {
 };
 
 export type VerificationStackParamList = {
+  VerificationSelect: undefined;
   EmailVerification: undefined;
   EmailVerificationCode: { email: string };
   EmailComplete: undefined;
@@ -64,5 +65,4 @@ export type MyPageStackParamList = {
   MyPosts: undefined;
   Settings: undefined;
   FeedDetail: { feedId: number };
-  Verification: undefined;
 };

@@ -60,10 +60,12 @@ export default function MyPageScreen({ navigation }: MyPageScreenProps) {
       onPress: () => navigation.navigate('MyPosts'),
     },
     {
-      key: 'settings',
+      key: 'verification',
       label: t('quickMenu.verification'),
       icon: isCertificated ? ShieldCheck : ShieldAlert,
-      onPress: isCertificated ? () => {} : () => navigation.navigate('Verification'),
+      onPress: isCertificated
+        ? () => {}
+        : () => navigation.navigate('Verification', { screen: 'Verification' } as any),
     },
   ];
 
