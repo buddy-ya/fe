@@ -74,11 +74,6 @@ export default function FeedDetailScreen({ navigation, route }: FeedDetailScreen
     );
   };
 
-  const handleRoomCreate = async (id: number) => {
-    const data = await RoomRepository.create({ buddyId: id });
-    navigation.navigate('Chat', { screen: 'ChatRoom', params: { ...data } } as any);
-  };
-
   const commentInputRef = useRef<TextInput | null>(null);
 
   const handleCommentReply = (commentId: number) => {
@@ -187,6 +182,7 @@ export const SuspendedFeedDetailScreen = (props: FeedDetailScreenProps) => {
       <Suspense
         fallback={
           <Layout showHeader disableBottomSafeArea onBack={() => props.navigation.goBack()}>
+            {/* TODO: InnerLayout or KeyboardLayout 배치 필요 */}
             <FeedSkeleton />
           </Layout>
         }
