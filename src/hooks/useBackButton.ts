@@ -1,10 +1,13 @@
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ToastAndroid, BackHandler } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 
 export const useBackButton = () => {
   const isFocused = useIsFocused();
   const [isToastVisible, setIsToastVisible] = useState(false);
+
+  const { t } = useTranslation('toast');
 
   useEffect(() => {
     const backAction = () => {
@@ -25,7 +28,7 @@ export const useBackButton = () => {
   const showToast = () => {
     setIsToastVisible(true);
     ToastAndroid.showWithGravity(
-      '앱을 끄려면 한 번 더 눌러주세요.',
+      t('exit_confirm_message'),
       ToastAndroid.SHORT,
       ToastAndroid.BOTTOM
     );
