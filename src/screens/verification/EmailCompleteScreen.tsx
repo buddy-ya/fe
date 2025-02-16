@@ -1,8 +1,8 @@
 import { useTranslation } from 'react-i18next';
 import { Image, View } from 'react-native';
 import { Button, Heading, HeadingDescription, Layout, MyText } from '@/components';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { FeedStackParamList } from '@/navigation/navigationRef';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
 type EmailCompleteScreenProps = NativeStackScreenProps<FeedStackParamList, 'EmailComplete'>;
 
@@ -10,7 +10,12 @@ export default function EmailCompleteScreen({ navigation }: EmailCompleteScreenP
   const { t } = useTranslation('certification');
 
   const handleNavigateButton = () => {
-    navigation.navigate('FeedHome');
+    navigation.navigate('Tab', {
+      screen: 'FeedTab',
+      params: {
+        screen: 'FeedHome',
+      },
+    } as any);
   };
 
   return (
