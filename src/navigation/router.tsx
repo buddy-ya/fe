@@ -192,23 +192,6 @@ function FeedNavigator() {
       <FeedStack.Screen name="FeedWrite" component={FeedWriteScreen} />
       <FeedStack.Screen name="FeedDetail" component={SuspendedFeedDetailScreen} />
       <FeedStack.Screen name="CommentEdit" component={CommentEditScreen} />
-      <FeedStack.Screen name="EmailVerification" component={EmailScreen} />
-      <FeedStack.Screen
-        name="EmailVerificationCode"
-        component={EmailVerificationScreen}
-        options={{ gestureEnabled: false }}
-      />
-      <FeedStack.Screen
-        name="EmailComplete"
-        component={EmailCompleteScreen}
-        options={{ gestureEnabled: false }}
-      />
-      <FeedStack.Screen name="StudentIdVerification" component={StudentIdCardUploadScreen} />
-      <FeedStack.Screen
-        name="StudentIdComplete"
-        component={StudentIdCardCompleteScreen}
-        options={{ gestureEnabled: false }}
-      />
     </FeedStack.Navigator>
   );
 }
