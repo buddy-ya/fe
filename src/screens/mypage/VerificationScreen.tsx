@@ -1,13 +1,25 @@
+import { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import { View } from 'react-native';
+import { TouchableOpacity, View } from 'react-native';
 import { HeadingDescription, InnerLayout, Layout, MyText } from '@/components';
-import { MyPageStackParamList } from '@/navigation/navigationRef';
+import { VerificationStackParamList } from '@/navigation/navigationRef';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
-type VerificationScreenProps = NativeStackScreenProps<MyPageStackParamList, 'Verification'>;
+type VerificationScreenProps = NativeStackScreenProps<
+  VerificationStackParamList,
+  'VerificationSelect'
+>;
 
 export default function VerificationScreen({ navigation }: VerificationScreenProps) {
   const { t } = useTranslation('mypage');
+
+  const handleEamilVerification = useCallback(() => {
+    navigation.navigate('EmailVerification');
+  }, []);
+
+  const handleStudentIdVerification = useCallback(() => {
+    navigation.navigate('StudentIdVerification');
+  }, []);
 
   return (
     <Layout
@@ -24,18 +36,22 @@ export default function VerificationScreen({ navigation }: VerificationScreenPro
       <InnerLayout>
         <HeadingDescription>{t('verification.description')}</HeadingDescription>
         <View className="mt-3 flex-col gap-[10px]">
-          <View className="flex h-[62px] justify-between rounded-xl bg-white p-[10px]">
-            <MyText className="font-semibold text-lg">{t('verification.email.title')}</MyText>
-            <MyText className="text-sm" color="text-[#797979]">
-              {t('verification.email.description')}
-            </MyText>
-          </View>
-          <View className="flex h-[82px] justify-between rounded-xl bg-white p-[10px]">
-            <MyText className="font-semibold text-lg">{t('verification.students.title')}</MyText>
-            <MyText className="text-sm" color="text-[#797979]">
-              {t('verification.students.description')}
-            </MyText>
-          </View>
+          <TouchableOpacity onPress={handleEamilVerification}>
+            <View className="flex h-[62px] justify-between rounded-xl bg-white p-[10px]">
+              <MyText className="font-semibold text-lg">{t('verification.email.title')}</MyText>
+              <MyText className="text-sm" color="text-[#797979]">
+                {t('verification.email.description')}
+              </MyText>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={handleStudentIdVerification}>
+            <View className="flex h-[82px] justify-between rounded-xl bg-white p-[10px]">
+              <MyText className="font-semibold text-lg">{t('verification.students.title')}</MyText>
+              <MyText className="text-sm" color="text-[#797979]">
+                {t('verification.students.description')}
+              </MyText>
+            </View>
+          </TouchableOpacity>
         </View>
       </InnerLayout>
     </Layout>

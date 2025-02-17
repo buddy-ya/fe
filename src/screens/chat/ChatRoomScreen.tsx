@@ -1,11 +1,14 @@
-import { useEffect, useRef } from 'react';
+import { Suspense, useEffect, useRef } from 'react';
+import { ErrorBoundary } from 'react-error-boundary';
 import { TouchableOpacity, FlatList, View } from 'react-native';
+import { RoomRepository } from '@/api';
 import { InnerLayout, Input, KeyboardLayout, Layout, MessageItem, MyText } from '@/components';
 import { useImageUpload } from '@/hooks';
 import { ChatStackParamList } from '@/navigation/navigationRef';
 import { useMessageStore } from '@/store';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { useSuspenseQuery } from '@tanstack/react-query';
 import { ImagePickerOptions } from 'expo-image-picker';
 import { EllipsisVertical, ChevronLeft, Image } from 'lucide-react-native';
 
@@ -19,7 +22,7 @@ const IMAGE_PICKER_OPTIONS: ImagePickerOptions = {
 
 type ChatRoomScreenProps = NativeStackScreenProps<ChatStackParamList, 'ChatRoom'>;
 
-const ChatRoomScreen = ({ route }: ChatRoomScreenProps) => {
+export const ChatRoomScreen = ({ route }: ChatRoomScreenProps) => {
   const navigation = useNavigation();
   const { handleUpload, loading } = useImageUpload({ options: IMAGE_PICKER_OPTIONS });
   const {
@@ -34,8 +37,6 @@ const ChatRoomScreen = ({ route }: ChatRoomScreenProps) => {
     deleteMessage,
   } = useMessageStore();
   const flatListRef = useRef<FlatList>(null);
-  const title = route.params.name;
-  const profileImageUrl = route.params.profileImageUrl;
 
   // TODO: 추후에 알림 등으로 바로 들어온 경우 뒤로가기 스택이 없으므로 룸리스트로 보내게끔 해야 할 듯
   const handleBack = () => {
@@ -45,6 +46,11 @@ const ChatRoomScreen = ({ route }: ChatRoomScreenProps) => {
   const onSubmit = () => {
     handleSubmit();
   };
+
+  const { data } = useSuspenseQuery({
+    queryKey: ['room', route.params.id],
+    queryFn: () => RoomRepository.get({ id: route.params.id }),
+  });
 
   useEffect(() => {
     setTimeout(() => flatListRef.current?.scrollToEnd({ animated: true }), 0);
@@ -65,7 +71,7 @@ const ChatRoomScreen = ({ route }: ChatRoomScreenProps) => {
       }
       headerCenter={
         <MyText size="text-lg" className="font-semibold">
-          {title}
+          {data.name}
         </MyText>
       }
       headerRight={
@@ -98,7 +104,7 @@ const ChatRoomScreen = ({ route }: ChatRoomScreenProps) => {
               <MessageItem
                 key={item.id}
                 message={item}
-                profileImageUrl={profileImageUrl || ''}
+                profileImageUrl={data.profileImageUrl || ''}
                 isCurrentUser={item.sender === 'me'}
                 shouldShowProfile={
                   (index === 0 && item.sender !== 'me') ||
@@ -117,4 +123,12 @@ const ChatRoomScreen = ({ route }: ChatRoomScreenProps) => {
   );
 };
 
-export default ChatRoomScreen;
+export const SuspendedChatRoomScreen = (props: ChatRoomScreenProps) => {
+  return (
+    <ErrorBoundary fallback={<></>}>
+      <Suspense fallback={<></>}>
+        <ChatRoomScreen {...props} />
+      </Suspense>
+    </ErrorBoundary>
+  );
+};

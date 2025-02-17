@@ -32,9 +32,10 @@ export function StudentCertificationModal({
   const cancelText = isStudentIdCardRequested
     ? t('banner.pending.cancel')
     : t('banner.default.cancel');
-  const onConfirm = isKorean
-    ? () => navigation.navigate('EmailVerification')
-    : () => navigation.navigate('StudentIdVerification');
+
+  const onConfirm = () => {
+    navigation.navigate('Verification', { screen: 'VerificationSelect' });
+  };
 
   const getPositionStyle = () => {
     if (position === 'center') {

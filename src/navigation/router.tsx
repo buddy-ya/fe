@@ -2,13 +2,13 @@ import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import SplashScreen from '@/screens/SplashScreen';
 import { SuspendedRequestsScreen } from '@/screens/chat/ChatRequestsScreen';
-import ChatRoomScreen from '@/screens/chat/ChatRoomScreen';
-import RoomListScreen from '@/screens/chat/RoomListScreen';
+import { SuspendedChatRoomScreen } from '@/screens/chat/ChatRoomScreen';
+import { SuspendedRoomListScreen } from '@/screens/chat/RoomListScreen';
 import CommentEditScreen from '@/screens/home/CommentEditScreen';
 import { SuspendedFeedDetailScreen } from '@/screens/home/FeedDetailScreen';
 import FeedSearchScreen from '@/screens/home/FeedSearchScreen';
 import FeedWriteScreen from '@/screens/home/FeedWriteScreen';
-import HomeScreen from '@/screens/home/HomeScreen';
+import { SuspendedHomeScreen } from '@/screens/home/HomeScreen';
 import BookmarkScreen from '@/screens/mypage/BookmarkScreen';
 import EditProfileImageScreen from '@/screens/mypage/EditProfileImageScreen';
 import MyPostsScreen from '@/screens/mypage/MyPostsScreen';
@@ -46,12 +46,14 @@ import {
   FeedStackParamList,
   MyPageStackParamList,
   OnboardingStackParamList,
+  VerificationStackParamList,
 } from './navigationRef';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 const OnboardingStack = createNativeStackNavigator<OnboardingStackParamList>();
 const FeedStack = createNativeStackNavigator<FeedStackParamList>();
+const VerificationStack = createNativeStackNavigator<VerificationStackParamList>();
 const ChatStack = createNativeStackNavigator<ChatStackParamList>();
 const MyPageStack = createNativeStackNavigator<MyPageStackParamList>();
 
@@ -185,29 +187,40 @@ function FeedNavigator() {
 
   return (
     <FeedStack.Navigator screenOptions={{ headerShown: false }}>
-      <FeedStack.Screen name="FeedHome" component={HomeScreen} />
+      <FeedStack.Screen name="FeedHome" component={SuspendedHomeScreen} />
       <FeedStack.Screen name="FeedSearch" component={FeedSearchScreen} />
       <FeedStack.Screen name="FeedWrite" component={FeedWriteScreen} />
       <FeedStack.Screen name="FeedDetail" component={SuspendedFeedDetailScreen} />
       <FeedStack.Screen name="CommentEdit" component={CommentEditScreen} />
-      <FeedStack.Screen name="EmailVerification" component={EmailScreen} />
-      <FeedStack.Screen
+    </FeedStack.Navigator>
+  );
+}
+
+function VerificationNavigator() {
+  return (
+    <VerificationStack.Navigator screenOptions={{ headerShown: false }}>
+      <VerificationStack.Screen name="VerificationSelect" component={VerificationScreen} />
+      <VerificationStack.Screen name="EmailVerification" component={EmailScreen} />
+      <VerificationStack.Screen
         name="EmailVerificationCode"
         component={EmailVerificationScreen}
         options={{ gestureEnabled: false }}
       />
-      <FeedStack.Screen
+      <VerificationStack.Screen
         name="EmailComplete"
         component={EmailCompleteScreen}
         options={{ gestureEnabled: false }}
       />
-      <FeedStack.Screen name="StudentIdVerification" component={StudentIdCardUploadScreen} />
-      <FeedStack.Screen
+      <VerificationStack.Screen
+        name="StudentIdVerification"
+        component={StudentIdCardUploadScreen}
+      />
+      <VerificationStack.Screen
         name="StudentIdComplete"
         component={StudentIdCardCompleteScreen}
         options={{ gestureEnabled: false }}
       />
-    </FeedStack.Navigator>
+    </VerificationStack.Navigator>
   );
 }
 
@@ -233,8 +246,8 @@ function ChatNavigator() {
 
   return (
     <ChatStack.Navigator screenOptions={{ headerShown: false }}>
-      <ChatStack.Screen name="RoomList" component={RoomListScreen} />
-      <ChatStack.Screen name="ChatRoom" component={ChatRoomScreen} />
+      <ChatStack.Screen name="RoomList" component={SuspendedRoomListScreen} />
+      <ChatStack.Screen name="ChatRoom" component={SuspendedChatRoomScreen} />
       <ChatStack.Screen name="ChatRequests" component={SuspendedRequestsScreen} />
       <ChatStack.Screen name="Profile" component={MyProfileScreen} />
     </ChatStack.Navigator>
@@ -272,7 +285,6 @@ function MyPageNavigator() {
       <MyPageStack.Screen name="Bookmark" component={BookmarkScreen} />
       <MyPageStack.Screen name="MyPosts" component={MyPostsScreen} />
       <MyPageStack.Screen name="FeedDetail" component={SuspendedFeedDetailScreen} />
-      <MyPageStack.Screen name="Verification" component={VerificationScreen} />
     </MyPageStack.Navigator>
   );
 }
@@ -314,10 +326,11 @@ export default function Router() {
       <Stack.Navigator screenOptions={{ headerShown: false, gestureEnabled: false }}>
         <Stack.Screen name="Splash" component={SplashScreen} />
         <Stack.Screen name="Onboarding" component={OnboardingNavigator} />
+        <Stack.Screen name="Verification" component={VerificationNavigator} />
         <Stack.Screen name="Tab" component={TabNavigator} />
       </Stack.Navigator>
 
-      {/* 같은 형상을 공유하는 모달의 경우 상단으로 끌어올림. */}
+      {/* 같은 형상을 공유하는 모달의 경우 상단으로 끌어올림. Tab으로 이동해도 될 듯 */}
       <StudentCertificationModal
         visible={modalVisible}
         onClose={() => handleModalClose('studentCertification')}

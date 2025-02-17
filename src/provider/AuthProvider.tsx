@@ -29,10 +29,9 @@ export default function AuthProvider({ children }: Props) {
         const user = await UserRepository.get({ id: userId });
         update({ ...user, isAuthenticated: true });
       }
+      setInitLoading(false);
     } catch (e) {
       console.log(e);
-    } finally {
-      setInitLoading(false);
     }
   };
 

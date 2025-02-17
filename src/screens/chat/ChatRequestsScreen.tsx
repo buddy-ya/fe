@@ -2,7 +2,7 @@ import { Suspense } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 import { useTranslation } from 'react-i18next';
 import { TouchableOpacity, View } from 'react-native';
-import { ChatRepository } from '@/api';
+import { ChatRepository, RoomRepository } from '@/api';
 import { InnerLayout, Layout, MyText } from '@/components';
 import { ChatStackParamList } from '@/navigation/navigationRef';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
@@ -25,7 +25,8 @@ export default function ChatRequestsScreen({ navigation }: ChatRequestsNavigatio
   };
 
   const handleAccept = async (receiverId: number) => {
-    await ChatRepository.accept({ receiverId });
+    const data = await RoomRepository.create({ buddyId: receiverId });
+    navigation.navigate('ChatRoom', { id: data.id });
   };
 
   const handleDecline = async (chatRequestId: number) => {
@@ -84,7 +85,9 @@ export const SuspendedRequestsScreen = (props: ChatRequestsNavigationProps) => {
       <Suspense
         fallback={
           <Layout showHeader disableBottomSafeArea onBack={() => props.navigation.goBack()}>
-            <ChatSkeleton />
+            <InnerLayout>
+              <ChatSkeleton />
+            </InnerLayout>
           </Layout>
         }
       >

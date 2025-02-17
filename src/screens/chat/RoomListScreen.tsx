@@ -1,3 +1,5 @@
+import { Suspense } from 'react';
+import { ErrorBoundary } from 'react-error-boundary';
 import { useTranslation } from 'react-i18next';
 import { TouchableOpacity, View } from 'react-native';
 import { RoomRepository } from '@/api';
@@ -6,7 +8,7 @@ import { useBackButton } from '@/hooks';
 import { ChatStackParamList, FeedStackParamList } from '@/navigation/navigationRef';
 import { Room } from '@/types/RoomDTO';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { useQuery } from '@tanstack/react-query';
+import { useSuspenseQuery } from '@tanstack/react-query';
 import { UserRoundPlus } from 'lucide-react-native';
 import Skeleton from '../Skeleton';
 
@@ -17,7 +19,7 @@ type RoomListNavigationProps = NativeStackScreenProps<
 
 export default function RoomListScreen({ navigation }: RoomListNavigationProps) {
   // TODO: 스크롤 등 했을때 다시 불러오는 로직 필요
-  const { data, isPending, isError, isSuccess } = useQuery({
+  const { data } = useSuspenseQuery({
     queryKey: ['roomList'],
     queryFn: RoomRepository.getRoomList,
   });
@@ -33,10 +35,8 @@ export default function RoomListScreen({ navigation }: RoomListNavigationProps) 
   };
 
   const handlePressRoom = (room: Room) => {
-    navigation.navigate('ChatRoom', { ...room });
+    navigation.navigate('ChatRoom', { id: room.id });
   };
-
-  useBackButton();
 
   return (
     <Layout
@@ -76,12 +76,29 @@ export default function RoomListScreen({ navigation }: RoomListNavigationProps) 
             </View>
           </View>
           <View className="flex-1">
-            {isPending && <Skeleton />}
-            {isError && <MyText>에러가 발생하였습니다.</MyText>}
-            {isSuccess && <RoomList rooms={data} onPress={handlePressRoom} />}
+            <RoomList rooms={data} onPress={handlePressRoom} />
           </View>
         </View>
       </InnerLayout>
     </Layout>
   );
 }
+
+export const SuspendedRoomListScreen = (props: RoomListNavigationProps) => {
+  useBackButton();
+  return (
+    <ErrorBoundary fallback={<></>}>
+      <Suspense
+        fallback={
+          <Layout showHeader disableBottomSafeArea onBack={() => props.navigation.goBack()}>
+            <InnerLayout>
+              <Skeleton />
+            </InnerLayout>
+          </Layout>
+        }
+      >
+        <RoomListScreen {...props} />
+      </Suspense>
+    </ErrorBoundary>
+  );
+};
