@@ -13,6 +13,7 @@ import BookmarkScreen from '@/screens/mypage/BookmarkScreen';
 import EditProfileImageScreen from '@/screens/mypage/EditProfileImageScreen';
 import MyPostsScreen from '@/screens/mypage/MyPostsScreen';
 import MyProfileScreen from '@/screens/mypage/MyProfileScreen';
+import SettingScreen from '@/screens/mypage/SettingScreen';
 import VerificationScreen from '@/screens/mypage/VerificationScreen';
 import CountrySelectScreen from '@/screens/onboarding/CountrySelectScreen';
 import GenderSelectScreen from '@/screens/onboarding/GenderSelectScreen';
@@ -284,6 +285,7 @@ function MyPageNavigator() {
       <MyPageStack.Screen name="EditInterest" component={InterestSelectScreen} />
       <MyPageStack.Screen name="Bookmark" component={BookmarkScreen} />
       <MyPageStack.Screen name="MyPosts" component={MyPostsScreen} />
+      <MyPageStack.Screen name="Settings" component={SettingScreen} />
       <MyPageStack.Screen name="FeedDetail" component={SuspendedFeedDetailScreen} />
     </MyPageStack.Navigator>
   );

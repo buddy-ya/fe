@@ -54,5 +54,6 @@
   "myPostsEmpty": "No posts yet",
   "common": {
     "complete": "Done"
-  }
+  },
+  "setting": "Setting"
 }

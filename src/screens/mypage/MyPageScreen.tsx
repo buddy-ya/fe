@@ -1,4 +1,3 @@
-import { Fragment } from 'react';
 import { useTranslation } from 'react-i18next';
 import { View, TouchableOpacity, Image } from 'react-native';
 import { AuthRepository, UserRepository } from '@/api';
@@ -141,14 +140,6 @@ export default function MyPageScreen({ navigation }: MyPageScreenProps) {
               <View className="mb-1">{icon}</View>
               {label}
             </TouchableOpacity>
-          ))}
-        </View>
-
-        <View className="mt-4 bg-white">
-          {settingsItems.map((item) => (
-            <Fragment key={item.key}>
-              <SettingItem label={item.label} onPress={item.onPress} />
-            </Fragment>
           ))}
         </View>
       </InnerLayout>

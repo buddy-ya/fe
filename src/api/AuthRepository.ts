@@ -2,6 +2,7 @@ import {
   AuthResponse,
   CheckCertificatedResponse,
   EmailDTO,
+  GetStudentIdCardResponse,
   PhoneDTO,
   VerifyCodeResponse,
 } from '@/types/AuthDTO';
@@ -35,6 +36,11 @@ class AuthRepository {
 
   async checkCertificated(): Promise<CheckCertificatedResponse> {
     const { data } = await API.get(`/certification`);
+    return data;
+  }
+
+  async getStudentIdCard(): Promise<GetStudentIdCardResponse> {
+    const { data } = await API.get('/certification/student-id-card');
     return data;
   }
 

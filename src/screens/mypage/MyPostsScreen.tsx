@@ -1,12 +1,11 @@
-import { NotebookPen } from 'lucide-react-native';
 import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 import { feedKeys, FeedRepository } from '@/api';
-import { useFeedList } from '@/hooks';
 import { FeedList, InnerLayout, Layout, MyText } from '@/components';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { useFeedList } from '@/hooks';
 import { MyPageStackParamList } from '@/navigation/navigationRef';
-
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { NotebookPen } from 'lucide-react-native';
 
 type MyPostsScreenProps = NativeStackScreenProps<MyPageStackParamList, 'MyPosts'>;
 
@@ -32,7 +31,7 @@ export default function MyPostsScreen({ navigation }: MyPostsScreenProps) {
           <MyText className="mr-[6px]">
             <NotebookPen size={19} strokeWidth={2} color="#282828" />
           </MyText>
-          <MyText size="text-lg" className="font-bold">
+          <MyText size="text-lg" className="font-semibold">
             {t('quickMenu.myPosts')}
           </MyText>
         </View>
