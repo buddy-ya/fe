@@ -27,27 +27,31 @@ export default function VerificationScreen({ navigation }: VerificationScreenPro
       onBack={() => navigation.goBack()}
       headerCenter={
         <View className="flex-row items-center">
-          <MyText size="text-lg" className="font-bold">
+          <MyText size="text-lg" className="font-semibold">
             {t('quickMenu.verification')}
           </MyText>
         </View>
       }
     >
       <InnerLayout>
-        <HeadingDescription>{t('verification.description')}</HeadingDescription>
-        <View className="mt-3 flex-col gap-[10px]">
+        <HeadingDescription className="mt-2">{t('verification.description')}</HeadingDescription>
+        <View className="mt-5 flex-col gap-4">
           <TouchableOpacity onPress={handleEamilVerification}>
-            <View className="flex h-[62px] justify-between rounded-xl bg-white p-[10px]">
-              <MyText className="font-semibold text-lg">{t('verification.email.title')}</MyText>
-              <MyText className="text-sm" color="text-[#797979]">
+            <View className="flex justify-between rounded-xl bg-white p-4">
+              <MyText size="text-xl" className="font-semibold">
+                {t('verification.email.title')}
+              </MyText>
+              <MyText size="text-[13px]" className="mt-2" color="text-textDescription">
                 {t('verification.email.description')}
               </MyText>
             </View>
           </TouchableOpacity>
           <TouchableOpacity onPress={handleStudentIdVerification}>
-            <View className="flex h-[82px] justify-between rounded-xl bg-white p-[10px]">
-              <MyText className="font-semibold text-lg">{t('verification.students.title')}</MyText>
-              <MyText className="text-sm" color="text-[#797979]">
+            <View className="flex justify-between rounded-xl bg-white p-4">
+              <MyText size="text-xl" className="font-semibold">
+                {t('verification.students.title')}
+              </MyText>
+              <MyText size="text-[13px]" className="mt-2" color="text-[#797979]">
                 {t('verification.students.description')}
               </MyText>
             </View>
