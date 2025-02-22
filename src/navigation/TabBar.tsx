@@ -36,7 +36,7 @@ export const tabBarStyle = StyleSheet.create({
   label: {
     fontSize: 12,
     fontFamily: 'Pretendard-Medium',
-    marginTop: -5,
+    marginTop: 5,
   },
   iconContainer: {
     width: 24,
