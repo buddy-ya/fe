@@ -17,10 +17,19 @@ class UserRepository {
     return data;
   }
 
-  async updateProfileImage(imageKey: string): Promise<User> {
-    const { data } = await API.patch(
-      `/users/update/profile-default-image?profileImageKey=${imageKey}`
-    );
+  async updateProfileImage({
+    isDefault,
+    profileImage,
+  }: {
+    isDefault: boolean;
+    profileImage: FormData | null;
+  }): Promise<User> {
+    const { data } = await API.post(`/users/profile-image?isDefault=${isDefault}`, profileImage, {
+      headers: {
+        ...API.defaults.headers.common,
+        'Content-Type': 'multipart/form-data',
+      },
+    });
     return data;
   }
 

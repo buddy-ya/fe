@@ -6,5 +6,8 @@
   "forbidden": "Access denied.",
   "notFound": "Requested information not found.",
   "default": "An error occurred. Please try again later.",
-  "tokenExpired": "Login session has expired."
+  "tokenExpired": "Login session has expired.",
+  "permission": {
+    "gallery": "Gallery permission is required to select images."
+  }
 }
