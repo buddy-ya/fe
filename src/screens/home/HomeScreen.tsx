@@ -105,7 +105,6 @@ export const SuspendedHomeScreen = (props: FeedHomeScreenProps) => {
   const SkeletonChip = () => {
     return <View className="mr-4 h-10 w-20 animate-pulse rounded-full bg-[#e0e0e0]"></View>;
   };
-  useBackButton();
   return (
     <ErrorBoundary fallback={<></>}>
       <Suspense

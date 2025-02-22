@@ -43,6 +43,7 @@ export const tabBarStyle = StyleSheet.create({
     height: 24,
     alignItems: 'center',
     justifyContent: 'center',
+    marginTop: 6,
   },
   hidden: {
     display: 'none',
