@@ -1,7 +1,7 @@
 import React, { Suspense } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 import { useTranslation } from 'react-i18next';
-import { Alert, ScrollView, View } from 'react-native';
+import { Alert, RefreshControl, ScrollView, View } from 'react-native';
 import { ChatRequestRepository } from '@/api';
 import { InnerLayout, Layout, MyText } from '@/components';
 import { ChatStackParamList } from '@/navigation/navigationRef';
@@ -43,14 +43,21 @@ export function ChatRequestsScreen({ navigation }: ChatRequestsNavigationProps) 
     }
   };
 
-  const { data: requests } = useSuspenseQuery({
+  const {
+    data: requests,
+    refetch,
+    isFetching,
+  } = useSuspenseQuery({
     queryKey: ['requests'],
     queryFn: ChatRequestRepository.getRequestList,
   });
 
+  const handleRefresh = async () => {
+    await refetch();
+  };
+
   return (
     <Layout
-      isBackgroundWhite
       showHeader
       onBack={() => navigation.goBack()}
       headerCenter={
@@ -72,6 +79,11 @@ export function ChatRequestsScreen({ navigation }: ChatRequestsNavigationProps) 
               onProfilePress={handleProfilePress}
               onAccept={handleAccept}
               onDecline={handleDecline}
+              refreshControl={{
+                refreshing: isFetching,
+                onRefresh: handleRefresh,
+                tintColor: '#4AA366',
+              }}
             />
           </View>
         </View>

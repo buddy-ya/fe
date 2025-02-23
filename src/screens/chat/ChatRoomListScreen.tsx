@@ -56,7 +56,7 @@ export default function RoomListScreen({ navigation }: RoomListNavigationProps) 
     >
       <InnerLayout>
         <View className="flex-1">
-          <TouchableOpacity onPress={handleGoToFeed}>
+          <TouchableOpacity onPress={handleGoToFeed} activeOpacity={0.7}>
             <View className="mt-4 flex h-[77px] flex-row items-center justify-between rounded-xl bg-primary px-6 py-4">
               <View className="flex h-full flex-1 flex-row items-center">
                 <MyText className="text-white" size="text-lg">

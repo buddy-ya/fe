@@ -35,7 +35,7 @@ export default function RequestItem({
   };
 
   return (
-    <View className="mt-3 w-full flex-row flex-wrap items-center justify-between rounded-[13px] border-2 p-2">
+    <View className="mt-3 w-full flex-row flex-wrap items-center justify-between rounded-[13px] bg-white p-3">
       <View className="h-full flex-1 flex-row items-center">
         <ProfileImage imageUrl={profileImageUrl} onPress={handleProfilePress} />
         <View className="ml-3 flex flex-1 justify-between">
@@ -57,7 +57,7 @@ export default function RequestItem({
         </TouchableOpacity>
         <TouchableOpacity
           activeOpacity={0.7}
-          className="flex h-[30px] w-[52px] items-center justify-center rounded-lg bg-[#00A176]"
+          className="ml-2 flex h-[30px] w-[52px] items-center justify-center rounded-lg bg-[#00A176]"
           onPress={handleAccept}
         >
           <MyText className="font-semibold text-white">{t('requests.accept')}</MyText>
