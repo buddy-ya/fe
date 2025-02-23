@@ -6,7 +6,7 @@ export interface OptionItem {
   id: number | string;
   label: string;
   icon?: JSX.Element;
-  onPress: () => void;
+  onPress: () => void | Promise<void>;
 }
 
 interface ActionSheetWrapperProps {
@@ -25,21 +25,21 @@ export function ActionSheetWrapper({ visible, onClose, options }: ActionSheetWra
               <TouchableOpacity
                 key={option.id}
                 className={`p-[16px] ${index !== 0 ? 'border-t' : ''} border-modalBorderBottom`}
-                onPress={() => {
-                  option.onPress();
+                onPress={async () => {
+                  await option.onPress();
                   onClose();
                 }}
               >
                 <View className="flex-row items-center justify-center">
                   {option.icon && <View className="mr-[8px]">{option.icon}</View>}
-                  <MyText className="text-center font-semibold">{option.label}</MyText>
+                  <MyText className="text-center font-medium">{option.label}</MyText>
                 </View>
               </TouchableOpacity>
             ))}
           </View>
           <View className="mt-4 rounded-[12px] bg-white">
             <TouchableOpacity className="p-[15px]" onPress={onClose}>
-              <MyText className="text-center font-semibold">닫기</MyText>
+              <MyText className="text-center font-medium">닫기</MyText>
             </TouchableOpacity>
           </View>
         </View>

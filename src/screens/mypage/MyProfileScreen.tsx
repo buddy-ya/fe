@@ -2,10 +2,9 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { View, ScrollView, Image, TouchableOpacity } from 'react-native';
 import { UserRepository } from '@/api';
-import { Chip, InnerLayout, Layout, MyText } from '@/components';
+import { Chip, FeedOptionModal, InnerLayout, Layout, MyText } from '@/components';
 import { ChatStackParamList, MyPageStackParamList } from '@/navigation/navigationRef';
-import { useUserStore } from '@/store';
-import ChangeProfile from '@assets/icons/changeDefaultImage.svg';
+import { useModalStore, useUserStore } from '@/store';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useQuery } from '@tanstack/react-query';
 import * as ImagePicker from 'expo-image-picker';
@@ -14,6 +13,7 @@ import { ImageFile, logError, processImageForUpload, removeNullValues } from '@/
 import { CountryID, getCountryFlag } from '@/utils/constants/countries';
 import { INTEREST_ICONS } from '@/utils/constants/interests';
 import { MAJOR_ICONS } from '@/utils/constants/majors';
+import { MyProfileImageOptionModal } from '@/components/modal/BottomOption/MyProfileImageOptionModal';
 
 interface Section {
   title: string;
@@ -32,6 +32,10 @@ type MyProfileScreenProps =
 export default function MyProfileScreen({ navigation, route }: any) {
   const { t } = useTranslation(['mypage', 'interests', 'countries', 'languages', 'majors']);
   const [selectedAsset, setSelectedAsset] = useState<ImagePicker.ImagePickerAsset | null>(null);
+
+  const modalVisible = useModalStore((state) => state.visible);
+  const handleModalOpen = useModalStore((state) => state.handleOpen);
+  const handleModalClose = useModalStore((state) => state.handleClose);
 
   const name = useUserStore((state) => state.name);
   const id = useUserStore((state) => state.id);
@@ -59,11 +63,18 @@ export default function MyProfileScreen({ navigation, route }: any) {
     languages: data?.languages ?? languages,
     interests: data?.interests ?? interests,
     majors: data?.majors ?? majors,
-    profileImageUrl:
-      isMyProfile && selectedAsset ? selectedAsset.uri : (data?.profileImageUrl ?? profileImageUrl),
+    profileImageUrl: data?.profileImageUrl ?? profileImageUrl,
     university: data?.university ?? university,
     country: data?.country ?? country,
     gender: data?.gender ?? gender,
+  };
+
+  const handleProfileImageDefault = async () => {
+    const data = await UserRepository.updateProfileImage({
+      isDefault: true,
+      profileImage: null,
+    });
+    update(removeNullValues(data));
   };
 
   const handleProfileImageUpload = async () => {
@@ -80,7 +91,6 @@ export default function MyProfileScreen({ navigation, route }: any) {
       });
       if (!result.canceled) {
         const selectedAsset = result.assets[0];
-        console.log(selectedAsset);
         const formData = new FormData();
         formData.append('profileImage', processImageForUpload(selectedAsset as ImageFile));
         const data = await UserRepository.updateProfileImage({
@@ -88,7 +98,7 @@ export default function MyProfileScreen({ navigation, route }: any) {
           profileImage: formData,
         });
         setSelectedAsset(selectedAsset);
-        update({ ...removeNullValues(data), isDefaultProfileImage: false });
+        update(removeNullValues(data));
       }
     } catch (error) {
       logError(error);
@@ -164,87 +174,103 @@ export default function MyProfileScreen({ navigation, route }: any) {
   );
 
   return (
-    <Layout showHeader onBack={() => navigation.goBack()} className="bg-gray-600">
-      <InnerLayout>
-        <ScrollView showsVerticalScrollIndicator={false}>
-          <View className="mt-3 rounded-[20px]">
-            <View className="items-center">
-              <View className="relative h-[110px] w-[110px] overflow-hidden rounded-[25px]">
-                <Image source={{ uri: user.profileImageUrl }} className="mb-4 h-full w-full" />
-                {isMyProfile && (
-                  <TouchableOpacity
-                    className={`absolute left-0 top-0 flex h-full w-full ${isDefaultProfileImage && 'items-center justify-center bg-text opacity-[0.5]'}`}
-                    onPress={handleProfileImageUpload}
-                  >
-                    {isDefaultProfileImage && (
-                      <Camera size={36} strokeWidth={1.5} stroke="#FCFCFC" />
-                    )}
-                  </TouchableOpacity>
-                )}
-              </View>
+    <>
+      <Layout showHeader onBack={() => navigation.goBack()} className="bg-gray-600">
+        <InnerLayout>
+          <ScrollView showsVerticalScrollIndicator={false}>
+            <View className="mt-3 rounded-[20px]">
+              <View className="items-center">
+                <View className="relative h-[110px] w-[110px] overflow-hidden rounded-[25px]">
+                  <Image source={{ uri: user.profileImageUrl }} className="mb-4 h-full w-full" />
+                  {isMyProfile && (
+                    <TouchableOpacity
+                      className={`absolute left-0 top-0 flex h-full w-full ${
+                        isDefaultProfileImage
+                          ? 'items-center justify-center bg-text opacity-[0.5]'
+                          : ''
+                      }`}
+                      onPress={
+                        isDefaultProfileImage
+                          ? handleProfileImageUpload
+                          : () => handleModalOpen('myProfile')
+                      }
+                    >
+                      {isDefaultProfileImage && (
+                        <Camera size={36} strokeWidth={1.5} stroke="#FCFCFC" />
+                      )}
+                    </TouchableOpacity>
+                  )}
+                </View>
 
-              <View className="mt-2 flex-row items-center">
-                <MyText size="text-3xl" className="font-bold">
-                  {user.name}
+                <View className="mt-2 flex-row items-center">
+                  <MyText size="text-3xl" className="font-bold">
+                    {user.name}
+                  </MyText>
+                  {isMyProfile && (
+                    <TouchableOpacity className="ml-2" onPress={handleEditName}>
+                      <Pencil size={18} color="#797979" />
+                    </TouchableOpacity>
+                  )}
+                </View>
+                <MyText size="text-[13px]" color="text-textProfile" className="mt-2">
+                  {t(`profile.university.${user.university}`)}
                 </MyText>
-                {isMyProfile && (
-                  <TouchableOpacity className="ml-2" onPress={handleEditName}>
-                    <Pencil size={18} color="#797979" />
-                  </TouchableOpacity>
-                )}
               </View>
-              <MyText size="text-[13px]" color="text-textProfile" className="mt-2">
-                {t(`profile.university.${user.university}`)}
-              </MyText>
             </View>
-          </View>
 
-          <View className="mt-7 rounded-[20px] bg-white">
-            <View className="flex-row items-start justify-between px-5 py-4">
-              <View className="flex-1">
-                {renderSectionHeader(t('mypage:profile.sections.country'))}
-                <Chip
-                  readOnly={true}
-                  label={t(`countries:countries.${user.country}`)}
-                  icon={getCountryFlag(user.country as CountryID)}
-                  className="mr-0 border-[0px] pl-0"
-                />
-              </View>
-
-              {user.gender !== 'unknown' && (
-                <View className="w-[50%]">
-                  {renderSectionHeader(t('mypage:profile.sections.gender'))}
+            <View className="mt-7 rounded-[20px] bg-white">
+              <View className="flex-row items-start justify-between px-5 py-4">
+                <View className="flex-1">
+                  {renderSectionHeader(t('mypage:profile.sections.country'))}
                   <Chip
                     readOnly={true}
-                    label={t(`mypage:profile.gender.${user.gender}`)}
-                    className="ml-[0.8px] border-[0px] pl-0"
+                    label={t(`countries:countries.${user.country}`)}
+                    icon={getCountryFlag(user.country as CountryID)}
+                    className="mr-0 border-[0px] pl-0"
                   />
                 </View>
-              )}
-            </View>
 
-            {sections.map((section) => (
-              <React.Fragment key={section.translationPrefix}>
-                {renderSection(
-                  section.title,
-                  <View className="flex-row flex-wrap gap-2">
-                    {section.data.map((item) => (
-                      <Chip
-                        readOnly={true}
-                        key={item}
-                        label={t(`${section.translationPrefix}.${item}`)}
-                        icon={section.getIcon?.(item)}
-                        className="border-[0px] pl-0"
-                      />
-                    ))}
-                  </View>,
-                  section.onEdit
+                {user.gender !== 'unknown' && (
+                  <View className="w-[50%]">
+                    {renderSectionHeader(t('mypage:profile.sections.gender'))}
+                    <Chip
+                      readOnly={true}
+                      label={t(`mypage:profile.gender.${user.gender}`)}
+                      className="ml-[0.8px] border-[0px] pl-0"
+                    />
+                  </View>
                 )}
-              </React.Fragment>
-            ))}
-          </View>
-        </ScrollView>
-      </InnerLayout>
-    </Layout>
+              </View>
+
+              {sections.map((section) => (
+                <React.Fragment key={section.translationPrefix}>
+                  {renderSection(
+                    section.title,
+                    <View className="flex-row flex-wrap gap-2">
+                      {section.data.map((item) => (
+                        <Chip
+                          readOnly={true}
+                          key={item}
+                          label={t(`${section.translationPrefix}.${item}`)}
+                          icon={section.getIcon?.(item)}
+                          className="border-[0px] pl-0"
+                        />
+                      ))}
+                    </View>,
+                    section.onEdit
+                  )}
+                </React.Fragment>
+              ))}
+            </View>
+          </ScrollView>
+        </InnerLayout>
+      </Layout>
+      <MyProfileImageOptionModal
+        visible={modalVisible.myProfile}
+        onProfileImageUpload={handleProfileImageUpload}
+        onProfileImageDefault={handleProfileImageDefault}
+        onClose={() => handleModalClose('myProfile')}
+      />
+    </>
   );
 }

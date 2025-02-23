@@ -21,6 +21,10 @@
       "languages": "구사 가능 언어",
       "majors": "전공",
       "interests": "관심사"
+    },
+    "modal": {
+      "image": "이미지",
+      "default": "기본 프로필"
     }
   },
   "quickMenu": {
