@@ -11,7 +11,7 @@ interface ToastProps {
 
 export function Toast({ visible, icon, text, onClose }: ToastProps) {
   const fadeAnim = useRef(new Animated.Value(0)).current;
-  const DURATION = 2000;
+  const DURATION = 1200;
   const ANIMATION_DURATION = 300;
 
   useEffect(() => {
