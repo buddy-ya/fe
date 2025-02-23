@@ -7,6 +7,7 @@ import { InnerLayout, Layout, MyText, RoomList } from '@/components';
 import { useBackButton } from '@/hooks';
 import { ChatStackParamList, FeedStackParamList } from '@/navigation/navigationRef';
 import { Room } from '@/types/RoomDTO';
+import LogoIcon from '@assets/icons/logo.svg';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { UserRoundPlus } from 'lucide-react-native';
@@ -40,41 +41,35 @@ export default function RoomListScreen({ navigation }: RoomListNavigationProps) 
 
   return (
     <Layout
-      isBackgroundWhite
       showHeader
-      headerLeft={
-        <View className="p-2">
-          <MyText className="font-bold" size="text-[22px]" color="text-[#282828]">
-            {t('roomList.title')}
-          </MyText>
-        </View>
-      }
+      isBackgroundWhite
+      headerLeft={<LogoIcon />}
       headerRight={
         <TouchableOpacity
           className="p-2"
           onPress={handleGoToRequests}
           hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}
         >
-          <UserRoundPlus strokeWidth={2} size={24} color={'#797979'} />
+          <UserRoundPlus strokeWidth={1.3} size={24} color={'#797979'} />
         </TouchableOpacity>
       }
     >
       <InnerLayout>
         <View className="flex-1">
-          <View className="flex h-[77px] flex-row items-center justify-between rounded-xl bg-primary px-6 py-4">
-            <View className="flex h-full flex-1 flex-row items-center">
-              <MyText className="text-white" size="text-lg">
-                {t('roomList.banner.title')}
-              </MyText>
-            </View>
-            <View className="mt-6 flex h-full flex-1 flex-row items-center justify-end">
-              <TouchableOpacity onPress={handleGoToFeed}>
+          <TouchableOpacity onPress={handleGoToFeed}>
+            <View className="mt-4 flex h-[77px] flex-row items-center justify-between rounded-xl bg-primary px-6 py-4">
+              <View className="flex h-full flex-1 flex-row items-center">
+                <MyText className="text-white" size="text-lg">
+                  {t('roomList.banner.title')}
+                </MyText>
+              </View>
+              <View className="mt-6 flex h-full flex-1 flex-row items-center justify-end">
                 <MyText className="text-white" size="text-sm">
                   {t('roomList.banner.description')}
                 </MyText>
-              </TouchableOpacity>
+              </View>
             </View>
-          </View>
+          </TouchableOpacity>
           <View className="flex-1">
             <RoomList rooms={data} onPress={handlePressRoom} />
           </View>

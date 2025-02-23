@@ -3,7 +3,7 @@ import API from './API';
 
 const url = '/chat-requests';
 
-class ChatRepository {
+class ChatRequestRepository {
   async get({ receiverId }: { receiverId: number }): Promise<{
     isAlreadyExistChatRequest: boolean;
     isAlreadyExistChatroom: boolean;
@@ -17,8 +17,13 @@ class ChatRepository {
     return data;
   }
 
-  async accept({ receiverId }: { receiverId: number }) {
+  async create({ receiverId }: { receiverId: number }) {
     const { data } = await API.post(`${url}/${receiverId}`);
+    return data;
+  }
+
+  async accept({ senderId, chatRequestId }: { senderId: number; chatRequestId: number }) {
+    const { data } = await API.post(`${url}`, { buddyId: senderId, chatRequestId });
     return data;
   }
 
@@ -28,4 +33,4 @@ class ChatRepository {
   }
 }
 
-export default new ChatRepository();
+export default new ChatRequestRepository();

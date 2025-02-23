@@ -5,5 +5,5 @@ export { default as FeedRepository } from './FeedRepository';
 export { default as UserRepository } from './UserRepository';
 export { default as RoomRepository } from './RoomRepository';
 export { default as NotificationRepository } from './NotificationRepository';
-export { default as ChatRepository } from './ChatRepository';
+export { default as ChatRequestRepository } from './ChatRequestRepository';
 export * from './queryKeys';

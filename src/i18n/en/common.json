@@ -4,5 +4,19 @@
     "matching": "Matching",
     "chat": "Chat",
     "my": "My"
+  },
+  "emptyState": {
+    "feed": {
+      "title": "No feeds yet.",
+      "description": "Create your first feed\nand communicate with various global buddies!"
+    },
+    "chat": {
+      "title": "No chats yet.",
+      "description": "Start a chat now and connect with more global buddies!"
+    },
+    "request": {
+      "title": "No requests yet.",
+      "description": "Upload a feed, leave comments,\nand connect with more global buddies!"
+    }
   }
 }
