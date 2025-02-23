@@ -1,20 +1,18 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Alert } from 'react-native';
-import { feedKeys, FeedRepository } from '@/api';
 import { useNavigation } from '@react-navigation/native';
 import { useQueryClient } from '@tanstack/react-query';
 import i18next from 'i18next';
-import { Flag, Pencil, Trash2 } from 'lucide-react-native';
+import { Ban, LogOut, Siren } from 'lucide-react-native';
 import { ActionSheetWrapper, OptionItem } from '../Common';
 
 interface ChatOptionModalProps {
   visible: boolean;
   onClose: () => void;
-  feed: any;
 }
 
-export function ChatOptionModal({ visible, onClose, feed }: ChatOptionModalProps) {
+export function ChatOptionModal({ visible, onClose }: ChatOptionModalProps) {
   const queryClient = useQueryClient();
   const navigation = useNavigation<any>();
   const { t } = useTranslation('feed');
@@ -31,40 +29,26 @@ export function ChatOptionModal({ visible, onClose, feed }: ChatOptionModalProps
     );
   };
 
-  const options: OptionItem[] = feed.isFeedOwner
-    ? [
-        {
-          id: 1,
-          label: i18next.t('feed:modal.edit'),
-          icon: <Pencil size={16} color="#282828" />,
-          onPress: () => {
-            navigation.navigate('FeedWrite', {
-              feed,
-              isEdit: true,
-            });
-          },
-        },
-        {
-          id: 2,
-          label: i18next.t('feed:modal.delete'),
-          icon: <Trash2 size={16} color="#282828" />,
-          onPress: () =>
-            showDeleteAlert(async () => {
-              await FeedRepository.delete({ feedId: feed.id });
-              queryClient.invalidateQueries({ queryKey: feedKeys.all });
-              navigation.goBack();
-              onClose();
-            }),
-        },
-      ]
-    : [
-        {
-          id: 3,
-          label: i18next.t('feed:modal.report'),
-          icon: <Flag size={16} color="#282828" />,
-          onPress: () => console.log('report'),
-        },
-      ];
+  const options: OptionItem[] = [
+    {
+      id: 1,
+      label: i18next.t('feed:modal.report'),
+      icon: <Siren size={16} color="#282828" />,
+      onPress: () => console.log('report'),
+    },
+    {
+      id: 2,
+      label: i18next.t('feed:modal.block'),
+      icon: <Ban size={16} color="#282828" />,
+      onPress: () => console.log('block'),
+    },
+    {
+      id: 3,
+      label: i18next.t('feed:modal.exit'),
+      icon: <LogOut size={16} color="#282828" />,
+      onPress: () => console.log('report'),
+    },
+  ];
 
   return <ActionSheetWrapper visible={visible} onClose={onClose} options={options} />;
 }

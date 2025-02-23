@@ -3,10 +3,18 @@ import { ErrorBoundary } from 'react-error-boundary';
 import { useTranslation } from 'react-i18next';
 import { TouchableOpacity, FlatList, View } from 'react-native';
 import { RoomRepository } from '@/api';
-import { InnerLayout, Input, KeyboardLayout, Layout, MessageItem, MyText } from '@/components';
+import {
+  ChatOptionModal,
+  InnerLayout,
+  Input,
+  KeyboardLayout,
+  Layout,
+  MessageItem,
+  MyText,
+} from '@/components';
 import { useImageUpload } from '@/hooks';
 import { ChatStackParamList } from '@/navigation/navigationRef';
-import { useMessageStore } from '@/store';
+import { useMessageStore, useModalStore } from '@/store';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useSuspenseQuery } from '@tanstack/react-query';
@@ -26,6 +34,10 @@ type ChatRoomScreenProps = NativeStackScreenProps<ChatStackParamList, 'ChatRoom'
 export const ChatRoomScreen = ({ route }: ChatRoomScreenProps) => {
   const navigation = useNavigation();
   const { t } = useTranslation('chat');
+  const modalVisible = useModalStore((state) => state.visible);
+  const handleModalOpen = useModalStore((state) => state.handleOpen);
+  const handleModalClose = useModalStore((state) => state.handleClose);
+
   const { handleUpload, loading } = useImageUpload({ options: IMAGE_PICKER_OPTIONS });
   const {
     text,
@@ -78,7 +90,11 @@ export const ChatRoomScreen = ({ route }: ChatRoomScreenProps) => {
         </MyText>
       }
       headerRight={
-        <TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            handleModalOpen('chat');
+          }}
+        >
           <EllipsisVertical strokeWidth={2} size={24} color="#797979" />
         </TouchableOpacity>
       }
@@ -122,6 +138,7 @@ export const ChatRoomScreen = ({ route }: ChatRoomScreenProps) => {
           />
         </InnerLayout>
       </KeyboardLayout>
+      <ChatOptionModal visible={modalVisible.chat} onClose={() => handleModalClose('chat')} />
     </Layout>
   );
 };
