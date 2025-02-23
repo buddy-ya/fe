@@ -13,5 +13,8 @@
     },
     "accept": "수락",
     "decline": "거절"
+  },
+  "keyboard": {
+    "placeholder": "채팅을 입력해주세요"
   }
 }

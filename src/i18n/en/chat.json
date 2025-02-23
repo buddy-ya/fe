@@ -13,5 +13,8 @@
     },
     "accept": "Accept",
     "decline": "Decline"
+  },
+  "keyboard": {
+    "placeholder": "Enter your message"
   }
 }

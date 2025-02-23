@@ -6,13 +6,14 @@ import { Send, Image } from 'lucide-react-native';
 interface CommentInputProps {
   value: string;
   leftImage?: ReactNode;
+  placeholder: string;
   onChange: (text: string) => void;
   onSubmit: () => void;
   isLoading?: boolean;
 }
 
 export const Input = forwardRef<TextInput, CommentInputProps>(
-  ({ value, leftImage, onChange, onSubmit, isLoading }, ref) => {
+  ({ value, leftImage, onChange, onSubmit, placeholder, isLoading }, ref) => {
     const { t } = useTranslation('feed');
     const [isFocused, setIsFocused] = useState(false);
 
@@ -26,13 +27,13 @@ export const Input = forwardRef<TextInput, CommentInputProps>(
 
     return (
       <View
-        className={`w-full flex-row items-center justify-between bg-white px-4 py-[12px] ${
+        className={`w-full flex-row items-center justify-between border-t border-borderBottom bg-white px-4 py-[10px] ${
           isFocused ? '' : 'pb-8'
         }`}
       >
         <View className="flex-1 flex-row items-center">
           <View
-            className={`flex-row items-center ${leftImage ? 'w-[88%]' : 'w-[97%]'} rounded-[12px] bg-[#F1F1F1]`}
+            className={`flex-row items-center ${leftImage ? 'w-[88%] pl-1' : 'w-[97%]'} rounded-[12px] bg-[#F1F1F1]`}
           >
             {leftImage}
             <TextInput
@@ -41,14 +42,15 @@ export const Input = forwardRef<TextInput, CommentInputProps>(
               onChangeText={(text) => {
                 onChange(text);
               }}
-              placeholder={t('comment.placeholder')}
-              className={`max-h-[90px] min-h-[40px] w-full bg-[#F1F1F1] ${leftImage ? 'px-[8px]' : 'px-[16px]'} rounded-[12px] py-2.5 align-middle text-[15px] leading-5`}
+              placeholder={placeholder}
+              className={`max-h-[90px] min-h-[40px] w-full bg-[#F1F1F1] ${leftImage ? 'px-[8px]' : 'px-[16px]'} rounded-[12px] py-2.5 text-[15px] leading-[20px]`}
               multiline
               scrollEnabled={true}
               maxLength={500}
               onSubmitEditing={onSubmit}
               onFocus={handleFocus}
               onBlur={handleBlur}
+              textAlignVertical="center"
             />
           </View>
         </View>

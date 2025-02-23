@@ -19,8 +19,7 @@ type RoomListNavigationProps = NativeStackScreenProps<
 >;
 
 export default function RoomListScreen({ navigation }: RoomListNavigationProps) {
-  // TODO: 스크롤 등 했을때 다시 불러오는 로직 필요
-  const { data } = useSuspenseQuery<RoomListResponse>({
+  const { data, refetch, isFetching } = useSuspenseQuery<RoomListResponse>({
     queryKey: ['roomList'],
     queryFn: RoomRepository.getRoomList,
   });
@@ -38,6 +37,12 @@ export default function RoomListScreen({ navigation }: RoomListNavigationProps) 
   const handlePressRoom = (room: Room) => {
     navigation.navigate('ChatRoom', { id: room.id });
   };
+
+  const handleRefresh = async () => {
+    await refetch();
+  };
+
+  const { rooms, totalUnreadCount } = data;
 
   return (
     <Layout
@@ -71,7 +76,15 @@ export default function RoomListScreen({ navigation }: RoomListNavigationProps) 
             </View>
           </TouchableOpacity>
           <View className="flex-1">
-            <RoomList rooms={data?.rooms} onPress={handlePressRoom} />
+            <RoomList
+              rooms={rooms}
+              onPress={handlePressRoom}
+              refreshControl={{
+                refreshing: isFetching,
+                onRefresh: handleRefresh,
+                tintColor: '#4AA366',
+              }}
+            />
           </View>
         </View>
       </InnerLayout>

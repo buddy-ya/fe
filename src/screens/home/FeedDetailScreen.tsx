@@ -132,6 +132,7 @@ export default function FeedDetailScreen({ navigation, route }: FeedDetailScreen
               value={commentInput}
               onChange={setCommentInput}
               onSubmit={handleCommentSubmit}
+              placeholder={t('comment.placeholder')}
             />
           }
         >

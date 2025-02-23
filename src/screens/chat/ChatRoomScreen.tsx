@@ -1,5 +1,6 @@
 import { Suspense, useEffect, useRef } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
+import { useTranslation } from 'react-i18next';
 import { TouchableOpacity, FlatList, View } from 'react-native';
 import { RoomRepository } from '@/api';
 import { InnerLayout, Input, KeyboardLayout, Layout, MessageItem, MyText } from '@/components';
@@ -24,6 +25,7 @@ type ChatRoomScreenProps = NativeStackScreenProps<ChatStackParamList, 'ChatRoom'
 
 export const ChatRoomScreen = ({ route }: ChatRoomScreenProps) => {
   const navigation = useNavigation();
+  const { t } = useTranslation('chat');
   const { handleUpload, loading } = useImageUpload({ options: IMAGE_PICKER_OPTIONS });
   const {
     text,
@@ -60,6 +62,7 @@ export const ChatRoomScreen = ({ route }: ChatRoomScreenProps) => {
     <Layout
       showHeader
       isBackgroundWhite
+      disableBottomSafeArea
       headerLeft={
         <TouchableOpacity
           onPress={handleBack}
@@ -87,17 +90,17 @@ export const ChatRoomScreen = ({ route }: ChatRoomScreenProps) => {
             leftImage={
               <TouchableOpacity onPress={handleUpload}>
                 <View className={`ml-2 h-[24px] w-[24px] flex-row items-center`}>
-                  <Image size={24} strokeWidth={1.3} color="#CBCBCB" />
+                  <Image size={24} strokeWidth={1.3} color="#797979" />
                 </View>
               </TouchableOpacity>
             }
             onChange={handleChange}
             onSubmit={onSubmit}
+            placeholder={t('keyboard.placeholder')}
           />
         }
       >
         <InnerLayout>
-          {/* TODO: FlatList에서 ref 전달 관련 타입 에러가 있어서 일단 끌어올림. */}
           <FlatList
             data={messages}
             renderItem={({ item, index }) => (
