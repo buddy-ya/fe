@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { RefreshControl, RefreshControlProps } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import { Room } from '@/types/RoomDTO';
@@ -12,7 +13,6 @@ interface RoomListProps {
   className?: string;
   onLoadMore?: () => void;
   refreshControl?: RefreshControlProps | null;
-  emptyStateMessage?: string;
 }
 
 export default function RoomList({
@@ -23,10 +23,16 @@ export default function RoomList({
   className,
   onLoadMore,
   refreshControl,
-  emptyStateMessage,
 }: RoomListProps) {
+  const { t } = useTranslation('common');
+
   if (rooms.length === 0) {
-    return <EmptyState message={emptyStateMessage || '채팅이 없습니다.'} />;
+    return (
+      <EmptyState
+        title={t('emptyState.chat.title')}
+        description={t('emptyState.chat.description')}
+      />
+    );
   }
   return (
     <FlatList

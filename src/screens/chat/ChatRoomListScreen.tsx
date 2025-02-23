@@ -6,7 +6,7 @@ import { RoomRepository } from '@/api';
 import { InnerLayout, Layout, MyText, RoomList } from '@/components';
 import { useBackButton } from '@/hooks';
 import { ChatStackParamList, FeedStackParamList } from '@/navigation/navigationRef';
-import { Room } from '@/types/RoomDTO';
+import { Room, RoomListResponse } from '@/types/RoomDTO';
 import LogoIcon from '@assets/icons/logo.svg';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useSuspenseQuery } from '@tanstack/react-query';
@@ -20,7 +20,7 @@ type RoomListNavigationProps = NativeStackScreenProps<
 
 export default function RoomListScreen({ navigation }: RoomListNavigationProps) {
   // TODO: 스크롤 등 했을때 다시 불러오는 로직 필요
-  const { data } = useSuspenseQuery({
+  const { data } = useSuspenseQuery<RoomListResponse>({
     queryKey: ['roomList'],
     queryFn: RoomRepository.getRoomList,
   });
@@ -71,7 +71,7 @@ export default function RoomListScreen({ navigation }: RoomListNavigationProps) 
             </View>
           </TouchableOpacity>
           <View className="flex-1">
-            <RoomList rooms={data} onPress={handlePressRoom} />
+            <RoomList rooms={data?.rooms} onPress={handlePressRoom} />
           </View>
         </View>
       </InnerLayout>

@@ -18,3 +18,8 @@ export interface Room {
   isNew?: boolean;
   isBuddyExited?: true;
 }
+
+export interface RoomListResponse {
+  rooms: Room[];
+  totalUnreadCount: number;
+}

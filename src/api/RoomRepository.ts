@@ -1,4 +1,4 @@
-import { Room, RoomDTO } from '@/types/RoomDTO';
+import { Room, RoomDTO, RoomListResponse } from '@/types/RoomDTO';
 import API from './API';
 
 class RoomRepository {
@@ -7,7 +7,7 @@ class RoomRepository {
     return data;
   }
 
-  async getRoomList(): Promise<Room[]> {
+  async getRoomList(): Promise<RoomListResponse> {
     const { data } = await API.get(`/rooms`);
     return data;
   }
