@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { TouchableOpacity, View } from 'react-native';
 import { HeadingDescription, InnerLayout, Layout, MyText } from '@/components';
 import { VerificationStackParamList } from '@/navigation/navigationRef';
+import { useUserStore } from '@/store';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
 type VerificationScreenProps = NativeStackScreenProps<
@@ -21,33 +22,50 @@ export default function VerificationScreen({ navigation }: VerificationScreenPro
     navigation.navigate('StudentIdVerification');
   }, []);
 
+  const isStudentIdCardRequested = useUserStore((state) => state.isStudentIdCardRequested);
+
   return (
     <Layout
       showHeader
       onBack={() => navigation.goBack()}
       headerCenter={
         <View className="flex-row items-center">
-          <MyText size="text-lg" className="font-bold">
+          <MyText size="text-lg" className="font-semibold">
             {t('quickMenu.verification')}
           </MyText>
         </View>
       }
     >
       <InnerLayout>
-        <HeadingDescription>{t('verification.description')}</HeadingDescription>
-        <View className="mt-3 flex-col gap-[10px]">
-          <TouchableOpacity onPress={handleEamilVerification}>
-            <View className="flex h-[62px] justify-between rounded-xl bg-white p-[10px]">
-              <MyText className="font-semibold text-lg">{t('verification.email.title')}</MyText>
-              <MyText className="text-sm" color="text-[#797979]">
+        <HeadingDescription className="mt-2">{t('verification.description')}</HeadingDescription>
+        <View className="mt-5 flex-col gap-4">
+          <TouchableOpacity
+            onPress={handleEamilVerification}
+            disabled={isStudentIdCardRequested}
+            className={`rounded-xl ${isStudentIdCardRequested ? 'bg-gray-100' : 'bg-white'}`}
+          >
+            <View className="flex justify-between p-4">
+              <MyText
+                size="text-xl"
+                className={`font-semibold ${isStudentIdCardRequested ? 'text-gray-400' : 'text-text'}`}
+              >
+                {t('verification.email.title')}
+              </MyText>
+              <MyText
+                size="text-[13px]"
+                className={`mt-2 ${isStudentIdCardRequested ? 'text-gray-400' : 'text-textDescription'}`}
+              >
                 {t('verification.email.description')}
               </MyText>
             </View>
           </TouchableOpacity>
+
           <TouchableOpacity onPress={handleStudentIdVerification}>
-            <View className="flex h-[82px] justify-between rounded-xl bg-white p-[10px]">
-              <MyText className="font-semibold text-lg">{t('verification.students.title')}</MyText>
-              <MyText className="text-sm" color="text-[#797979]">
+            <View className="flex justify-between rounded-xl bg-white p-4">
+              <MyText size="text-xl" className="font-semibold">
+                {t('verification.students.title')}
+              </MyText>
+              <MyText size="text-[13px]" className="mt-2" color="text-[#797979]">
                 {t('verification.students.description')}
               </MyText>
             </View>

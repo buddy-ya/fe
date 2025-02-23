@@ -15,6 +15,7 @@ type UserState = {
   status?: string;
   isCertificated: boolean;
   isStudentIdCardRequested: boolean;
+  isDefaultProfileImage: boolean;
   isKorean: boolean;
   isAuthenticated: boolean;
   accessToken?: string;
@@ -38,6 +39,7 @@ const INITIAL_STATE: UserState = {
   interests: [],
   isCertificated: false,
   isStudentIdCardRequested: false,
+  isDefaultProfileImage: false,
   isKorean: false,
   isAuthenticated: false,
 };

@@ -2,10 +2,10 @@ import {
   AuthResponse,
   CheckCertificatedResponse,
   EmailDTO,
+  GetStudentIdCardResponse,
   PhoneDTO,
   VerifyCodeResponse,
 } from '@/types/AuthDTO';
-import axios from 'axios';
 import Constants from 'expo-constants';
 import API from './API';
 
@@ -38,11 +38,15 @@ class AuthRepository {
     return data;
   }
 
+  async getStudentIdCard(): Promise<GetStudentIdCardResponse> {
+    const { data } = await API.get('/certification/student-id-card');
+    return data;
+  }
+
   async uploadStudentIdCard(formData: FormData): Promise<AuthResponse> {
     const { data } = await API.post('/certification/student-id-card', formData, {
       headers: {
         ...API.defaults.headers.common,
-        'Content-Type': 'multipart/form-data',
       },
     });
     return data;

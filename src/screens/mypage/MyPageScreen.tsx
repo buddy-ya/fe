@@ -1,4 +1,3 @@
-import { Fragment } from 'react';
 import { useTranslation } from 'react-i18next';
 import { View, TouchableOpacity, Image } from 'react-native';
 import { AuthRepository, UserRepository } from '@/api';
@@ -7,31 +6,21 @@ import { useBackButton } from '@/hooks';
 import { MyPageStackParamList } from '@/navigation/navigationRef';
 import { TokenService } from '@/service';
 import { useUserStore } from '@/store';
+import CircleCheck from '@assets/icons/circleCheck.svg';
 import LogoIcon from '@assets/icons/logo.svg';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { Bookmark, ChevronRight, NotebookPen, Settings, ShieldAlert } from 'lucide-react-native';
+import { useToastStore } from '@/store/useToastStore';
 import { CountryID, getCountryFlag } from '@/utils';
+import { Toast } from '@/components/common/Toast';
 import ShieldCheck from './shieldCheck.svg';
-
-interface SettingItemProps {
-  label: string;
-  onPress: () => void;
-}
-
-const SettingItem = ({ label, onPress }: SettingItemProps) => (
-  <TouchableOpacity
-    onPress={onPress}
-    className="flex-row items-center justify-between bg-white px-4 py-4"
-  >
-    <MyText className="text-gray-900">{label}</MyText>
-    <View className="h-2 w-2 rotate-45 border-r border-t border-gray-400" />
-  </TouchableOpacity>
-);
 
 type MyPageScreenProps = NativeStackScreenProps<MyPageStackParamList, 'MyPageHome'>;
 
 export default function MyPageScreen({ navigation }: MyPageScreenProps) {
   const { t } = useTranslation('mypage');
+
+  const { visible, icon, text, showToast, hideToast } = useToastStore();
 
   const profileImageUrl = useUserStore((state) => state.profileImageUrl);
   const name = useUserStore((state) => state.name);
@@ -62,33 +51,17 @@ export default function MyPageScreen({ navigation }: MyPageScreenProps) {
       ),
       icon: isCertificated ? <ShieldCheck /> : <ShieldAlert size={24} color="#282828" />,
       onPress: isCertificated
-        ? () => {}
+        ? () => {
+            handleShowToast();
+          }
         : () => navigation.navigate('Verification', { screen: 'Verification' } as any),
     },
   ];
 
-  const settingsItems = [
-    {
-      key: 'delete',
-      label: t('menuItems.delete'),
-      onPress: async () => {
-        await UserRepository.delete();
-        await TokenService.remove();
-        update({ isAuthenticated: false });
-      },
-    },
-    {
-      key: 'refresh',
-      label: t('menuItems.refresh'),
-      onPress: async () => {
-        await AuthRepository.refreshStudentCertification();
-        update({ isCertificated: false });
-      },
-    },
-    { key: 'privacy', label: t('menuItems.privacy'), onPress: () => console.log('privacy') },
-    { key: 'terms', label: t('menuItems.terms'), onPress: () => console.log('terms') },
-    { key: 'version', label: t('menuItems.version'), onPress: () => console.log('version') },
-  ];
+  const handleShowToast = () => {
+    const message = '이미 인증이 완료되었습니다.'; // t('toastMessage') should return a string.
+    showToast(<CircleCheck />, message);
+  };
 
   const handleNotification = () => {
     navigation.navigate('Settings');
@@ -134,21 +107,13 @@ export default function MyPageScreen({ navigation }: MyPageScreenProps) {
             <ChevronRight size={24} color="#CBCBCB" />
           </View>
         </TouchableOpacity>
-
+        {visible && <Toast visible={visible} icon={icon!} text={text} onClose={hideToast} />}
         <View className="mt-3 flex-row justify-around rounded-[20px] bg-white py-5">
           {quickMenuItems.map(({ key, label, icon, onPress }) => (
             <TouchableOpacity key={key} className="items-center" onPress={onPress}>
               <View className="mb-1">{icon}</View>
               {label}
             </TouchableOpacity>
-          ))}
-        </View>
-
-        <View className="mt-4 bg-white">
-          {settingsItems.map((item) => (
-            <Fragment key={item.key}>
-              <SettingItem label={item.label} onPress={item.onPress} />
-            </Fragment>
           ))}
         </View>
       </InnerLayout>

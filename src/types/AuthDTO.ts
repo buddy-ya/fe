@@ -29,3 +29,7 @@ export interface CheckCertificatedResponse {
   isStudentIdCardRequested: boolean;
   isKorean: boolean;
 }
+
+export interface GetStudentIdCardResponse {
+  studentIdCardUrl: string;
+}

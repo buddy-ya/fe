@@ -31,7 +31,7 @@ export default function BookmarkScreen({ navigation, route }: BookmarkScreenProp
           <MyText className="mr-1">
             <Bookmark size={19} strokeWidth={2} color="#282828" />
           </MyText>
-          <MyText size="text-lg" className="font-bold">
+          <MyText size="text-lg" className="font-semibold">
             {t('quickMenu.bookmark')}
           </MyText>
         </View>

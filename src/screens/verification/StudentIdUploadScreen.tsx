@@ -1,20 +1,40 @@
-import * as ImagePicker from 'expo-image-picker';
-import { Plus } from 'lucide-react-native';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { View, TouchableOpacity, Image } from 'react-native';
-import { logError, processImageForUpload } from '@/utils';
 import { AuthRepository } from '@/api';
 import { Button, Heading, HeadingDescription, InnerLayout, Layout, MyText } from '@/components';
-import { ImageFile } from '@/types';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { FeedStackParamList } from '@/navigation/navigationRef';
+import { useUserStore } from '@/store';
+import { ImageFile } from '@/types';
+import ImageBox from '@assets/icons/imageBox.svg';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import * as ImagePicker from 'expo-image-picker';
+import { Upload } from 'lucide-react-native';
+import { logError, processImageForUpload } from '@/utils';
 
-type EmailVerificationScreenProps = NativeStackScreenProps<FeedStackParamList, 'StudentIdVerification'>;
+type EmailVerificationScreenProps = NativeStackScreenProps<
+  FeedStackParamList,
+  'StudentIdVerification'
+>;
 
 export default function StudentIdCardUploadScreen({ navigation }: EmailVerificationScreenProps) {
   const { t } = useTranslation('certification');
-  const [selectedImage, setSelectedImage] = useState<ImagePicker.ImagePickerAsset | null>(null);
+  const [initialImage, setInitialImage] = useState<string | null>(null);
+  const [selectedAsset, setSelectedAsset] = useState<ImagePicker.ImagePickerAsset | null>(null);
+  const isStudentIdCardRequested = useUserStore((state) => state.isStudentIdCardRequested);
+  const update = useUserStore((state) => state.update);
+
+  useEffect(() => {
+    async function fetchStudentIdCard() {
+      if (isStudentIdCardRequested) {
+        const { studentIdCardUrl } = await AuthRepository.getStudentIdCard();
+        if (studentIdCardUrl) {
+          setInitialImage(studentIdCardUrl);
+        }
+      }
+    }
+    fetchStudentIdCard();
+  }, [isStudentIdCardRequested]);
 
   const handleImagePick = async () => {
     try {
@@ -23,14 +43,12 @@ export default function StudentIdCardUploadScreen({ navigation }: EmailVerificat
         alert(t('studentId.permission.gallery'));
         return;
       }
-
       const result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        mediaTypes: ['images'],
         quality: 1,
       });
-
       if (!result.canceled) {
-        setSelectedImage(result.assets[0]);
+        setSelectedAsset(result.assets[0]);
       }
     } catch (error) {
       logError(error);
@@ -39,13 +57,14 @@ export default function StudentIdCardUploadScreen({ navigation }: EmailVerificat
 
   const handleSubmit = async () => {
     try {
-      if (!selectedImage) return;
-
+      // submit 버튼은 사용자가 새 이미지를 선택한 경우에만 활성화됩니다.
+      if (!selectedAsset) return;
       const formData = new FormData();
-      // TODO: 테스트 필요
-      formData.append("image", processImageForUpload(selectedImage as ImageFile));
+      formData.append('image', processImageForUpload(selectedAsset as ImageFile));
       await AuthRepository.uploadStudentIdCard(formData);
-
+      if (!isStudentIdCardRequested) {
+        update({ isStudentIdCardRequested: true });
+      }
       navigation.navigate('StudentIdComplete');
     } catch (error) {
       logError(error);
@@ -53,35 +72,39 @@ export default function StudentIdCardUploadScreen({ navigation }: EmailVerificat
     }
   };
 
+  // 렌더링 시에는 새로 선택한 이미지(selectedAsset)가 있으면 그것의 uri를, 없으면 initialImage를 사용합니다.
+  const imageUri = selectedAsset ? selectedAsset.uri : initialImage;
+  // 제출 버튼은 새 이미지가 선택되지 않았다면(즉, imageUri가 초기값과 동일하다면) 비활성화.
+  const isSubmitDisabled = selectedAsset === null;
+
   return (
     <Layout showHeader onBack={() => navigation.goBack()}>
       <InnerLayout>
         <Heading>{t('studentId.title')}</Heading>
         <HeadingDescription>{t('studentId.description')}</HeadingDescription>
-
-        <View className="flex-1 items-center justify-center">
+        <View className="mt-14 flex-1 items-center">
           <TouchableOpacity
             onPress={handleImagePick}
-            className="mb-10 h-[320px] w-[180px] items-center justify-center overflow-hidden rounded-[12px] border-[1px] border-border bg-background"
+            className={`h-[320px] w-full items-center justify-center bg-background`}
           >
-            {selectedImage ? (
-              <Image
-                source={{ uri: selectedImage.uri }}
-                className="h-full w-full rounded-[6px]"
-                resizeMode="cover"
-              />
+            {imageUri ? (
+              <Image source={{ uri: imageUri }} className="h-full w-full" resizeMode="contain" />
             ) : (
-              <View className="items-center">
-                <View className="mb-2 h-12 w-12 items-center justify-center rounded-full bg-primary">
-                  <Plus size={24} color="white" />
-                </View>
-                <MyText color="text-textDescription">{t('studentId.select')}</MyText>
-              </View>
+              <ImageBox className="h-full w-full" />
             )}
           </TouchableOpacity>
+          <TouchableOpacity
+            onPress={handleImagePick}
+            className="mt-8 flex flex-row items-center rounded-2xl bg-[#E8F8F4] px-16 py-[8px]"
+          >
+            <Upload size={18} color={'#00A176'} />
+            <MyText color="text-primary" className="ml-3 font-semibold">
+              {t('studentId.upload')}
+            </MyText>
+          </TouchableOpacity>
         </View>
-        <Button onPress={handleSubmit} disabled={!selectedImage}>
-          <MyText color="text-white">{t('studentId.submit')}</MyText>
+        <Button onPress={handleSubmit} disabled={isSubmitDisabled}>
+          <MyText color="text-white">{t('studentId.submitButton')}</MyText>
         </Button>
       </InnerLayout>
     </Layout>

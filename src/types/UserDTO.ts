@@ -14,6 +14,7 @@ export interface User {
   status?: string;
   isCertificated?: boolean;
   isStudentIdCardRequested?: boolean;
+  isDefaultProfileImage?: boolean;
   isNotificationEnabled?: boolean;
   isAuthenticated?: boolean;
   isKorean?: boolean;

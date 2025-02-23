@@ -34,6 +34,8 @@ module.exports = {
         chipBorder: '#A6CFC4',
         chipActive: '#F6FFFD',
 
+        toastBackground: '#949494',
+
         modalBorderBottom: '#F6F6F6',
 
         iconBorder: '#797977',

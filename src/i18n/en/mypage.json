@@ -23,6 +23,10 @@
       "languages": "Languages",
       "majors": "Majors",
       "interests": "Interests"
+    },
+    "modal": {
+      "image": "Image",
+      "default": "Default Profile"
     }
   },
   "quickMenu": {
@@ -54,5 +58,6 @@
   "myPostsEmpty": "No posts yet",
   "common": {
     "complete": "Done"
-  }
+  },
+  "setting": "Setting"
 }

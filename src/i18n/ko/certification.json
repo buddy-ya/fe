@@ -1,23 +1,28 @@
 {
   "banner": {
     "default": {
-      "title": "버디야에서 활동하려면\n재학생 인증이 필요해요.",
-      "description": "버디야는 학생들을 위한 서비스입니다.",
+      "title": "학생 인증을 완료하세요.",
+      "description": "학생 인증을 완료하시면 버디야의 다양한 기능을 이용하실 수 있습니다.",
       "confirm": "인증하기",
       "cancel": "다음에 하기"
     },
     "pending": {
-      "title": "재학생 여부를 확인하고 있어요.",
-      "description": "개인정보는 승인 후 즉시 폐기됩니다.\n재학생 인증은 평균 1~2일이 소요됩니다.",
-      "confirm": "학생증 상태 변경",
-      "cancel": "확인"
+      "title": "학생 인증이 심사중입니다.",
+      "description": "심사가 완료되기까지 평균 1일이 소요되며, 개인정보는 심사 외 목적으로 사용되지 않습니다.",
+      "confirm": "확인하기",
+      "cancel": "닫기"
     }
   },
   "studentId": {
-    "title": "재학생임을 증명해주세요.",
-    "description": "모바일 학생증을 업로드해주세요.",
+    "title": "학생 신분을 증명할 수 있는 사진을 업로드 해주세요",
+    "description": "소속 학교의 학생 신분임을 판단할 수 있는 정보가 명확하게 보여야 하며, 사진은 심사 후 즉시 폐기됩니다.",
+    "uploadDescription": "이미지를\n업로드 해주세요",
     "uploadButton": "학생증 이미지 선택하기",
-    "submitButton": "인증 요청하기"
+    "submitButton": "인증 요청하기",
+    "upload": "업로드",
+    "permission": {
+      "gallery": "이미지를 선택하려면 갤러리 권한이 필요합니다."
+    }
   },
   "email": {
     "title": "인증 받으실 대학교 이메일 주소를 입력해주세요",
@@ -46,5 +51,10 @@
     "description1": "이제 버디야와 함께 즐거운",
     "description2": "캠퍼스 생활을 시작해 보세요.",
     "start": "버디야 시작하기"
+  },
+  "studentIdComplete": {
+    "title": "학생 인증 요청이 완료되었습니다.",
+    "description": "심사가 완료되기까지 평균 1일이 소요되며,\n개인정보는 심사 외 목적으로 사용되지 않습니다.",
+    "complete": "확인"
   }
 }

@@ -14,13 +14,15 @@
     }
   },
   "studentId": {
-    "title": "Please upload your captured mobile student ID.",
-    "description": "The image is discarded immediately after the subscription is approved.",
-    "select": "Select image",
-    "submit": "Apply for certification",
+    "title": "Please upload a photo that proves your student status",
+    "description": "The information that identifies you as a student of your school must be clearly visible, and the photo will be deleted immediately after review.",
+    "uploadDescription": "Please upload\nyour image",
+    "uploadButton": "Select student ID image",
+    "submitButton": "Apply for certification",
     "permission": {
       "gallery": "Gallery permission is required to select images."
-    }
+    },
+    "upload": "Upload"
   },
   "email": {
     "title": "Please verify with your school email.",
@@ -47,5 +49,10 @@
     "title": "Verification Complete",
     "description": "Your student verification has been submitted.\nStudent verification typically takes 1-2 days.",
     "button": "Complete"
+  },
+  "studentIdComplete": {
+    "title": "Student verification request completed",
+    "description": "The review process typically takes 1 day,\nand your personal information will not be used for any purpose other than verification.",
+    "complete": "Confirm"
   }
 }
