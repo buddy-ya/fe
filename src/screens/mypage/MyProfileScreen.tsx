@@ -10,7 +10,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useQuery } from '@tanstack/react-query';
 import * as ImagePicker from 'expo-image-picker';
 import { Camera, Pencil, RefreshCcw } from 'lucide-react-native';
-import { ImageFile, logError, processImageForUpload } from '@/utils';
+import { ImageFile, logError, processImageForUpload, removeNullValues } from '@/utils';
 import { CountryID, getCountryFlag } from '@/utils/constants/countries';
 import { INTEREST_ICONS } from '@/utils/constants/interests';
 import { MAJOR_ICONS } from '@/utils/constants/majors';
@@ -42,6 +42,7 @@ export default function MyProfileScreen({ navigation, route }: any) {
   const university = useUserStore((state) => state.university);
   const country = useUserStore((state) => state.country);
   const gender = useUserStore((state) => state.gender);
+  const isDefaultProfileImage = useUserStore((state) => state.isDefaultProfileImage);
   const isMyProfile = route.params?.id == null || route.params.id === id;
 
   const update = useUserStore((state) => state.update);
@@ -58,11 +59,8 @@ export default function MyProfileScreen({ navigation, route }: any) {
     languages: data?.languages ?? languages,
     interests: data?.interests ?? interests,
     majors: data?.majors ?? majors,
-    profileImageUrl: isMyProfile
-      ? selectedAsset
-        ? selectedAsset.uri
-        : (data?.profileImageUrl ?? profileImageUrl)
-      : (data?.profileImageUrl ?? profileImageUrl),
+    profileImageUrl:
+      isMyProfile && selectedAsset ? selectedAsset.uri : (data?.profileImageUrl ?? profileImageUrl),
     university: data?.university ?? university,
     country: data?.country ?? country,
     gender: data?.gender ?? gender,
@@ -77,21 +75,21 @@ export default function MyProfileScreen({ navigation, route }: any) {
       }
       const result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ['images'],
-        quality: 1,
+        quality: 0.5,
         allowsEditing: true,
       });
       if (!result.canceled) {
-        setSelectedAsset(result.assets[0]);
+        const selectedAsset = result.assets[0];
+        console.log(selectedAsset);
+        const formData = new FormData();
+        formData.append('profileImage', processImageForUpload(selectedAsset as ImageFile));
+        const data = await UserRepository.updateProfileImage({
+          isDefault: false,
+          profileImage: formData,
+        });
+        setSelectedAsset(selectedAsset);
+        update({ ...removeNullValues(data), isDefaultProfileImage: false });
       }
-
-      if (!selectedAsset) return;
-      const formData = new FormData();
-      formData.append('image', processImageForUpload(selectedAsset as ImageFile));
-      await UserRepository.updateProfileImage({ isDefault: false, profileImage: formData });
-      // TO DO: 응답 받고, 그 url로 상태 동기화 및 렌더링
-      // if (!isStudentIdCardRequested) {
-      // update({ isStudentIdCardRequested: true });
-      // }
     } catch (error) {
       logError(error);
     }
@@ -175,10 +173,12 @@ export default function MyProfileScreen({ navigation, route }: any) {
                 <Image source={{ uri: user.profileImageUrl }} className="mb-4 h-full w-full" />
                 {isMyProfile && (
                   <TouchableOpacity
-                    className={`absolute left-0 top-0 flex h-full w-full ${false && 'items-center justify-center bg-text opacity-[0.5]'}`}
+                    className={`absolute left-0 top-0 flex h-full w-full ${isDefaultProfileImage && 'items-center justify-center bg-text opacity-[0.5]'}`}
                     onPress={handleProfileImageUpload}
                   >
-                    {false && <Camera size={36} strokeWidth={1.5} stroke="#FCFCFC" />}
+                    {isDefaultProfileImage && (
+                      <Camera size={36} strokeWidth={1.5} stroke="#FCFCFC" />
+                    )}
                   </TouchableOpacity>
                 )}
               </View>

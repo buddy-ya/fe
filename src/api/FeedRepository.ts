@@ -24,7 +24,6 @@ class FeedRepository {
     const { data } = await API.post('/feeds', formData, {
       headers: {
         ...API.defaults.headers.common,
-        'Content-Type': 'multipart/form-data',
       },
     });
     return data;
@@ -34,7 +33,7 @@ class FeedRepository {
     const formData = createFeedFormData(feedData);
     const { data } = await API.patch(`/feeds/${feedId}`, formData, {
       headers: {
-        'Content-Type': 'multipart/form-data',
+        ...API.defaults.headers.common,
       },
     });
     return data;

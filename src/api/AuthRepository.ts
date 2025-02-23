@@ -6,7 +6,6 @@ import {
   PhoneDTO,
   VerifyCodeResponse,
 } from '@/types/AuthDTO';
-import axios from 'axios';
 import Constants from 'expo-constants';
 import API from './API';
 
@@ -48,7 +47,6 @@ class AuthRepository {
     const { data } = await API.post('/certification/student-id-card', formData, {
       headers: {
         ...API.defaults.headers.common,
-        'Content-Type': 'multipart/form-data',
       },
     });
     return data;

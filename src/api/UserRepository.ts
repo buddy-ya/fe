@@ -24,10 +24,9 @@ class UserRepository {
     isDefault: boolean;
     profileImage: FormData | null;
   }): Promise<User> {
-    const { data } = await API.post(`/users/profile-image?isDefault=${isDefault}`, profileImage, {
+    const { data } = await API.patch(`/users/profile-image?isDefault=${isDefault}`, profileImage, {
       headers: {
         ...API.defaults.headers.common,
-        'Content-Type': 'multipart/form-data',
       },
     });
     return data;

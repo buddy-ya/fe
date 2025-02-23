@@ -48,7 +48,6 @@ export default function StudentIdCardUploadScreen({ navigation }: EmailVerificat
         quality: 1,
       });
       if (!result.canceled) {
-        // 여기서는 새로 선택한 이미지를 ImagePicker.ImagePickerAsset 타입으로 저장합니다.
         setSelectedAsset(result.assets[0]);
       }
     } catch (error) {

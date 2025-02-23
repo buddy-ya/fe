@@ -6,16 +6,10 @@ import { useBackButton } from '@/hooks';
 import { MyPageStackParamList } from '@/navigation/navigationRef';
 import { TokenService } from '@/service';
 import { useUserStore } from '@/store';
+import CircleCheck from '@assets/icons/circleCheck.svg';
 import LogoIcon from '@assets/icons/logo.svg';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import {
-  Bookmark,
-  CheckCircle,
-  ChevronRight,
-  NotebookPen,
-  Settings,
-  ShieldAlert,
-} from 'lucide-react-native';
+import { Bookmark, ChevronRight, NotebookPen, Settings, ShieldAlert } from 'lucide-react-native';
 import { useToastStore } from '@/store/useToastStore';
 import { CountryID, getCountryFlag } from '@/utils';
 import { Toast } from '@/components/common/Toast';
@@ -65,8 +59,8 @@ export default function MyPageScreen({ navigation }: MyPageScreenProps) {
   ];
 
   const handleShowToast = () => {
-    const message = '냠냠'; // t('toastMessage') should return a string.
-    showToast(<CheckCircle size={20} color="#fff" />, message);
+    const message = '이미 인증이 완료되었습니다.'; // t('toastMessage') should return a string.
+    showToast(<CircleCheck />, message);
   };
 
   const handleNotification = () => {
@@ -113,14 +107,7 @@ export default function MyPageScreen({ navigation }: MyPageScreenProps) {
             <ChevronRight size={24} color="#CBCBCB" />
           </View>
         </TouchableOpacity>
-        {visible && (
-          <Toast
-            visible={visible}
-            icon={'✅'}
-            text={'이미 인증이 완료되었습니다.'}
-            onClose={hideToast}
-          />
-        )}
+        {visible && <Toast visible={visible} icon={icon!} text={text} onClose={hideToast} />}
         <View className="mt-3 flex-row justify-around rounded-[20px] bg-white py-5">
           {quickMenuItems.map(({ key, label, icon, onPress }) => (
             <TouchableOpacity key={key} className="items-center" onPress={onPress}>
