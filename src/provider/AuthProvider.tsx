@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { View, Image } from 'react-native';
-import { API, UserRepository } from '@/api';
+import { API, ChatSocketRepository, UserRepository } from '@/api';
 import { TokenService } from '@/service';
 import { useUserStore } from '@/store';
 import { jwtDecode, JwtPayload } from 'jwt-decode';
@@ -17,7 +17,6 @@ export default function AuthProvider({ children }: Props) {
   const [initLoading, setInitLoading] = useState(false);
   const update = useUserStore((state) => state.update);
 
-  // TODO: 모듈화 필요
   const getUser = async () => {
     setInitLoading(true);
     try {
@@ -28,6 +27,7 @@ export default function AuthProvider({ children }: Props) {
         const userId = token.studentId;
         const user = await UserRepository.get({ id: userId });
         update({ ...user, isAuthenticated: true });
+        await ChatSocketRepository.initialize();
       }
       setInitLoading(false);
     } catch (e) {

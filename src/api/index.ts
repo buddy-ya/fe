@@ -7,5 +7,6 @@ export { default as RoomRepository } from './RoomRepository';
 export { default as NotificationRepository } from './NotificationRepository';
 export { default as ChatRequestRepository } from './ChatRequestRepository';
 export { default as ChatRepository } from './ChatRepository';
+export { default as ChatSocketRepository } from './ChatSocketRepostiory';
 
 export * from './queryKeys';

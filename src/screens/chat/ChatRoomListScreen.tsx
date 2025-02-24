@@ -1,8 +1,8 @@
-import { Suspense } from 'react';
+import { Suspense, useEffect } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 import { useTranslation } from 'react-i18next';
 import { TouchableOpacity, View } from 'react-native';
-import { RoomRepository } from '@/api';
+import { ChatSocketRepository, RoomRepository } from '@/api';
 import { InnerLayout, Layout, MyText, RoomList } from '@/components';
 import { useBackButton } from '@/hooks';
 import { ChatStackParamList, FeedStackParamList } from '@/navigation/navigationRef';

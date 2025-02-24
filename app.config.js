@@ -57,6 +57,7 @@ module.exports = {
     },
     extra: {
       BASE_URL: process.env.BASE_URL,
+      BASE_DOMAIN: process.env.BASE_DOMAIN,
       eas: {
         projectId: 'ae3e9ea5-3d73-4892-894d-2308ea11ed5c',
       },

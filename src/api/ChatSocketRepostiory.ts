@@ -1,3 +1,4 @@
+import { TokenService } from '@/service';
 import { useUserStore } from '@/store';
 import axios from 'axios';
 import Constants from 'expo-constants';
@@ -11,14 +12,17 @@ const BASE_DOMAIN = Constants?.expoConfig?.extra?.BASE_DOMAIN || '';
 class ChatSocketRepository {
   private socket: Socket | null = null;
 
-  async initialize(token: string): Promise<Socket> {
+  async initialize(): Promise<Socket> {
     if (this.socket) return this.socket;
-
+    const token = await TokenService.getAccessToken();
     this.socket = io(`wss://${BASE_DOMAIN}/chat`, {
       extraHeaders: {
         Authorization: `Bearer ${token}`,
       },
       transports: ['websocket'],
+      reconnection: true,
+      reconnectionAttempts: 3,
+      reconnectionDelay: 1000,
     });
 
     this.socket.on('connect', () => {
@@ -39,7 +43,7 @@ class ChatSocketRepository {
             this.socket.disconnect();
             this.socket = null;
           }
-          await this.initialize(accessToken);
+          await this.initialize();
         } catch (reissueError) {
           await SecureStore.deleteItemAsync(TOKEN_KEYS.ACCESS);
           await SecureStore.deleteItemAsync(TOKEN_KEYS.REFRESH);
