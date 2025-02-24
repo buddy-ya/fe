@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
-import { API, UserRepository } from '@/api';
+import { API, ChatSocketRepository, UserRepository } from '@/api';
 import { Button, Heading, HeadingDescription, InnerLayout, Layout, MyText } from '@/components';
 import { OnboardingStackParamList } from '@/navigation/navigationRef';
 import { TokenService } from '@/service';
@@ -38,6 +38,7 @@ export default function NotificationScreen({
         const userId = token.studentId;
         const user = await UserRepository.get({ id: userId });
         update({ ...user, isAuthenticated: true });
+        await ChatSocketRepository.initialize();
         return true;
       }
     } catch (e) {

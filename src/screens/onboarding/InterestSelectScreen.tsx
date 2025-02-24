@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { memo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ScrollView, View } from 'react-native';
-import { UserRepository } from '@/api';
+import { ChatSocketRepository, UserRepository } from '@/api';
 import { Button, Chip, Heading, InnerLayout, Layout, MyText } from '@/components';
 import { MyPageStackParamList, OnboardingStackParamList } from '@/navigation/navigationRef';
 import { TokenService } from '@/service';
@@ -74,6 +74,7 @@ function InterestSelectScreen({ navigation, route }: InterestSelectProps) {
         if (accessToken && refreshToken) {
           await TokenService.save(accessToken, refreshToken);
           update({ ...removeNullValues(rest), isAuthenticated: true });
+          await ChatSocketRepository.initialize();
           const onboardNav = navigation as NativeStackNavigationProp<
             OnboardingStackParamList,
             'OnboardingInterestSelect'
