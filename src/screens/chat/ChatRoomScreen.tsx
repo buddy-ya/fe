@@ -1,7 +1,7 @@
 import { Suspense, useEffect, useRef } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 import { useTranslation } from 'react-i18next';
-import { TouchableOpacity, FlatList, View } from 'react-native';
+import { TouchableOpacity, FlatList, View, ActivityIndicator } from 'react-native';
 import { RoomRepository } from '@/api';
 import {
   ChatOptionModal,
@@ -13,13 +13,16 @@ import {
   MyText,
 } from '@/components';
 import { useImageUpload } from '@/hooks';
+import { Message } from '@/model';
 import { ChatStackParamList } from '@/navigation/navigationRef';
-import { useMessageStore, useModalStore } from '@/store';
+import { useMessageStore, useModalStore, useUserStore } from '@/store';
+import { ChatListResponse } from '@/types';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { useSuspenseQuery } from '@tanstack/react-query';
+import { useSuspenseQuery, useInfiniteQuery } from '@tanstack/react-query';
 import { ImagePickerOptions } from 'expo-image-picker';
 import { EllipsisVertical, ChevronLeft, Image } from 'lucide-react-native';
+import ChatRepository from '@/api/ChatRepository';
 
 const IMAGE_PICKER_OPTIONS: ImagePickerOptions = {
   mediaTypes: ['images'],
@@ -37,22 +40,54 @@ export const ChatRoomScreen = ({ route }: ChatRoomScreenProps) => {
   const modalVisible = useModalStore((state) => state.visible);
   const handleModalOpen = useModalStore((state) => state.handleOpen);
   const handleModalClose = useModalStore((state) => state.handleClose);
+  // 현재 사용자 ID (실제 프로젝트에서는 인증 정보를 통해 가져와야 합니다)
+  const CURRENT_USER_ID = useUserStore((state) => state.id);
+  const { handleUpload } = useImageUpload({ options: IMAGE_PICKER_OPTIONS });
+  const { text, messages, setMessage, handleChange, handleSubmit } = useMessageStore();
+  const flatListRef = useRef<FlatList<any>>(null);
 
-  const { handleUpload, loading } = useImageUpload({ options: IMAGE_PICKER_OPTIONS });
+  // 채팅방 기본 정보 조회 (룸 이름, 프로필 이미지 등)
+  const { data: roomData } = useSuspenseQuery({
+    queryKey: ['room', route.params.id],
+    queryFn: () => RoomRepository.get({ id: route.params.id }),
+  });
+
+  // 채팅 데이터 조회 (페이징 처리)
   const {
-    text,
-    messages,
-    isLoading,
-    error,
-    handleChange,
-    handleSubmit,
-    setMessage,
-    addMessage,
-    deleteMessage,
-  } = useMessageStore();
-  const flatListRef = useRef<FlatList>(null);
+    data: chatData,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useInfiniteQuery({
+    queryKey: ['chats', route.params.id] as const,
+    queryFn: ({ pageParam = 0 }) =>
+      ChatRepository.getChats({ roomId: route.params.id, page: pageParam, size: 15 }),
+    getNextPageParam: (lastPage: ChatListResponse) =>
+      lastPage.hasNext ? lastPage.currentPage + 1 : undefined,
+    initialPageParam: 0,
+  });
 
-  // TODO: 추후에 알림 등으로 바로 들어온 경우 뒤로가기 스택이 없으므로 룸리스트로 보내게끔 해야 할 듯
+  useEffect(() => {
+    console.log('채팅방 상세 로드!');
+    if (chatData) {
+      const newMessages = chatData.pages.flatMap((page) =>
+        page.messages.map((chat) => ({
+          id: chat.id,
+          sender: chat.senderId === CURRENT_USER_ID ? 'me' : chat.senderId.toString(),
+          content: chat.message,
+          type: chat.type,
+          createdDate: chat.createdDate,
+        }))
+      );
+      setMessage(newMessages);
+    }
+  }, [chatData]);
+
+  // 메시지 배열 변경 시 FlatList 스크롤을 최신 메시지 위치로 이동
+  useEffect(() => {
+    setTimeout(() => flatListRef.current?.scrollToEnd({ animated: true }), 0);
+  }, [messages]);
+
   const handleBack = () => {
     navigation.goBack();
   };
@@ -60,15 +95,6 @@ export const ChatRoomScreen = ({ route }: ChatRoomScreenProps) => {
   const onSubmit = () => {
     handleSubmit();
   };
-
-  const { data } = useSuspenseQuery({
-    queryKey: ['room', route.params.id],
-    queryFn: () => RoomRepository.get({ id: route.params.id }),
-  });
-
-  useEffect(() => {
-    setTimeout(() => flatListRef.current?.scrollToEnd({ animated: true }), 0);
-  }, [messages]);
 
   return (
     <Layout
@@ -86,15 +112,11 @@ export const ChatRoomScreen = ({ route }: ChatRoomScreenProps) => {
       }
       headerCenter={
         <MyText size="text-lg" className="font-semibold">
-          {data.name}
+          {roomData.name}
         </MyText>
       }
       headerRight={
-        <TouchableOpacity
-          onPress={() => {
-            handleModalOpen('chat');
-          }}
-        >
+        <TouchableOpacity onPress={() => handleModalOpen('chat')}>
           <EllipsisVertical strokeWidth={2} size={24} color="#797979" />
         </TouchableOpacity>
       }
@@ -105,7 +127,7 @@ export const ChatRoomScreen = ({ route }: ChatRoomScreenProps) => {
             value={text}
             leftImage={
               <TouchableOpacity onPress={handleUpload}>
-                <View className={`ml-2 h-[24px] w-[24px] flex-row items-center`}>
+                <View className="ml-2 h-[24px] w-[24px] flex-row items-center">
                   <Image size={24} strokeWidth={1.3} color="#797979" />
                 </View>
               </TouchableOpacity>
@@ -123,7 +145,7 @@ export const ChatRoomScreen = ({ route }: ChatRoomScreenProps) => {
               <MessageItem
                 key={item.id}
                 message={item}
-                profileImageUrl={data.profileImageUrl || ''}
+                profileImageUrl={roomData.profileImageUrl || ''}
                 isCurrentUser={item.sender === 'me'}
                 shouldShowProfile={
                   (index === 0 && item.sender !== 'me') ||
@@ -133,9 +155,20 @@ export const ChatRoomScreen = ({ route }: ChatRoomScreenProps) => {
             )}
             ref={flatListRef}
             showsVerticalScrollIndicator={false}
-            onContentSizeChange={() => flatListRef.current?.scrollToEnd({ animated: true })} // 안전하게 current에 접근
-            onLayout={() => flatListRef.current?.scrollToEnd({ animated: true })} // 안전하게 current에 접근
+            onContentSizeChange={() => flatListRef.current?.scrollToEnd({ animated: true })}
+            onLayout={() => flatListRef.current?.scrollToEnd({ animated: true })}
+            onEndReachedThreshold={0.5}
+            onEndReached={() => {
+              if (hasNextPage && !isFetchingNextPage) {
+                fetchNextPage();
+              }
+            }}
           />
+          {isFetchingNextPage && (
+            <View className="py-4">
+              <ActivityIndicator />
+            </View>
+          )}
         </InnerLayout>
       </KeyboardLayout>
       <ChatOptionModal visible={modalVisible.chat} onClose={() => handleModalClose('chat')} />
@@ -143,12 +176,12 @@ export const ChatRoomScreen = ({ route }: ChatRoomScreenProps) => {
   );
 };
 
-export const SuspendedChatRoomScreen = (props: ChatRoomScreenProps) => {
-  return (
-    <ErrorBoundary fallback={<></>}>
-      <Suspense fallback={<></>}>
-        <ChatRoomScreen {...props} />
-      </Suspense>
-    </ErrorBoundary>
-  );
-};
+export const SuspendedChatRoomScreen = (props: ChatRoomScreenProps) => (
+  <ErrorBoundary fallback={<></>}>
+    <Suspense fallback={<></>}>
+      <ChatRoomScreen {...props} />
+    </Suspense>
+  </ErrorBoundary>
+);
+
+export default SuspendedChatRoomScreen;

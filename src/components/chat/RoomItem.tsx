@@ -21,9 +21,11 @@ export default function RoomItem({ room, onPress }: RoomItemProps) {
   const computedUnreadCount =
     unreadCount > 999 ? unreadCount.toString().slice(0, 3) + '+' : unreadCount.toString();
 
+  const isNewMessage = unreadCount > 0 || lastMessage === null;
+
   return (
     <TouchableOpacity onPress={handleClick} activeOpacity={0.7}>
-      <View className="mb-4 h-[60px] w-full flex-row flex-wrap items-center justify-between">
+      <View className="mb-2 w-full flex-row flex-wrap items-center justify-between py-2">
         <View className="h-full w-3/4 flex-row items-center">
           <ProfileImage imageUrl={profileImageUrl} />
           <View className="ml-3 flex h-[40px] w-3/4 justify-between">
@@ -33,22 +35,21 @@ export default function RoomItem({ room, onPress }: RoomItemProps) {
               </MyText>
               <MyText>{getCountryFlag(country as CountryID)}</MyText>
             </View>
-            <MyText numberOfLines={1} size="text-sm">
+            <MyText
+              numberOfLines={1}
+              size="text-sm"
+              color={isNewMessage ? '' : 'text-[#797979]'}
+              className={isNewMessage ? 'font-medium' : ''}
+            >
               {lastMessage === null ? '버디와 대화를 시작해보세요!' : lastMessage}
             </MyText>
           </View>
         </View>
-        <View className="mr-3 flex h-[38px] w-1/5 items-end justify-between">
+        <View className="mr-2 flex h-[38px] items-end justify-between">
           <MyText size="text-[11px]" color="text-textDescription">
             {getTimeAgo(lastMessageDate)}
           </MyText>
-          {unreadCount > 0 && (
-            <UnreadCountChip
-              className="h-[24px] bg-textWarning py-0"
-              label={computedUnreadCount}
-              readOnly
-            />
-          )}
+          {isNewMessage && <View className="mb-1 mr-2 h-2 w-2 rounded-full bg-primary"></View>}
         </View>
       </View>
     </TouchableOpacity>

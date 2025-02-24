@@ -11,3 +11,24 @@ export interface ChatRequest {
   profileImageUrl: string;
   createdDate: string;
 }
+
+export interface ChatDTO {
+  roomId: number;
+  page?: number;
+  size?: number;
+}
+
+export interface Chat {
+  id: number;
+  senderId: number;
+  type: 'TALK' | 'IMAGE';
+  message: string;
+  createdDate: string;
+}
+
+export interface ChatListResponse {
+  messages: Chat[];
+  currentPage: number;
+  totalPages: number;
+  hasNext: boolean;
+}
