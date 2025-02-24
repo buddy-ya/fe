@@ -8,9 +8,11 @@ import {
   ActivityIndicator,
   NativeSyntheticEvent,
   NativeScrollEvent,
+  AppState,
+  AppStateStatus,
 } from 'react-native';
 import { InteractionManager } from 'react-native';
-import { RoomRepository } from '@/api';
+import { ChatSocketRepository, RoomRepository } from '@/api';
 import {
   ChatOptionModal,
   InnerLayout,
@@ -20,7 +22,7 @@ import {
   MessageItem,
   MyText,
 } from '@/components';
-import { useImageUpload } from '@/hooks';
+import { useImageUpload, useRoomStateHandler } from '@/hooks';
 import { Message } from '@/model';
 import { ChatStackParamList } from '@/navigation/navigationRef';
 import { useMessageStore, useModalStore, useUserStore } from '@/store';
@@ -53,13 +55,36 @@ export const ChatRoomScreen = ({ route }: ChatRoomScreenProps) => {
   const { text, messages, setMessage, handleChange, handleSubmit } = useMessageStore();
   const flatListRef = useRef<FlatList<any>>(null);
   const [scrollOffset, setScrollOffset] = useState(0);
-  const BOTTOM_THRESHOLD = 200; // 사용자가 하단에 있다고 간주할 임계치(픽셀 단위)
+  const BOTTOM_THRESHOLD = 200;
+  const roomId = route.params.id;
 
   // 채팅방 기본 정보 조회 (룸 이름, 프로필 이미지 등)
   const { data: roomData } = useSuspenseQuery({
-    queryKey: ['room', route.params.id],
-    queryFn: () => RoomRepository.get({ id: route.params.id }),
+    queryKey: ['room', roomId],
+    queryFn: () => RoomRepository.get({ id: roomId }),
   });
+
+  useEffect(() => {
+    joinChatRoom(roomId);
+  }, [roomId]);
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('beforeRemove', () => {
+      leaveChatRoom();
+    });
+    return unsubscribe;
+  }, [roomId, navigation]);
+
+  useRoomStateHandler(roomId);
+
+  const joinChatRoom = async (roomId: number) => {
+    try {
+      await ChatSocketRepository.roomIn(roomId);
+      console.log('채팅방 입장 성공');
+    } catch (error) {
+      console.error('채팅방 입장 실패', error);
+    }
+  };
 
   // 채팅 데이터 조회 (페이징 처리)
   const {
@@ -68,9 +93,9 @@ export const ChatRoomScreen = ({ route }: ChatRoomScreenProps) => {
     hasNextPage,
     isFetchingNextPage,
   } = useInfiniteQuery({
-    queryKey: ['chats', route.params.id] as const,
+    queryKey: ['chats', roomId] as const,
     queryFn: ({ pageParam = 0 }) =>
-      ChatRepository.getChats({ roomId: route.params.id, page: pageParam, size: 15 }),
+      ChatRepository.getChats({ roomId: roomId, page: pageParam, size: 15 }),
     getNextPageParam: (lastPage: ChatListResponse) =>
       lastPage.hasNext ? lastPage.currentPage + 1 : undefined,
     initialPageParam: 0,
@@ -103,8 +128,12 @@ export const ChatRoomScreen = ({ route }: ChatRoomScreenProps) => {
     }
   };
 
-  const handleBack = () => {
-    navigation.goBack();
+  const leaveChatRoom = async () => {
+    try {
+      await ChatSocketRepository.roomBack(roomId);
+    } catch (error) {
+      console.error('채팅방 뒤로가기 실패', error);
+    }
   };
 
   const onSubmit = () => {
@@ -118,7 +147,7 @@ export const ChatRoomScreen = ({ route }: ChatRoomScreenProps) => {
       disableBottomSafeArea
       headerLeft={
         <TouchableOpacity
-          onPress={handleBack}
+          onPress={() => navigation.goBack()}
           className="flex-row items-center"
           hitSlop={{ right: 20 }}
         >

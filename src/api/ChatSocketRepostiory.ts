@@ -34,9 +34,7 @@ class ChatSocketRepository {
       if (err.errorCode === 3002) {
         try {
           const refreshToken = await SecureStore.getItemAsync(TOKEN_KEYS.REFRESH);
-          if (!refreshToken) {
-            throw new Error('Refresh token not found');
-          }
+          if (!refreshToken) throw new Error('Refresh token not found');
           const { accessToken } = await reissueToken(refreshToken);
           await SecureStore.setItemAsync(TOKEN_KEYS.ACCESS, accessToken);
           if (this.socket) {
@@ -55,6 +53,36 @@ class ChatSocketRepository {
       }
     });
     return this.socket;
+  }
+
+  roomIn(roomId: number): Promise<void> {
+    return new Promise((resolve, reject) => {
+      if (!this.socket) {
+        return reject(new Error('Socket not initialized'));
+      }
+      this.socket.emit('room_in', { roomId }, (ack: { status: string }) => {
+        if (ack.status === 'success') {
+          resolve();
+        } else {
+          reject(new Error('채팅방 입장 실패'));
+        }
+      });
+    });
+  }
+
+  roomBack(roomId: number): Promise<void> {
+    return new Promise((resolve, reject) => {
+      if (!this.socket) {
+        return reject(new Error('Socket not initialized'));
+      }
+      this.socket.emit('room_back', { roomId }, (ack: { status: string }) => {
+        if (ack.status === 'success') {
+          resolve();
+        } else {
+          reject(new Error('채팅방 뒤로가기 실패'));
+        }
+      });
+    });
   }
 }
 
