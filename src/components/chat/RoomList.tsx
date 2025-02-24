@@ -40,7 +40,7 @@ export default function RoomList({
       renderItem={({ item }) => (
         <RoomItem key={item.id} room={item} onPress={() => onPress(item)} />
       )}
-      className={`mt-1 pt-3 ${className}`}
+      className={`pt-3 ${className}`}
       contentContainerStyle={{ paddingBottom: 60 }}
       keyExtractor={(item) => `room-${item.id}`}
       onEndReached={hasMore ? onLoadMore : null}

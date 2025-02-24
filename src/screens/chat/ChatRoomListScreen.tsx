@@ -22,6 +22,8 @@ export default function RoomListScreen({ navigation }: RoomListNavigationProps) 
   const { data, refetch, isFetching } = useSuspenseQuery<RoomListResponse>({
     queryKey: ['roomList'],
     queryFn: RoomRepository.getRoomList,
+    refetchOnMount: 'always',
+    staleTime: 0,
   });
 
   const { t } = useTranslation('chat');

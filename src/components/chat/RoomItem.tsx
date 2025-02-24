@@ -1,10 +1,8 @@
 import { View, TouchableOpacity } from 'react-native';
 import { Room } from '@/types';
-import { count } from 'console';
 import { CountryID, getCountryFlag, getTimeAgo } from '@/utils';
 import { MyText } from '../common';
 import { ProfileImage } from './ProfileImage';
-import { UnreadCountChip } from './UnreadCountChip';
 
 interface RoomItemProps {
   room: Room;
