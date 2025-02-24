@@ -1,7 +1,15 @@
-import { Suspense, useEffect, useRef } from 'react';
+import { Suspense, useEffect, useRef, useState } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 import { useTranslation } from 'react-i18next';
-import { TouchableOpacity, FlatList, View, ActivityIndicator } from 'react-native';
+import {
+  TouchableOpacity,
+  FlatList,
+  View,
+  ActivityIndicator,
+  NativeSyntheticEvent,
+  NativeScrollEvent,
+} from 'react-native';
+import { InteractionManager } from 'react-native';
 import { RoomRepository } from '@/api';
 import {
   ChatOptionModal,
@@ -40,11 +48,12 @@ export const ChatRoomScreen = ({ route }: ChatRoomScreenProps) => {
   const modalVisible = useModalStore((state) => state.visible);
   const handleModalOpen = useModalStore((state) => state.handleOpen);
   const handleModalClose = useModalStore((state) => state.handleClose);
-  // 현재 사용자 ID (실제 프로젝트에서는 인증 정보를 통해 가져와야 합니다)
   const CURRENT_USER_ID = useUserStore((state) => state.id);
   const { handleUpload } = useImageUpload({ options: IMAGE_PICKER_OPTIONS });
   const { text, messages, setMessage, handleChange, handleSubmit } = useMessageStore();
   const flatListRef = useRef<FlatList<any>>(null);
+  const [scrollOffset, setScrollOffset] = useState(0);
+  const BOTTOM_THRESHOLD = 200; // 사용자가 하단에 있다고 간주할 임계치(픽셀 단위)
 
   // 채팅방 기본 정보 조회 (룸 이름, 프로필 이미지 등)
   const { data: roomData } = useSuspenseQuery({
@@ -68,7 +77,6 @@ export const ChatRoomScreen = ({ route }: ChatRoomScreenProps) => {
   });
 
   useEffect(() => {
-    console.log('채팅방 상세 로드!');
     if (chatData) {
       const newMessages = chatData.pages.flatMap((page) =>
         page.messages.map((chat) => ({
@@ -81,12 +89,19 @@ export const ChatRoomScreen = ({ route }: ChatRoomScreenProps) => {
       );
       setMessage(newMessages);
     }
-  }, [chatData]);
+  }, [chatData, setMessage, CURRENT_USER_ID]);
 
-  // 메시지 배열 변경 시 FlatList 스크롤을 최신 메시지 위치로 이동
-  useEffect(() => {
-    setTimeout(() => flatListRef.current?.scrollToEnd({ animated: true }), 0);
-  }, [messages]);
+  // FlatList의 onScroll을 통해 현재 스크롤 위치 추적
+  const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
+    const { nativeEvent } = event;
+    setScrollOffset(nativeEvent.contentOffset.y);
+  };
+
+  const handleLayout = () => {
+    if (scrollOffset < BOTTOM_THRESHOLD) {
+      flatListRef.current?.scrollToOffset({ offset: 0, animated: true });
+    }
+  };
 
   const handleBack = () => {
     navigation.goBack();
@@ -141,6 +156,7 @@ export const ChatRoomScreen = ({ route }: ChatRoomScreenProps) => {
         <InnerLayout>
           <FlatList
             data={messages}
+            inverted // 최신 메시지가 하단에 위치하도록 반전 적용
             renderItem={({ item, index }) => (
               <MessageItem
                 key={item.id}
@@ -154,9 +170,11 @@ export const ChatRoomScreen = ({ route }: ChatRoomScreenProps) => {
               />
             )}
             ref={flatListRef}
+            contentContainerStyle={{ flexGrow: 1, justifyContent: 'flex-end' }}
             showsVerticalScrollIndicator={false}
-            onContentSizeChange={() => flatListRef.current?.scrollToEnd({ animated: true })}
-            onLayout={() => flatListRef.current?.scrollToEnd({ animated: true })}
+            onScroll={handleScroll}
+            scrollEventThrottle={16}
+            onLayout={handleLayout}
             onEndReachedThreshold={0.5}
             onEndReached={() => {
               if (hasNextPage && !isFetchingNextPage) {

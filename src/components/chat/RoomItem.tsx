@@ -26,7 +26,7 @@ export default function RoomItem({ room, onPress }: RoomItemProps) {
       <View className="mb-2 w-full flex-row flex-wrap items-center justify-between py-2">
         <View className="h-full w-3/4 flex-row items-center">
           <ProfileImage imageUrl={profileImageUrl} />
-          <View className="ml-3 flex h-[40px] w-3/4 justify-between">
+          <View className="ml-3 flex h-[40px] w-4/5 justify-between">
             <View className="flex-row items-center">
               <MyText className="mr-1 font-medium" numberOfLines={1}>
                 {name}
