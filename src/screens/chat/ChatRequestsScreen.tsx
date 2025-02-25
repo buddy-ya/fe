@@ -27,6 +27,7 @@ export function ChatRequestsScreen({ navigation }: ChatRequestsNavigationProps) 
     try {
       await ChatRequestRepository.accept({ senderId, chatRequestId });
       queryClient.invalidateQueries({ queryKey: ['requests'] });
+      queryClient.invalidateQueries({ queryKey: ['roomList'] });
     } catch (error) {
       console.error(error);
       Alert.alert(t('requests.error.acceptTitle'), t('requests.error.acceptDescription'));

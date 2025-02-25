@@ -27,7 +27,7 @@ import { useMessageStore, useModalStore, useUserStore } from '@/store';
 import { ChatListResponse } from '@/types';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { useSuspenseQuery, useInfiniteQuery } from '@tanstack/react-query';
+import { useSuspenseQuery, useInfiniteQuery, useQueryClient } from '@tanstack/react-query';
 import { ImagePickerOptions } from 'expo-image-picker';
 import { EllipsisVertical, ChevronLeft, Image } from 'lucide-react-native';
 import ChatRepository from '@/api/ChatRepository';
@@ -55,6 +55,7 @@ export const ChatRoomScreen: React.FC<ChatRoomScreenProps> = ({ route }) => {
   const [scrollOffset, setScrollOffset] = useState(0);
   const BOTTOM_THRESHOLD = 200;
   const roomId = route.params.id;
+  const queryClient = useQueryClient();
 
   // 채팅방 기본 정보 조회
   const { data: roomData } = useSuspenseQuery({
@@ -107,6 +108,7 @@ export const ChatRoomScreen: React.FC<ChatRoomScreenProps> = ({ route }) => {
   const leaveChatRoom = useCallback(async () => {
     try {
       await ChatSocketRepository.roomBack(roomId);
+      queryClient.invalidateQueries({ queryKey: ['roomList'] });
       console.log('채팅방 나가기 성공');
     } catch (error) {
       console.error('채팅방 뒤로가기 실패', error);
