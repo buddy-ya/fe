@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback, useRef, useState, Suspense } from 'react';
+import React, { useEffect, useCallback, useRef, useState } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 import { useTranslation } from 'react-i18next';
 import {
@@ -8,8 +8,6 @@ import {
   ActivityIndicator,
   NativeSyntheticEvent,
   NativeScrollEvent,
-  AppState,
-  AppStateStatus,
 } from 'react-native';
 import { ChatSocketRepository, RoomRepository } from '@/api';
 import {
@@ -22,6 +20,7 @@ import {
   MyText,
 } from '@/components';
 import { useImageUpload, useRoomStateHandler } from '@/hooks';
+import { Message } from '@/model';
 import { ChatStackParamList } from '@/navigation/navigationRef';
 import { useMessageStore, useModalStore, useUserStore } from '@/store';
 import { ChatListResponse } from '@/types';
@@ -78,16 +77,16 @@ export const ChatRoomScreen: React.FC<ChatRoomScreenProps> = ({ route }) => {
     initialPageParam: 0,
   });
 
-  // 서버에서 불러온 채팅 데이터를 상태에 설정
+  // 서버에서 불러온 채팅 데이터를 상태에 설정 (서버 생성시간 사용)
   useEffect(() => {
     if (chatData) {
       const newMessages = chatData.pages.flatMap((page) =>
         page.messages.map((chat) => ({
           id: chat.id,
-          sender: chat.senderId === CURRENT_USER_ID ? 'me' : chat.senderId.toString(),
+          sender: chat.senderId === CURRENT_USER_ID ? 'me' : String(chat.senderId),
           content: chat.message,
           type: chat.type,
-          createdDate: chat.createdDate,
+          createdDate: chat.createdDate, // 서버에서 받은 생성시간
         }))
       );
       setMessage(newMessages);
@@ -140,6 +139,55 @@ export const ChatRoomScreen: React.FC<ChatRoomScreenProps> = ({ route }) => {
     sendMessage(roomId);
   }, [roomId, sendMessage]);
 
+  const renderMessageItem = useCallback(
+    ({ item, index }: { item: Message; index: number }) => {
+      const prevItem = messages[index + 1]; // inverted: index+1이 이전 메시지
+      const nextItem = messages[index - 1];
+
+      const isSameUser = (a: string, b: string) => a === b;
+
+      // 그룹 내 마지막 메시지이면 항상 시간 라벨 표시
+      const isLastMessageOfUser = nextItem ? !isSameUser(item.sender, nextItem.sender) : true;
+
+      // 이전 메시지가 있는 경우에만 시간 변경 여부 체크
+      const timeChanged = prevItem
+        ? (() => {
+            const currentDate = new Date(item.createdDate);
+            const prevDate = new Date(prevItem.createdDate);
+            const diffSeconds = Math.abs(currentDate.getTime() - prevDate.getTime()) / 1000;
+            return (
+              currentDate.getHours() !== prevDate.getHours() ||
+              currentDate.getMinutes() !== prevDate.getMinutes()
+            );
+          })()
+        : false;
+
+      // 기본: 유저의 마지막 메시지에는 항상 시간 라벨, 그 외에는 시간 변경 시에만 라벨 표시
+      const showTimeLabel = isLastMessageOfUser || timeChanged;
+
+      const isFirstMessage = !prevItem || !isSameUser(prevItem.sender, item.sender);
+
+      return (
+        <MessageItem
+          message={item}
+          roomData={roomData}
+          isFirstMessage={isFirstMessage}
+          showTimeLabel={showTimeLabel}
+          isLastMessageOfUser={isLastMessageOfUser}
+          isCurrentUser={item.sender === 'me'}
+          shouldShowProfile={item.sender !== 'me'}
+        />
+      );
+    },
+    [messages, roomData]
+  );
+
+  const handleEndReached = useCallback(() => {
+    if (hasNextPage && !isFetchingNextPage) {
+      fetchNextPage();
+    }
+  }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
+
   return (
     <Layout
       showHeader
@@ -182,22 +230,12 @@ export const ChatRoomScreen: React.FC<ChatRoomScreenProps> = ({ route }) => {
           />
         }
       >
-        <InnerLayout>
+        <InnerLayout className="px-[12px]">
           <FlatList
             data={messages}
             keyExtractor={(item) => item.id.toString()}
             inverted
-            renderItem={({ item, index }) => (
-              <MessageItem
-                message={item}
-                profileImageUrl={roomData.profileImageUrl || ''}
-                isCurrentUser={item.sender === 'me'}
-                shouldShowProfile={
-                  (index === 0 && item.sender !== 'me') ||
-                  (index > 0 && messages[index - 1].sender !== item.sender && item.sender !== 'me')
-                }
-              />
-            )}
+            renderItem={renderMessageItem}
             ref={flatListRef}
             contentContainerStyle={{ flexGrow: 1, justifyContent: 'flex-end' }}
             showsVerticalScrollIndicator={false}
@@ -205,11 +243,7 @@ export const ChatRoomScreen: React.FC<ChatRoomScreenProps> = ({ route }) => {
             scrollEventThrottle={16}
             onLayout={handleLayout}
             onEndReachedThreshold={0.5}
-            onEndReached={() => {
-              if (hasNextPage && !isFetchingNextPage) {
-                fetchNextPage();
-              }
-            }}
+            onEndReached={handleEndReached}
           />
           {isFetchingNextPage && (
             <View className="py-4">
@@ -225,9 +259,9 @@ export const ChatRoomScreen: React.FC<ChatRoomScreenProps> = ({ route }) => {
 
 export const SuspendedChatRoomScreen: React.FC<ChatRoomScreenProps> = (props) => (
   <ErrorBoundary fallback={<></>}>
-    <Suspense fallback={<></>}>
+    <React.Suspense fallback={<></>}>
       <ChatRoomScreen {...props} />
-    </Suspense>
+    </React.Suspense>
   </ErrorBoundary>
 );
 
