@@ -1,4 +1,4 @@
-import { Suspense, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useCallback, useRef, useState, Suspense } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 import { useTranslation } from 'react-i18next';
 import {
@@ -11,7 +11,6 @@ import {
   AppState,
   AppStateStatus,
 } from 'react-native';
-import { InteractionManager } from 'react-native';
 import { ChatSocketRepository, RoomRepository } from '@/api';
 import {
   ChatOptionModal,
@@ -23,7 +22,6 @@ import {
   MyText,
 } from '@/components';
 import { useImageUpload, useRoomStateHandler } from '@/hooks';
-import { Message } from '@/model';
 import { ChatStackParamList } from '@/navigation/navigationRef';
 import { useMessageStore, useModalStore, useUserStore } from '@/store';
 import { ChatListResponse } from '@/types';
@@ -44,7 +42,7 @@ const IMAGE_PICKER_OPTIONS: ImagePickerOptions = {
 
 type ChatRoomScreenProps = NativeStackScreenProps<ChatStackParamList, 'ChatRoom'>;
 
-export const ChatRoomScreen = ({ route }: ChatRoomScreenProps) => {
+export const ChatRoomScreen: React.FC<ChatRoomScreenProps> = ({ route }) => {
   const navigation = useNavigation();
   const { t } = useTranslation('chat');
   const modalVisible = useModalStore((state) => state.visible);
@@ -52,39 +50,17 @@ export const ChatRoomScreen = ({ route }: ChatRoomScreenProps) => {
   const handleModalClose = useModalStore((state) => state.handleClose);
   const CURRENT_USER_ID = useUserStore((state) => state.id);
   const { handleUpload } = useImageUpload({ options: IMAGE_PICKER_OPTIONS });
-  const { text, messages, setMessage, handleChange, handleSubmit } = useMessageStore();
+  const { text, messages, setMessage, handleChange, sendMessage } = useMessageStore();
   const flatListRef = useRef<FlatList<any>>(null);
   const [scrollOffset, setScrollOffset] = useState(0);
   const BOTTOM_THRESHOLD = 200;
   const roomId = route.params.id;
 
-  // 채팅방 기본 정보 조회 (룸 이름, 프로필 이미지 등)
+  // 채팅방 기본 정보 조회
   const { data: roomData } = useSuspenseQuery({
     queryKey: ['room', roomId],
     queryFn: () => RoomRepository.get({ id: roomId }),
   });
-
-  useEffect(() => {
-    joinChatRoom(roomId);
-  }, [roomId]);
-
-  useEffect(() => {
-    const unsubscribe = navigation.addListener('beforeRemove', () => {
-      leaveChatRoom();
-    });
-    return unsubscribe;
-  }, [roomId, navigation]);
-
-  useRoomStateHandler(roomId);
-
-  const joinChatRoom = async (roomId: number) => {
-    try {
-      await ChatSocketRepository.roomIn(roomId);
-      console.log('채팅방 입장 성공');
-    } catch (error) {
-      console.error('채팅방 입장 실패', error);
-    }
-  };
 
   // 채팅 데이터 조회 (페이징 처리)
   const {
@@ -101,6 +77,7 @@ export const ChatRoomScreen = ({ route }: ChatRoomScreenProps) => {
     initialPageParam: 0,
   });
 
+  // 서버에서 불러온 채팅 데이터를 상태에 설정
   useEffect(() => {
     if (chatData) {
       const newMessages = chatData.pages.flatMap((page) =>
@@ -116,29 +93,50 @@ export const ChatRoomScreen = ({ route }: ChatRoomScreenProps) => {
     }
   }, [chatData, setMessage, CURRENT_USER_ID]);
 
-  // FlatList의 onScroll을 통해 현재 스크롤 위치 추적
-  const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
-    const { nativeEvent } = event;
-    setScrollOffset(nativeEvent.contentOffset.y);
-  };
-
-  const handleLayout = () => {
-    if (scrollOffset < BOTTOM_THRESHOLD) {
-      flatListRef.current?.scrollToOffset({ offset: 0, animated: true });
+  // 채팅방 입장
+  const joinChatRoom = useCallback(async (roomId: number) => {
+    try {
+      await ChatSocketRepository.roomIn(roomId);
+      console.log('채팅방 입장 성공');
+    } catch (error) {
+      console.error('채팅방 입장 실패', error);
     }
-  };
+  }, []);
 
-  const leaveChatRoom = async () => {
+  // 채팅방 퇴장
+  const leaveChatRoom = useCallback(async () => {
     try {
       await ChatSocketRepository.roomBack(roomId);
+      console.log('채팅방 나가기 성공');
     } catch (error) {
       console.error('채팅방 뒤로가기 실패', error);
     }
-  };
+  }, [roomId]);
 
-  const onSubmit = () => {
-    handleSubmit();
-  };
+  useEffect(() => {
+    joinChatRoom(roomId);
+  }, [roomId, joinChatRoom]);
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('beforeRemove', leaveChatRoom);
+    return unsubscribe;
+  }, [roomId, navigation, leaveChatRoom]);
+
+  useRoomStateHandler(roomId);
+
+  const handleScroll = useCallback((event: NativeSyntheticEvent<NativeScrollEvent>) => {
+    setScrollOffset(event.nativeEvent.contentOffset.y);
+  }, []);
+
+  const handleLayout = useCallback(() => {
+    if (scrollOffset < BOTTOM_THRESHOLD) {
+      flatListRef.current?.scrollToOffset({ offset: 0, animated: true });
+    }
+  }, [scrollOffset]);
+
+  const onSubmit = useCallback(() => {
+    sendMessage(roomId);
+  }, [roomId, sendMessage]);
 
   return (
     <Layout
@@ -185,10 +183,10 @@ export const ChatRoomScreen = ({ route }: ChatRoomScreenProps) => {
         <InnerLayout>
           <FlatList
             data={messages}
-            inverted // 최신 메시지가 하단에 위치하도록 반전 적용
+            keyExtractor={(item) => item.id.toString()}
+            inverted
             renderItem={({ item, index }) => (
               <MessageItem
-                key={item.id}
                 message={item}
                 profileImageUrl={roomData.profileImageUrl || ''}
                 isCurrentUser={item.sender === 'me'}
@@ -223,7 +221,7 @@ export const ChatRoomScreen = ({ route }: ChatRoomScreenProps) => {
   );
 };
 
-export const SuspendedChatRoomScreen = (props: ChatRoomScreenProps) => (
+export const SuspendedChatRoomScreen: React.FC<ChatRoomScreenProps> = (props) => (
   <ErrorBoundary fallback={<></>}>
     <Suspense fallback={<></>}>
       <ChatRoomScreen {...props} />

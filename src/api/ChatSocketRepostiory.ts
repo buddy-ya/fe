@@ -1,5 +1,6 @@
+import { MessageRequest } from '@/model';
 import { TokenService } from '@/service';
-import { useUserStore } from '@/store';
+import { useUserStore, useMessageStore } from '@/store';
 import axios from 'axios';
 import Constants from 'expo-constants';
 import * as SecureStore from 'expo-secure-store';
@@ -52,6 +53,22 @@ class ChatSocketRepository {
         }
       }
     });
+
+    // 메시지 수신 이벤트 리스너
+    this.socket.on('message', (chat: any) => {
+      // chat은 서버에서 보내는 MessageResponse 형식입니다.
+      const currentUserId = useUserStore.getState().id;
+      const newMessage = {
+        id: chat.id,
+        sender: chat.senderId === currentUserId ? 'me' : chat.senderId.toString(),
+        content: chat.message,
+        type: chat.type,
+        createdDate: chat.createdDate,
+      };
+      useMessageStore.getState().addMessage(newMessage);
+      console.log('Received message:', newMessage);
+    });
+
     return this.socket;
   }
 
@@ -82,6 +99,25 @@ class ChatSocketRepository {
           reject(new Error('채팅방 뒤로가기 실패'));
         }
       });
+    });
+  }
+
+  sendMessage(messageData: MessageRequest): Promise<{ chat: any }> {
+    return new Promise((resolve, reject) => {
+      if (!this.socket) {
+        return reject(new Error('Socket not initialized'));
+      }
+      this.socket.emit(
+        'message',
+        messageData,
+        (ack: { status: string; chat?: any; message?: string }) => {
+          if (ack.status === 'success' && ack.chat) {
+            resolve({ chat: ack.chat });
+          } else {
+            reject(new Error(ack.message || 'Message sending failed'));
+          }
+        }
+      );
     });
   }
 }
