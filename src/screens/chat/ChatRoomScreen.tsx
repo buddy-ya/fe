@@ -38,8 +38,7 @@ const IMAGE_PICKER_OPTIONS: ImagePickerOptions = {
   mediaTypes: ['images'],
   allowsEditing: false,
   quality: 0.7,
-  allowsMultipleSelection: true,
-  selectionLimit: 3,
+  selectionLimit: 1,
 };
 
 type ChatRoomScreenProps = {
@@ -53,8 +52,8 @@ export const ChatRoomScreen: React.FC<ChatRoomScreenProps> = ({ route }) => {
   const handleModalOpen = useModalStore((state) => state.handleOpen);
   const handleModalClose = useModalStore((state) => state.handleClose);
   const CURRENT_USER_ID = useUserStore((state) => state.id);
-  const { handleUpload } = useImageUpload({ options: IMAGE_PICKER_OPTIONS });
-  const { text, messages, setMessage, handleChange, sendMessage } = useMessageStore();
+  const { text, messages, setMessage, handleChange, sendMessage, sendImageMessage } =
+    useMessageStore();
   const { visible, icon, text: toastText, showToast, hideToast } = useToastStore();
   const flatListRef = useRef<FlatList<any>>(null);
   const [scrollOffset, setScrollOffset] = useState(0);
@@ -62,7 +61,7 @@ export const ChatRoomScreen: React.FC<ChatRoomScreenProps> = ({ route }) => {
   const roomId = route.params.id;
   const queryClient = useQueryClient();
 
-  // 상대방 나감 상태 (HTTP와 소켓에서 모두 업데이트)
+  // 상대방 나감 상태 (HTTP와 소켓 업데이트)
   const [buddyExited, setBuddyExited] = useState(false);
 
   // 채팅방 기본 정보 조회 (roomData에 isBuddyExited 포함)
@@ -71,7 +70,6 @@ export const ChatRoomScreen: React.FC<ChatRoomScreenProps> = ({ route }) => {
     queryFn: () => RoomRepository.get({ id: roomId }),
   });
 
-  // HTTP로 받은 roomData에서 isBuddyExited가 true면 상태 갱신
   useEffect(() => {
     if (roomData?.isBuddyExited && !buddyExited) {
       setBuddyExited(true);
@@ -93,7 +91,6 @@ export const ChatRoomScreen: React.FC<ChatRoomScreenProps> = ({ route }) => {
     initialPageParam: 0,
   });
 
-  // 채팅 목록 반영
   useEffect(() => {
     if (chatData) {
       const newMessages = chatData.pages.flatMap((page) =>
@@ -167,7 +164,6 @@ export const ChatRoomScreen: React.FC<ChatRoomScreenProps> = ({ route }) => {
     [showToast, t]
   );
 
-  // 프로필 이미지 클릭
   const handleProfilePress = useCallback(
     (senderId: string) => {
       navigation.navigate('Profile', { id: Number(senderId) });
@@ -175,7 +171,7 @@ export const ChatRoomScreen: React.FC<ChatRoomScreenProps> = ({ route }) => {
     [navigation]
   );
 
-  // roomOut 이벤트 처리: 핸드셰이크는 이미 완료된 상태이므로 바로 콜백 등록
+  // roomOut 이벤트 처리: 핸드셰이크 완료 후 콜백 등록
   useEffect(() => {
     ChatSocketRepository.setRoomOutHandler((data) => {
       console.log('ChatRoomScreen: roomOut 이벤트 발생', data);
@@ -183,7 +179,7 @@ export const ChatRoomScreen: React.FC<ChatRoomScreenProps> = ({ route }) => {
     });
   }, []);
 
-  // buddyExited가 true이면, 시스템 메시지를 추가 (중복 추가 방지)
+  // buddyExited가 true이면 시스템 메시지 추가 (중복 방지)
   useEffect(() => {
     if (buddyExited) {
       const systemMsgExists = messages.some((m: Message) => m.type === 'SYSTEM');
@@ -202,10 +198,26 @@ export const ChatRoomScreen: React.FC<ChatRoomScreenProps> = ({ route }) => {
     }
   }, [buddyExited, messages, setMessage, roomData, t]);
 
-  // 메시지 렌더링
+  // useImageUpload 훅: selectionLimit은 IMAGE_PICKER_OPTIONS에 의해 1로 지정됨.
+  const { images, handleUpload, loading } = useImageUpload({ options: IMAGE_PICKER_OPTIONS });
+
+  // 이미지 선택 후 바로 업로드
+  const onAddImage = useCallback(async () => {
+    const selectedImages = await handleUpload();
+    if (!selectedImages || selectedImages.length === 0) {
+      showToast(<Text>⚠️</Text>, t('toast.noImageSelected'));
+      return;
+    }
+    const file = selectedImages[0];
+    try {
+      await sendImageMessage(roomId, file);
+    } catch (error: any) {
+      showToast(<Text>⚠️</Text>, t('toast.sendFailed'));
+    }
+  }, [handleUpload, roomId, sendImageMessage, showToast, t]);
+
   const renderMessageItem = useCallback(
     ({ item, index }: { item: Message; index: number }) => {
-      // 시스템 메시지 렌더링
       if (item.type === 'SYSTEM') {
         return (
           <View className="my-7 items-center justify-center">
@@ -215,7 +227,6 @@ export const ChatRoomScreen: React.FC<ChatRoomScreenProps> = ({ route }) => {
           </View>
         );
       }
-      // 일반 메시지 렌더링
       const prevItem = messages[index + 1];
       const nextItem = messages[index - 1];
       const isSameUser = (a: string, b: string) => a === b;
@@ -250,7 +261,6 @@ export const ChatRoomScreen: React.FC<ChatRoomScreenProps> = ({ route }) => {
     [messages, roomData, handleMessageLongPress, handleProfilePress]
   );
 
-  // 무한 스크롤
   const handleEndReached = useCallback(() => {
     if (hasNextPage && !isFetchingNextPage) {
       fetchNextPage();
@@ -284,24 +294,26 @@ export const ChatRoomScreen: React.FC<ChatRoomScreenProps> = ({ route }) => {
     >
       <KeyboardLayout
         footer={
-          <Input
-            value={text}
-            leftImage={
-              <TouchableOpacity onPress={handleUpload}>
-                <View className="ml-2 h-[24px] w-[24px] flex-row items-center">
-                  <Image size={24} strokeWidth={1.3} color="#797979" />
-                </View>
-              </TouchableOpacity>
-            }
-            onChange={handleChange}
-            onSubmit={onSubmit}
-            disabled={buddyExited}
-            placeholder={
-              buddyExited
-                ? t('room.systemExit', { name: roomData?.name })
-                : t('keyboard.placeholder')
-            }
-          />
+          <View>
+            <Input
+              value={text}
+              leftImage={
+                <TouchableOpacity onPress={onAddImage}>
+                  <View className="ml-2 h-[24px] w-[24px] flex-row items-center">
+                    <Image size={24} strokeWidth={1.3} color="#797979" />
+                  </View>
+                </TouchableOpacity>
+              }
+              onChange={handleChange}
+              onSubmit={onSubmit}
+              disabled={buddyExited}
+              placeholder={
+                buddyExited
+                  ? t('room.systemExit', { name: roomData?.name })
+                  : t('keyboard.placeholder')
+              }
+            />
+          </View>
         }
       >
         <InnerLayout className="px-[12px]">
