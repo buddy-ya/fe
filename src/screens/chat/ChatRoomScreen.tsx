@@ -108,7 +108,6 @@ export const ChatRoomScreen: React.FC<ChatRoomScreenProps> = ({ route }) => {
     try {
       await ChatSocketRepository.roomBack(roomId);
       queryClient.invalidateQueries({ queryKey: ['roomList'] });
-      console.log('채팅방 나가기 성공');
     } catch (error) {
       console.error('채팅방 뒤로가기 실패', error);
     }
@@ -252,7 +251,11 @@ export const ChatRoomScreen: React.FC<ChatRoomScreenProps> = ({ route }) => {
           )}
         </InnerLayout>
       </KeyboardLayout>
-      <ChatOptionModal visible={modalVisible.chat} onClose={() => handleModalClose('chat')} />
+      <ChatOptionModal
+        visible={modalVisible.chat}
+        onClose={() => handleModalClose('chat')}
+        roomId={roomId}
+      />
     </Layout>
   );
 };

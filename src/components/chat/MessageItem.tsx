@@ -41,7 +41,7 @@ const MessageItem: React.FC<MessageProps> = ({
   // 서버에서 받은 createdDate를 기준으로 시간 라벨 포맷팅
   const formattedTime = useMemo(() => {
     const date = new Date(message.createdDate);
-    return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+    return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   }, [message.createdDate]);
 
   return (
@@ -52,7 +52,7 @@ const MessageItem: React.FC<MessageProps> = ({
             <Image source={{ uri: profileImageUrl }} className="h-11 w-11 rounded-[14px]" />
           </TouchableOpacity>
           <View className="ml-2 flex-row items-center">
-            <MyText size="text-sm" className="font-bold">
+            <MyText size="text-sm" className="font-semibold">
               {name}
             </MyText>
             <MyText size="text-sm" className="ml-1 font-medium">

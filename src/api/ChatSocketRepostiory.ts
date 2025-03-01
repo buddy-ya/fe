@@ -56,7 +56,6 @@ class ChatSocketRepository {
 
     // 메시지 수신 이벤트 리스너
     this.socket.on('message', (chat: any) => {
-      // chat은 서버에서 보내는 MessageResponse 형식입니다.
       const currentUserId = useUserStore.getState().id;
       const newMessage = {
         id: chat.id,
@@ -67,6 +66,12 @@ class ChatSocketRepository {
       };
       useMessageStore.getState().addMessage(newMessage);
       console.log('Received message:', newMessage);
+    });
+
+    // roomOut 이벤트 수신 리스너 (다른 사용자가 채팅방에서 나간 경우)
+    this.socket.on('roomOut', (data) => {
+      console.log('채팅방에서 사용자가 나갔습니다.', data);
+      // 필요한 경우, 채팅방 상태 업데이트나 알림 처리 등을 수행합니다.
     });
 
     return this.socket;
@@ -97,6 +102,24 @@ class ChatSocketRepository {
           resolve();
         } else {
           reject(new Error('채팅방 뒤로가기 실패'));
+        }
+      });
+    });
+  }
+
+  // 새로운 roomOut 메소드: 채팅방 나가기 emit
+  roomOut(roomId: number): Promise<void> {
+    return new Promise((resolve, reject) => {
+      if (!this.socket) {
+        return reject(new Error('Socket not initialized'));
+      }
+      this.socket.emit('room_out', { roomId }, (ack: { status: string }) => {
+        if (ack.status === 'success') {
+          console.log('채팅방 나가기 성공');
+          resolve();
+        } else {
+          console.error('채팅방 나가기 실패');
+          reject(new Error('채팅방 나가기 실패'));
         }
       });
     });
