@@ -11,7 +11,7 @@ interface ToastProps {
 
 export function Toast({ visible, icon, text, onClose }: ToastProps) {
   const fadeAnim = useRef(new Animated.Value(0)).current;
-  const DURATION = 1200;
+  const DURATION = 1000;
   const ANIMATION_DURATION = 300;
 
   useEffect(() => {
@@ -44,7 +44,7 @@ export function Toast({ visible, icon, text, onClose }: ToastProps) {
 
   return (
     <Animated.View
-      className="bg-toastBackground absolute bottom-20 left-10 right-10 flex-row items-center rounded-[12px] px-5 py-4"
+      className="absolute bottom-20 left-10 right-10 flex-row items-center rounded-[12px] bg-toastBackground px-5 py-4"
       style={{
         opacity: fadeAnim,
         transform: [

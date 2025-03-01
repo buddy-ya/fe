@@ -19,5 +19,9 @@
   },
   "room": {
     "systemExit": "{{name}} 님이 나갔습니다."
+  },
+  "toast": {
+    "sendFailed": "메시지 전송 실패",
+    "copySuccess": "메시지가 복사되었습니다."
   }
 }

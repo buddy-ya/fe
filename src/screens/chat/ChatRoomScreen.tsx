@@ -149,19 +149,22 @@ export const ChatRoomScreen: React.FC<ChatRoomScreenProps> = ({ route }) => {
     }
   }, [scrollOffset]);
 
-  const onSubmit = useCallback(() => {
-    // 상대방 나간 상태면 메시지 전송 불가
+  const onSubmit = useCallback(async () => {
     if (buddyExited) return;
-    sendMessage(roomId);
-  }, [roomId, sendMessage, buddyExited]);
+    try {
+      await sendMessage(roomId);
+    } catch (error: any) {
+      showToast(<Text>⚠️</Text>, t('toast.sendFailed'));
+    }
+  }, [roomId, sendMessage, buddyExited, showToast, t]);
 
   // 길게 누르면 복사
   const handleMessageLongPress = useCallback(
     (messageContent: string) => {
       Clipboard.setString(messageContent);
-      showToast(<Text>📋</Text>, '메시지가 복사되었습니다.');
+      showToast(<Text>📋</Text>, t('toast.copySuccess'));
     },
-    [showToast]
+    [showToast, t]
   );
 
   // 프로필 이미지 클릭
