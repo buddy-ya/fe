@@ -12,6 +12,12 @@ const BASE_DOMAIN = Constants?.expoConfig?.extra?.BASE_DOMAIN || '';
 
 class ChatSocketRepository {
   private socket: Socket | null = null;
+  private roomOutHandler: ((data: any) => void) | null = null;
+
+  // 외부에서 roomOut 이벤트 발생 시 호출할 함수를 등록합니다.
+  setRoomOutHandler(handler: (data: any) => void) {
+    this.roomOutHandler = handler;
+  }
 
   async initialize(): Promise<Socket> {
     if (this.socket) return this.socket;
@@ -54,7 +60,7 @@ class ChatSocketRepository {
       }
     });
 
-    // 메시지 수신 이벤트 리스너
+    // 메시지 수신 이벤트 리스너 (채팅 메시지는 내부에서 useMessageStore 업데이트)
     this.socket.on('message', (chat: any) => {
       const currentUserId = useUserStore.getState().id;
       const newMessage = {
@@ -68,10 +74,12 @@ class ChatSocketRepository {
       console.log('Received message:', newMessage);
     });
 
-    // roomOut 이벤트 수신 리스너 (다른 사용자가 채팅방에서 나간 경우)
+    // roomOut 이벤트 수신 리스너: 외부에 등록된 콜백 호출
     this.socket.on('roomOut', (data) => {
       console.log('채팅방에서 사용자가 나갔습니다.', data);
-      // 필요한 경우, 채팅방 상태 업데이트나 알림 처리 등을 수행합니다.
+      if (this.roomOutHandler) {
+        this.roomOutHandler(data);
+      }
     });
 
     return this.socket;
@@ -107,7 +115,7 @@ class ChatSocketRepository {
     });
   }
 
-  // 새로운 roomOut 메소드: 채팅방 나가기 emit
+  // roomOut emit: 채팅방 나가기 요청
   roomOut(roomId: number): Promise<void> {
     return new Promise((resolve, reject) => {
       if (!this.socket) {

@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 import { useTranslation } from 'react-i18next';
 import {
@@ -8,6 +8,7 @@ import {
   ActivityIndicator,
   NativeSyntheticEvent,
   NativeScrollEvent,
+  Text,
 } from 'react-native';
 import { ChatSocketRepository, RoomRepository } from '@/api';
 import {
@@ -22,14 +23,16 @@ import {
 import { useImageUpload, useRoomStateHandler } from '@/hooks';
 import { Message } from '@/model';
 import { ChatStackParamList } from '@/navigation/navigationRef';
-import { useMessageStore, useModalStore, useUserStore } from '@/store';
+import { useMessageStore, useModalStore, useUserStore, useToastStore } from '@/store';
 import { ChatListResponse } from '@/types';
 import { useNavigation } from '@react-navigation/native';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useSuspenseQuery, useInfiniteQuery, useQueryClient } from '@tanstack/react-query';
+import * as Clipboard from 'expo-clipboard';
 import { ImagePickerOptions } from 'expo-image-picker';
 import { EllipsisVertical, ChevronLeft, Image } from 'lucide-react-native';
 import ChatRepository from '@/api/ChatRepository';
+import { Toast } from '@/components/common/Toast';
 
 const IMAGE_PICKER_OPTIONS: ImagePickerOptions = {
   mediaTypes: ['images'],
@@ -39,10 +42,12 @@ const IMAGE_PICKER_OPTIONS: ImagePickerOptions = {
   selectionLimit: 3,
 };
 
-type ChatRoomScreenProps = NativeStackScreenProps<ChatStackParamList, 'ChatRoom'>;
+type ChatRoomScreenProps = {
+  route: { params: { id: number } };
+};
 
 export const ChatRoomScreen: React.FC<ChatRoomScreenProps> = ({ route }) => {
-  const navigation = useNavigation();
+  const navigation = useNavigation<NativeStackNavigationProp<ChatStackParamList, 'ChatRoom'>>();
   const { t } = useTranslation('chat');
   const modalVisible = useModalStore((state) => state.visible);
   const handleModalOpen = useModalStore((state) => state.handleOpen);
@@ -50,17 +55,28 @@ export const ChatRoomScreen: React.FC<ChatRoomScreenProps> = ({ route }) => {
   const CURRENT_USER_ID = useUserStore((state) => state.id);
   const { handleUpload } = useImageUpload({ options: IMAGE_PICKER_OPTIONS });
   const { text, messages, setMessage, handleChange, sendMessage } = useMessageStore();
+  const { visible, icon, text: toastText, showToast, hideToast } = useToastStore();
   const flatListRef = useRef<FlatList<any>>(null);
   const [scrollOffset, setScrollOffset] = useState(0);
   const BOTTOM_THRESHOLD = 200;
   const roomId = route.params.id;
   const queryClient = useQueryClient();
 
-  // 채팅방 기본 정보 조회
+  // 상대방 나감 상태 (HTTP와 소켓에서 모두 업데이트)
+  const [buddyExited, setBuddyExited] = useState(false);
+
+  // 채팅방 기본 정보 조회 (roomData에 isBuddyExited 포함)
   const { data: roomData } = useSuspenseQuery({
     queryKey: ['room', roomId],
     queryFn: () => RoomRepository.get({ id: roomId }),
   });
+
+  // HTTP로 받은 roomData에서 isBuddyExited가 true면 상태 갱신
+  useEffect(() => {
+    if (roomData?.isBuddyExited && !buddyExited) {
+      setBuddyExited(true);
+    }
+  }, [roomData, buddyExited]);
 
   // 채팅 데이터 조회 (페이징 처리)
   const {
@@ -77,7 +93,7 @@ export const ChatRoomScreen: React.FC<ChatRoomScreenProps> = ({ route }) => {
     initialPageParam: 0,
   });
 
-  // 서버에서 불러온 채팅 데이터를 상태에 설정 (서버 생성시간 사용)
+  // 채팅 목록 반영
   useEffect(() => {
     if (chatData) {
       const newMessages = chatData.pages.flatMap((page) =>
@@ -86,14 +102,14 @@ export const ChatRoomScreen: React.FC<ChatRoomScreenProps> = ({ route }) => {
           sender: chat.senderId === CURRENT_USER_ID ? 'me' : String(chat.senderId),
           content: chat.message,
           type: chat.type,
-          createdDate: chat.createdDate, // 서버에서 받은 생성시간
+          createdDate: chat.createdDate,
         }))
       );
       setMessage(newMessages);
     }
   }, [chatData, setMessage, CURRENT_USER_ID]);
 
-  // 채팅방 입장
+  // 채팅방 입장/퇴장
   const joinChatRoom = useCallback(async (roomId: number) => {
     try {
       await ChatSocketRepository.roomIn(roomId);
@@ -103,7 +119,6 @@ export const ChatRoomScreen: React.FC<ChatRoomScreenProps> = ({ route }) => {
     }
   }, []);
 
-  // 채팅방 퇴장
   const leaveChatRoom = useCallback(async () => {
     try {
       await ChatSocketRepository.roomBack(roomId);
@@ -135,35 +150,84 @@ export const ChatRoomScreen: React.FC<ChatRoomScreenProps> = ({ route }) => {
   }, [scrollOffset]);
 
   const onSubmit = useCallback(() => {
+    // 상대방 나간 상태면 메시지 전송 불가
+    if (buddyExited) return;
     sendMessage(roomId);
-  }, [roomId, sendMessage]);
+  }, [roomId, sendMessage, buddyExited]);
 
+  // 길게 누르면 복사
+  const handleMessageLongPress = useCallback(
+    (messageContent: string) => {
+      Clipboard.setString(messageContent);
+      showToast(<Text>📋</Text>, '메시지가 복사되었습니다.');
+    },
+    [showToast]
+  );
+
+  // 프로필 이미지 클릭
+  const handleProfilePress = useCallback(
+    (senderId: string) => {
+      navigation.navigate('Profile', { id: Number(senderId) });
+    },
+    [navigation]
+  );
+
+  // roomOut 이벤트 처리: 핸드셰이크는 이미 완료된 상태이므로 바로 콜백 등록
+  useEffect(() => {
+    ChatSocketRepository.setRoomOutHandler((data) => {
+      console.log('ChatRoomScreen: roomOut 이벤트 발생', data);
+      setBuddyExited(true);
+    });
+  }, []);
+
+  // buddyExited가 true이면, 시스템 메시지를 추가 (중복 추가 방지)
+  useEffect(() => {
+    if (buddyExited) {
+      const systemMsgExists = messages.some((m: Message) => m.type === 'SYSTEM');
+      if (!systemMsgExists && roomData?.name) {
+        setMessage([
+          {
+            id: Date.now(),
+            sender: 'system',
+            content: t('room.systemExit', { name: roomData.name }),
+            type: 'SYSTEM',
+            createdDate: new Date().toISOString(),
+          },
+          ...messages,
+        ]);
+      }
+    }
+  }, [buddyExited, messages, setMessage, roomData, t]);
+
+  // 메시지 렌더링
   const renderMessageItem = useCallback(
     ({ item, index }: { item: Message; index: number }) => {
-      const prevItem = messages[index + 1]; // inverted: index+1이 이전 메시지
+      // 시스템 메시지 렌더링
+      if (item.type === 'SYSTEM') {
+        return (
+          <View className="my-7 items-center justify-center">
+            <View className="rounded-lg bg-[#F4F4F4] px-3 py-2">
+              <MyText className="text-xs text-[#999999]">{item.content}</MyText>
+            </View>
+          </View>
+        );
+      }
+      // 일반 메시지 렌더링
+      const prevItem = messages[index + 1];
       const nextItem = messages[index - 1];
-
       const isSameUser = (a: string, b: string) => a === b;
-
-      // 그룹 내 마지막 메시지이면 항상 시간 라벨 표시
       const isLastMessageOfUser = nextItem ? !isSameUser(item.sender, nextItem.sender) : true;
-
-      // 이전 메시지가 있는 경우에만 시간 변경 여부 체크
       const timeChanged = prevItem
         ? (() => {
             const currentDate = new Date(item.createdDate);
             const prevDate = new Date(prevItem.createdDate);
-            const diffSeconds = Math.abs(currentDate.getTime() - prevDate.getTime()) / 1000;
             return (
               currentDate.getHours() !== prevDate.getHours() ||
               currentDate.getMinutes() !== prevDate.getMinutes()
             );
           })()
         : false;
-
-      // 기본: 유저의 마지막 메시지에는 항상 시간 라벨, 그 외에는 시간 변경 시에만 라벨 표시
       const showTimeLabel = isLastMessageOfUser || timeChanged;
-
       const isFirstMessage = !prevItem || !isSameUser(prevItem.sender, item.sender);
 
       return (
@@ -175,12 +239,15 @@ export const ChatRoomScreen: React.FC<ChatRoomScreenProps> = ({ route }) => {
           isLastMessageOfUser={isLastMessageOfUser}
           isCurrentUser={item.sender === 'me'}
           shouldShowProfile={item.sender !== 'me'}
+          onLongPress={handleMessageLongPress}
+          onProfilePress={handleProfilePress}
         />
       );
     },
-    [messages, roomData]
+    [messages, roomData, handleMessageLongPress, handleProfilePress]
   );
 
+  // 무한 스크롤
   const handleEndReached = useCallback(() => {
     if (hasNextPage && !isFetchingNextPage) {
       fetchNextPage();
@@ -225,7 +292,12 @@ export const ChatRoomScreen: React.FC<ChatRoomScreenProps> = ({ route }) => {
             }
             onChange={handleChange}
             onSubmit={onSubmit}
-            placeholder={t('keyboard.placeholder')}
+            disabled={buddyExited}
+            placeholder={
+              buddyExited
+                ? t('room.systemExit', { name: roomData?.name })
+                : t('keyboard.placeholder')
+            }
           />
         }
       >
@@ -256,6 +328,7 @@ export const ChatRoomScreen: React.FC<ChatRoomScreenProps> = ({ route }) => {
         onClose={() => handleModalClose('chat')}
         roomId={roomId}
       />
+      {visible && <Toast visible={visible} icon={icon!} text={toastText} onClose={hideToast} />}
     </Layout>
   );
 };

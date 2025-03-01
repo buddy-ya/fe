@@ -11,8 +11,10 @@ interface MessageProps {
   isCurrentUser: boolean;
   shouldShowProfile: boolean;
   isFirstMessage: boolean;
-  showTimeLabel: boolean; // 기존 timeChanged 대신 사용
+  showTimeLabel: boolean;
   isLastMessageOfUser: boolean;
+  onLongPress?: (content: string) => void;
+  onProfilePress?: (senderId: string) => void;
 }
 
 const MessageItem: React.FC<MessageProps> = ({
@@ -23,6 +25,8 @@ const MessageItem: React.FC<MessageProps> = ({
   isFirstMessage,
   showTimeLabel,
   isLastMessageOfUser,
+  onLongPress,
+  onProfilePress,
 }) => {
   const { profileImageUrl, country, name } = roomData;
 
@@ -38,7 +42,6 @@ const MessageItem: React.FC<MessageProps> = ({
 
   const maxBubbleWidth = 'max-w-[70%]';
 
-  // 서버에서 받은 createdDate를 기준으로 시간 라벨 포맷팅
   const formattedTime = useMemo(() => {
     const date = new Date(message.createdDate);
     return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
@@ -48,7 +51,7 @@ const MessageItem: React.FC<MessageProps> = ({
     <View className="mt-[5px]">
       {shouldShowProfile && isFirstMessage && (
         <View className="mb-[-16px] mt-3 flex-row items-start">
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => onProfilePress && onProfilePress(message.sender)}>
             <Image source={{ uri: profileImageUrl }} className="h-11 w-11 rounded-[14px]" />
           </TouchableOpacity>
           <View className="ml-2 flex-row items-center">
@@ -62,10 +65,12 @@ const MessageItem: React.FC<MessageProps> = ({
         </View>
       )}
       <View className={`${isCurrentUser ? 'flex-row-reverse' : 'flex-row pl-[45px]'} items-end`}>
-        <View
-          className={`px-3 py-2.5 ${bubbleStyle} ${maxBubbleWidth} ${
+        <TouchableOpacity
+          onLongPress={() => onLongPress && onLongPress(message.content)}
+          activeOpacity={1}
+          className={`px-4 py-2.5 ${bubbleStyle} ${maxBubbleWidth} ${
             isCurrentUser ? `bg-primary ${isFirstMessage && 'mt-3'}` : 'bg-[#F4F4F4]'
-          } `}
+          }`}
         >
           <MyText
             size="text-[14px]"
@@ -73,8 +78,8 @@ const MessageItem: React.FC<MessageProps> = ({
           >
             {message.content}
           </MyText>
-        </View>
-        <MyText className="mx-2 self-end text-xs text-gray-500">{formattedTime}</MyText>
+        </TouchableOpacity>
+        <MyText className="mx-[5px] self-end text-xs text-gray-500">{formattedTime}</MyText>
       </View>
     </View>
   );

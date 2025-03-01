@@ -16,5 +16,8 @@
   },
   "keyboard": {
     "placeholder": "채팅을 입력해주세요"
+  },
+  "room": {
+    "systemExit": "{{name}} 님이 나갔습니다."
   }
 }

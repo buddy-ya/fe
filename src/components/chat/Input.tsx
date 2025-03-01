@@ -10,10 +10,11 @@ interface CommentInputProps {
   onChange: (text: string) => void;
   onSubmit: () => void;
   isLoading?: boolean;
+  disabled?: boolean; // 추가: disabled 속성
 }
 
 export const Input = forwardRef<TextInput, CommentInputProps>(
-  ({ value, leftImage, onChange, onSubmit, placeholder, isLoading }, ref) => {
+  ({ value, leftImage, onChange, onSubmit, placeholder, isLoading, disabled }, ref) => {
     const { t } = useTranslation('feed');
     const [isFocused, setIsFocused] = useState(false);
 
@@ -29,7 +30,7 @@ export const Input = forwardRef<TextInput, CommentInputProps>(
       <View
         className={`w-full flex-row items-center justify-between border-t border-borderBottom bg-white px-4 py-[10px] ${
           isFocused ? '' : 'pb-8'
-        }`}
+        } ${disabled ? 'opacity-50' : ''}`} // disabled일 경우 opacity 조정(옵션)
       >
         <View className="flex-1 flex-row items-center">
           <View
@@ -51,12 +52,13 @@ export const Input = forwardRef<TextInput, CommentInputProps>(
               onFocus={handleFocus}
               onBlur={handleBlur}
               textAlignVertical="center"
+              editable={!disabled} // disabled가 true이면 입력 불가능
             />
           </View>
         </View>
         <TouchableOpacity
           onPress={onSubmit}
-          disabled={value.length < 0 || isLoading}
+          disabled={disabled || value.length < 0 || isLoading} // disabled 적용
           hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
         >
           <Send strokeWidth={1.3} color={`#CBCBCB`} />

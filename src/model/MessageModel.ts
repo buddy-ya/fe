@@ -20,6 +20,6 @@ export interface Message {
   id: number;
   sender: string;
   content: string;
-  type: 'TALK' | 'IMAGE';
+  type: 'TALK' | 'IMAGE' | 'SYSTEM';
   createdDate: string;
 }
