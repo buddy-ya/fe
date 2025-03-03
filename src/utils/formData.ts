@@ -15,10 +15,12 @@ export interface FeedFormData {
 
 export const processImageForUpload = (image: ImageFile) => {
   const uri = Platform.OS === 'ios' ? image.uri.replace('file://', '') : image.uri;
+  const fileName = image.fileName || image.uri.split('/').pop() || 'image.jpg';
   return {
     uri,
-    name: image.fileName || image.uri.split('/').pop() || 'image.jpg',
+    name: fileName,
     type: image.type || 'image/jpeg',
+    originalname: fileName,
   } as any;
 };
 

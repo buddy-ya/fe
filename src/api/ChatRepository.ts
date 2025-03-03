@@ -16,11 +16,15 @@ class ChatRepository {
     file: any;
     tempId: number;
   }): Promise<{ status: string; chat: any }> {
-    const formData = new FormData();
-    formData.append('image', file);
-    formData.append('tempId', String(tempId));
+    const image = new FormData();
+    image.append('image', file);
+    image.append('tempId', String(tempId));
 
-    const { data } = await API.post(`/node/rooms/${roomId}/image`, formData);
+    const { data } = await API.post(`/node/rooms/${roomId}/image`, image, {
+      headers: {
+        ...API.defaults.headers.common,
+      },
+    });
     return data;
   }
 }

@@ -38,6 +38,7 @@ const IMAGE_PICKER_OPTIONS: ImagePickerOptions = {
   mediaTypes: ['images'],
   allowsEditing: false,
   quality: 0.7,
+  allowsMultipleSelection: true,
   selectionLimit: 1,
 };
 
