@@ -9,6 +9,7 @@ type ModalType =
   | 'chat'
   | 'myProfile'
   | 'report'
+  | 'block'
   | 'exit';
 
 interface ModalState {
@@ -30,6 +31,7 @@ export const useModalStore = create<ModalState & ModalAction>((set) => ({
     chat: false,
     myProfile: false,
     report: false,
+    block: false,
     exit: false,
   },
   handleOpen: (type) => set((state) => ({ visible: { ...state.visible, [type]: true } })),

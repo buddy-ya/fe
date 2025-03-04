@@ -1,46 +1,31 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { TextInput } from 'react-native';
-import { ChatSocketRepository, UserRepository } from '@/api';
-import { useNavigation } from '@react-navigation/native';
+import { Alert, TextInput } from 'react-native';
 import { StandardModal } from './Common';
 
 interface ReportModalProps {
   visible: boolean;
   onClose: () => void;
-  roomId: number;
-  reportedUserId?: number;
+  onAccept: (reason: string) => void;
 }
 
-export function ReportModal({ visible, roomId, reportedUserId = 0, onClose }: ReportModalProps) {
+export function ReportModal({ visible, onClose, onAccept }: ReportModalProps) {
   const { t } = useTranslation('common');
-  const navigation = useNavigation<any>();
-
   const [reason, setReason] = useState('');
 
-  const handleAccept = async () => {
-    try {
-      // 밖에서 비동기 통신 하도록 수정.
-      await UserRepository.report({
-        type: 'CHATROOM',
-        reportedId: roomId,
-        reportedUserId,
-        reason: reason.trim(),
-      });
-      handleCancel();
-      handleExit();
-    } catch (error) {}
+  const handleAccept = () => {
+    if (!reason.trim()) {
+      Alert.alert(t('modal.report.errorTitle'), t('modal.report.errorMessage'));
+      return;
+    }
+    onAccept(reason.trim());
+    setReason('');
+    onClose();
   };
 
   const handleCancel = () => {
     setReason('');
     onClose();
-  };
-
-  const handleExit = async () => {
-    await ChatSocketRepository.roomOut(roomId);
-    onClose();
-    navigation.goBack();
   };
 
   return (

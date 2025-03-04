@@ -6,34 +6,33 @@ import { useNavigation } from '@react-navigation/native';
 import { MyText } from '../common';
 import { StandardModal } from './Common';
 
-interface ExitModalProps {
+interface BlockModalProps {
   visible: boolean;
   roomId: number;
   onClose: () => void;
 }
 
-export function ExitModal({ visible, roomId, onClose }: ExitModalProps) {
+export function BlockModal({ visible, roomId, onClose }: BlockModalProps) {
   const { t } = useTranslation('common');
   const navigation = useNavigation<any>();
-
   const { showToast } = useToastStore();
 
-  const handleExit = async () => {
+  const handleBlock = async () => {
     await ChatSocketRepository.roomOut(roomId);
     onClose();
     navigation.goBack();
-    showToast(<MyText>🚪</MyText>, t('toast.exitSuccess'));
+    showToast(<MyText>🚫</MyText>, t('toast.blockSuccess'));
   };
 
   return (
     <StandardModal
       visible={visible}
-      title={t('modal.exit.title')}
-      description={t('modal.exit.description')}
-      cancelText={t('modal.exit.cancel')}
-      acceptText={t('modal.exit.accept')}
+      title={t('modal.block.title')}
+      description={t('modal.block.description')}
+      cancelText={t('modal.block.cancel')}
+      acceptText={t('modal.block.confirm')}
       onCancel={onClose}
-      onAccept={handleExit}
+      onAccept={handleBlock}
     />
   );
 }

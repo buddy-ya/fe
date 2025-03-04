@@ -7,10 +7,17 @@ interface ChatOptionModalProps {
   visible: boolean;
   onClose: () => void;
   onReport: () => void;
+  onBlock: () => void;
   onExit: () => void;
 }
 
-export function ChatOptionModal({ visible, onClose, onReport, onExit }: ChatOptionModalProps) {
+export function ChatOptionModal({
+  visible,
+  onClose,
+  onReport,
+  onBlock,
+  onExit,
+}: ChatOptionModalProps) {
   const { t } = useTranslation('feed');
 
   const options: OptionItem[] = [
@@ -24,7 +31,7 @@ export function ChatOptionModal({ visible, onClose, onReport, onExit }: ChatOpti
       id: 2,
       label: t('modal.block') || 'Block',
       icon: <Ban size={16} color="#282828" />,
-      onPress: () => console.log('block'),
+      onPress: onBlock,
     },
     {
       id: 3,

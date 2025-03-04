@@ -27,11 +27,22 @@
       "accept": "신고",
       "placeholder": "신고 사유를 적어주세요."
     },
+    "block": {
+      "title": "사용자 차단",
+      "description": "이 작업은 되돌릴 수 없습니다. 계속 진행하시겠습니까?",
+      "cancel": "아니오",
+      "confirm": "예"
+    },
     "exit": {
       "title": "채팅방 나가기",
       "description": "나가면 다시 이 채팅방에 돌아올 수 없습니다. 정말 계속하시겠습니까?",
       "cancel": "아니오",
       "accept": "예"
     }
+  },
+  "toast": {
+    "reportSuccess": "신고가 정상적으로 접수되었습니다!",
+    "blockSuccess": "사용자 차단이 완료되었습니다!",
+    "exitSuccess": "채팅방에서 나갔습니다!"
   }
 }

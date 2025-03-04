@@ -27,11 +27,22 @@
       "accept": "Report",
       "placeholder": "Enter reason for report."
     },
+    "block": {
+      "title": "Block User",
+      "description": "This action cannot be undone. Are you sure you want to continue?",
+      "cancel": "No",
+      "confirm": "Yes"
+    },
     "exit": {
       "title": "Leave Chatroom",
       "description": "If you leave, you cannot rejoin this chatroom. Are you sure?",
       "cancel": "No",
       "accept": "Yes"
     }
+  },
+  "toast": {
+    "reportSuccess": "Report submitted successfully!",
+    "blockSuccess": "User has been blocked successfully!",
+    "exitSuccess": "You have left the chat."
   }
 }

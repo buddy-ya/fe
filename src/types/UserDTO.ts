@@ -25,6 +25,6 @@ export interface User {
 export interface ReportDTO {
   type: 'FEED' | 'COMMENT' | 'CHATROOM';
   reportedId: number;
-  reportedUserId: number;
+  reportedUserId: number | undefined;
   reason: string;
 }

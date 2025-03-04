@@ -32,7 +32,7 @@ export function StandardModal({
           <View className="absolute bottom-0 left-0 right-0 top-0" />
         </TouchableWithoutFeedback>
         <View className={`w-5/6 max-w-[350px] rounded-xl bg-white p-5 ${className}`}>
-          <MyText size="text-[20px]" className="mb-2 font-semibold">
+          <MyText size="text-xl" className="mb-2 font-semibold">
             {title}
           </MyText>
           <MyText color="text-textDescription" size="text-[14px]" className="">

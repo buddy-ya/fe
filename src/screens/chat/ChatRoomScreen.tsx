@@ -10,9 +10,10 @@ import {
   NativeScrollEvent,
   Text,
 } from 'react-native';
-import { ChatSocketRepository, RoomRepository } from '@/api';
+import { ChatSocketRepository, RoomRepository, UserRepository } from '@/api';
 import {
   ChatOptionModal,
+  ReportModal,
   ExitModal,
   InnerLayout,
   Input,
@@ -20,7 +21,7 @@ import {
   Layout,
   MessageItem,
   MyText,
-  ReportModal,
+  BlockModal,
 } from '@/components';
 import { useImageUpload, useRoomStateHandler } from '@/hooks';
 import { Message } from '@/model';
@@ -60,19 +61,21 @@ export const ChatRoomScreen: React.FC<ChatRoomScreenProps> = ({ route }) => {
   const { visible, icon, text: toastText, showToast, hideToast } = useToastStore();
   const flatListRef = useRef<FlatList<any>>(null);
   const [scrollOffset, setScrollOffset] = useState(0);
-  const BOTTOM_THRESHOLD = 200;
   const roomId = route.params.id;
   const queryClient = useQueryClient();
   const [buddyExited, setBuddyExited] = useState(false);
+
   const { data: roomData } = useSuspenseQuery({
     queryKey: ['room', roomId],
     queryFn: () => RoomRepository.get({ id: roomId }),
   });
+
   useEffect(() => {
     if (roomData?.isBuddyExited && !buddyExited) {
       setBuddyExited(true);
     }
   }, [roomData, buddyExited]);
+
   const {
     data: chatData,
     fetchNextPage,
@@ -80,12 +83,12 @@ export const ChatRoomScreen: React.FC<ChatRoomScreenProps> = ({ route }) => {
     isFetchingNextPage,
   } = useInfiniteQuery({
     queryKey: ['chats', roomId] as const,
-    queryFn: ({ pageParam = 0 }) =>
-      ChatRepository.getChats({ roomId: roomId, page: pageParam, size: 15 }),
+    queryFn: ({ pageParam = 0 }) => ChatRepository.getChats({ roomId, page: pageParam, size: 15 }),
     getNextPageParam: (lastPage: ChatListResponse) =>
       lastPage.hasNext ? lastPage.currentPage + 1 : undefined,
     initialPageParam: 0,
   });
+
   useEffect(() => {
     if (chatData) {
       const newMessages = chatData.pages.flatMap((page) =>
@@ -100,6 +103,7 @@ export const ChatRoomScreen: React.FC<ChatRoomScreenProps> = ({ route }) => {
       setMessage(newMessages);
     }
   }, [chatData, setMessage, CURRENT_USER_ID]);
+
   const joinChatRoom = useCallback(async (roomId: number) => {
     try {
       await ChatSocketRepository.roomIn(roomId);
@@ -108,6 +112,7 @@ export const ChatRoomScreen: React.FC<ChatRoomScreenProps> = ({ route }) => {
       console.error('채팅방 입장 실패', error);
     }
   }, []);
+
   const leaveChatRoom = useCallback(async () => {
     try {
       await ChatSocketRepository.roomBack(roomId);
@@ -116,22 +121,28 @@ export const ChatRoomScreen: React.FC<ChatRoomScreenProps> = ({ route }) => {
       console.error('채팅방 뒤로가기 실패', error);
     }
   }, [roomId]);
+
   useEffect(() => {
     joinChatRoom(roomId);
   }, [roomId, joinChatRoom]);
+
   useEffect(() => {
     const unsubscribe = navigation.addListener('beforeRemove', leaveChatRoom);
     return unsubscribe;
   }, [roomId, navigation, leaveChatRoom]);
+
   useRoomStateHandler(roomId);
+
   const handleScroll = useCallback((event: NativeSyntheticEvent<NativeScrollEvent>) => {
     setScrollOffset(event.nativeEvent.contentOffset.y);
   }, []);
+
   const handleLayout = useCallback(() => {
-    if (scrollOffset < BOTTOM_THRESHOLD) {
+    if (scrollOffset < 200) {
       flatListRef.current?.scrollToOffset({ offset: 0, animated: true });
     }
   }, [scrollOffset]);
+
   const onSubmit = useCallback(async () => {
     if (buddyExited) return;
     try {
@@ -140,6 +151,7 @@ export const ChatRoomScreen: React.FC<ChatRoomScreenProps> = ({ route }) => {
       showToast(<Text>⚠️</Text>, t('toast.sendFailed'));
     }
   }, [roomId, sendMessage, buddyExited, showToast, t]);
+
   const handleMessageLongPress = useCallback(
     (messageContent: string) => {
       Clipboard.setString(messageContent);
@@ -147,22 +159,25 @@ export const ChatRoomScreen: React.FC<ChatRoomScreenProps> = ({ route }) => {
     },
     [showToast, t]
   );
+
   const handleProfilePress = useCallback(
     (senderId: string) => {
       navigation.navigate('Profile', { id: Number(senderId) });
     },
     [navigation]
   );
+
   useEffect(() => {
     ChatSocketRepository.setRoomOutHandler((data) => {
       console.log('ChatRoomScreen: roomOut 이벤트 발생', data);
       setBuddyExited(true);
     });
   }, []);
+
   useEffect(() => {
-    if (buddyExited) {
+    if (buddyExited && roomData?.name) {
       const systemMsgExists = messages.some((m: Message) => m.type === 'SYSTEM');
-      if (!systemMsgExists && roomData?.name) {
+      if (!systemMsgExists) {
         setMessage([
           {
             id: Date.now(),
@@ -176,7 +191,9 @@ export const ChatRoomScreen: React.FC<ChatRoomScreenProps> = ({ route }) => {
       }
     }
   }, [buddyExited, messages, setMessage, roomData, t]);
-  const { images, handleUpload, loading } = useImageUpload({ options: IMAGE_PICKER_OPTIONS });
+
+  const { images, handleUpload } = useImageUpload({ options: IMAGE_PICKER_OPTIONS });
+
   const onAddImage = useCallback(async () => {
     const selectedImages = await handleUpload();
     if (!selectedImages || selectedImages.length === 0) {
@@ -190,6 +207,7 @@ export const ChatRoomScreen: React.FC<ChatRoomScreenProps> = ({ route }) => {
       showToast(<Text>⚠️</Text>, t('toast.sendFailed'));
     }
   }, [handleUpload, roomId, sendImageMessage, showToast, t]);
+
   const renderMessageItem = useCallback(
     ({ item, index }: { item: Message; index: number }) => {
       if (item.type === 'SYSTEM') {
@@ -245,10 +263,36 @@ export const ChatRoomScreen: React.FC<ChatRoomScreenProps> = ({ route }) => {
     handleModalOpen('report');
   }, [handleModalClose, handleModalOpen]);
 
+  const handleBlockOption = useCallback(() => {
+    handleModalClose('chat');
+    handleModalOpen('block');
+  }, [handleModalClose, handleModalOpen]);
+
   const handleExitOption = useCallback(() => {
     handleModalClose('chat');
     handleModalOpen('exit');
   }, [handleModalClose, handleModalOpen]);
+
+  const handleReport = async (reason: string) => {
+    try {
+      console.log(roomData);
+      await UserRepository.report({
+        type: 'CHATROOM',
+        reportedId: roomId,
+        reportedUserId: roomData!.buddyId,
+        reason: reason.trim(),
+      });
+      await handleExit();
+      showToast(<MyText>🙌</MyText>, t('toast.reportSuccess'));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleExit = async () => {
+    await ChatSocketRepository.roomOut(roomId);
+    navigation.goBack();
+  };
 
   return (
     <Layout
@@ -320,29 +364,33 @@ export const ChatRoomScreen: React.FC<ChatRoomScreenProps> = ({ route }) => {
             </View>
           )}
         </InnerLayout>
-        {roomData && (
-          <>
-            <ChatOptionModal
-              visible={modalVisible.chat}
-              onClose={() => handleModalClose('chat')}
-              onReport={handleReportOption}
-              onExit={handleExitOption}
-            />
-            <ReportModal
-              visible={modalVisible.report}
-              onClose={() => handleModalClose('report')}
-              roomId={roomId}
-              reportedUserId={roomData.buddyId}
-            />
-            <ExitModal
-              visible={modalVisible.exit}
-              roomId={roomId}
-              onClose={() => handleModalClose('exit')}
-            />
-          </>
-        )}
       </KeyboardLayout>
-      {visible && <Toast visible={visible} icon={icon!} text={toastText} onClose={hideToast} />}
+      {roomData && (
+        <>
+          <ChatOptionModal
+            visible={modalVisible.chat}
+            onClose={() => handleModalClose('chat')}
+            onReport={handleReportOption}
+            onBlock={handleBlockOption}
+            onExit={handleExitOption}
+          />
+          <ReportModal
+            visible={modalVisible.report}
+            onAccept={handleReport}
+            onClose={() => handleModalClose('report')}
+          />
+          <BlockModal
+            visible={modalVisible.block}
+            roomId={roomId}
+            onClose={() => handleModalClose('block')}
+          />
+          <ExitModal
+            visible={modalVisible.exit}
+            roomId={roomId}
+            onClose={() => handleModalClose('exit')}
+          />
+        </>
+      )}
     </Layout>
   );
 };

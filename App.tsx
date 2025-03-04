@@ -7,13 +7,16 @@ import linking from '@/navigation/Linking';
 import Router from '@/navigation/router';
 import { AuthProvider } from '@/provider';
 import ErrorPage from '@/screens/ErrorPage';
+import { useToastStore } from '@/store';
 import { createNavigationContainerRef, NavigationContainer } from '@react-navigation/native';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { Toast } from '@/components/common/Toast';
 
 export const navigationRef = createNavigationContainerRef();
 
 export default function App() {
   const queryClient = new QueryClient();
+  const { visible, icon, text, hideToast } = useToastStore();
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -24,6 +27,7 @@ export default function App() {
               <AuthProvider>
                 <NavigationContainer ref={navigationRef} linking={linking}>
                   <Router />
+                  <Toast visible={visible} icon={icon!} text={text} onClose={hideToast} />
                 </NavigationContainer>
               </AuthProvider>
             </GestureHandlerRootView>
