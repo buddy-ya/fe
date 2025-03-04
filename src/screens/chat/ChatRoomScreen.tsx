@@ -13,12 +13,14 @@ import {
 import { ChatSocketRepository, RoomRepository } from '@/api';
 import {
   ChatOptionModal,
+  ExitModal,
   InnerLayout,
   Input,
   KeyboardLayout,
   Layout,
   MessageItem,
   MyText,
+  ReportModal,
 } from '@/components';
 import { useImageUpload, useRoomStateHandler } from '@/hooks';
 import { Message } from '@/model';
@@ -61,23 +63,16 @@ export const ChatRoomScreen: React.FC<ChatRoomScreenProps> = ({ route }) => {
   const BOTTOM_THRESHOLD = 200;
   const roomId = route.params.id;
   const queryClient = useQueryClient();
-
-  // 상대방 나감 상태 (HTTP와 소켓 업데이트)
   const [buddyExited, setBuddyExited] = useState(false);
-
-  // 채팅방 기본 정보 조회 (roomData에 isBuddyExited 포함)
   const { data: roomData } = useSuspenseQuery({
     queryKey: ['room', roomId],
     queryFn: () => RoomRepository.get({ id: roomId }),
   });
-
   useEffect(() => {
     if (roomData?.isBuddyExited && !buddyExited) {
       setBuddyExited(true);
     }
   }, [roomData, buddyExited]);
-
-  // 채팅 데이터 조회 (페이징 처리)
   const {
     data: chatData,
     fetchNextPage,
@@ -91,7 +86,6 @@ export const ChatRoomScreen: React.FC<ChatRoomScreenProps> = ({ route }) => {
       lastPage.hasNext ? lastPage.currentPage + 1 : undefined,
     initialPageParam: 0,
   });
-
   useEffect(() => {
     if (chatData) {
       const newMessages = chatData.pages.flatMap((page) =>
@@ -106,8 +100,6 @@ export const ChatRoomScreen: React.FC<ChatRoomScreenProps> = ({ route }) => {
       setMessage(newMessages);
     }
   }, [chatData, setMessage, CURRENT_USER_ID]);
-
-  // 채팅방 입장/퇴장
   const joinChatRoom = useCallback(async (roomId: number) => {
     try {
       await ChatSocketRepository.roomIn(roomId);
@@ -116,7 +108,6 @@ export const ChatRoomScreen: React.FC<ChatRoomScreenProps> = ({ route }) => {
       console.error('채팅방 입장 실패', error);
     }
   }, []);
-
   const leaveChatRoom = useCallback(async () => {
     try {
       await ChatSocketRepository.roomBack(roomId);
@@ -125,28 +116,22 @@ export const ChatRoomScreen: React.FC<ChatRoomScreenProps> = ({ route }) => {
       console.error('채팅방 뒤로가기 실패', error);
     }
   }, [roomId]);
-
   useEffect(() => {
     joinChatRoom(roomId);
   }, [roomId, joinChatRoom]);
-
   useEffect(() => {
     const unsubscribe = navigation.addListener('beforeRemove', leaveChatRoom);
     return unsubscribe;
   }, [roomId, navigation, leaveChatRoom]);
-
   useRoomStateHandler(roomId);
-
   const handleScroll = useCallback((event: NativeSyntheticEvent<NativeScrollEvent>) => {
     setScrollOffset(event.nativeEvent.contentOffset.y);
   }, []);
-
   const handleLayout = useCallback(() => {
     if (scrollOffset < BOTTOM_THRESHOLD) {
       flatListRef.current?.scrollToOffset({ offset: 0, animated: true });
     }
   }, [scrollOffset]);
-
   const onSubmit = useCallback(async () => {
     if (buddyExited) return;
     try {
@@ -155,8 +140,6 @@ export const ChatRoomScreen: React.FC<ChatRoomScreenProps> = ({ route }) => {
       showToast(<Text>⚠️</Text>, t('toast.sendFailed'));
     }
   }, [roomId, sendMessage, buddyExited, showToast, t]);
-
-  // 길게 누르면 복사
   const handleMessageLongPress = useCallback(
     (messageContent: string) => {
       Clipboard.setString(messageContent);
@@ -164,23 +147,18 @@ export const ChatRoomScreen: React.FC<ChatRoomScreenProps> = ({ route }) => {
     },
     [showToast, t]
   );
-
   const handleProfilePress = useCallback(
     (senderId: string) => {
       navigation.navigate('Profile', { id: Number(senderId) });
     },
     [navigation]
   );
-
-  // roomOut 이벤트 처리: 핸드셰이크 완료 후 콜백 등록
   useEffect(() => {
     ChatSocketRepository.setRoomOutHandler((data) => {
       console.log('ChatRoomScreen: roomOut 이벤트 발생', data);
       setBuddyExited(true);
     });
   }, []);
-
-  // buddyExited가 true이면 시스템 메시지 추가 (중복 방지)
   useEffect(() => {
     if (buddyExited) {
       const systemMsgExists = messages.some((m: Message) => m.type === 'SYSTEM');
@@ -198,11 +176,7 @@ export const ChatRoomScreen: React.FC<ChatRoomScreenProps> = ({ route }) => {
       }
     }
   }, [buddyExited, messages, setMessage, roomData, t]);
-
-  // useImageUpload 훅: selectionLimit은 IMAGE_PICKER_OPTIONS에 의해 1로 지정됨.
   const { images, handleUpload, loading } = useImageUpload({ options: IMAGE_PICKER_OPTIONS });
-
-  // 이미지 선택 후 바로 업로드
   const onAddImage = useCallback(async () => {
     const selectedImages = await handleUpload();
     if (!selectedImages || selectedImages.length === 0) {
@@ -216,7 +190,6 @@ export const ChatRoomScreen: React.FC<ChatRoomScreenProps> = ({ route }) => {
       showToast(<Text>⚠️</Text>, t('toast.sendFailed'));
     }
   }, [handleUpload, roomId, sendImageMessage, showToast, t]);
-
   const renderMessageItem = useCallback(
     ({ item, index }: { item: Message; index: number }) => {
       if (item.type === 'SYSTEM') {
@@ -244,7 +217,6 @@ export const ChatRoomScreen: React.FC<ChatRoomScreenProps> = ({ route }) => {
         : false;
       const showTimeLabel = isLastMessageOfUser || timeChanged;
       const isFirstMessage = !prevItem || !isSameUser(prevItem.sender, item.sender);
-
       return (
         <MessageItem
           message={item}
@@ -267,6 +239,16 @@ export const ChatRoomScreen: React.FC<ChatRoomScreenProps> = ({ route }) => {
       fetchNextPage();
     }
   }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
+
+  const handleReportOption = useCallback(() => {
+    handleModalClose('chat');
+    handleModalOpen('report');
+  }, [handleModalClose, handleModalOpen]);
+
+  const handleExitOption = useCallback(() => {
+    handleModalClose('chat');
+    handleModalOpen('exit');
+  }, [handleModalClose, handleModalOpen]);
 
   return (
     <Layout
@@ -338,12 +320,28 @@ export const ChatRoomScreen: React.FC<ChatRoomScreenProps> = ({ route }) => {
             </View>
           )}
         </InnerLayout>
+        {roomData && (
+          <>
+            <ChatOptionModal
+              visible={modalVisible.chat}
+              onClose={() => handleModalClose('chat')}
+              onReport={handleReportOption}
+              onExit={handleExitOption}
+            />
+            <ReportModal
+              visible={modalVisible.report}
+              onClose={() => handleModalClose('report')}
+              roomId={roomId}
+              reportedUserId={roomData.buddyId}
+            />
+            <ExitModal
+              visible={modalVisible.exit}
+              roomId={roomId}
+              onClose={() => handleModalClose('exit')}
+            />
+          </>
+        )}
       </KeyboardLayout>
-      <ChatOptionModal
-        visible={modalVisible.chat}
-        onClose={() => handleModalClose('chat')}
-        roomId={roomId}
-      />
       {visible && <Toast visible={visible} icon={icon!} text={toastText} onClose={hideToast} />}
     </Layout>
   );

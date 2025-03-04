@@ -21,3 +21,10 @@ export interface User {
   accessToken?: string;
   refreshToken?: string;
 }
+
+export interface ReportDTO {
+  type: 'FEED' | 'COMMENT' | 'CHATROOM';
+  reportedId: number;
+  reportedUserId: number;
+  reason: string;
+}
