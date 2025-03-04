@@ -39,7 +39,6 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import MatchingScreen from '@screens/matching/MatchingScreen';
 import MyPageScreen from '@screens/mypage/MyPageScreen';
 import useNotification from '@/hooks/useNotification';
-import { Toast } from '@/components/common/Toast';
 import { StudentCertificationModal } from '@/components/modal/Common';
 import WelcomeScreen from '../screens/onboarding/WelcomeScreen';
 import { getTabScreenOptions, tabScreenOptions, useTabBarAnimation } from './TabBar';
