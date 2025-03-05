@@ -44,7 +44,7 @@ const MessageItem: React.FC<MessageProps> = ({
 
   const bubbleStyle = useMemo(() => {
     if (message.type === 'IMAGE') {
-      return 'rounded-xl mb-3';
+      return 'rounded-xl';
     }
     if (isCurrentUser) {
       return isFirstMessage
@@ -83,7 +83,6 @@ const MessageItem: React.FC<MessageProps> = ({
         </TouchableOpacity>
       );
     }
-    // TALK 메시지 등
     return (
       <MyText
         size="text-[14px]"
@@ -94,7 +93,6 @@ const MessageItem: React.FC<MessageProps> = ({
     );
   }, [message, isCurrentUser]);
 
-  // TALK 타입만 longPress 허용
   const handleLongPress = () => {
     if (message.type === 'TALK' && onLongPress) {
       onLongPress(message.content);
@@ -135,7 +133,9 @@ const MessageItem: React.FC<MessageProps> = ({
             </View>
           </View>
         )}
-        <View className={`${isCurrentUser ? 'flex-row-reverse' : 'flex-row pl-[45px]'} items-end`}>
+        <View
+          className={`${isCurrentUser ? 'flex-row-reverse' : 'flex-row pl-[45px]'} mb-1 items-end`}
+        >
           <TouchableOpacity
             onLongPress={handleLongPress}
             activeOpacity={1}

@@ -1,16 +1,18 @@
 import { ChatSocketRepository } from '@/api';
-import { MessageRequest, Message } from '@/model';
+import { Message } from '@/model';
 import { useUserStore } from '@/store';
 import { create } from 'zustand';
 import ChatRepository from '@/api/ChatRepository';
 import { processImageForUpload } from '@/utils';
+
+// 고유한 임시 id를 생성하는 함수
+const generateTempId = (): number => -(Date.now() + Math.floor(Math.random() * 1000));
 
 interface MessageStore {
   text: string;
   messages: Message[];
   isLoading: boolean;
   error: string | null;
-  lastTempId: number;
 
   handleChange: (text: string) => void;
   sendMessage: (roomId: number) => Promise<void>;
@@ -25,29 +27,28 @@ export const useMessageStore = create<MessageStore>((set, get) => ({
   messages: [],
   isLoading: false,
   error: null,
-  lastTempId: 0,
 
   handleChange: (text) => set({ text }),
 
   sendMessage: async (roomId: number) => {
-    const { text, lastTempId } = get();
+    const { text } = get();
     if (!text.trim()) return;
 
     set({ isLoading: true, error: null });
-    const tempId = lastTempId - 1;
+    // 고유한 임시 메시지 id 생성
+    const tempId = generateTempId();
     const tempMessage: Message = {
       id: tempId,
       sender: 'me',
       content: text,
       type: 'TALK',
       createdDate: new Date().toISOString(),
-      status: 'pending', // 전송 시작 상태
+      status: 'pending',
     };
 
     // 임시 메시지 추가 및 텍스트 초기화
     set((state) => ({
       messages: [tempMessage, ...state.messages],
-      lastTempId: tempId,
       text: '',
     }));
 
@@ -55,18 +56,18 @@ export const useMessageStore = create<MessageStore>((set, get) => ({
       const ack = await ChatSocketRepository.sendMessage({
         type: 'TALK',
         roomId,
-        tempId,
+        tempId, // number 타입의 고유 id 사용
         message: text,
       });
 
       const currentUserId = useUserStore.getState().id;
       const realMessage: Message = {
-        id: ack.chat.id,
+        id: ack.chat.id, // 실제 id (양수)
         sender: ack.chat.senderId === currentUserId ? 'me' : ack.chat.senderId.toString(),
         content: ack.chat.message,
         type: ack.chat.type,
         createdDate: ack.chat.createdDate,
-        status: 'sent', // 전송 성공 상태
+        status: 'sent',
       };
 
       // 임시 메시지를 실제 메시지로 대체
@@ -75,7 +76,7 @@ export const useMessageStore = create<MessageStore>((set, get) => ({
         isLoading: false,
       }));
     } catch (error: any) {
-      // 전송 실패 시, 해당 메시지의 상태를 'failed'로 업데이트
+      // 전송 실패 시, 상태를 'failed'로 업데이트
       set((state) => ({
         messages: state.messages.map((msg) =>
           msg.id === tempId ? { ...msg, status: 'failed' } : msg
@@ -87,21 +88,19 @@ export const useMessageStore = create<MessageStore>((set, get) => ({
   },
 
   sendImageMessage: async (roomId: number, file: any) => {
-    const { lastTempId } = get();
     set({ isLoading: true, error: null });
-    const tempId = lastTempId - 1;
+    const tempId = generateTempId();
     const tempMessage: Message = {
       id: tempId,
       sender: 'me',
       content: '',
       type: 'IMAGE',
       createdDate: new Date().toISOString(),
-      status: 'pending', // 임시 상태
+      status: 'pending',
     };
 
     set((state) => ({
       messages: [tempMessage, ...state.messages],
-      lastTempId: tempId,
     }));
 
     try {
@@ -121,7 +120,7 @@ export const useMessageStore = create<MessageStore>((set, get) => ({
         content: imageUrl,
         type: ack.chat.type,
         createdDate: ack.chat.createdDate,
-        status: 'sent', // 전송 성공 상태
+        status: 'sent',
       };
 
       set((state) => ({
@@ -129,7 +128,6 @@ export const useMessageStore = create<MessageStore>((set, get) => ({
         isLoading: false,
       }));
     } catch (error: any) {
-      // 전송 실패 시, 상태를 'failed'로 업데이트
       set((state) => ({
         messages: state.messages.map((msg) =>
           msg.id === tempId ? { ...msg, status: 'failed' } : msg
