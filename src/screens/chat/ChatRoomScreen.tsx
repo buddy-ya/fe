@@ -10,7 +10,7 @@ import {
   NativeScrollEvent,
   Text,
 } from 'react-native';
-import { ChatSocketRepository, RoomRepository, UserRepository } from '@/api';
+import { API, ChatSocketRepository, RoomRepository, UserRepository } from '@/api';
 import {
   ChatOptionModal,
   ReportModal,
@@ -26,6 +26,7 @@ import {
 import { useImageUpload, useRoomStateHandler } from '@/hooks';
 import { Message } from '@/model';
 import { ChatStackParamList } from '@/navigation/navigationRef';
+import { getValidAccessToken } from '@/provider/AuthProvider';
 import { useMessageStore, useModalStore, useUserStore, useToastStore } from '@/store';
 import { ChatListResponse } from '@/types';
 import { useNavigation } from '@react-navigation/native';
@@ -103,6 +104,9 @@ export const ChatRoomScreen: React.FC<ChatRoomScreenProps> = ({ route }) => {
 
   const joinChatRoom = useCallback(async (roomId: number) => {
     try {
+      const validToken = await getValidAccessToken();
+      API.defaults.headers.common['Authorization'] = `Bearer ${validToken}`;
+      await ChatSocketRepository.initialize();
       await ChatSocketRepository.roomIn(roomId);
       console.log('채팅방 입장 성공');
     } catch (error) {

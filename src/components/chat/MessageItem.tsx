@@ -55,15 +55,20 @@ const MessageItem: React.FC<MessageProps> = ({
     }
   }, [message.type, isCurrentUser, isFirstMessage]);
 
-  // 이미지 메시지도 max-w-[70%]로 제한
-  const maxBubbleWidth = 'max-w-[70%]';
+  // 이미지 메시지도 max-w-[70%]로 제한 (텍스트 메시지는 패딩과 배경색 포함)
+  const containerClasses =
+    message.type === 'IMAGE'
+      ? `${bubbleStyle} ${'max-w-[70%]'}`
+      : `px-4 py-2.5 ${bubbleStyle} ${'max-w-[70%]'} ${
+          isCurrentUser ? (isFirstMessage ? 'mt-3 bg-primary' : 'bg-primary') : 'bg-[#F4F4F4]'
+        }`;
 
   const formattedTime = useMemo(() => {
     const date = new Date(message.createdDate);
     return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   }, [message.createdDate]);
 
-  // 메시지 타입에 따라 컨텐츠를 렌더링
+  // 메시지 타입에 따라 컨텐츠 렌더링
   const renderContent = useMemo(() => {
     if (message.type === 'IMAGE') {
       return (
@@ -72,12 +77,13 @@ const MessageItem: React.FC<MessageProps> = ({
             source={{ uri: message.content }}
             style={{ width: 180, height: 180, borderRadius: 10 }}
             contentFit="cover"
-            transition={1000} // 1초 동안 부드러운 전환
+            transition={500}
             placeholder={{ uri: 'https://placehold.co/180x180' }}
           />
         </TouchableOpacity>
       );
     }
+    // TALK 메시지 등
     return (
       <MyText
         size="text-[14px]"
@@ -95,7 +101,7 @@ const MessageItem: React.FC<MessageProps> = ({
     }
   };
 
-  // SYSTEM 메시지면 별도 UI
+  // SYSTEM 메시지면 별도 UI 처리
   if (message.type === 'SYSTEM') {
     return (
       <View className="my-7 items-center justify-center">
@@ -107,14 +113,6 @@ const MessageItem: React.FC<MessageProps> = ({
       </View>
     );
   }
-
-  // 이미지 메시지일 경우 배경, 패딩 제거
-  const containerClasses =
-    message.type === 'IMAGE'
-      ? `${bubbleStyle} ${maxBubbleWidth}`
-      : `px-4 py-2.5 ${bubbleStyle} ${maxBubbleWidth} ${
-          isCurrentUser ? (isFirstMessage ? 'mt-3 bg-primary' : 'bg-primary') : 'bg-[#F4F4F4]'
-        }`;
 
   return (
     <>
@@ -145,7 +143,7 @@ const MessageItem: React.FC<MessageProps> = ({
           >
             {renderContent}
           </TouchableOpacity>
-          {message.type === 'TALK' && (
+          {(message.type === 'TALK' || message.type === 'IMAGE') && (
             <View className="flex-row items-center">
               <MyText className="mx-[5px] self-end text-xs text-gray-500">{formattedTime}</MyText>
               {isCurrentUser && message.status && message.status !== 'sent' && (

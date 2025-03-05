@@ -1,48 +1,89 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Image } from 'react-native';
 import { API, ChatSocketRepository, UserRepository } from '@/api';
 import { TokenService } from '@/service';
 import { useUserStore } from '@/store';
-import { jwtDecode, JwtPayload } from 'jwt-decode';
+import * as SecureStore from 'expo-secure-store';
+import { jwtDecode } from 'jwt-decode';
+import { reissueToken } from '@/api/API';
+import { TOKEN_KEYS, showErrorModal } from '@/utils';
 
 interface Props {
   children: React.ReactNode;
 }
 
-export interface CustomJwtPayload extends JwtPayload {
+export interface CustomJwtPayload {
+  exp: number;
   studentId: number;
 }
 
+// 헬퍼 함수: 토큰 만료 여부 확인 및 재발급 처리
+export async function getValidAccessToken(): Promise<string> {
+  let accessToken = await TokenService.getAccessToken();
+  if (!accessToken) {
+    throw new Error('Access token not found');
+  }
+  const tokenPayload: CustomJwtPayload = jwtDecode(accessToken);
+  const now = Date.now() / 1000;
+  // 토큰 만료 5분 전부터 재발급 시도
+  if (tokenPayload.exp < now + 300) {
+    const refreshToken = await TokenService.getRefreshToken();
+    if (!refreshToken) {
+      throw new Error('Refresh token not found');
+    }
+    try {
+      const { accessToken: newAccessToken } = await reissueToken(refreshToken);
+      // 새 토큰 업데이트
+      await TokenService.setAccessToken(newAccessToken);
+      accessToken = newAccessToken;
+    } catch (error) {
+      // 재발급 실패 시 처리
+      await TokenService.remove();
+      useUserStore.getState().init();
+      showErrorModal('tokenExpired');
+      throw error;
+    }
+  }
+  return accessToken;
+}
+
 export default function AuthProvider({ children }: Props) {
-  const [initLoading, setInitLoading] = useState(false);
+  const [initLoading, setInitLoading] = useState(true);
   const update = useUserStore((state) => state.update);
 
   const getUser = async () => {
-    setInitLoading(true);
     try {
-      let accessToken = await TokenService.getAccessToken();
-      if (accessToken) {
-        // 최초 토큰 설정
-        API.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
-        const token: CustomJwtPayload = jwtDecode(accessToken);
-        const userId = token.studentId;
-
-        // 사용자 정보 호출 (여기서 토큰 재발급 로직이 내부적으로 처리된다면)
-        const user = await UserRepository.get({ id: userId });
-
-        // 만약 토큰이 재발급되었다면 새 토큰으로 업데이트
-        accessToken = await TokenService.getAccessToken();
-        API.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
-
-        update({ ...user, isAuthenticated: true });
-
-        await ChatSocketRepository.initialize();
+      // 토큰이 존재하는지 미리 확인
+      let initialToken = await TokenService.getAccessToken();
+      if (!initialToken) {
+        // 토큰이 없는 경우, 인증되지 않은 상태로 업데이트하고 진행 중단
+        update({ isAuthenticated: false });
+        setInitLoading(false);
+        return;
       }
-      setInitLoading(false);
+
+      // 1. 최신 토큰 확보 및 API 헤더 설정
+      let accessToken = await getValidAccessToken();
+      API.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+
+      // 2. 토큰 페이로드에서 사용자 ID 추출 및 사용자 정보 요청
+      const tokenPayload: CustomJwtPayload = jwtDecode(accessToken);
+      const userId = tokenPayload.studentId;
+      const user = await UserRepository.get({ id: userId });
+
+      // 3. 재확인: 최신 토큰 재확보 (내부에서 재발급이 발생했을 가능성을 고려)
+      accessToken = await getValidAccessToken();
+      API.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+
+      // 4. 사용자 상태 업데이트
+      update({ ...user, isAuthenticated: true });
+
+      // 5. 최신 토큰이 반영된 상태에서 소켓 핸드셰이크 실행
+      await ChatSocketRepository.initialize();
     } catch (e) {
-      console.log(e);
-      setInitLoading(false);
+      console.error(e);
     }
+    setInitLoading(false);
   };
 
   useEffect(() => {
@@ -51,8 +92,11 @@ export default function AuthProvider({ children }: Props) {
 
   if (initLoading)
     return (
-      <View className="flex-1 items-center justify-center">
-        <Image source={require('@assets/images/splash.png')} className="h-full w-full" />
+      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+        <Image
+          source={require('@assets/images/splash.png')}
+          style={{ flex: 1, resizeMode: 'contain' }}
+        />
       </View>
     );
   return <>{children}</>;
