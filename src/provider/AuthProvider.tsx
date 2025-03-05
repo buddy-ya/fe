@@ -20,18 +20,28 @@ export default function AuthProvider({ children }: Props) {
   const getUser = async () => {
     setInitLoading(true);
     try {
-      const accessToken = await TokenService.getAccessToken();
+      let accessToken = await TokenService.getAccessToken();
       if (accessToken) {
+        // 최초 토큰 설정
         API.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
         const token: CustomJwtPayload = jwtDecode(accessToken);
         const userId = token.studentId;
+
+        // 사용자 정보 호출 (여기서 토큰 재발급 로직이 내부적으로 처리된다면)
         const user = await UserRepository.get({ id: userId });
+
+        // 만약 토큰이 재발급되었다면 새 토큰으로 업데이트
+        accessToken = await TokenService.getAccessToken();
+        API.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+
         update({ ...user, isAuthenticated: true });
+
         await ChatSocketRepository.initialize();
       }
       setInitLoading(false);
     } catch (e) {
       console.log(e);
+      setInitLoading(false);
     }
   };
 

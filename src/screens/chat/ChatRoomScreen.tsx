@@ -29,13 +29,12 @@ import { ChatStackParamList } from '@/navigation/navigationRef';
 import { useMessageStore, useModalStore, useUserStore, useToastStore } from '@/store';
 import { ChatListResponse } from '@/types';
 import { useNavigation } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { NativeStackNavigationProp, NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useSuspenseQuery, useInfiniteQuery, useQueryClient } from '@tanstack/react-query';
 import * as Clipboard from 'expo-clipboard';
 import { ImagePickerOptions } from 'expo-image-picker';
 import { EllipsisVertical, ChevronLeft, Image } from 'lucide-react-native';
 import ChatRepository from '@/api/ChatRepository';
-import { Toast } from '@/components/common/Toast';
 
 const IMAGE_PICKER_OPTIONS: ImagePickerOptions = {
   mediaTypes: ['images'],
@@ -45,12 +44,10 @@ const IMAGE_PICKER_OPTIONS: ImagePickerOptions = {
   selectionLimit: 1,
 };
 
-type ChatRoomScreenProps = {
-  route: { params: { id: number } };
-};
+type ChatRoomScreenProps = NativeStackScreenProps<ChatStackParamList, 'ChatRoom'>;
 
 export const ChatRoomScreen: React.FC<ChatRoomScreenProps> = ({ route }) => {
-  const navigation = useNavigation<NativeStackNavigationProp<ChatStackParamList, 'ChatRoom'>>();
+  const navigation = useNavigation<NativeStackNavigationProp<ChatStackParamList>>();
   const { t } = useTranslation('chat');
   const modalVisible = useModalStore((state) => state.visible);
   const handleModalOpen = useModalStore((state) => state.handleOpen);

@@ -15,7 +15,7 @@ export default {
           Chat: {
             screens: {
               ChatRequests: 'chatRequests',
-              ChatRoom: 'chats/:chatId',
+              ChatRoom: 'chats/:id',
             },
           },
         },
