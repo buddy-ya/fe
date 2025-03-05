@@ -1,7 +1,7 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Image, View } from 'react-native';
-import { API } from '@/api';
+import { API, ChatRequestRepository } from '@/api';
 import { getCountryFlag } from '@/utils';
 import MyText from '@/components/common/MyText';
 import { BottomModalWrapper } from './BottomModalWrapper';
@@ -27,7 +27,9 @@ export function ChatRequestModal({ visible, data, onClose }: CommonModalProps) {
 
   const onConfirm = async () => {
     const userId = data?.userId;
-    await API.post(`/chat-requests/${userId}`);
+    try {
+      await ChatRequestRepository.create({ receiverId: userId });
+    } catch (error) {}
   };
 
   return (

@@ -46,6 +46,12 @@ export default function useNotification() {
         const deepLinkUrl = `${prefix}chatRequests`;
         Linking.openURL(deepLinkUrl);
       }
+      if (data?.type === 'CHAT_ACCEPT') {
+        if (data?.roomId) {
+          const deepLinkUrl = `${prefix}chats/${data.roomId}`;
+          Linking.openURL(deepLinkUrl);
+        }
+      }
       if (data?.type === 'CHAT') {
         if (data?.chatroomId) {
           const deepLinkUrl = `${prefix}chats/${data.chatroomId}`;

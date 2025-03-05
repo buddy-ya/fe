@@ -34,7 +34,11 @@ import StudentIdCardCompleteScreen from '@/screens/verification/StudentIdComplet
 import StudentIdCardUploadScreen from '@/screens/verification/StudentIdUploadScreen';
 import { useModalStore, useUserStore, useToastStore } from '@/store';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createNavigationContainerRef, useNavigation } from '@react-navigation/native';
+import {
+  createNavigationContainerRef,
+  useNavigation,
+  getFocusedRouteNameFromRoute,
+} from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import MatchingScreen from '@screens/matching/MatchingScreen';
 import MyPageScreen from '@screens/mypage/MyPageScreen';
@@ -93,10 +97,16 @@ function TabNavigator() {
       <Tab.Screen
         name="Chat"
         component={ChatNavigator}
-        options={() => ({
-          ...getTabScreenOptions('Chat'),
-          tabBarLabel: t('tab.chat'),
-        })}
+        options={({ route }) => {
+          // 현재 ChatNavigator 내부의 활성 스크린 이름을 확인
+          const routeName = getFocusedRouteNameFromRoute(route) ?? 'RoomList';
+          return {
+            ...getTabScreenOptions('Chat'),
+            tabBarLabel: t('tab.chat'),
+            // 활성 스크린이 ChatRoom이면 Tabbar 숨김
+            tabBarStyle: routeName === 'ChatRoom' ? { display: 'none' } : undefined,
+          };
+        }}
         listeners={({ navigation }) => ({
           tabPress: (e) => {
             e.preventDefault();
