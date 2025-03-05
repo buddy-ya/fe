@@ -136,7 +136,11 @@ function TabNavigator() {
 function OnboardingNavigator() {
   return (
     <OnboardingStack.Navigator screenOptions={{ headerShown: false }}>
-      <OnboardingStack.Screen name="OnboardingWelcome" component={WelcomeScreen} />
+      <OnboardingStack.Screen
+        name="OnboardingWelcome"
+        component={WelcomeScreen}
+        options={{ gestureEnabled: false }}
+      />
       <OnboardingStack.Screen name="OnboardingPhone" component={PhoneScreen} />
       <OnboardingStack.Screen
         name="OnboardingPhoneVerification"
@@ -192,7 +196,11 @@ function FeedNavigator() {
 
   return (
     <FeedStack.Navigator screenOptions={{ headerShown: false }}>
-      <FeedStack.Screen name="FeedHome" component={SuspendedHomeScreen} />
+      <FeedStack.Screen
+        name="FeedHome"
+        component={SuspendedHomeScreen}
+        options={{ gestureEnabled: false }}
+      />
       <FeedStack.Screen name="FeedSearch" component={FeedSearchScreen} />
       <FeedStack.Screen name="FeedWrite" component={FeedWriteScreen} />
       <FeedStack.Screen name="FeedDetail" component={SuspendedFeedDetailScreen} />
@@ -238,16 +246,13 @@ function ChatNavigator() {
     const onStateChange = () => {
       const state = navigation.getState();
       const activeTab = state?.routes[state.index];
-      // 내비게이터 상태에서 현재 활성 스크린 이름을 가져옵니다.
       let activeScreen = activeTab?.state?.routes?.[activeTab.state.index as any]?.name;
-      // 만약 activeScreen이 undefined면, deep link로 전달된 params를 fallback으로 사용합니다.
       if (!activeScreen) {
-        activeScreen = route.params?.screen;
+        if (!activeScreen) {
+          activeScreen = (route.params as { screen?: string })?.screen;
+        }
       }
-      console.log('ChatNavigator activeScreen:', activeScreen);
-      // activeScreen이 'ChatRoom'이면 visible false, 그 외에는 visible true
       const visible = activeScreen !== 'ChatRoom';
-      console.log(visible);
       navigation.setOptions({
         tabBarStyle: animateTabBar(visible),
       });
@@ -259,7 +264,11 @@ function ChatNavigator() {
 
   return (
     <ChatStack.Navigator screenOptions={{ headerShown: false }}>
-      <ChatStack.Screen name="RoomList" component={SuspendedRoomListScreen} />
+      <ChatStack.Screen
+        name="RoomList"
+        component={SuspendedRoomListScreen}
+        options={{ gestureEnabled: false }}
+      />
       <ChatStack.Screen name="ChatRoom" component={SuspendedChatRoomScreen} />
       <ChatStack.Screen name="ChatRequests" component={SuspendedRequestsScreen} />
       <ChatStack.Screen name="Profile" component={MyProfileScreen} />
@@ -288,7 +297,11 @@ function MyPageNavigator() {
 
   return (
     <MyPageStack.Navigator screenOptions={{ headerShown: false }}>
-      <MyPageStack.Screen name="MyPageHome" component={MyPageScreen} />
+      <MyPageStack.Screen
+        name="MyPageHome"
+        component={MyPageScreen}
+        options={{ gestureEnabled: false }}
+      />
       <MyPageStack.Screen name="MyProfile" component={MyProfileScreen} />
       <MyPageStack.Screen name="EditProfileImage" component={EditProfileImageScreen} />
       <MyPageStack.Screen name="EditName" component={NameScreen} />

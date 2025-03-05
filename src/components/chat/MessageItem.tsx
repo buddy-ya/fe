@@ -1,12 +1,11 @@
 import React, { useMemo, useState } from 'react';
-import { View, Image, TouchableOpacity } from 'react-native';
+import { View, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { Message } from '@/model';
 import { Room } from '@/types';
+import { Image as ExpoImage } from 'expo-image';
 import { CountryID, getCountryFlag } from '@/utils';
 import { MyText } from '../common';
 import { FullScreenImage } from '../common/FullImage';
-
-// 위에서 만든 컴포넌트 임포트
 
 interface MessageProps {
   message: Message;
@@ -18,6 +17,7 @@ interface MessageProps {
   isLastMessageOfUser: boolean;
   onLongPress?: (content: string) => void;
   onProfilePress?: (senderId: string) => void;
+  onRetry?: (message: Message) => void; // 재전송 기능을 위한 콜백
 }
 
 const MessageItem: React.FC<MessageProps> = ({
@@ -30,6 +30,7 @@ const MessageItem: React.FC<MessageProps> = ({
   isLastMessageOfUser,
   onLongPress,
   onProfilePress,
+  onRetry,
 }) => {
   const [isFullScreen, setIsFullScreen] = useState(false); // 모달 열림 상태
   const { profileImageUrl, country, name } = roomData;
@@ -54,7 +55,7 @@ const MessageItem: React.FC<MessageProps> = ({
     }
   }, [message.type, isCurrentUser, isFirstMessage]);
 
-  // (현재) 이미지 메시지도 max-w-[70%]로 제한
+  // 이미지 메시지도 max-w-[70%]로 제한
   const maxBubbleWidth = 'max-w-[70%]';
 
   const formattedTime = useMemo(() => {
@@ -67,13 +68,16 @@ const MessageItem: React.FC<MessageProps> = ({
     if (message.type === 'IMAGE') {
       return (
         <TouchableOpacity onPress={handleImagePress} activeOpacity={0.8}>
-          <View className="h-[180px] w-[180px] overflow-hidden rounded-xl">
-            <Image source={{ uri: message.content }} resizeMode="cover" className="h-full w-full" />
-          </View>
+          <ExpoImage
+            source={{ uri: message.content }}
+            style={{ width: 180, height: 180, borderRadius: 10 }}
+            contentFit="cover"
+            transition={1000} // 1초 동안 부드러운 전환
+            placeholder={{ uri: 'https://placehold.co/180x180' }}
+          />
         </TouchableOpacity>
       );
     }
-    // TALK, SYSTEM 등
     return (
       <MyText
         size="text-[14px]"
@@ -104,13 +108,24 @@ const MessageItem: React.FC<MessageProps> = ({
     );
   }
 
+  // 이미지 메시지일 경우 배경, 패딩 제거
+  const containerClasses =
+    message.type === 'IMAGE'
+      ? `${bubbleStyle} ${maxBubbleWidth}`
+      : `px-4 py-2.5 ${bubbleStyle} ${maxBubbleWidth} ${
+          isCurrentUser ? (isFirstMessage ? 'mt-3 bg-primary' : 'bg-primary') : 'bg-[#F4F4F4]'
+        }`;
+
   return (
     <>
       <View className="mt-[5px]">
         {shouldShowProfile && isFirstMessage && (
           <View className="mb-[-16px] mt-3 flex-row items-start">
             <TouchableOpacity onPress={() => onProfilePress && onProfilePress(message.sender)}>
-              <Image source={{ uri: profileImageUrl }} className="h-11 w-11 rounded-[14px]" />
+              <ExpoImage
+                source={{ uri: profileImageUrl }}
+                style={{ width: 44, height: 44, borderRadius: 14 }}
+              />
             </TouchableOpacity>
             <View className="ml-2 flex-row items-center">
               <MyText size="text-sm" className="font-semibold">
@@ -126,19 +141,34 @@ const MessageItem: React.FC<MessageProps> = ({
           <TouchableOpacity
             onLongPress={handleLongPress}
             activeOpacity={1}
-            className={`${message.type === 'TALK' ? 'px-4 py-2.5' : ''} ${bubbleStyle} ${maxBubbleWidth} ${
-              isCurrentUser ? (isFirstMessage ? 'mt-3 bg-primary' : 'bg-primary') : 'bg-[#F4F4F4]'
-            }`}
+            className={containerClasses}
           >
             {renderContent}
           </TouchableOpacity>
           {message.type === 'TALK' && (
-            <MyText className="mx-[5px] self-end text-xs text-gray-500">{formattedTime}</MyText>
+            <View className="flex-row items-center">
+              <MyText className="mx-[5px] self-end text-xs text-gray-500">{formattedTime}</MyText>
+              {isCurrentUser && message.status && message.status !== 'sent' && (
+                <>
+                  {message.status === 'pending' ? (
+                    <ActivityIndicator size="small" style={{ marginLeft: 5 }} />
+                  ) : (
+                    <TouchableOpacity
+                      onPress={() => onRetry && onRetry(message)}
+                      style={{ marginLeft: 5 }}
+                    >
+                      <MyText color="text-red" className="">
+                        Retry
+                      </MyText>
+                    </TouchableOpacity>
+                  )}
+                </>
+              )}
+            </View>
           )}
         </View>
       </View>
 
-      {/* 전체화면 이미지 모달: X버튼으로만 닫힘 */}
       <FullScreenImage
         visible={isFullScreen}
         imageUri={message.content}

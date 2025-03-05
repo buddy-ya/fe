@@ -16,10 +16,12 @@ export interface MessageResponse {
 }
 
 // UI에서 사용하는 최종 메시지 타입
+// 기존 Message 타입에 status 프로퍼티 추가
 export interface Message {
   id: number;
   sender: string;
   content: string;
   type: 'TALK' | 'IMAGE' | 'SYSTEM';
   createdDate: string;
+  status?: 'pending' | 'sent' | 'failed';
 }

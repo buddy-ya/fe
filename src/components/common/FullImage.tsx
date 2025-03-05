@@ -1,5 +1,5 @@
 import React from 'react';
-import { Modal, View, TouchableOpacity, Text, Dimensions } from 'react-native';
+import { Modal, View, TouchableOpacity, Text, Dimensions, ActivityIndicator } from 'react-native';
 import ImageViewer from 'react-native-image-zoom-viewer';
 import { X } from 'lucide-react-native';
 import MyText from './MyText';
@@ -35,6 +35,11 @@ export const FullScreenImage: React.FC<FullScreenImageProps> = ({ visible, image
             onSwipeDown={onClose}
             renderIndicator={() => <></>}
             backgroundColor="transparent"
+            loadingRender={() => (
+              <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                <ActivityIndicator size="large" color="#fff" />
+              </View>
+            )}
           />
         </View>
       </View>

@@ -41,8 +41,10 @@ export const useMessageStore = create<MessageStore>((set, get) => ({
       content: text,
       type: 'TALK',
       createdDate: new Date().toISOString(),
+      status: 'pending', // 전송 시작 상태
     };
 
+    // 임시 메시지 추가 및 텍스트 초기화
     set((state) => ({
       messages: [tempMessage, ...state.messages],
       lastTempId: tempId,
@@ -64,15 +66,20 @@ export const useMessageStore = create<MessageStore>((set, get) => ({
         content: ack.chat.message,
         type: ack.chat.type,
         createdDate: ack.chat.createdDate,
+        status: 'sent', // 전송 성공 상태
       };
 
+      // 임시 메시지를 실제 메시지로 대체
       set((state) => ({
         messages: state.messages.map((msg) => (msg.id === tempId ? realMessage : msg)),
         isLoading: false,
       }));
     } catch (error: any) {
+      // 전송 실패 시, 해당 메시지의 상태를 'failed'로 업데이트
       set((state) => ({
-        messages: state.messages.filter((msg) => msg.id !== tempId),
+        messages: state.messages.map((msg) =>
+          msg.id === tempId ? { ...msg, status: 'failed' } : msg
+        ),
         isLoading: false,
         error: error.message || 'Message sending failed',
       }));
@@ -89,6 +96,7 @@ export const useMessageStore = create<MessageStore>((set, get) => ({
       content: '',
       type: 'IMAGE',
       createdDate: new Date().toISOString(),
+      status: 'pending', // 임시 상태
     };
 
     set((state) => ({
@@ -113,6 +121,7 @@ export const useMessageStore = create<MessageStore>((set, get) => ({
         content: imageUrl,
         type: ack.chat.type,
         createdDate: ack.chat.createdDate,
+        status: 'sent', // 전송 성공 상태
       };
 
       set((state) => ({
@@ -120,8 +129,11 @@ export const useMessageStore = create<MessageStore>((set, get) => ({
         isLoading: false,
       }));
     } catch (error: any) {
+      // 전송 실패 시, 상태를 'failed'로 업데이트
       set((state) => ({
-        messages: state.messages.filter((msg) => msg.id !== tempId),
+        messages: state.messages.map((msg) =>
+          msg.id === tempId ? { ...msg, status: 'failed' } : msg
+        ),
         isLoading: false,
         error: error.message || 'Image sending failed',
       }));
