@@ -1,30 +1,31 @@
-import { Fragment } from 'react';
+import React, { Fragment } from 'react';
 import { useTranslation } from 'react-i18next';
-import { View, TouchableOpacity, Image } from 'react-native';
+import { View, TouchableOpacity } from 'react-native';
 import { AuthRepository, UserRepository } from '@/api';
-import { InnerLayout, Layout, MyText } from '@/components';
-import { useBackButton } from '@/hooks';
+import { Layout, InnerLayout, MyText } from '@/components';
 import { MyPageStackParamList } from '@/navigation/navigationRef';
 import { TokenService } from '@/service';
 import { useUserStore } from '@/store';
-import LogoIcon from '@assets/icons/logo.svg';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { Bookmark, ChevronRight, NotebookPen, Settings, ShieldAlert } from 'lucide-react-native';
-import { CountryID, getCountryFlag } from '@/utils';
-import ShieldCheck from './shieldCheck.svg';
+import { ChevronRight } from 'lucide-react-native';
 
 interface SettingItemProps {
-  label: string;
+  emoji: string; // 이모지를 따로 받음
+  label: string; // 번역 텍스트
   onPress: () => void;
+  borderBottom?: boolean;
 }
 
-const SettingItem = ({ label, onPress }: SettingItemProps) => (
+const SettingItem = ({ emoji, label, onPress, borderBottom = true }: SettingItemProps) => (
   <TouchableOpacity
     onPress={onPress}
-    className="flex-row items-center justify-between bg-white px-4 py-4"
+    className={`flex-row items-center justify-between px-4 py-[16px] ${borderBottom ? 'border-b border-borderBottom' : ''}`}
   >
-    <MyText className="text-gray-900">{label}</MyText>
-    <View className="h-2 w-2 rotate-45 border-r border-t border-gray-400" />
+    <View className="flex-row items-center">
+      <MyText className="mr-3 text-lg">{emoji}</MyText>
+      <MyText className="font-medium">{label}</MyText>
+    </View>
+    <ChevronRight color="#636363" width={19} height={19} strokeWidth={1.6} />
   </TouchableOpacity>
 );
 
@@ -32,17 +33,50 @@ type SettingScreenProps = NativeStackScreenProps<MyPageStackParamList, 'Settings
 
 export default function SettingScreen({ navigation }: SettingScreenProps) {
   const { t } = useTranslation('mypage');
-
-  const profileImageUrl = useUserStore((state) => state.profileImageUrl);
-  const name = useUserStore((state) => state.name);
-  const country = useUserStore((state) => state.country);
-  const university = useUserStore((store) => store.university);
   const update = useUserStore((state) => state.update);
-  const isCertificated = useUserStore((state) => state.isCertificated);
 
-  const settingsItems = [
+  // 그룹1: 상단 박스 (문의하기, 이용약관, 개인정보처리방침)
+  const group1 = [
+    {
+      key: 'inquiry',
+      emoji: '💬',
+      label: t('menuItems.inquiry'),
+      onPress: () => {
+        console.log('문의하기 클릭');
+      },
+    },
+    {
+      key: 'terms',
+      emoji: '📃',
+      label: t('menuItems.terms'),
+      onPress: () => {
+        console.log('이용약관 클릭');
+      },
+    },
+    {
+      key: 'privacy',
+      emoji: '🔒',
+      label: t('menuItems.privacy'),
+      onPress: () => {
+        console.log('개인정보처리방침 클릭');
+      },
+    },
+  ];
+
+  // 그룹2: 하단 박스 (로그아웃, 회원탈퇴, 갱신)
+  const group2 = [
+    {
+      key: 'logout',
+      emoji: '🚪',
+      label: t('menuItems.logout'),
+      onPress: async () => {
+        await TokenService.remove();
+        update({ isAuthenticated: false });
+      },
+    },
     {
       key: 'delete',
+      emoji: '👋',
       label: t('menuItems.delete'),
       onPress: async () => {
         await UserRepository.delete();
@@ -52,6 +86,7 @@ export default function SettingScreen({ navigation }: SettingScreenProps) {
     },
     {
       key: 'refresh',
+      emoji: '🔄',
       label: t('menuItems.refresh'),
       onPress: async () => {
         await AuthRepository.refreshStudentCertification();
@@ -59,9 +94,6 @@ export default function SettingScreen({ navigation }: SettingScreenProps) {
         update({ isStudentIdCardRequested: false });
       },
     },
-    { key: 'privacy', label: t('menuItems.privacy'), onPress: () => console.log('privacy') },
-    { key: 'terms', label: t('menuItems.terms'), onPress: () => console.log('terms') },
-    { key: 'version', label: t('menuItems.version'), onPress: () => console.log('version') },
   ];
 
   return (
@@ -77,12 +109,31 @@ export default function SettingScreen({ navigation }: SettingScreenProps) {
       }
     >
       <InnerLayout>
-        <View className="mt-4 bg-white">
-          {settingsItems.map((item) => (
-            <Fragment key={item.key}>
-              <SettingItem label={item.label} onPress={item.onPress} />
-            </Fragment>
-          ))}
+        <View className="mt-4">
+          <View className="rounded-xl bg-white">
+            {group1.map((item, index) => (
+              <Fragment key={item.key}>
+                <SettingItem
+                  emoji={item.emoji}
+                  label={item.label}
+                  onPress={item.onPress}
+                  borderBottom={index < group1.length - 1}
+                />
+              </Fragment>
+            ))}
+          </View>
+          <View className="mt-6 rounded-xl bg-white">
+            {group2.map((item, index) => (
+              <Fragment key={item.key}>
+                <SettingItem
+                  emoji={item.emoji}
+                  label={item.label}
+                  onPress={item.onPress}
+                  borderBottom={index < group2.length - 1}
+                />
+              </Fragment>
+            ))}
+          </View>
         </View>
       </InnerLayout>
     </Layout>
