@@ -38,6 +38,7 @@ import {
   createNavigationContainerRef,
   useNavigation,
   getFocusedRouteNameFromRoute,
+  useRoute,
 } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import MatchingScreen from '@screens/matching/MatchingScreen';
@@ -97,16 +98,10 @@ function TabNavigator() {
       <Tab.Screen
         name="Chat"
         component={ChatNavigator}
-        options={({ route }) => {
-          // 현재 ChatNavigator 내부의 활성 스크린 이름을 확인
-          const routeName = getFocusedRouteNameFromRoute(route) ?? 'RoomList';
-          return {
-            ...getTabScreenOptions('Chat'),
-            tabBarLabel: t('tab.chat'),
-            // 활성 스크린이 ChatRoom이면 Tabbar 숨김
-            tabBarStyle: routeName === 'ChatRoom' ? { display: 'none' } : undefined,
-          };
-        }}
+        options={() => ({
+          ...getTabScreenOptions('Chat'),
+          tabBarLabel: t('tab.chat'),
+        })}
         listeners={({ navigation }) => ({
           tabPress: (e) => {
             e.preventDefault();
@@ -237,15 +232,24 @@ function VerificationNavigator() {
 function ChatNavigator() {
   const navigation = useNavigation();
   const { animateTabBar } = useTabBarAnimation();
+  const route = useRoute();
 
   React.useEffect(() => {
     const onStateChange = () => {
       const state = navigation.getState();
       const activeTab = state?.routes[state.index];
-      const activeScreen = activeTab?.state?.routes?.[activeTab.state.index as any]?.name;
-      const visible = activeScreen === 'RoomList' || activeScreen === undefined;
+      // 내비게이터 상태에서 현재 활성 스크린 이름을 가져옵니다.
+      let activeScreen = activeTab?.state?.routes?.[activeTab.state.index as any]?.name;
+      // 만약 activeScreen이 undefined면, deep link로 전달된 params를 fallback으로 사용합니다.
+      if (!activeScreen) {
+        activeScreen = route.params?.screen;
+      }
+      console.log('ChatNavigator activeScreen:', activeScreen);
+      // activeScreen이 'ChatRoom'이면 visible false, 그 외에는 visible true
+      const visible = activeScreen !== 'ChatRoom';
+      console.log(visible);
       navigation.setOptions({
-        tabBarStyle: animateTabBar(!!visible),
+        tabBarStyle: animateTabBar(visible),
       });
     };
 

@@ -113,6 +113,7 @@ export const ChatRoomScreen: React.FC<ChatRoomScreenProps> = ({ route }) => {
   const leaveChatRoom = useCallback(async () => {
     try {
       await ChatSocketRepository.roomBack(roomId);
+      console.log('채팅방 퇴장 성공');
       queryClient.invalidateQueries({ queryKey: ['roomList'] });
     } catch (error) {
       console.error('채팅방 뒤로가기 실패', error);

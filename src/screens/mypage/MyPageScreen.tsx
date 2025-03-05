@@ -107,7 +107,6 @@ export default function MyPageScreen({ navigation }: MyPageScreenProps) {
             <ChevronRight size={24} color="#CBCBCB" />
           </View>
         </TouchableOpacity>
-        {visible && <Toast visible={visible} icon={icon!} text={text} onClose={hideToast} />}
         <View className="mt-3 flex-row justify-around rounded-[20px] bg-white py-5">
           {quickMenuItems.map(({ key, label, icon, onPress }) => (
             <TouchableOpacity key={key} className="items-center" onPress={onPress}>
