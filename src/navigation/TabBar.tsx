@@ -1,5 +1,7 @@
 import React from 'react';
+import { View, Text } from 'react-native';
 import { Animated, StyleSheet } from 'react-native';
+import { useChatRoomStore } from '@/store';
 import { BottomTabNavigationOptions } from '@react-navigation/bottom-tabs';
 import { Home, User, Users, Send } from 'lucide-react-native';
 import { isAndroid } from '@/utils';
@@ -63,9 +65,29 @@ export const tabScreenOptions: BottomTabNavigationOptions = {
 export const getTabScreenOptions = (routeName: keyof typeof TAB_CONFIG) => {
   const { Icon, translationKey } = TAB_CONFIG[routeName];
   return {
-    tabBarIcon: ({ focused, color }: { focused: boolean; color: string }) => (
-      <Icon strokeWidth={1} size={24} color={color} fill={focused ? '#282828' : 'transparent'} />
-    ),
+    tabBarIcon: ({ focused, color }: { focused: boolean; color: string }) => {
+      if (routeName === 'Chat') {
+        const totalUnreadCount = useChatRoomStore((state) => state.totalUnreadCount);
+        return (
+          <View className="relative">
+            <Icon
+              strokeWidth={1}
+              size={24}
+              color={color}
+              fill={focused ? '#282828' : 'transparent'}
+            />
+            {totalUnreadCount > 0 && (
+              <View className="absolute -right-2 -top-1 h-[16px] min-w-[16px] items-center justify-center rounded-full bg-primary px-1">
+                <Text className="font-bold text-[10px] text-white">{totalUnreadCount}</Text>
+              </View>
+            )}
+          </View>
+        );
+      }
+      return (
+        <Icon strokeWidth={1} size={24} color={color} fill={focused ? '#282828' : 'transparent'} />
+      );
+    },
     tabBarLabel: translationKey,
   };
 };
@@ -79,13 +101,12 @@ export const useTabBarAnimation = () => {
       Animated.timing(translateY, {
         toValue: visible ? 0 : 100,
         useNativeDriver: true,
-        duration: 100, // 🚀 빠르게 설정 (기본값 150 → 100ms)
+        duration: 100,
       }),
-
       Animated.timing(opacity, {
         toValue: visible ? 1 : 0,
         useNativeDriver: true,
-        duration: 100, // 🚀 더 빠르게 (기본값 150 → 100ms)
+        duration: 100,
       }),
     ]).start();
 
