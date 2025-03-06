@@ -16,10 +16,7 @@ export default function RoomItem({ room, onPress }: RoomItemProps) {
     onPress?.(id);
   };
 
-  const computedUnreadCount =
-    unreadCount > 999 ? unreadCount.toString().slice(0, 3) + '+' : unreadCount.toString();
-
-  const isNewMessage = unreadCount > 0 || lastMessage === null;
+  const isNewMessage = unreadCount > 0;
 
   return (
     <TouchableOpacity onPress={handleClick} activeOpacity={0.7}>

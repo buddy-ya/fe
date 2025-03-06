@@ -1,6 +1,5 @@
-import { Suspense, useState } from 'react';
-import { ErrorBoundary } from 'react-error-boundary';
-import { TouchableOpacity, View } from 'react-native';
+import { useState } from 'react';
+import { TouchableOpacity, View, Text } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { feedKeys, FeedRepository } from '@/api';
 import { Button, CategoryPager, FeedList, InnerLayout, Layout } from '@/components';
@@ -11,7 +10,6 @@ import LogoIcon from '@assets/icons/logo.svg';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { Bell, Plus, Search } from 'lucide-react-native';
 import { isAndroid, CATEGORIES } from '@/utils';
-import Skeleton from '../Skeleton';
 
 type FeedHomeScreenProps = NativeStackScreenProps<FeedStackParamList, 'FeedHome'>;
 
@@ -23,11 +21,12 @@ export function HomeScreen({ navigation, route }: FeedHomeScreenProps) {
 
   const feedListData = useFeedList({
     queryKey: feedKeys.lists(activeCategory),
-    fetchFn: (params) =>
-      FeedRepository.getAll({
+    fetchFn: async (params) => {
+      return FeedRepository.getAll({
         ...params,
         category: activeCategory,
-      }),
+      });
+    },
     staleTime: STALE_TIME,
   });
 
@@ -48,7 +47,7 @@ export function HomeScreen({ navigation, route }: FeedHomeScreenProps) {
 
   return (
     <Layout
-      hasTabBar={true}
+      hasTabBar
       showHeader
       headerLeft={<LogoIcon />}
       headerRight={
@@ -89,7 +88,7 @@ export function HomeScreen({ navigation, route }: FeedHomeScreenProps) {
           <Button
             type="circle"
             onPress={handleWriteButton}
-            className={`absolute right-0`}
+            className="absolute right-0"
             containerStyle={{
               bottom: writeButtonPosition,
             }}
@@ -100,29 +99,3 @@ export function HomeScreen({ navigation, route }: FeedHomeScreenProps) {
     </Layout>
   );
 }
-
-export const SuspendedHomeScreen = (props: FeedHomeScreenProps) => {
-  const SkeletonChip = () => {
-    return <View className="mr-4 h-10 w-20 animate-pulse rounded-full bg-[#e0e0e0]"></View>;
-  };
-  return (
-    <ErrorBoundary fallback={<></>}>
-      <Suspense
-        fallback={
-          <Layout showHeader disableBottomSafeArea onBack={() => props.navigation.goBack()}>
-            <InnerLayout>
-              <View className="w-full flex-row">
-                {[...Array(3)].map((_, index) => (
-                  <SkeletonChip key={index} />
-                ))}
-              </View>
-              <Skeleton />
-            </InnerLayout>
-          </Layout>
-        }
-      >
-        <HomeScreen {...props} />
-      </Suspense>
-    </ErrorBoundary>
-  );
-};
