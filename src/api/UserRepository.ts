@@ -37,7 +37,7 @@ class UserRepository {
   }
 
   async block({ userId }: { userId: number }) {
-    await API.post(`/block/${userId}`);
+    await API.post(`/users/block/${userId}`);
   }
 
   async delete() {

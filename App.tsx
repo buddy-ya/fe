@@ -16,7 +16,7 @@ export const navigationRef = createNavigationContainerRef();
 
 export default function App() {
   const queryClient = new QueryClient();
-  const { visible, icon, text, hideToast } = useToastStore();
+  const { visible, icon, text, duration, hideToast } = useToastStore();
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -27,7 +27,13 @@ export default function App() {
               <AuthProvider>
                 <NavigationContainer ref={navigationRef} linking={linking}>
                   <Router />
-                  <Toast visible={visible} icon={icon!} text={text} onClose={hideToast} />
+                  <Toast
+                    visible={visible}
+                    icon={icon!}
+                    text={text}
+                    duration={duration}
+                    onClose={hideToast}
+                  />
                 </NavigationContainer>
               </AuthProvider>
             </GestureHandlerRootView>

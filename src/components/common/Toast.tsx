@@ -6,12 +6,12 @@ interface ToastProps {
   visible: boolean;
   icon: JSX.Element | string;
   text: string;
+  duration?: number;
   onClose: () => void;
 }
 
-export function Toast({ visible, icon, text, onClose }: ToastProps) {
+export function Toast({ visible, icon, text, duration = 1200, onClose }: ToastProps) {
   const fadeAnim = useRef(new Animated.Value(0)).current;
-  const DURATION = 1000;
   const ANIMATION_DURATION = 300;
 
   useEffect(() => {
@@ -34,17 +34,17 @@ export function Toast({ visible, icon, text, onClose }: ToastProps) {
             onClose();
           }
         });
-      }, DURATION);
+      }, duration);
 
       return () => clearTimeout(timer);
     }
-  }, [visible, fadeAnim, onClose]);
+  }, [visible, fadeAnim, duration, onClose]);
 
   if (!visible) return null;
 
   return (
     <Animated.View
-      className="absolute bottom-20 left-10 right-10 flex-row items-center rounded-[12px] bg-toastBackground px-5 py-4"
+      className="absolute bottom-[100px] left-10 right-10 flex-row items-center rounded-[12px] bg-toastBackground px-5 py-4"
       style={{
         opacity: fadeAnim,
         transform: [

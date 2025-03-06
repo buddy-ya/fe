@@ -1,8 +1,5 @@
-import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { ChatSocketRepository } from '@/api';
 import { useToastStore } from '@/store';
-import { useNavigation } from '@react-navigation/native';
 import { MyText } from '../common';
 import { StandardModal } from './Common';
 
@@ -10,19 +7,17 @@ interface ExitModalProps {
   visible: boolean;
   roomId: number;
   onClose: () => void;
+  onExit: () => Promise<void>;
 }
 
-export function ExitModal({ visible, roomId, onClose }: ExitModalProps) {
+export function ExitModal({ visible, roomId, onClose, onExit }: ExitModalProps) {
   const { t } = useTranslation('common');
-  const navigation = useNavigation<any>();
-
   const { showToast } = useToastStore();
 
   const handleExit = async () => {
-    await ChatSocketRepository.roomOut(roomId);
     onClose();
-    navigation.goBack();
-    showToast(<MyText>🚪</MyText>, t('toast.exitSuccess'));
+    await onExit();
+    showToast(<MyText>🚪</MyText>, t('toast.exitSuccess'), 2000);
   };
 
   return (

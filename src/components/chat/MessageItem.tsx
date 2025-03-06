@@ -77,8 +77,6 @@ const MessageItem: React.FC<MessageProps> = ({
             source={{ uri: message.content }}
             style={{ width: 180, height: 180, borderRadius: 10 }}
             contentFit="cover"
-            transition={500}
-            placeholder={{ uri: 'https://placehold.co/180x180' }}
           />
         </TouchableOpacity>
       );
@@ -120,7 +118,7 @@ const MessageItem: React.FC<MessageProps> = ({
             <TouchableOpacity onPress={() => onProfilePress && onProfilePress(message.sender)}>
               <ExpoImage
                 source={{ uri: profileImageUrl }}
-                style={{ width: 44, height: 44, borderRadius: 14 }}
+                style={{ width: 40, height: 40, borderRadius: 14 }}
               />
             </TouchableOpacity>
             <View className="ml-2 flex-row items-center">

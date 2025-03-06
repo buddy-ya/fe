@@ -21,11 +21,13 @@
   },
   "modal": {
     "report": {
-      "title": "신고하기",
-      "description": "신고를 완료하시면 해당 채팅방에서 자동으로 나가집니다.",
+      "title": "신고",
+      "description": "신고 시 자동으로 채팅방을 나가게 됩니다.",
       "cancel": "아니오",
       "accept": "신고",
-      "placeholder": "신고 사유를 적어주세요."
+      "placeholder": "신고 사유를 입력해 주세요.",
+      "errorTitle": "오류",
+      "errorMessage": "유효한 신고 사유를 입력해 주세요."
     },
     "block": {
       "title": "사용자 차단",

@@ -56,7 +56,7 @@ export const ChatRoomScreen: React.FC<ChatRoomScreenProps> = ({ route }) => {
   const CURRENT_USER_ID = useUserStore((state) => state.id);
   const { text, messages, setMessage, handleChange, sendMessage, sendImageMessage } =
     useMessageStore();
-  const { visible, icon, text: toastText, showToast, hideToast } = useToastStore();
+  const { text: toastText, showToast } = useToastStore();
   const flatListRef = useRef<FlatList<any>>(null);
   const [scrollOffset, setScrollOffset] = useState(0);
   const roomId = route.params.id;
@@ -275,22 +275,6 @@ export const ChatRoomScreen: React.FC<ChatRoomScreenProps> = ({ route }) => {
     handleModalOpen('exit');
   }, [handleModalClose, handleModalOpen]);
 
-  const handleReport = async (reason: string) => {
-    try {
-      console.log(roomData);
-      await UserRepository.report({
-        type: 'CHATROOM',
-        reportedId: roomId,
-        reportedUserId: roomData!.buddyId,
-        reason: reason.trim(),
-      });
-      await handleExit();
-      showToast(<MyText>🙌</MyText>, t('toast.reportSuccess'));
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   const handleExit = async () => {
     await ChatSocketRepository.roomOut(roomId);
     navigation.reset({
@@ -298,6 +282,8 @@ export const ChatRoomScreen: React.FC<ChatRoomScreenProps> = ({ route }) => {
       routes: [{ name: 'RoomList' }],
     });
   };
+
+  if (!roomData || !chatData) return null;
 
   return (
     <Layout
@@ -375,32 +361,36 @@ export const ChatRoomScreen: React.FC<ChatRoomScreenProps> = ({ route }) => {
           )}
         </InnerLayout>
       </KeyboardLayout>
-      {roomData && (
-        <>
-          <ChatOptionModal
-            visible={modalVisible.chat}
-            onClose={() => handleModalClose('chat')}
-            onReport={handleReportOption}
-            onBlock={handleBlockOption}
-            onExit={handleExitOption}
-          />
-          <ReportModal
-            visible={modalVisible.report}
-            onAccept={handleReport}
-            onClose={() => handleModalClose('report')}
-          />
-          <BlockModal
-            visible={modalVisible.block}
-            roomId={roomId}
-            onClose={() => handleModalClose('block')}
-          />
-          <ExitModal
-            visible={modalVisible.exit}
-            roomId={roomId}
-            onClose={() => handleModalClose('exit')}
-          />
-        </>
-      )}
+      <>
+        <ChatOptionModal
+          visible={modalVisible.chat}
+          onClose={() => handleModalClose('chat')}
+          onReport={handleReportOption}
+          onBlock={handleBlockOption}
+          onExit={handleExitOption}
+        />
+        <ReportModal
+          visible={modalVisible.report}
+          type="CHATROOM"
+          reportedId={roomId}
+          reportedUserId={roomData.buddyId}
+          onClose={() => handleModalClose('report')}
+          onReportSuccess={handleExit}
+        />
+        <BlockModal
+          visible={modalVisible.block}
+          buddyId={roomData.buddyId}
+          roomId={roomId}
+          onClose={() => handleModalClose('block')}
+          onBlockSuccess={handleExit}
+        />
+        <ExitModal
+          visible={modalVisible.exit}
+          roomId={roomId}
+          onClose={() => handleModalClose('exit')}
+          onExit={handleExit}
+        />
+      </>
     </Layout>
   );
 };

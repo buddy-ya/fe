@@ -25,7 +25,9 @@
       "description": "Once reported, you will automatically leave the chatroom.",
       "cancel": "No",
       "accept": "Report",
-      "placeholder": "Enter reason for report."
+      "placeholder": "Enter reason for report.",
+      "errorTitle": "Error",
+      "errorMessage": "Please enter a valid reason for reporting."
     },
     "block": {
       "title": "Block User",

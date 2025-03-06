@@ -1,26 +1,53 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Alert, TextInput } from 'react-native';
+import { Alert, TextInput, Text } from 'react-native';
+import { UserRepository } from '@/api';
+import { useToastStore } from '@/store';
+import { logError } from '@/utils';
 import { StandardModal } from './Common';
 
 interface ReportModalProps {
   visible: boolean;
+  type: 'CHATROOM' | 'FEED' | 'COMMENT';
+  reportedId: number;
+  reportedUserId: number;
   onClose: () => void;
-  onAccept: (reason: string) => void;
+  onReportSuccess?: () => Promise<void>;
 }
 
-export function ReportModal({ visible, onClose, onAccept }: ReportModalProps) {
+export function ReportModal({
+  visible,
+  type,
+  reportedId,
+  reportedUserId,
+  onClose,
+  onReportSuccess,
+}: ReportModalProps) {
   const { t } = useTranslation('common');
   const [reason, setReason] = useState('');
+  const { showToast } = useToastStore();
 
-  const handleAccept = () => {
+  const handleAccept = async () => {
     if (!reason.trim()) {
       Alert.alert(t('modal.report.errorTitle'), t('modal.report.errorMessage'));
       return;
     }
-    onAccept(reason.trim());
-    setReason('');
-    onClose();
+    try {
+      await UserRepository.report({
+        type,
+        reportedId,
+        reportedUserId,
+        reason: reason.trim(),
+      });
+      if (type === 'CHATROOM' && onReportSuccess) {
+        await onReportSuccess();
+      }
+      showToast(<Text>🙌</Text>, t('toast.reportSuccess'), 2000);
+    } catch (error) {
+      logError(error);
+    } finally {
+      handleCancel();
+    }
   };
 
   const handleCancel = () => {

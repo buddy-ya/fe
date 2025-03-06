@@ -1,27 +1,34 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { ChatSocketRepository } from '@/api';
+import { ChatSocketRepository, UserRepository } from '@/api';
 import { useToastStore } from '@/store';
 import { useNavigation } from '@react-navigation/native';
+import { logError } from '@/utils';
 import { MyText } from '../common';
 import { StandardModal } from './Common';
 
 interface BlockModalProps {
   visible: boolean;
   roomId: number;
+  buddyId: number;
   onClose: () => void;
+  onBlockSuccess?: () => Promise<void>;
 }
 
-export function BlockModal({ visible, roomId, onClose }: BlockModalProps) {
+export function BlockModal({ visible, roomId, buddyId, onClose, onBlockSuccess }: BlockModalProps) {
   const { t } = useTranslation('common');
-  const navigation = useNavigation<any>();
   const { showToast } = useToastStore();
-
   const handleBlock = async () => {
-    await ChatSocketRepository.roomOut(roomId);
-    onClose();
-    navigation.goBack();
-    showToast(<MyText>🚫</MyText>, t('toast.blockSuccess'));
+    try {
+      await UserRepository.block({ userId: buddyId });
+      onClose();
+      if (onBlockSuccess) {
+        await onBlockSuccess();
+      }
+      showToast(<MyText>🚫</MyText>, t('toast.blockSuccess'), 2000);
+    } catch (error) {
+      logError(error);
+    }
   };
 
   return (
