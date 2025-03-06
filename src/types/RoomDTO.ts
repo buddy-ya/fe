@@ -22,4 +22,5 @@ export interface Room {
 export interface RoomListResponse {
   rooms: Room[];
   totalUnreadCount: number;
+  hasChatRequest: boolean;
 }

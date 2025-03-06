@@ -45,7 +45,7 @@ export default function RoomListScreen({ navigation }: RoomListNavigationProps) 
     await refetch();
   };
 
-  const { rooms, totalUnreadCount } = data;
+  const { rooms, totalUnreadCount, hasChatRequest } = data;
 
   return (
     <Layout
@@ -54,11 +54,14 @@ export default function RoomListScreen({ navigation }: RoomListNavigationProps) 
       headerLeft={<LogoIcon />}
       headerRight={
         <TouchableOpacity
-          className="p-2"
+          className="relative p-1"
           onPress={handleGoToRequests}
           hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}
         >
           <UserRoundPlus strokeWidth={1.3} size={24} color={'#797979'} />
+          {hasChatRequest && (
+            <View className="absolute right-2 top-2 h-2 w-2 rounded-full bg-primary"></View>
+          )}
         </TouchableOpacity>
       }
     >
