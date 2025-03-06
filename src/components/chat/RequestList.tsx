@@ -1,3 +1,5 @@
+import { useTransition } from 'react';
+import { useTranslation } from 'react-i18next';
 import { RefreshControl, RefreshControlProps } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import { ChatRequest } from '@/types';
@@ -12,9 +14,8 @@ interface RequestListProps {
   onLoadMore?: () => void;
   onProfilePress?: (id: number) => void;
   onDecline?: (chatRequestId: number) => void;
-  onAccept?: (receiverId: number) => void;
+  onAccept?: (senderId: number, chatRequestId: number) => void;
   refreshControl?: RefreshControlProps | null;
-  emptyStateMessage?: string;
 }
 
 export default function RequestList({
@@ -27,10 +28,16 @@ export default function RequestList({
   onDecline,
   onAccept,
   refreshControl,
-  emptyStateMessage,
 }: RequestListProps) {
+  const { t } = useTranslation('common');
+
   if (requests.length === 0) {
-    return <EmptyState message={emptyStateMessage || '요청이 없습니다.'} />;
+    return (
+      <EmptyState
+        title={t('emptyState.request.title')}
+        description={t('emptyState.request.description')}
+      />
+    );
   }
 
   return (

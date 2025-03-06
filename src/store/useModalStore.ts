@@ -1,16 +1,19 @@
 import { create } from 'zustand';
 
-type ModalType = keyof ModalState['visible'];
+type ModalType =
+  | 'comment'
+  | 'feed'
+  | 'studentCertification'
+  | 'category'
+  | 'chatRequest'
+  | 'chat'
+  | 'myProfile'
+  | 'report'
+  | 'block'
+  | 'exit';
 
 interface ModalState {
-  visible: {
-    comment: boolean;
-    feed: boolean;
-    studentCertification: boolean;
-    category: boolean;
-    chatRequest: boolean;
-    myProfile: boolean;
-  };
+  visible: Record<ModalType, boolean>;
 }
 
 interface ModalAction {
@@ -19,14 +22,17 @@ interface ModalAction {
 }
 
 export const useModalStore = create<ModalState & ModalAction>((set) => ({
-  // 초기 상태
   visible: {
     comment: false,
     feed: false,
     studentCertification: false,
     category: false,
     chatRequest: false,
+    chat: false,
     myProfile: false,
+    report: false,
+    block: false,
+    exit: false,
   },
   handleOpen: (type) => set((state) => ({ visible: { ...state.visible, [type]: true } })),
   handleClose: (type) => set((state) => ({ visible: { ...state.visible, [type]: false } })),

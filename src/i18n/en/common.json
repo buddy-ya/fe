@@ -4,5 +4,47 @@
     "matching": "Matching",
     "chat": "Chat",
     "my": "My"
+  },
+  "emptyState": {
+    "feed": {
+      "title": "No feeds yet.",
+      "description": "Create your first feed\nand communicate with various global buddies!"
+    },
+    "chat": {
+      "title": "No chats yet.",
+      "description": "Start a chat now and connect with more global buddies!"
+    },
+    "request": {
+      "title": "No requests yet.",
+      "description": "Upload a feed, leave comments,\nand connect with more global buddies!"
+    }
+  },
+  "modal": {
+    "report": {
+      "title": "Report",
+      "description": "Once reported, you will automatically leave the chatroom.",
+      "cancel": "No",
+      "accept": "Report",
+      "placeholder": "Enter reason for report.",
+      "errorTitle": "Error",
+      "errorMessage": "Please enter a valid reason for reporting."
+    },
+    "block": {
+      "title": "Block User",
+      "description": "This action cannot be undone. Are you sure you want to continue?",
+      "cancel": "No",
+      "confirm": "Yes"
+    },
+    "exit": {
+      "title": "Leave Chatroom",
+      "description": "If you leave, you cannot rejoin this chatroom. Are you sure?",
+      "cancel": "No",
+      "accept": "Yes"
+    }
+  },
+  "toast": {
+    "reportSuccess": "Report submitted successfully!",
+    "blockSuccess": "User has been blocked successfully!",
+    "exitSuccess": "You have left the chat."
   }
 }

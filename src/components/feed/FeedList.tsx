@@ -1,4 +1,5 @@
 import { memo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { FlatList, RefreshControl, RefreshControlProps } from 'react-native';
 import { Feed } from '@/types/FeedDTO';
 import { EmptyState } from '../common';
@@ -8,7 +9,7 @@ interface FeedListProps {
   feeds: Feed[];
   onLike?: (id: number) => void;
   onBookmark?: (id: number) => void;
-  onView?: (id:number) => void;
+  onView?: (id: number) => void;
   onPress: (id: number) => void;
   isLoading: boolean;
   hasMore: boolean;
@@ -28,10 +29,16 @@ function FeedList({
   onLoadMore,
   refreshControl,
   hasMore,
-  emptyStateMessage,
 }: FeedListProps) {
+  const { t } = useTranslation('common');
+
   if (feeds.length === 0) {
-    return <EmptyState message={emptyStateMessage || '게시글이 없습니다'} />;
+    return (
+      <EmptyState
+        title={t('emptyState.feed.title')}
+        description={t('emptyState.feed.description')}
+      />
+    );
   }
 
   return (

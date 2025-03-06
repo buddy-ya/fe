@@ -1,4 +1,4 @@
-import { User } from '@/types';
+import { ReportDTO, User } from '@/types';
 import API from './API';
 
 class UserRepository {
@@ -30,6 +30,14 @@ class UserRepository {
       },
     });
     return data;
+  }
+
+  async report(dto: ReportDTO): Promise<void> {
+    await API.post('/report', dto);
+  }
+
+  async block({ userId }: { userId: number }) {
+    await API.post(`/users/block/${userId}`);
   }
 
   async delete() {

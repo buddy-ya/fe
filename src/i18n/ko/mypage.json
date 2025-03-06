@@ -49,11 +49,13 @@
     "myPosts": "내가 쓴 글",
     "notifications": "알림 설정",
     "language": "언어 설정",
-    "privacy": "개인정보 설정",
-    "terms": "이용약관",
     "version": "앱 버전",
-    "delete": "회원탈퇴",
-    "refresh": "학생 인증 초기화"
+    "refresh": "학생 인증 초기화",
+    "inquiry": "문의하기",
+    "terms": "이용약관",
+    "privacy": "개인정보처리방침",
+    "logout": "로그아웃",
+    "delete": "회원탈퇴"
   },
   "myPostsEmpty": "아직 글이 없어요",
   "common": {

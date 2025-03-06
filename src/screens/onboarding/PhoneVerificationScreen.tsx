@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
-import { AuthRepository } from '@/api';
+import { AuthRepository, ChatSocketRepository } from '@/api';
 import {
   ErrorMessage,
   FooterLayout,

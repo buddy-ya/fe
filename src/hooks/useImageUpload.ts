@@ -1,97 +1,66 @@
-import { useState } from "react";
-import { Alert } from "react-native";
-import { ImageFile } from "@/types";
-import { ImagePickerOptions, launchCameraAsync, launchImageLibraryAsync, requestCameraPermissionsAsync, requestMediaLibraryPermissionsAsync } from "expo-image-picker";
-
+// useImageUpload.ts
+import { useState } from 'react';
+import { Alert } from 'react-native';
+import { ImageFile } from '@/types';
+import {
+  ImagePickerOptions,
+  launchImageLibraryAsync,
+  requestMediaLibraryPermissionsAsync,
+} from 'expo-image-picker';
 
 interface UseImageUploadProps {
-  options?: ImagePickerOptions
+  options?: Partial<ImagePickerOptions>;
   initialImages?: ImageFile[];
 }
 
-export const useImageUpload = ({
-  options,
-  initialImages = [],
-}: UseImageUploadProps) => {
+export const useImageUpload = ({ options, initialImages = [] }: UseImageUploadProps) => {
   const [images, setImages] = useState<ImageFile[]>(initialImages);
   const [loading, setLoading] = useState(false);
 
   const IMAGE_PICKER_OPTIONS: ImagePickerOptions = {
-    mediaTypes: ["images"],
+    mediaTypes: ['images'],
     allowsEditing: options?.allowsEditing ?? false,
     quality: options?.quality ?? 0.8,
-    allowsMultipleSelection: options?.allowsMultipleSelection ?? true,
-    selectionLimit: options?.selectionLimit ?? 5,
+    allowsMultipleSelection: options?.allowsMultipleSelection,
+    selectionLimit: options?.selectionLimit,
   };
 
-  const handleUpload = async () => {
+  // handleUpload: 선택한 이미지 배열을 반환하도록 수정
+  const handleUpload = async (): Promise<ImageFile[] | null> => {
     setLoading(true);
-    await requestMediaLibraryPermissionsAsync();
+    const { status } = await requestMediaLibraryPermissionsAsync();
+    if (status !== 'granted') {
+      Alert.alert('Error', '미디어 라이브러리 권한이 필요합니다.');
+      setLoading(false);
+      return null;
+    }
     try {
       const result = await launchImageLibraryAsync({
         ...IMAGE_PICKER_OPTIONS,
       });
-
-      if (!result.canceled) {
+      if (!result.canceled && result.assets.length > 0) {
         const newImages = result.assets.map((asset) => ({
           uri: asset.uri,
-          type: "image/jpeg",
-          fileName: asset.uri.split("/").pop() || "image.jpg",
+          type: 'image/jpeg',
+          fileName: asset.uri.split('/').pop() || 'image.jpg',
           width: asset.width,
           height: asset.height,
         }));
-
-        setImages((prev) => {
-          const updatedImages = [...prev, ...newImages];
-          return updatedImages.slice(0, 5);
-        });
+        setImages(newImages.slice(0, options?.selectionLimit));
+        return newImages.slice(0, options?.selectionLimit);
       }
+      return null;
     } catch (error) {
-      Alert.alert("Error", "Failed to load images");
+      Alert.alert('Error', '이미지 로드에 실패했습니다.');
+      return null;
     } finally {
       setLoading(false);
     }
-  };
-
-  const handlePhoto = async () => {
-    setLoading(true);
-    await requestCameraPermissionsAsync();
-    try {
-      const result = await launchCameraAsync({
-        ...IMAGE_PICKER_OPTIONS,
-        allowsMultipleSelection: false,
-      });
-
-      if (!result.canceled) {
-        const newImage = {
-          uri: result.assets[0].uri,
-          type: "image/jpeg",
-          fileName: `camera_${Date.now()}.jpg`,
-          width: result.assets[0].width,
-          height: result.assets[0].height,
-        };
-
-        setImages((prev) => {
-          const updatedImages = [...prev, newImage];
-          return updatedImages.slice(0, 5);
-        });
-      }
-    } catch (error) {
-      Alert.alert("Error", "Failed to take photo");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const removeImage = (index: number) => {
-    setImages((prev) => prev.filter((_, i) => i !== index));
   };
 
   return {
     images,
     handleUpload,
-    handlePhoto,
-    removeImage,
     loading,
   };
 };

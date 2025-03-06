@@ -15,6 +15,11 @@ export const TokenService = {
     return SecureStore.getItemAsync(TOKEN_KEYS.REFRESH);
   },
 
+  async setAccessToken(accessToken: string) {
+    await SecureStore.setItemAsync(TOKEN_KEYS.ACCESS, accessToken);
+    API.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+  },
+
   async save(accessToken: string, refreshToken: string | null) {
     await SecureStore.setItemAsync(TOKEN_KEYS.ACCESS, accessToken);
     API.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;

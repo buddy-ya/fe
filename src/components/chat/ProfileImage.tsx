@@ -8,7 +8,7 @@ export function ProfileImage({ imageUrl, onPress }: ImageViewProps) {
   const renderer = () => {
     return (
       <View>
-        <Image className="h-[49px] w-[49px] rounded-[12px]" source={{ uri: imageUrl }} />
+        <Image className="h-[48px] w-[48px] rounded-[12px]" source={{ uri: imageUrl }} />
       </View>
     );
   };
@@ -22,7 +22,7 @@ export function ProfileImage({ imageUrl, onPress }: ImageViewProps) {
   }
   return (
     <View>
-      <Image className="h-[49px] w-[49px] rounded-[12px]" source={{ uri: imageUrl }} />
+      <Image className="h-[48px] w-[48px] rounded-[12px]" source={{ uri: imageUrl }} />
     </View>
   );
 }

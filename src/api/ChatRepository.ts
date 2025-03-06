@@ -1,29 +1,30 @@
-import { ChatRequest } from '@/types';
+import { ChatListResponse, ChatDTO } from '@/types/ChatDTO';
 import API from './API';
 
-const url = '/chat-requests';
-
 class ChatRepository {
-  async get({ receiverId }: { receiverId: number }): Promise<{
-    isAlreadyExistChatRequest: boolean;
-    isAlreadyExistChatroom: boolean;
-  }> {
-    const { data } = await API.get(`${url}/${receiverId}`);
+  async getChats({ roomId, page = 0, size = 15 }: ChatDTO): Promise<ChatListResponse> {
+    const { data } = await API.get(`/rooms/${roomId}/chats?page=${page}&size=${size}`);
     return data;
   }
 
-  async getRequestList(): Promise<ChatRequest[]> {
-    const { data } = await API.get(`${url}`);
-    return data;
-  }
+  async sendImage({
+    roomId,
+    file,
+    tempId,
+  }: {
+    roomId: number;
+    file: any;
+    tempId: number;
+  }): Promise<{ status: string; chat: any }> {
+    const image = new FormData();
+    image.append('image', file);
+    image.append('tempId', String(tempId));
 
-  async accept({ receiverId }: { receiverId: number }) {
-    const { data } = await API.post(`${url}/${receiverId}`);
-    return data;
-  }
-
-  async decline({ chatRequestId }: { chatRequestId: number }) {
-    const { data } = await API.delete(`${url}/${chatRequestId}`);
+    const { data } = await API.post(`/node/rooms/${roomId}/image`, image, {
+      headers: {
+        ...API.defaults.headers.common,
+      },
+    });
     return data;
   }
 }

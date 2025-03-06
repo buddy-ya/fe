@@ -12,7 +12,7 @@ export const API = axios.create({
   headers: { 'Content-Type': 'application/json' },
 });
 
-const reissueToken = async (
+export const reissueToken = async (
   refreshToken: string
 ): Promise<{ accessToken: string; refreshToken: null }> => {
   const { data } = await axios.post(`${BASE_URL}/auth/reissue`, { refreshToken });

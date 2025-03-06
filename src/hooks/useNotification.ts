@@ -30,6 +30,8 @@ export default function useNotification() {
     const backgroundListener = Notifications.addNotificationResponseReceivedListener((response) => {
       // 🔥 푸시 알림의 데이터 가져오기
       const data = response.notification.request.content.data;
+      console.log(data);
+
       if (data?.type === 'AUTHORIZATION') {
         if (data?.isCertificated) {
           update({ isCertificated: data?.isCertificated });
@@ -40,6 +42,22 @@ export default function useNotification() {
           const deepLinkUrl = `${prefix}feeds/${data.feedId}`;
           Linking.openURL(deepLinkUrl);
         }
+      if (data?.type === 'CHAT_REQUEST') {
+        const deepLinkUrl = `${prefix}chatRequests`;
+        Linking.openURL(deepLinkUrl);
+      }
+      if (data?.type === 'CHAT_ACCEPT') {
+        if (data?.roomId) {
+          const deepLinkUrl = `${prefix}chats/${data.roomId}`;
+          Linking.openURL(deepLinkUrl);
+        }
+      }
+      if (data?.type === 'CHAT') {
+        if (data?.chatroomId) {
+          const deepLinkUrl = `${prefix}chats/${data.chatroomId}`;
+          Linking.openURL(deepLinkUrl);
+        }
+      }
     });
 
     return () => {

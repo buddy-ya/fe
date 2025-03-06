@@ -4,5 +4,47 @@
     "matching": "매칭",
     "chat": "채팅",
     "my": "마이"
+  },
+  "emptyState": {
+    "feed": {
+      "title": "피드가 없습니다.",
+      "description": "첫 피드를 작성하고\n다양한 글로벌 버디와 소통해 보세요!"
+    },
+    "chat": {
+      "title": "채팅이 없습니다.",
+      "description": "지금 바로 채팅을 시작하고 다양한 글로벌 버디와 친구가 되어보세요!"
+    },
+    "request": {
+      "title": "요청이 없습니다.",
+      "description": "피드를 올리고 댓글을 달면서\n다양한 글로벌 버디와 소통해 보세요!"
+    }
+  },
+  "modal": {
+    "report": {
+      "title": "신고",
+      "description": "신고 시 자동으로 채팅방을 나가게 됩니다.",
+      "cancel": "아니오",
+      "accept": "신고",
+      "placeholder": "신고 사유를 입력해 주세요.",
+      "errorTitle": "오류",
+      "errorMessage": "유효한 신고 사유를 입력해 주세요."
+    },
+    "block": {
+      "title": "사용자 차단",
+      "description": "이 작업은 되돌릴 수 없습니다. 계속 진행하시겠습니까?",
+      "cancel": "아니오",
+      "confirm": "예"
+    },
+    "exit": {
+      "title": "채팅방 나가기",
+      "description": "나가면 다시 이 채팅방에 돌아올 수 없습니다. 정말 계속하시겠습니까?",
+      "cancel": "아니오",
+      "accept": "예"
+    }
+  },
+  "toast": {
+    "reportSuccess": "신고가 정상적으로 접수되었습니다!",
+    "blockSuccess": "사용자 차단이 완료되었습니다!",
+    "exitSuccess": "채팅방에서 나갔습니다!"
   }
 }

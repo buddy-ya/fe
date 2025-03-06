@@ -62,7 +62,8 @@
     "report": "Report",
     "cancel": "Cancel",
     "chat": "Chat",
-    "block": "Block"
+    "block": "Block",
+    "exit": "Exit"
   },
   "chatRequestModal": {
     "title": "Would you like to send a chat request?",

@@ -49,11 +49,13 @@
     "title": "Settings Layout",
     "bookmark": "Bookmarks",
     "myPosts": "My Posts",
-    "delete": "회원탈퇴",
     "refresh": "학생 인증 초기화",
-    "privacy": "Privacy Settings",
-    "terms": "Terms of Service",
-    "version": "App Version"
+    "version": "App Version",
+    "inquiry": "Inquiry",
+    "terms": "Terms of Use",
+    "privacy": "Privacy Policy",
+    "logout": "Logout",
+    "delete": "Delete Account"
   },
   "myPostsEmpty": "No posts yet",
   "common": {
