@@ -2,6 +2,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Alert } from 'react-native';
 import { feedKeys, FeedRepository } from '@/api';
+import { Feed } from '@/types';
 import { useNavigation } from '@react-navigation/native';
 import { useQueryClient } from '@tanstack/react-query';
 import i18next from 'i18next';
@@ -11,13 +12,14 @@ import { ActionSheetWrapper, OptionItem } from '../Common';
 interface FeedOptionModalProps {
   visible: boolean;
   onClose: () => void;
-  feed: any;
+  feed: Feed;
 }
 
 export function FeedOptionModal({ visible, onClose, feed }: FeedOptionModalProps) {
   const queryClient = useQueryClient();
   const navigation = useNavigation<any>();
   const { t } = useTranslation('feed');
+  const { id, userId } = feed;
 
   const showDeleteAlert = (onConfirm: () => void) => {
     Alert.alert(
