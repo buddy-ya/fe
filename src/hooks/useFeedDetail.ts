@@ -1,4 +1,5 @@
 import { CommentRepository, feedKeys, FeedRepository } from '@/api';
+import { CommentService } from '@/service';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 interface UseFeedDetailProps {
@@ -44,18 +45,10 @@ export const useFeedDetail = ({
 
   const collectKeys = (): string[][] => {
     const keys = [feedKeys.detail(feedId)];
-    if (!updateSearchCache && feedCategory) {
-      keys.push(feedKeys.lists(feedCategory));
-    }
-    if (updateBookmarkCache) {
-      keys.push(feedKeys.bookmarks());
-    }
-    if (updateMyPostsCache) {
-      keys.push(feedKeys.myPosts());
-    }
-    if (updateSearchCache && searchKeyword) {
-      keys.push(feedKeys.search(searchKeyword));
-    }
+    if (!updateSearchCache && feedCategory) keys.push(feedKeys.lists(feedCategory));
+    if (updateBookmarkCache) keys.push(feedKeys.bookmarks());
+    if (updateMyPostsCache) keys.push(feedKeys.myPosts());
+    if (updateSearchCache && searchKeyword) keys.push(feedKeys.search(searchKeyword));
     return keys;
   };
 
@@ -123,9 +116,24 @@ export const useFeedDetail = ({
   const commentMutation = useMutation({
     mutationFn: ({ content, parentId }: { content: string; parentId?: number }) =>
       CommentRepository.create({ feedId, parentId, content }),
-    onSuccess: () => {
+    onMutate: async ({ content, parentId }) => {
+      const keysToUpdate = [feedKeys.detail(feedId)];
+      if (feedCategory) keysToUpdate.push(feedKeys.lists(feedCategory));
+      CommentService.updateCommentCount({ queryClient, keys: keysToUpdate, feedId, delta: +1 });
+      return { keysToUpdate };
+    },
+    onError: (error, variables, context: any) => {
+      if (context && context.keysToUpdate) {
+        CommentService.updateCommentCount({
+          queryClient,
+          keys: context.keysToUpdate,
+          feedId,
+          delta: -1,
+        });
+      }
+    },
+    onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ['feedComments', feedId] });
-      queryClient.invalidateQueries({ queryKey: feedKeys.all });
     },
   });
 
@@ -138,18 +146,32 @@ export const useFeedDetail = ({
 
   const deleteCommentMutation = useMutation({
     mutationFn: (commentId: number) => CommentRepository.delete({ feedId, commentId }),
-    onSuccess: () => {
+    onMutate: async (commentId: number) => {
+      const keysToUpdate = [feedKeys.detail(feedId)];
+      if (feedCategory) keysToUpdate.push(feedKeys.lists(feedCategory));
+      CommentService.updateCommentCount({ queryClient, keys: keysToUpdate, feedId, delta: -1 });
+      return { keysToUpdate };
+    },
+    onError: (error, variables, context: any) => {
+      if (context && context.keysToUpdate) {
+        CommentService.updateCommentCount({
+          queryClient,
+          keys: context.keysToUpdate,
+          feedId,
+          delta: +1,
+        });
+      }
+    },
+    onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ['feedComments', feedId] });
-      queryClient.invalidateQueries({ queryKey: feedKeys.all });
     },
   });
 
   const updateCommentMutation = useMutation({
     mutationFn: ({ commentId, content }: { commentId: number; content: string }) =>
       CommentRepository.update({ feedId, content, commentId }),
-    onSuccess: () => {
+    onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ['feedComments', feedId] });
-      queryClient.invalidateQueries({ queryKey: feedKeys.all });
     },
   });
 
