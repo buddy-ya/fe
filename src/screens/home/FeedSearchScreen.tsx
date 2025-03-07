@@ -52,7 +52,6 @@ export default function SearchScreen({ navigation, route }: SearchScreenProps) {
         category: undefined,
       });
     },
-    staleTime: 1000 * 60 * 3,
   });
 
   const handleSubmit = () => {
