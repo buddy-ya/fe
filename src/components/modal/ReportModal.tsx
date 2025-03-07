@@ -12,7 +12,7 @@ interface ReportModalProps {
   reportedId: number;
   reportedUserId: number;
   onClose: () => void;
-  onReportSuccess?: () => Promise<void>;
+  onReportSuccess?: () => void;
 }
 
 export function ReportModal({
@@ -40,7 +40,7 @@ export function ReportModal({
         reason: reason.trim(),
       });
       if (type === 'CHATROOM' && onReportSuccess) {
-        await onReportSuccess();
+        onReportSuccess();
       }
       showToast(<Text>🙌</Text>, t('toast.reportSuccess'), 2000);
     } catch (error) {
@@ -59,7 +59,9 @@ export function ReportModal({
     <StandardModal
       visible={visible}
       title={t('modal.report.title')}
-      description={t('modal.report.description')}
+      description={
+        type === 'CHATROOM' ? t('modal.report.chat.description') : t('modal.report.description')
+      }
       cancelText={t('modal.report.cancel')}
       acceptText={t('modal.report.accept')}
       onCancel={handleCancel}

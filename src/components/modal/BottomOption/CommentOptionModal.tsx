@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { useFeedDetail } from '@/hooks';
 import { useModalStore } from '@/store';
 import { useNavigation } from '@react-navigation/native';
@@ -11,19 +11,28 @@ interface CommentOptionModalProps {
   onClose: () => void;
   feed: any;
   comment: any;
-  onSelect: (action: string) => void;
 }
 
-export function CommentOptionModal({
-  visible,
-  onClose,
-  feed,
-  comment,
-  onSelect,
-}: CommentOptionModalProps) {
-  const navigation = useNavigation<any>();
+export function CommentOptionModal({ visible, onClose, feed, comment }: CommentOptionModalProps) {
   const { handleCommentActions } = useFeedDetail({ feedId: feed.id });
+
   const handleModalOpen = useModalStore((state) => state.handleOpen);
+  const handleModalClose = useModalStore((state) => state.handleClose);
+
+  const handleReportOption = useCallback(() => {
+    handleModalClose('comment');
+    handleModalOpen('report');
+  }, [handleModalClose, handleModalOpen]);
+
+  const handleBlockOption = useCallback(() => {
+    handleModalClose('comment');
+    handleModalOpen('block');
+  }, [handleModalClose, handleModalOpen]);
+
+  const handleChatRequestOption = useCallback(() => {
+    handleModalClose('comment');
+    handleModalOpen('chatRequest');
+  }, [handleModalClose, handleModalOpen]);
 
   const options: OptionItem[] = comment.isCommentOwner
     ? [
@@ -39,24 +48,21 @@ export function CommentOptionModal({
     : [
         {
           id: 3,
-          label: i18next.t('feed:modal.block'),
-          icon: <Ban size={16} color="#282828" />,
-          onPress: () => console.log('block'),
+          label: i18next.t('feed:modal.report'),
+          icon: <Siren size={16} color="#282828" />,
+          onPress: handleReportOption,
         },
         {
           id: 4,
-          label: i18next.t('feed:modal.report'),
-          icon: <Siren size={16} color="#282828" />,
-          onPress: () => console.log('report'),
+          label: i18next.t('feed:modal.block'),
+          icon: <Ban size={16} color="#282828" />,
+          onPress: handleBlockOption,
         },
         {
           id: 5,
           label: i18next.t('feed:modal.chat'),
           icon: <Send size={16} color="#282828" />,
-          onPress: () => {
-            onClose();
-            onSelect('chat');
-          },
+          onPress: handleChatRequestOption,
         },
       ];
 

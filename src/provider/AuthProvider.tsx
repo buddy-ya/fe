@@ -78,7 +78,6 @@ export default function AuthProvider({ children }: Props) {
       // 4. 사용자 상태 업데이트
       update({ ...user, isAuthenticated: true });
 
-      // 5. 최신 토큰이 반영된 상태에서 소켓 핸드셰이크 실행
       await ChatSocketRepository.initialize();
     } catch (e) {
       console.error(e);

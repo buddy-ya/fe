@@ -11,12 +11,20 @@ import {
   View,
 } from 'react-native';
 import { CommentRepository, feedKeys, FeedRepository, RoomRepository } from '@/api';
-import { CommentList, FeedItem, KeyboardLayout, Layout, Input } from '@/components';
+import {
+  CommentList,
+  FeedItem,
+  KeyboardLayout,
+  Layout,
+  Input,
+  ReportModal,
+  BlockModal,
+} from '@/components';
 import { useFeedDetail } from '@/hooks';
 import { FeedStackParamList } from '@/navigation/navigationRef';
 import { useModalStore, useUserStore } from '@/store';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { useSuspenseQueries } from '@tanstack/react-query';
+import { QueryClient, useQueryClient, useSuspenseQueries } from '@tanstack/react-query';
 import { MoreVertical, Send } from 'lucide-react-native';
 import FeedSkeleton from '@/components/feed/FeedSkeleton';
 import { FeedOptionModal } from '@/components/modal/BottomOption/FeedOptionModal';
@@ -33,6 +41,7 @@ export default function FeedDetailScreen({ navigation, route }: FeedDetailScreen
   const handleModalClose = useModalStore((state) => state.handleClose);
   const isCertificated = useUserStore((state) => state.isCertificated);
   const [parentCommentId, setParentCommentId] = useState<number | null>(null);
+  const queryClient = useQueryClient();
 
   const handleRefresh = async () => {
     await Promise.all([refetchFeed(), refetchComments()]);
@@ -87,7 +96,6 @@ export default function FeedDetailScreen({ navigation, route }: FeedDetailScreen
   const handleCommentSubmit = async () => {
     if (!commentInput.trim()) return;
     Keyboard.dismiss();
-
     try {
       !isCertificated && handleModalOpen('studentCertification');
       if (parentCommentId) {
@@ -100,6 +108,14 @@ export default function FeedDetailScreen({ navigation, route }: FeedDetailScreen
     } catch (error) {
       console.error('Comment submission failed:', error);
     }
+  };
+
+  const handleBlock = async () => {
+    navigation.reset({
+      index: 0,
+      routes: [{ name: 'FeedHome' }],
+    });
+    queryClient.invalidateQueries({ queryKey: feedKeys.all });
   };
 
   return (
@@ -173,6 +189,19 @@ export default function FeedDetailScreen({ navigation, route }: FeedDetailScreen
         data={feed}
         onClose={() => handleModalClose('chatRequest')}
       />
+      <ReportModal
+        visible={modalVisible.report}
+        type="FEED"
+        reportedId={feedId}
+        reportedUserId={feed.userId}
+        onClose={() => handleModalClose('report')}
+      />
+      <BlockModal
+        visible={modalVisible.block}
+        buddyId={feed.userId}
+        onClose={() => handleModalClose('block')}
+        onBlockSuccess={handleBlock}
+      />
     </>
   );
 }
@@ -183,7 +212,6 @@ export const SuspendedFeedDetailScreen = (props: FeedDetailScreenProps) => {
       <Suspense
         fallback={
           <Layout showHeader disableBottomSafeArea onBack={() => props.navigation.goBack()}>
-            {/* TODO: InnerLayout or KeyboardLayout 배치 필요 */}
             <FeedSkeleton />
           </Layout>
         }

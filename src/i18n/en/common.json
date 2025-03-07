@@ -22,7 +22,10 @@
   "modal": {
     "report": {
       "title": "Report",
-      "description": "Once reported, you will automatically leave the chatroom.",
+      "chat": {
+        "description": "Once reported, you will automatically leave the chatroom."
+      },
+      "description": "Please describe the reason for your report.",
       "cancel": "No",
       "accept": "Report",
       "placeholder": "Enter reason for report.",

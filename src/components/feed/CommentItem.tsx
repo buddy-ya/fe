@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { Image, TouchableOpacity, View } from 'react-native';
+import { Image, Text, TouchableOpacity, View } from 'react-native';
 import { Comment } from '@/types';
 import { ThumbsUp, MessageSquare, MoreVertical } from 'lucide-react-native';
 import { getCountryFlag, getTimeAgo } from '@/utils';
@@ -65,16 +65,10 @@ const CommentItem = ({
   const renderCommentText = (comment: Comment) => {
     if (comment.isDeleted) {
       return <MyText color={'text-[#797979]'}>{t('comment.deleted')}</MyText>;
+    } else if (comment.isBlocked) {
+      return <MyText color={'text-[#797979]'}>{t('comment.blocked')}</MyText>;
     }
-    // } else if (comment.isBlocked) {
-    //   return (
-    //     <MyText style={{ color: '#FF0000', textDecorationLine: 'line-through' }}>
-    //       {t('comment.blocked')}
-    //     </MyText>
-    //   );}
-    else {
-      return <MyText>{comment.content}</MyText>;
-    }
+    return <MyText>{comment.content}</MyText>;
   };
   return (
     <View className={`bg-white px-4 py-3 ${isReply ? 'py-2 pl-[60px]' : ''}`}>
@@ -132,7 +126,7 @@ const CommentItem = ({
             </View>
           </View>
         </View>
-        {!comment.isDeleted && (
+        {!comment.isDeleted && !comment.isBlocked && (
           <TouchableOpacity onPress={() => onOptions(comment)}>
             <MoreVertical size={20} color="#797977" />
           </TouchableOpacity>

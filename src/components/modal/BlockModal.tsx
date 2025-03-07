@@ -9,7 +9,7 @@ import { StandardModal } from './Common';
 
 interface BlockModalProps {
   visible: boolean;
-  roomId: number;
+  roomId?: number;
   buddyId: number;
   onClose: () => void;
   onBlockSuccess?: () => Promise<void>;

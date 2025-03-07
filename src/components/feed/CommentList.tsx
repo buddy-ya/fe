@@ -3,7 +3,8 @@ import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 import { useModalStore } from '@/store';
 import { Comment, Feed } from '@/types';
-import { CommentOptionModal } from '../common';
+import { useQueryClient } from '@tanstack/react-query';
+import { BlockModal, CommentOptionModal, ReportModal } from '../common';
 import { ChatRequestModal } from '../modal/Common/ChatRequestModal';
 import CommentItem from './CommentItem';
 
@@ -28,26 +29,27 @@ export default function CommentList({ feed, comments, onLike, onReply }: Comment
     createdDate: '',
     isDeleted: false,
     isLiked: false,
+    isBlocked: false,
     isFeedOwner: false,
     isCommentOwner: false,
     isProfileImageUpload: false,
     replies: [],
   });
-  const [selectedModalAction, setSelectedModalAction] = useState<String>();
 
   const modalVisible = useModalStore((state) => state.visible);
   const handleModalOpen = useModalStore((state) => state.handleOpen);
   const handleModalClose = useModalStore((state) => state.handleClose);
 
-  const handleSelectModalAction = (action: string) => {
-    setSelectedModalAction(action);
-    if (action == 'chat') {
-      handleModalOpen('chatRequest');
-    }
-  };
+  const queryClient = useQueryClient();
+
   const handleCommentOptions = (comment: Comment) => {
     setComment(comment);
+    console.log(comment);
     handleModalOpen('comment');
+  };
+
+  const handleBlock = async () => {
+    queryClient.invalidateQueries({ queryKey: ['feedComments', feed.id] });
   };
 
   return (
@@ -76,18 +78,34 @@ export default function CommentList({ feed, comments, onLike, onReply }: Comment
           </React.Fragment>
         ))}
       </View>
-      <CommentOptionModal
-        visible={modalVisible.comment}
-        feed={feed}
-        comment={comment}
-        onClose={() => handleModalClose('comment')}
-        onSelect={handleSelectModalAction}
-      />
-      {/* <ChatRequestModal
-        visible={modalVisible.chatRequest}
-        data={comment}
-        onClose={() => handleModalClose('chatRequest')}
-      /> */}
+      {comment.id !== -1 && (
+        <>
+          <CommentOptionModal
+            visible={modalVisible.comment}
+            feed={feed}
+            comment={comment}
+            onClose={() => handleModalClose('comment')}
+          />
+          <ChatRequestModal
+            visible={modalVisible.chatRequest}
+            data={comment}
+            onClose={() => handleModalClose('chatRequest')}
+          />
+          <ReportModal
+            visible={modalVisible.report}
+            type="COMMENT"
+            reportedId={comment.id}
+            reportedUserId={comment.userId}
+            onClose={() => handleModalClose('report')}
+          />
+          <BlockModal
+            visible={modalVisible.block}
+            buddyId={comment.userId}
+            onClose={() => handleModalClose('block')}
+            onBlockSuccess={handleBlock}
+          />
+        </>
+      )}
     </>
   );
 }

@@ -260,21 +260,6 @@ export const ChatRoomScreen: React.FC<ChatRoomScreenProps> = ({ route }) => {
     }
   }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
 
-  const handleReportOption = useCallback(() => {
-    handleModalClose('chat');
-    handleModalOpen('report');
-  }, [handleModalClose, handleModalOpen]);
-
-  const handleBlockOption = useCallback(() => {
-    handleModalClose('chat');
-    handleModalOpen('block');
-  }, [handleModalClose, handleModalOpen]);
-
-  const handleExitOption = useCallback(() => {
-    handleModalClose('chat');
-    handleModalOpen('exit');
-  }, [handleModalClose, handleModalOpen]);
-
   const handleExit = async () => {
     await ChatSocketRepository.roomOut(roomId);
     navigation.reset({
@@ -362,13 +347,7 @@ export const ChatRoomScreen: React.FC<ChatRoomScreenProps> = ({ route }) => {
         </InnerLayout>
       </KeyboardLayout>
       <>
-        <ChatOptionModal
-          visible={modalVisible.chat}
-          onClose={() => handleModalClose('chat')}
-          onReport={handleReportOption}
-          onBlock={handleBlockOption}
-          onExit={handleExitOption}
-        />
+        <ChatOptionModal visible={modalVisible.chat} onClose={() => handleModalClose('chat')} />
         <ReportModal
           visible={modalVisible.report}
           type="CHATROOM"

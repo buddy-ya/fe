@@ -20,5 +20,6 @@ export interface Comment {
   isFeedOwner: boolean;
   isCommentOwner: boolean;
   isProfileImageUpload: boolean;
+  isBlocked: boolean;
   replies: Comment[];
 }
