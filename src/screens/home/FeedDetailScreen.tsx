@@ -1,4 +1,4 @@
-import React, { Suspense, useRef, useState } from 'react';
+import React, { Suspense, useEffect, useRef, useState } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 import { useTranslation } from 'react-i18next';
 import {
@@ -22,6 +22,7 @@ import {
 } from '@/components';
 import { useFeedDetail } from '@/hooks';
 import { FeedStackParamList } from '@/navigation/navigationRef';
+import { FeedService } from '@/service';
 import { useModalStore, useUserStore } from '@/store';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useQueryClient, useSuspenseQueries } from '@tanstack/react-query';
@@ -33,6 +34,7 @@ import { ChatRequestModal } from '@/components/modal/Common/ChatRequestModal';
 type FeedDetailScreenProps = NativeStackScreenProps<FeedStackParamList, 'FeedDetail'>;
 
 export default function FeedDetailScreen({ navigation, route }: FeedDetailScreenProps) {
+  const [isRefreshing, setIsRefreshing] = useState(false);
   const { feedId, feedCategory, source, searchKeyword } = route.params;
   const { t } = useTranslation('feed');
   const queryClient = useQueryClient();
@@ -77,8 +79,14 @@ export default function FeedDetailScreen({ navigation, route }: FeedDetailScreen
   });
 
   const handleRefresh = async () => {
+    setIsRefreshing(true);
     await Promise.all([refetchFeed(), refetchComments()]);
+    setIsRefreshing(false);
   };
+
+  useEffect(() => {
+    FeedService.incrementViewCount(queryClient, feedKeys.lists('free'), feedId);
+  }, [feedId, queryClient]);
 
   const handleCommentReply = (commentId: number) => {
     setParentCommentId(commentId);

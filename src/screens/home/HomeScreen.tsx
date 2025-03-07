@@ -52,12 +52,12 @@ export function HomeScreen({ navigation }: FeedHomeScreenProps) {
       headerLeft={<LogoIcon />}
       headerRight={
         <View className="flex-row items-center">
-          <TouchableOpacity onPress={() => navigation.navigate('FeedSearch')} className="mr-4">
+          <TouchableOpacity onPress={() => navigation.navigate('FeedSearch')} className="mr-1">
             <Search strokeWidth={2} size={24} color="#797977" />
           </TouchableOpacity>
-          <TouchableOpacity>
+          {/* <TouchableOpacity>
             <Bell strokeWidth={2} size={24} color="#797977" />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
       }
     >
