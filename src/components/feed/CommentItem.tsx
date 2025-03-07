@@ -127,7 +127,10 @@ const CommentItem = ({
           </View>
         </View>
         {!comment.isDeleted && !comment.isBlocked && (
-          <TouchableOpacity onPress={() => onOptions(comment)}>
+          <TouchableOpacity
+            onPress={() => onOptions(comment)}
+            hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+          >
             <MoreVertical size={20} color="#797977" />
           </TouchableOpacity>
         )}

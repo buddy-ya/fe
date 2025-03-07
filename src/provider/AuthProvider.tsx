@@ -3,10 +3,9 @@ import { View, Image } from 'react-native';
 import { API, ChatSocketRepository, UserRepository } from '@/api';
 import { TokenService } from '@/service';
 import { useUserStore } from '@/store';
-import * as SecureStore from 'expo-secure-store';
 import { jwtDecode } from 'jwt-decode';
 import { reissueToken } from '@/api/API';
-import { TOKEN_KEYS, showErrorModal } from '@/utils';
+import { showErrorModal } from '@/utils';
 
 interface Props {
   children: React.ReactNode;
@@ -84,7 +83,6 @@ export default function AuthProvider({ children }: Props) {
     }
     setInitLoading(false);
   };
-
   useEffect(() => {
     getUser();
   }, []);

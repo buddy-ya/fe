@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { TouchableOpacity, View, Text } from 'react-native';
+import { TouchableOpacity, View, Text, ActivityIndicator } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { feedKeys, FeedRepository } from '@/api';
 import { Button, CategoryPager, FeedList, InnerLayout, Layout } from '@/components';
