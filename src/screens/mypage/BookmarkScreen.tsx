@@ -19,7 +19,7 @@ export default function BookmarkScreen({ navigation, route }: BookmarkScreenProp
   });
 
   const handlePressFeed = (feedId: number) => {
-    navigation.navigate('FeedDetail', { feedId });
+    navigation.navigate('FeedDetail', { feedId, source: 'bookmark' });
   };
 
   return (

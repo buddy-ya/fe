@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import { TouchableOpacity, View, Text, ActivityIndicator } from 'react-native';
+import { View, TouchableOpacity } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { feedKeys, FeedRepository } from '@/api';
 import { Button, CategoryPager, FeedList, InnerLayout, Layout } from '@/components';
-import { useFeedList, useBackButton } from '@/hooks';
+import { useFeedList } from '@/hooks';
 import { FeedStackParamList } from '@/navigation/navigationRef';
 import { useModalStore, useUserStore } from '@/store';
 import LogoIcon from '@assets/icons/logo.svg';
@@ -13,7 +13,7 @@ import { isAndroid, CATEGORIES } from '@/utils';
 
 type FeedHomeScreenProps = NativeStackScreenProps<FeedStackParamList, 'FeedHome'>;
 
-export function HomeScreen({ navigation, route }: FeedHomeScreenProps) {
+export function HomeScreen({ navigation }: FeedHomeScreenProps) {
   const STALE_TIME = 1000 * 60;
   const handleModalOpen = useModalStore((state) => state.handleOpen);
   const [activeCategory, setActiveCategory] = useState(CATEGORIES[0].id);
@@ -35,7 +35,7 @@ export function HomeScreen({ navigation, route }: FeedHomeScreenProps) {
   };
 
   const handlePressFeed = (feedId: number) => {
-    navigation.navigate('FeedDetail', { feedId });
+    navigation.navigate('FeedDetail', { feedId, feedCategory: activeCategory });
   };
 
   const handleWriteButton = async () => {
@@ -89,9 +89,7 @@ export function HomeScreen({ navigation, route }: FeedHomeScreenProps) {
             type="circle"
             onPress={handleWriteButton}
             className="absolute right-0"
-            containerStyle={{
-              bottom: writeButtonPosition,
-            }}
+            containerStyle={{ bottom: writeButtonPosition }}
             icon={Plus}
           />
         </View>

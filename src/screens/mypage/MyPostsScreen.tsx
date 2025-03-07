@@ -19,7 +19,7 @@ export default function MyPostsScreen({ navigation }: MyPostsScreenProps) {
   });
 
   const handlePressFeed = (feedId: number) => {
-    navigation.navigate('FeedDetail', { feedId });
+    navigation.navigate('FeedDetail', { feedId, source: 'myPosts' });
   };
 
   return (

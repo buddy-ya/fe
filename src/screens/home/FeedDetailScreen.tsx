@@ -1,4 +1,4 @@
-import { Suspense, useRef, useState } from 'react';
+import React, { Suspense, useRef, useState } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 import { useTranslation } from 'react-i18next';
 import {
@@ -10,7 +10,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { CommentRepository, feedKeys, FeedRepository, RoomRepository } from '@/api';
+import { CommentRepository, feedKeys, FeedRepository } from '@/api';
 import {
   CommentList,
   FeedItem,
@@ -24,7 +24,7 @@ import { useFeedDetail } from '@/hooks';
 import { FeedStackParamList } from '@/navigation/navigationRef';
 import { useModalStore, useUserStore } from '@/store';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { QueryClient, useQueryClient, useSuspenseQueries } from '@tanstack/react-query';
+import { useQueryClient, useSuspenseQueries } from '@tanstack/react-query';
 import { MoreVertical, Send } from 'lucide-react-native';
 import FeedSkeleton from '@/components/feed/FeedSkeleton';
 import { FeedOptionModal } from '@/components/modal/BottomOption/FeedOptionModal';
@@ -33,19 +33,21 @@ import { ChatRequestModal } from '@/components/modal/Common/ChatRequestModal';
 type FeedDetailScreenProps = NativeStackScreenProps<FeedStackParamList, 'FeedDetail'>;
 
 export default function FeedDetailScreen({ navigation, route }: FeedDetailScreenProps) {
-  const { feedId } = route.params;
-  const [commentInput, setCommentInput] = useState('');
+  const { feedId, feedCategory, source, searchKeyword } = route.params;
   const { t } = useTranslation('feed');
+  const queryClient = useQueryClient();
   const modalVisible = useModalStore((state) => state.visible);
   const handleModalOpen = useModalStore((state) => state.handleOpen);
   const handleModalClose = useModalStore((state) => state.handleClose);
   const isCertificated = useUserStore((state) => state.isCertificated);
+  const [commentInput, setCommentInput] = useState('');
   const [parentCommentId, setParentCommentId] = useState<number | null>(null);
-  const queryClient = useQueryClient();
+  const commentInputRef = useRef<TextInput | null>(null);
 
-  const handleRefresh = async () => {
-    await Promise.all([refetchFeed(), refetchComments()]);
-  };
+  const updateBookmarkCache = source === 'bookmark';
+  const updateMyPostsCache = source === 'myPosts';
+  const updateSearchCache = source === 'search';
+  const effectiveFeedCategory = updateSearchCache ? undefined : feedCategory || 'free';
 
   const results = useSuspenseQueries({
     queries: [
@@ -67,23 +69,16 @@ export default function FeedDetailScreen({ navigation, route }: FeedDetailScreen
 
   const { handleFeedActions, handleCommentActions } = useFeedDetail({
     feedId,
+    feedCategory: effectiveFeedCategory,
+    updateBookmarkCache,
+    updateMyPostsCache,
+    updateSearchCache,
+    searchKeyword,
   });
 
-  const showFeedNotFoundAlert = () => {
-    Alert.alert(
-      t('alert.feedNotFoundTitle'),
-      t('alert.feedNotFoundMessage'),
-      [
-        {
-          text: t('alert.confirm'),
-          onPress: () => navigation.goBack(),
-        },
-      ],
-      { cancelable: false }
-    );
+  const handleRefresh = async () => {
+    await Promise.all([refetchFeed(), refetchComments()]);
   };
-
-  const commentInputRef = useRef<TextInput | null>(null);
 
   const handleCommentReply = (commentId: number) => {
     setParentCommentId(commentId);
@@ -93,15 +88,19 @@ export default function FeedDetailScreen({ navigation, route }: FeedDetailScreen
   const handleChatRequest = () => {
     isCertificated ? handleModalOpen('chatRequest') : handleModalOpen('studentCertification');
   };
+
   const handleCommentSubmit = async () => {
     if (!commentInput.trim()) return;
     Keyboard.dismiss();
     try {
-      !isCertificated && handleModalOpen('studentCertification');
+      if (!isCertificated) {
+        handleModalOpen('studentCertification');
+        return;
+      }
       if (parentCommentId) {
-        isCertificated && (await handleCommentActions.submit(commentInput, parentCommentId));
+        await handleCommentActions.submit(commentInput, parentCommentId);
       } else {
-        isCertificated && (await handleCommentActions.submit(commentInput));
+        await handleCommentActions.submit(commentInput);
       }
       setCommentInput('');
       setParentCommentId(null);
@@ -168,12 +167,13 @@ export default function FeedDetailScreen({ navigation, route }: FeedDetailScreen
               onLike={handleFeedActions.like}
               onBookmark={handleFeedActions.bookmark}
               showAllContent
+              onPress={() => {}}
             />
             <CommentList
               feed={feed}
               comments={comments}
               onReply={handleCommentReply}
-              onLike={handleCommentActions.like}
+              onLike={(commentId) => handleCommentActions.like(commentId)}
             />
           </ScrollView>
         </KeyboardLayout>
@@ -206,18 +206,16 @@ export default function FeedDetailScreen({ navigation, route }: FeedDetailScreen
   );
 }
 
-export const SuspendedFeedDetailScreen = (props: FeedDetailScreenProps) => {
-  return (
-    <ErrorBoundary fallback={<></>}>
-      <Suspense
-        fallback={
-          <Layout showHeader disableBottomSafeArea onBack={() => props.navigation.goBack()}>
-            <FeedSkeleton />
-          </Layout>
-        }
-      >
-        <FeedDetailScreen {...props} />
-      </Suspense>
-    </ErrorBoundary>
-  );
-};
+export const SuspendedFeedDetailScreen = (props: FeedDetailScreenProps) => (
+  <ErrorBoundary fallback={<></>}>
+    <Suspense
+      fallback={
+        <Layout showHeader disableBottomSafeArea onBack={() => props.navigation.goBack()}>
+          <FeedSkeleton />
+        </Layout>
+      }
+    >
+      <FeedDetailScreen {...props} />
+    </Suspense>
+  </ErrorBoundary>
+);
