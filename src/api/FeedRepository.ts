@@ -63,7 +63,6 @@ class FeedRepository {
         size,
       },
     });
-    console.log(data);
     return data;
   }
 

@@ -336,7 +336,6 @@ export default function Router() {
   return (
     <>
       <Stack.Navigator screenOptions={{ headerShown: false, gestureEnabled: false }}>
-        <Stack.Screen name="Splash" component={SplashScreen} />
         <Stack.Screen name="Onboarding" component={OnboardingNavigator} />
         <Stack.Screen name="Verification" component={VerificationNavigator} />
         <Stack.Screen name="Tab" component={TabNavigator} />

@@ -3,6 +3,7 @@ import { View, Image } from 'react-native';
 import { API, ChatSocketRepository, UserRepository } from '@/api';
 import { TokenService } from '@/service';
 import { useUserStore } from '@/store';
+import * as Font from 'expo-font';
 import { jwtDecode } from 'jwt-decode';
 import { reissueToken } from '@/api/API';
 import { showErrorModal } from '@/utils';
@@ -15,6 +16,18 @@ export interface CustomJwtPayload {
   exp: number;
   studentId: number;
 }
+
+const FONTS = {
+  'Pretendard-Thin': require('@assets/fonts/Pretendard-Thin.otf'),
+  'Pretendard-ExtraLight': require('@assets/fonts/Pretendard-ExtraLight.otf'),
+  'Pretendard-Light': require('@assets/fonts/Pretendard-Light.otf'),
+  'Pretendard-Regular': require('@assets/fonts/Pretendard-Regular.otf'),
+  'Pretendard-Medium': require('@assets/fonts/Pretendard-Medium.otf'),
+  'Pretendard-SemiBold': require('@assets/fonts/Pretendard-SemiBold.otf'),
+  'Pretendard-Bold': require('@assets/fonts/Pretendard-Bold.otf'),
+  'Pretendard-ExtraBold': require('@assets/fonts/Pretendard-ExtraBold.otf'),
+  'Pretendard-Black': require('@assets/fonts/Pretendard-Black.otf'),
+};
 
 // 헬퍼 함수: 토큰 만료 여부 확인 및 재발급 처리
 export async function getValidAccessToken(): Promise<string> {
@@ -50,14 +63,18 @@ export default function AuthProvider({ children }: Props) {
   const [initLoading, setInitLoading] = useState(true);
   const update = useUserStore((state) => state.update);
 
+  // 폰트 로드 함수
+  const loadFonts = async () => {
+    await Font.loadAsync(FONTS);
+  };
+
+  // 사용자 정보를 불러오는 함수
   const getUser = async () => {
     try {
       // 토큰이 존재하는지 미리 확인
-      let initialToken = await TokenService.getAccessToken();
+      const initialToken = await TokenService.getAccessToken();
       if (!initialToken) {
-        // 토큰이 없는 경우, 인증되지 않은 상태로 업데이트하고 진행 중단
         update({ isAuthenticated: false });
-        setInitLoading(false);
         return;
       }
 
@@ -65,12 +82,12 @@ export default function AuthProvider({ children }: Props) {
       let accessToken = await getValidAccessToken();
       API.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
 
-      // 2. 토큰 페이로드에서 사용자 ID 추출 및 사용자 정보 요청
+      // 2. 토큰 페이로드에서 사용자 ID 추출 후 사용자 정보 요청
       const tokenPayload: CustomJwtPayload = jwtDecode(accessToken);
       const userId = tokenPayload.studentId;
       const user = await UserRepository.get({ id: userId });
 
-      // 3. 재확인: 최신 토큰 재확보 (내부에서 재발급이 발생했을 가능성을 고려)
+      // 3. 재확인: 최신 토큰 재확보 (내부에서 재발급 발생 가능성 고려)
       accessToken = await getValidAccessToken();
       API.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
 
@@ -81,10 +98,21 @@ export default function AuthProvider({ children }: Props) {
     } catch (e) {
       console.error(e);
     }
-    setInitLoading(false);
   };
+
+  const initializeApp = async () => {
+    try {
+      await loadFonts();
+      await getUser();
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setInitLoading(false);
+    }
+  };
+
   useEffect(() => {
-    getUser();
+    initializeApp();
   }, []);
 
   if (initLoading)
@@ -96,5 +124,6 @@ export default function AuthProvider({ children }: Props) {
         />
       </View>
     );
+
   return <>{children}</>;
 }

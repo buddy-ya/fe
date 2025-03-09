@@ -1,11 +1,13 @@
+import React, { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ScrollView, TouchableOpacity, View } from 'react-native';
+import { View, TouchableOpacity, ActivityIndicator, ScrollView } from 'react-native';
 import { Feed } from '@/types/FeedDTO';
 import ThumbsUpActive from '@assets/icons/feed/like-active.svg';
 import { Image as ExpoImage } from 'expo-image';
 import { Bookmark, MessageSquare, ThumbsUp, Eye } from 'lucide-react-native';
 import { getCountryFlag, getTimeAgo } from '@/utils';
 import { MyText } from '../common';
+import { FullScreenImage } from '../common/FullImage';
 
 interface FeedItemProps {
   feed: Feed;
@@ -41,6 +43,8 @@ export default function FeedItem({
     isProfileImageUpload,
     createdDate,
   } = feed;
+
+  const [previewImageUri, setPreviewImageUri] = useState<string>('');
 
   const feedActions = [
     {
@@ -141,13 +145,18 @@ export default function FeedItem({
             <View className="mt-5">
               <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                 {imageUrls.map((url, index) => (
-                  <View className="mr-2 h-[255px] w-[255px]" key={index}>
+                  <TouchableOpacity
+                    key={index}
+                    onPress={() => setPreviewImageUri(url)}
+                    activeOpacity={0.8}
+                    className="mr-2 h-[255px] w-[255px]"
+                  >
                     <ExpoImage
                       style={{ height: '100%', width: '100%', borderRadius: 12 }}
                       source={{ uri: url }}
                       contentFit="cover"
                     />
-                  </View>
+                  </TouchableOpacity>
                 ))}
               </ScrollView>
             </View>
@@ -190,13 +199,23 @@ export default function FeedItem({
     );
   };
 
-  if (!onPress) {
-    return renderContent();
-  }
-
   return (
-    <TouchableOpacity onPress={() => onPress?.(id)} activeOpacity={0.8}>
-      {renderContent()}
-    </TouchableOpacity>
+    <>
+      <TouchableOpacity
+        onPress={() => {
+          if (!showAllContent) {
+            onPress?.(id);
+          }
+        }}
+        activeOpacity={0.8}
+      >
+        {renderContent()}
+      </TouchableOpacity>
+      <FullScreenImage
+        visible={!!previewImageUri}
+        imageUri={previewImageUri}
+        onClose={() => setPreviewImageUri('')}
+      />
+    </>
   );
 }

@@ -34,7 +34,6 @@ class UserRepository {
 
   async getUniversities() {
     const { data } = await API.get('/users/universities');
-    console.log(data);
     return data;
   }
 
