@@ -48,8 +48,7 @@
   },
   "verificationComplete": {
     "title": "학생 인증이 완료되었습니다.",
-    "description1": "이제 버디야와 함께 즐거운",
-    "description2": "캠퍼스 생활을 시작해 보세요.",
+    "description": "개인정보는 인증 외 목적으로 사용되지 않습니다.\n버디야와 함께 즐거운 캠퍼스 생활을 시작해보세요.",
     "start": "버디야 시작하기"
   },
   "studentIdComplete": {

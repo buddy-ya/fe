@@ -1,9 +1,6 @@
 {
   "intro": {
-    "title-primary": "버디야",
-    "title": " 에서 만나는",
-    "subTitle": "즐거운 대학생활의",
-    "subTitle-primary": " 버디",
+    "privacy": "‘전화번호로 시작하기’를 누르면\n<privacyLink>개인정보 처리방침</privacyLink>에 동의하게 됩니다.",
     "button": "전화번호로 시작하기"
   },
   "phone": {
@@ -33,7 +30,8 @@
     "description": "학생증에 입력될 정보는 버디야에서 서로를 확인하는\n용도로 사용되기 때문에 정확한 정보를 입력해주세요."
   },
   "universitySelect": {
-    "title": "세종대학교 재학생인가요?",
+    "title": "재학 중인 학교를 선택해주세요",
+    "description": "선택한 대학교 정보를 버디야 프로필에서 볼 수 있어요",
     "universities": {
       "sejong": "세종대학교"
     },

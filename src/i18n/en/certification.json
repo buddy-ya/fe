@@ -1,58 +1,59 @@
 {
   "banner": {
     "default": {
-      "title": "If you certify as a student, Buddyya it's more fun to use.",
-      "description": "Buddyya is a service for students.",
+      "title": "Complete your student verification.",
+      "description": "Once you complete student verification, you can enjoy various features of Buddyya.",
       "confirm": "Verify",
-      "cancel": "Cancel"
+      "cancel": "Do it later"
     },
     "pending": {
       "title": "Your student verification is under review.",
-      "description": "Personal information will be deleted immediately after approval.\nStudent verification typically takes 1-2 days.",
-      "confirm": "Check Status",
-      "cancel": "Confirm"
+      "description": "It typically takes about 1 day for the review to be completed, and your personal information will not be used for any purpose other than verification.",
+      "confirm": "Confirm",
+      "cancel": "Close"
     }
   },
   "studentId": {
-    "title": "Please upload a photo that proves your student status",
-    "description": "The information that identifies you as a student of your school must be clearly visible, and the photo will be deleted immediately after review.",
-    "uploadDescription": "Please upload\nyour image",
+    "title": "Please upload a photo that proves your student status.",
+    "description": "The photo must clearly show information that verifies your student status at your school, and it will be deleted immediately after review.",
+    "uploadDescription": "Please\nupload your image",
     "uploadButton": "Select student ID image",
-    "submitButton": "Apply for certification",
+    "submitButton": "Submit verification request",
+    "upload": "Upload",
     "permission": {
-      "gallery": "Gallery permission is required to select images."
-    },
-    "upload": "Upload"
-  },
-  "email": {
-    "title": "Please verify with your school email.",
-    "description": "Please verify with your university email.",
-    "placeholder": "Enter email",
-    "domain": "@sju.ac.kr",
-    "warning": "Please enter a valid email."
-  },
-  "verification": {
-    "title": "Enter verification code",
-    "titleDescription": "We've sent a verification code to\n{email}",
-    "label": "Verification Code",
-    "timer": {
-      "notReceived": "Haven't received the code?",
-      "expired": "Verification code has expired.",
-      "resend": "Resend",
-      "timeLeft": "{{minutes}}:{{seconds}}"
-    },
-    "error": {
-      "invalidCode": "Invalid verification code"
+      "gallery": "Gallery access is required to select an image."
     }
   },
-  "complete": {
-    "title": "Verification Complete",
-    "description": "Your student verification has been submitted.\nStudent verification typically takes 1-2 days.",
-    "button": "Complete"
+  "email": {
+    "title": "Please enter your school email address for verification.",
+    "description": "We have sent a verification code to your email!",
+    "label": "School Email",
+    "placeholder": "Enter email",
+    "domain": {
+      "sju": "@sju.ac.kr"
+    },
+    "footer": "Your email will be used only for verification.",
+    "warning": "Please enter a valid email address."
+  },
+  "verification": {
+    "title": "Please enter the verification code.",
+    "titleDescription": "A verification code has been sent to {{email}}.",
+    "label": "Verification Code",
+    "checkSpam": "Please also check your spam folder.",
+    "resend": "Resend verification code",
+    "warning": "Invalid verification code."
+  },
+  "error": {
+    "invalidCode": "Invalid verification code."
+  },
+  "verificationComplete": {
+    "title": "Student verification is complete.",
+    "description": "Your personal information will not be used for any purpose other than verification.\nStart enjoying campus life with Buddyya.",
+    "start": "Start Buddyya"
   },
   "studentIdComplete": {
-    "title": "Student verification request completed",
-    "description": "The review process typically takes 1 day,\nand your personal information will not be used for any purpose other than verification.",
+    "title": "Student verification request completed.",
+    "description": "It typically takes about 1 day to complete the review, and your personal information will not be used for any purpose other than verification.",
     "complete": "Confirm"
   }
 }

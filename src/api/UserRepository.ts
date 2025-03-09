@@ -32,6 +32,12 @@ class UserRepository {
     return data;
   }
 
+  async getUniversities() {
+    const { data } = await API.get('/users/universities');
+    console.log(data);
+    return data;
+  }
+
   async report(dto: ReportDTO): Promise<void> {
     await API.post('/report', dto);
   }

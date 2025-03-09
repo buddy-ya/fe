@@ -1,9 +1,6 @@
 {
   "intro": {
-    "title-primary": "Buddy Ya",
-    "title": " Meets at",
-    "subTitle": "Buddy for enjoyable ",
-    "subTitle-primary": "college life",
+    "privacy": "By tapping 'Start with Phone Number' you agree to the <privacyLink>Privacy Policy</privacyLink>.",
     "button": "Start with phone number"
   },
   "phone": {
@@ -33,7 +30,8 @@
     "description": "The personal information on your student ID must be accurate\nas it will be used to verify each other on Buddya!"
   },
   "universitySelect": {
-    "title": "Are you a Sejong University student?",
+    "title": "Please select the university you're currently attending.",
+    "description": "You can view your selected university information on your Buddyya profile.",
     "universities": {
       "sejong": "Sejong University"
     },

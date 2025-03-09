@@ -14,9 +14,10 @@ import {
   MyText,
 } from '@/components';
 import { FeedStackParamList } from '@/navigation/navigationRef';
+import { useUserStore } from '@/store';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { Mail } from 'lucide-react-native';
-import { EMAIL_REGEX } from '@/utils';
+import { EMAIL_REGEX, UNIVERSITY_EMAIL_DOMAINS, UniversityID } from '@/utils';
 
 type EmailScreenProps = NativeStackScreenProps<FeedStackParamList, 'EmailVerification'>;
 
@@ -30,8 +31,9 @@ export default function EmailScreen({ navigation }: EmailScreenProps) {
     setEmail(text);
   };
 
+  const university = useUserStore((state) => state.university);
   const isValidEmail = email.length > 0 && EMAIL_REGEX.test(email);
-  const fullEmail = email + '@sju.ac.kr';
+  const fullEmail = email + '@' + UNIVERSITY_EMAIL_DOMAINS[university as UniversityID];
 
   const handleNavigation = async () => {
     try {
@@ -79,9 +81,12 @@ export default function EmailScreen({ navigation }: EmailScreenProps) {
                 placeholderTextColor="#DFDFDF"
                 autoFocus
               />
-              <View className="border-inputBorder ml-2 h-[50px] justify-center rounded-xl border px-4 py-3">
+              <View className="border-inputBorder ml-2 h-[50px] flex-row items-center justify-center rounded-xl border px-4 py-3">
+                <MyText size="text-lg" color="text-textDescription" className="mr-1">
+                  {'@'}
+                </MyText>
                 <MyText size="text-lg" color="text-textDescription">
-                  {t(`email.domain.${'sju'}`)}
+                  {UNIVERSITY_EMAIL_DOMAINS[university as UniversityID]}
                 </MyText>
               </View>
             </View>

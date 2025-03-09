@@ -1,15 +1,15 @@
-import { Check } from 'lucide-react-native';
-import { memo } from 'react';
+import React, { memo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { Check } from 'lucide-react-native';
 import MyText from '../common/MyText';
 
 export interface BaseOption {
   id: string;
-  icon?: string;
+  icon?: string | React.ReactNode;
 }
 
-interface MultiSelectItemProps<T extends { id: string; icon?: string }> {
+interface MultiSelectItemProps<T extends { id: string; icon?: string | React.ReactNode }> {
   options: T[];
   selectedValues: T[];
   onSelect: (value: T) => void;
@@ -19,7 +19,7 @@ interface MultiSelectItemProps<T extends { id: string; icon?: string }> {
   className?: string;
 }
 
-function MultiSelectItem<T extends { id: string; icon?: string } = BaseOption>({
+function MultiSelectItem<T extends { id: string; icon?: string | React.ReactNode } = BaseOption>({
   options,
   selectedValues,
   onSelect,
@@ -49,7 +49,15 @@ function MultiSelectItem<T extends { id: string; icon?: string } = BaseOption>({
             className="flex-row items-center justify-between border-b border-borderSelect py-4"
           >
             <View className="flex-row items-center">
-              {option.icon && <Text className="mr-3 text-base">{option.icon}</Text>}
+              {option.icon && (
+                <>
+                  {React.isValidElement(option.icon) ? (
+                    <View className="mr-3">{option.icon}</View>
+                  ) : (
+                    <Text className="mr-3 text-base">{option.icon}</Text>
+                  )}
+                </>
+              )}
               <MyText size="text-base">{t(`${nameSpace}.${option.id}`)}</MyText>
             </View>
             <View
