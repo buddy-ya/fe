@@ -74,18 +74,16 @@ export default function UniversitySelectScreen({
   return (
     <Layout preserveHeader>
       <InnerLayout>
-        <View className="flex-1">
-          <Heading>{t('universitySelect.title')}</Heading>
-          <HeadingDescription>{t('universitySelect.description')}</HeadingDescription>
-          <Label>{t('universitySelect.label')}</Label>
-          <MultiSelectItem
-            options={options}
-            selectedValues={selected ? [{ id: selected }] : []}
-            onSelect={handleSelect}
-            multiple={false}
-            nameSpace="universities"
-          />
-        </View>
+        <Heading>{t('universitySelect.title')}</Heading>
+        <HeadingDescription>{t('universitySelect.description')}</HeadingDescription>
+        <Label>{t('universitySelect.label')}</Label>
+        <MultiSelectItem
+          options={options}
+          selectedValues={selected ? [{ id: selected }] : []}
+          onSelect={handleSelect}
+          multiple={false}
+          nameSpace="universities"
+        />
         <Button onPress={handleNavigateButton} disabled={!selected}>
           <MyText size="text-lg" color="text-white" className="font-semibold">
             {t('common.next')}
