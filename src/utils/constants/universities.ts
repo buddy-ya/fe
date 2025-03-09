@@ -24,7 +24,7 @@ export const UNIVERSITY_IDS = [
 export type UniversityID = (typeof UNIVERSITY_IDS)[number];
 
 export const UNIVERSITY_EMAIL_DOMAINS: Record<UniversityID, string> = {
-  sejong: 'sejong.ac.kr',
+  sejong: 'sju.ac.kr',
   konkuk: 'konkuk.ac.kr',
   seoulnational: 'snu.ac.kr',
   yonsei: 'yonsei.ac.kr',

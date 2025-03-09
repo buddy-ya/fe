@@ -42,18 +42,18 @@ export default function VerificationScreen({ navigation }: VerificationScreenPro
           <TouchableOpacity
             onPress={handleEamilVerification}
             disabled={isStudentIdCardRequested}
-            className={`rounded-xl ${isStudentIdCardRequested ? 'bg-gray-100' : 'bg-white'}`}
+            className={`rounded-xl`}
           >
-            <View className="flex justify-between p-4">
+            <View className="flex justify-between rounded-xl bg-white p-4">
               <MyText
                 size="text-xl"
-                className={`font-semibold ${isStudentIdCardRequested ? 'text-gray-400' : 'text-text'}`}
+                className={`font-semibold ${isStudentIdCardRequested ? 'text-[#CBCBCB]' : 'text-text'}`}
               >
                 {t('verification.email.title')}
               </MyText>
               <MyText
                 size="text-[13px]"
-                className={`mt-2 ${isStudentIdCardRequested ? 'text-gray-400' : 'text-textDescription'}`}
+                className={`mt-2 ${isStudentIdCardRequested ? 'text-[#CBCBCB]' : 'text-textDescription'}`}
               >
                 {t('verification.email.description')}
               </MyText>
