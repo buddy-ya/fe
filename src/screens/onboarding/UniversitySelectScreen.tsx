@@ -10,12 +10,21 @@ import {
   Label,
   Layout,
   MyText,
-  SelectItem,
+  MultiSelectItem,
 } from '@/components';
 import { OnboardingStackParamList } from '@/navigation/navigationRef';
 import { useOnboardingStore } from '@/store';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { UniversityID } from '@/utils';
+import { UNIVERSITY_ICONS, UniversityID } from '@/utils';
+
+type UniversityItem = {
+  university: string;
+};
+
+type OptionItem = {
+  id: string;
+  icon?: React.ReactNode;
+};
 
 type OnboardingUniversitySelectScreenProps = NativeStackScreenProps<
   OnboardingStackParamList,
@@ -28,14 +37,13 @@ export default function UniversitySelectScreen({
   const { t } = useTranslation('onboarding');
   const { updateOnboardingData } = useOnboardingStore();
 
-  const [universities, setUniversities] = useState<UniversityID[]>([]);
+  const [universities, setUniversities] = useState<UniversityItem[]>([]);
   const [selected, setSelected] = useState<string | null>(null);
 
   useEffect(() => {
     async function fetchUniversities() {
       try {
         const data = await UserRepository.getUniversities();
-        console.log(data);
         setUniversities(data);
       } catch (error) {
         console.error('Failed to fetch universities', error);
@@ -44,8 +52,16 @@ export default function UniversitySelectScreen({
     fetchUniversities();
   }, []);
 
-  const handleSelectUniversity = (id: string) => {
-    setSelected(id);
+  const options: OptionItem[] = universities.map((item) => {
+    const IconComponent = UNIVERSITY_ICONS[item.university as UniversityID];
+    return {
+      id: item.university,
+      icon: IconComponent ? <IconComponent /> : null,
+    };
+  });
+
+  const handleSelect = (value: { id: string }) => {
+    setSelected(value.id);
   };
 
   const handleNavigateButton = () => {
@@ -62,23 +78,13 @@ export default function UniversitySelectScreen({
           <Heading>{t('universitySelect.title')}</Heading>
           <HeadingDescription>{t('universitySelect.description')}</HeadingDescription>
           <Label>{t('universitySelect.label')}</Label>
-          {universities.map((univ) => (
-            <SelectItem
-              key={univ}
-              selected={selected === univ}
-              onPress={() => handleSelectUniversity(univ)}
-            >
-              <View className="flex-row items-center">
-                {/*
-                  여기에 각 대학교의 로고를 렌더링하고 싶다면, 
-                  univ.id에 따른 로고 컴포넌트를 미리 매핑해두거나 조건부 렌더링할 수 있습니다.
-                */}
-                <MyText size="text-base" color="text-active" className="ml-3">
-                  {t(`universities:universities.${univ}`)}
-                </MyText>
-              </View>
-            </SelectItem>
-          ))}
+          <MultiSelectItem
+            options={options}
+            selectedValues={selected ? [{ id: selected }] : []}
+            onSelect={handleSelect}
+            multiple={false}
+            nameSpace="universities"
+          />
         </View>
         <Button onPress={handleNavigateButton} disabled={!selected}>
           <MyText size="text-lg" color="text-white" className="font-semibold">

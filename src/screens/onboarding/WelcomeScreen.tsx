@@ -4,7 +4,7 @@ import '@/../global.css';
 import { Button, InnerLayout, Layout, MyText } from '@/components';
 import { OnboardingStackParamList } from '@/navigation/navigationRef';
 import Charactrers from '@assets/images/onboarding/characters.svg';
-import WelcomeText from '@assets/images/onboarding/onboardingTexts.svg';
+import WelcomeTextBackground from '@assets/images/onboarding/welcomeBg.svg';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
 type OnboardingWelcomeScreenProps = NativeStackScreenProps<
@@ -29,14 +29,28 @@ export default function WelcomeScreen({ navigation }: OnboardingWelcomeScreenPro
     <Layout showHeader={false}>
       <InnerLayout>
         <View className="flex-1">
-          <View className="mt-10">
-            <WelcomeText />
+          <View className="relative mt-12">
+            <WelcomeTextBackground />
+            <View className="absolute left-2 top-0">
+              <MyText size="text-[45px]" className="font-light leading-[1.27]">
+                글로벌
+              </MyText>
+              <MyText size="text-[45px]" className="font-light leading-[1.27]">
+                버디와 함께
+              </MyText>
+              <MyText size="text-[45px]" className="font-light leading-[1.27]">
+                즐🌸거운
+              </MyText>
+              <MyText size="text-[45px]" className="font-light leading-[1.27]">
+                캠퍼스👀 생활
+              </MyText>
+            </View>
           </View>
           <View className="flex-1 items-center justify-center">
-            <View className="mt-10">
+            <View className="mt-8">
               <Charactrers />
             </View>
-            <View className="mt-14">
+            <View className="mt-16">
               <MyText size="text-sm" color="text-[#636363]" className="text-center">
                 <Trans
                   i18nKey="onboarding:intro.privacy"

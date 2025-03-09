@@ -30,7 +30,7 @@
     "description": "학생증에 입력될 정보는 버디야에서 서로를 확인하는\n용도로 사용되기 때문에 정확한 정보를 입력해주세요."
   },
   "universitySelect": {
-    "title": "현재 재학 중인 학교를 선택해주세요",
+    "title": "재학 중인 학교를 선택해주세요",
     "description": "선택한 대학교 정보를 버디야 프로필에서 볼 수 있어요",
     "universities": {
       "sejong": "세종대학교"
