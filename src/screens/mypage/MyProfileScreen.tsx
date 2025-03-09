@@ -213,7 +213,7 @@ export default function MyProfileScreen({ navigation, route }: any) {
                   )}
                 </View>
                 <MyText size="text-[13px]" color="text-textProfile" className="mt-2">
-                  {t(`profile.university.${user.university}`)}
+                  {t(`universities:universities.${user.university}`)}
                 </MyText>
               </View>
             </View>

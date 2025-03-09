@@ -15,11 +15,10 @@ export default function MyPostsScreen({ navigation }: MyPostsScreenProps) {
   const feedListData = useFeedList({
     queryKey: feedKeys.myPosts(),
     fetchFn: FeedRepository.getMyPosts,
-    staleTime: 1000 * 60 * 5,
   });
 
   const handlePressFeed = (feedId: number) => {
-    navigation.navigate('FeedDetail', { feedId });
+    navigation.navigate('FeedDetail', { feedId, source: 'myPosts' });
   };
 
   return (

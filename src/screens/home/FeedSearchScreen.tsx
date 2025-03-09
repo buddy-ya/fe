@@ -1,12 +1,12 @@
-import { X } from 'lucide-react-native';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { View, TextInput, TouchableOpacity } from 'react-native';
 import { feedKeys, FeedRepository } from '@/api';
-import { useFeedList } from '@/hooks';
 import { Layout, InnerLayout, KeyboardLayout, FeedList } from '@/components';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { useFeedList } from '@/hooks';
 import { FeedStackParamList } from '@/navigation/navigationRef';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { X } from 'lucide-react-native';
 
 const SearchInput = ({ value, onChangeText, onSubmit, onClear, onFocusChange }: any) => {
   const { t } = useTranslation('feed');
@@ -49,10 +49,9 @@ export default function SearchScreen({ navigation, route }: SearchScreenProps) {
       return FeedRepository.searchFeeds({
         ...params,
         keyword: submittedText,
-        category: 'free',
+        category: undefined,
       });
     },
-    staleTime: 1000 * 60 * 3,
   });
 
   const handleSubmit = () => {
@@ -67,7 +66,7 @@ export default function SearchScreen({ navigation, route }: SearchScreenProps) {
   };
 
   const handlePressFeed = (feedId: number) => {
-    navigation.navigate('FeedDetail', { feedId });
+    navigation.navigate('FeedDetail', { feedId, source: 'search', searchKeyword: submittedText });
   };
 
   return (

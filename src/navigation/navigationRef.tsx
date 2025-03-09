@@ -25,10 +25,15 @@ export type OnboardingStackParamList = {
 };
 
 export type FeedStackParamList = {
-  FeedHome: undefined; // 파라미터 없음
+  FeedHome: undefined;
   FeedSearch: undefined;
   FeedWrite: { feed: Feed; isEdit: boolean } | undefined;
-  FeedDetail: { feedId: number };
+  FeedDetail: {
+    feedId: number;
+    feedCategory?: string;
+    source?: 'bookmark' | 'myPosts' | 'search';
+    searchKeyword?: string;
+  };
   CommentEdit: { feedId: number; commentId: number; initialContent: string };
   EmailVerification: undefined;
   EmailVerificationCode: { email: string };
@@ -47,13 +52,12 @@ export type VerificationStackParamList = {
 };
 
 export type ChatStackParamList = {
-  RoomList: undefined; // 파라미터 없음
-  ChatRoom: { id: number }; // roomId를 파라미터로 받음
+  RoomList: undefined;
+  ChatRoom: { id: number };
   ChatRequests: undefined;
   Profile: { id: number };
 };
 
-// MyPageStack Param List 정의
 export type MyPageStackParamList = {
   MyPageHome: undefined;
   MyProfile: undefined;
@@ -64,5 +68,10 @@ export type MyPageStackParamList = {
   Bookmark: undefined;
   MyPosts: undefined;
   Settings: undefined;
-  FeedDetail: { feedId: number };
+  FeedDetail: {
+    feedId: number;
+    feedCategory?: string;
+    source?: 'bookmark' | 'myPosts' | 'search';
+    searchKeyword?: string;
+  };
 };

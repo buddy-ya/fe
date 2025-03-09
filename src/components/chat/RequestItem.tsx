@@ -40,7 +40,7 @@ export default function RequestItem({
         <ProfileImage imageUrl={profileImageUrl} onPress={handleProfilePress} />
         <View className="ml-3 flex flex-1 justify-between">
           <MyText numberOfLines={1} color="text-[#474747]" className="font-semibold">
-            {t(`mypage:profile.university.${university}`)}
+            {t(`universities:universities.${university}`)}
           </MyText>
           <MyText numberOfLines={1} color="text-[#474747]">
             {name} {COUNTRY_FLAGS[country]}

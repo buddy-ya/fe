@@ -15,11 +15,10 @@ export default function BookmarkScreen({ navigation, route }: BookmarkScreenProp
   const feedListData = useFeedList({
     queryKey: feedKeys.bookmarks(),
     fetchFn: FeedRepository.getBookmarkedFeeds,
-    staleTime: 1000 * 60 * 5,
   });
 
   const handlePressFeed = (feedId: number) => {
-    navigation.navigate('FeedDetail', { feedId });
+    navigation.navigate('FeedDetail', { feedId, source: 'bookmark' });
   };
 
   return (

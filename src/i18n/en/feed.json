@@ -1,35 +1,36 @@
 {
   "category": {
-    "popular": "popular",
-    "free": "free",
-    "info": "info"
+    "popular": "Popular",
+    "free": "Free",
+    "recruitment": "Recruitment",
+    "info": "Info Sharing"
   },
   "profile": {
     "university": {
-      "sju": "Sejong"
+      "sju": "Sejong University"
     }
   },
   "comment": {
-    "placeholder": "Please enter a comment",
-    "deleted": "This comment has been deleted.",
-    "blocked": "This comment is from a blocked user."
+    "placeholder": "Please enter a comment.",
+    "deleted": "Deleted comment.",
+    "blocked": "Comment from blocked user."
   },
   "action": {
-    "like": "like",
-    "comment": "comment",
-    "bookmark": "bookmark"
+    "like": "Like",
+    "comment": "Comment",
+    "bookmark": "Bookmark"
   },
-  "writer": "writer",
-  "me": "me",
+  "writer": "Author",
+  "me": "Me",
   "write": {
-    "titlePlaceholder": "Enter a title.",
-    "contentPlaceholder": "Enter content.",
+    "titlePlaceholder": "Please enter a title.",
+    "contentPlaceholder": "Please enter the content.",
     "categoryModalTitle": "Select Category",
     "imageUploadError": "Failed to load image.",
     "photoCaptureError": "Failed to capture photo.",
     "postError": {
       "create": "Failed to create post.",
-      "edit": "Failed to update post."
+      "edit": "Failed to edit post."
     },
     "loading": "Processing...",
     "postButton": "Post",
@@ -43,18 +44,18 @@
     "confirm": "Delete",
     "cancel": "Cancel"
   },
-  "search": {
-    "placeholder": "Search for content",
-    "empty": {
-      "default": "Enter a search term",
-      "result": "No search results found"
-    }
-  },
   "alert": {
-    "feedNotFoundTitle": "Feed not found",
-    "feedNotFoundMessage": "Unable to load the post.",
+    "feedNotFoundTitle": "Post not found",
+    "feedNotFoundMessage": "Unable to load post.",
     "confirm": "Confirm",
     "retry": "Retry"
+  },
+  "search": {
+    "placeholder": "Please enter a search term",
+    "empty": {
+      "default": "Please enter a search term",
+      "result": "No search results"
+    }
   },
   "modal": {
     "edit": "Edit",
@@ -66,13 +67,14 @@
     "exit": "Exit"
   },
   "chatRequestModal": {
-    "title": "Would you like to send a chat request?",
-    "description": "You'll be able to access their profile once they accept your chat request.",
-    "confirm": "Send Chat Request",
+    "title": "Do you want to send a chat request?",
+    "description": "You can view the profile if the recipient accepts the chat request.",
+    "confirm": "40",
     "cancel": "Cancel",
+    "verified": "Photo verified",
     "photoStatus": {
       "verified": "Photo verified",
-      "unverified": "Photo unverified"
+      "unverified": "Photo not verified"
     }
   }
 }

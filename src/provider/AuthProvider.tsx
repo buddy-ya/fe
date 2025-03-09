@@ -3,10 +3,9 @@ import { View, Image } from 'react-native';
 import { API, ChatSocketRepository, UserRepository } from '@/api';
 import { TokenService } from '@/service';
 import { useUserStore } from '@/store';
-import * as SecureStore from 'expo-secure-store';
 import { jwtDecode } from 'jwt-decode';
 import { reissueToken } from '@/api/API';
-import { TOKEN_KEYS, showErrorModal } from '@/utils';
+import { showErrorModal } from '@/utils';
 
 interface Props {
   children: React.ReactNode;
@@ -78,14 +77,12 @@ export default function AuthProvider({ children }: Props) {
       // 4. 사용자 상태 업데이트
       update({ ...user, isAuthenticated: true });
 
-      // 5. 최신 토큰이 반영된 상태에서 소켓 핸드셰이크 실행
       await ChatSocketRepository.initialize();
     } catch (e) {
       console.error(e);
     }
     setInitLoading(false);
   };
-
   useEffect(() => {
     getUser();
   }, []);

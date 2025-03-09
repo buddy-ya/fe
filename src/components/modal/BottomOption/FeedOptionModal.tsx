@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Alert } from 'react-native';
 import { feedKeys, FeedRepository } from '@/api';
+import { useModalStore } from '@/store';
+import { Feed } from '@/types';
 import { useNavigation } from '@react-navigation/native';
 import { useQueryClient } from '@tanstack/react-query';
 import i18next from 'i18next';
@@ -11,13 +13,29 @@ import { ActionSheetWrapper, OptionItem } from '../Common';
 interface FeedOptionModalProps {
   visible: boolean;
   onClose: () => void;
-  feed: any;
+  feed: Feed;
 }
 
 export function FeedOptionModal({ visible, onClose, feed }: FeedOptionModalProps) {
   const queryClient = useQueryClient();
   const navigation = useNavigation<any>();
+
   const { t } = useTranslation('feed');
+
+  const handleModalOpen = useModalStore((state) => state.handleOpen);
+  const handleModalClose = useModalStore((state) => state.handleClose);
+
+  const handleReportOption = useCallback(() => {
+    handleModalClose('feed');
+    handleModalOpen('report');
+  }, [handleModalClose, handleModalOpen]);
+
+  const handleBlockOption = useCallback(() => {
+    handleModalClose('feed');
+    handleModalOpen('block');
+  }, [handleModalClose, handleModalOpen]);
+
+  const { id, userId } = feed;
 
   const showDeleteAlert = (onConfirm: () => void) => {
     Alert.alert(
@@ -42,6 +60,7 @@ export function FeedOptionModal({ visible, onClose, feed }: FeedOptionModalProps
               feed,
               isEdit: true,
             });
+            onClose();
           },
         },
         {
@@ -62,13 +81,13 @@ export function FeedOptionModal({ visible, onClose, feed }: FeedOptionModalProps
           id: 3,
           label: i18next.t('feed:modal.report'),
           icon: <Siren size={16} color="#282828" />,
-          onPress: () => console.log('report'),
+          onPress: handleReportOption,
         },
         {
           id: 4,
           label: i18next.t('feed:modal.block'),
           icon: <Ban size={16} color="#282828" />,
-          onPress: () => console.log('block'),
+          onPress: handleBlockOption,
         },
       ];
 

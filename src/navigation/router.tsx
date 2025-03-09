@@ -8,7 +8,7 @@ import CommentEditScreen from '@/screens/home/CommentEditScreen';
 import { SuspendedFeedDetailScreen } from '@/screens/home/FeedDetailScreen';
 import FeedSearchScreen from '@/screens/home/FeedSearchScreen';
 import FeedWriteScreen from '@/screens/home/FeedWriteScreen';
-import { SuspendedHomeScreen } from '@/screens/home/HomeScreen';
+import { HomeScreen } from '@/screens/home/HomeScreen';
 import BookmarkScreen from '@/screens/mypage/BookmarkScreen';
 import EditProfileImageScreen from '@/screens/mypage/EditProfileImageScreen';
 import MyPostsScreen from '@/screens/mypage/MyPostsScreen';
@@ -87,14 +87,14 @@ function TabNavigator() {
           },
         })}
       />
-      <Tab.Screen
+      {/* <Tab.Screen
         name="Matching"
         component={MatchingScreen}
         options={() => ({
           ...getTabScreenOptions('Matching'),
           tabBarLabel: t('tab.matching'),
         })}
-      />
+      /> */}
       <Tab.Screen
         name="Chat"
         component={ChatNavigator}
@@ -198,7 +198,7 @@ function FeedNavigator() {
     <FeedStack.Navigator screenOptions={{ headerShown: false }}>
       <FeedStack.Screen
         name="FeedHome"
-        component={SuspendedHomeScreen}
+        component={HomeScreen}
         options={{ gestureEnabled: false }}
       />
       <FeedStack.Screen name="FeedSearch" component={FeedSearchScreen} />

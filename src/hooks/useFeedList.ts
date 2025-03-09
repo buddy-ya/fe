@@ -40,21 +40,25 @@ export const useFeedList = ({
   const feeds = data?.pages.flatMap((page) => page.feeds) ?? [];
 
   const handleLike = async (id: number) => {
+    const previousData = queryClient.getQueryData(queryKey);
+    FeedService.like(queryClient, queryKey, id);
     try {
-      FeedService.like(queryClient, queryKey, id);
       await FeedRepository.toggleLike({ feedId: id });
     } catch (error) {
       logError(error);
+      FeedService.rollback(queryClient, queryKey, previousData);
       refetch();
     }
   };
 
   const handleBookmark = async (id: number) => {
+    const previousData = queryClient.getQueryData(queryKey);
+    FeedService.bookmark(queryClient, queryKey, id);
     try {
-      FeedService.bookmark(queryClient, queryKey, id);
       await FeedRepository.toggleBookmark({ feedId: id });
     } catch (error) {
       logError(error);
+      FeedService.rollback(queryClient, queryKey, previousData);
       refetch();
     }
   };

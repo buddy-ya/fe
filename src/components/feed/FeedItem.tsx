@@ -1,7 +1,8 @@
 import { useTranslation } from 'react-i18next';
-import { Image, ScrollView, TouchableOpacity, View } from 'react-native';
+import { ScrollView, TouchableOpacity, View } from 'react-native';
 import { Feed } from '@/types/FeedDTO';
 import ThumbsUpActive from '@assets/icons/feed/like-active.svg';
+import { Image as ExpoImage } from 'expo-image';
 import { Bookmark, MessageSquare, ThumbsUp, Eye } from 'lucide-react-native';
 import { getCountryFlag, getTimeAgo } from '@/utils';
 import { MyText } from '../common';
@@ -21,7 +22,7 @@ export default function FeedItem({
   onPress,
   showAllContent = false,
 }: FeedItemProps) {
-  const { t } = useTranslation('feed');
+  const { t } = useTranslation(['feed', 'universities']);
   const {
     id,
     name,
@@ -74,19 +75,21 @@ export default function FeedItem({
   const renderContent = () => {
     const hasImage = imageUrls.length > 0;
     return (
-      <View className="mb-4 mt-[4px] rounded-[20px] border-[0.3px] border-b-[0px] border-borderFeed bg-white p-4 pb-5">
+      <View
+        className={`mb-4 mt-[4px] rounded-[20px] border-[0.3px] border-b-[0px] border-borderFeed bg-white p-4 pb-5`}
+      >
         <View className="flex-row justify-between">
           <View className="flex-row items-center">
             <View className="mr-3">
-              <Image
-                className="h-12 w-12 rounded-[12px]"
+              <ExpoImage
+                style={{ height: 44, width: 44, borderRadius: 12 }}
                 source={{ uri: profileImageUrl }}
-                resizeMode="contain"
+                contentFit="contain"
               />
             </View>
             <View>
               <MyText size="text-sm" className="font-semibold" color="text-textProfile">
-                {t(`profile.university.${university}`)}
+                {t(`universities:universities.${university}`)}
               </MyText>
               <View className="flex-row items-center">
                 <MyText size="text-sm" color="text-textProfile">
@@ -117,11 +120,11 @@ export default function FeedItem({
               {content}
             </MyText>
             {hasImage && !showAllContent && (
-              <View className="relative ml-4 h-[100px] w-[100px]">
-                <Image
-                  className="h-full w-full rounded-[8px]"
+              <View className="relative ml-4 h-[90px] w-[90px]">
+                <ExpoImage
+                  style={{ height: '100%', width: '100%', borderRadius: 8 }}
                   source={{ uri: imageUrls[0] }}
-                  resizeMode="cover"
+                  contentFit="cover"
                 />
                 {imageUrls.length > 1 && (
                   <MyText
@@ -139,10 +142,10 @@ export default function FeedItem({
               <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                 {imageUrls.map((url, index) => (
                   <View className="mr-2 h-[255px] w-[255px]" key={index}>
-                    <Image
-                      className="h-full w-full rounded-[12px]"
+                    <ExpoImage
+                      style={{ height: '100%', width: '100%', borderRadius: 12 }}
                       source={{ uri: url }}
-                      resizeMode="cover"
+                      contentFit="cover"
                     />
                   </View>
                 ))}
