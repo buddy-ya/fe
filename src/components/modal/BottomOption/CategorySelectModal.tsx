@@ -19,7 +19,7 @@ export function CategorySelectModal({
   onSelect,
 }: CategorySelectModalProps) {
   const { t } = useTranslation('feed');
-  const categories = CATEGORIES.filter((category) => category.id !== 'popular');
+  const categories = CATEGORIES;
 
   const slideAnim = useRef(new Animated.Value(100)).current;
 

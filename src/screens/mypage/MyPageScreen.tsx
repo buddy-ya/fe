@@ -18,7 +18,7 @@ import ShieldCheck from './shieldCheck.svg';
 type MyPageScreenProps = NativeStackScreenProps<MyPageStackParamList, 'MyPageHome'>;
 
 export default function MyPageScreen({ navigation }: MyPageScreenProps) {
-  const { t } = useTranslation('mypage');
+  const { t } = useTranslation(['mypage', 'universities']);
 
   const { visible, icon, text, showToast, hideToast } = useToastStore();
 
@@ -93,7 +93,7 @@ export default function MyPageScreen({ navigation }: MyPageScreenProps) {
             />
             <View className="flex-1">
               <MyText color="text-textProfile" className="font-semibold">
-                {t(`profile.university.${university}`)}
+                {t(`universities:universities.${university}`)}
               </MyText>
               <View className="flex-row items-center">
                 <MyText size="text-base" color="text-textProfile">

@@ -22,7 +22,7 @@ export default function FeedItem({
   onPress,
   showAllContent = false,
 }: FeedItemProps) {
-  const { t } = useTranslation('feed');
+  const { t } = useTranslation(['feed', 'universities']);
   const {
     id,
     name,
@@ -89,7 +89,7 @@ export default function FeedItem({
             </View>
             <View>
               <MyText size="text-sm" className="font-semibold" color="text-textProfile">
-                {t(`profile.university.${university}`)}
+                {t(`universities:universities.${university}`)}
               </MyText>
               <View className="flex-row items-center">
                 <MyText size="text-sm" color="text-textProfile">

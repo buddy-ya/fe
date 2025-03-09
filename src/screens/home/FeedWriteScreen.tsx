@@ -1,18 +1,26 @@
-import { useQueryClient } from '@tanstack/react-query';
-import * as ImagePicker from 'expo-image-picker';
-import { Camera, ChevronDown, ImagePlus, X } from 'lucide-react-native';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { View, TouchableOpacity, TextInput, ScrollView, Alert } from 'react-native';
 import { feedKeys, FeedRepository } from '@/api';
-import { CATEGORIES } from '@/utils';
-import { Layout, InnerLayout, KeyboardLayout, Loading, MyText, CategorySelectModal, ImagePreview } from '@/components';
-import { ImageFile } from '@/types';
-import { useModalStore } from '@/store';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import {
+  Layout,
+  InnerLayout,
+  KeyboardLayout,
+  Loading,
+  MyText,
+  CategorySelectModal,
+  ImagePreview,
+} from '@/components';
 import { FeedStackParamList } from '@/navigation/navigationRef';
+import { useModalStore } from '@/store';
+import { ImageFile } from '@/types';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { useQueryClient } from '@tanstack/react-query';
+import * as ImagePicker from 'expo-image-picker';
+import { Camera, ChevronDown, ImagePlus, X } from 'lucide-react-native';
+import { CATEGORIES } from '@/utils';
 
-const FILTERED_CATEGORIES = CATEGORIES.filter((category) => category.id !== 'popular');
+const FILTERED_CATEGORIES = CATEGORIES;
 
 const IMAGE_PICKER_OPTIONS: ImagePicker.ImagePickerOptions = {
   mediaTypes: 'images',
@@ -27,9 +35,9 @@ type FeedWriteScreenProps = NativeStackScreenProps<FeedStackParamList, 'FeedWrit
 export default function FeedWriteScreen({ navigation, route }: FeedWriteScreenProps) {
   const feed = route.params?.feed;
   const isEdit = route.params?.isEdit;
-  const modalVisible = useModalStore(state => state.visible.category);
-  const handleModalOpen = useModalStore(state => state.handleOpen);
-  const handleModalClose = useModalStore(state => state.handleClose);
+  const modalVisible = useModalStore((state) => state.visible.category);
+  const handleModalOpen = useModalStore((state) => state.handleOpen);
+  const handleModalClose = useModalStore((state) => state.handleClose);
 
   const [selectedCategory, setSelectedCategory] = useState(
     feed
@@ -147,8 +155,7 @@ export default function FeedWriteScreen({ navigation, route }: FeedWriteScreenPr
           content: content.trim(),
           category: selectedCategory.id,
           images,
-        }
-        );
+        });
         queryClient.invalidateQueries({ queryKey: feedKeys.detail(feed.id) });
         queryClient.invalidateQueries({
           queryKey: feedKeys.lists(selectedCategory.id),
@@ -250,7 +257,12 @@ export default function FeedWriteScreen({ navigation, route }: FeedWriteScreenPr
         </KeyboardLayout>
       )}
 
-      <CategorySelectModal visible={modalVisible} onClose={() => handleModalClose('category')} selectedCategory={selectedCategory} onSelect={handleCategorySelect} />
+      <CategorySelectModal
+        visible={modalVisible}
+        onClose={() => handleModalClose('category')}
+        selectedCategory={selectedCategory}
+        onSelect={handleCategorySelect}
+      />
     </Layout>
   );
 }

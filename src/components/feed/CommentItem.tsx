@@ -83,7 +83,7 @@ const CommentItem = ({
           <View className="mt-[2px] flex-1">
             <View className="flex-row items-center">
               <MyText size="text-sm" className="font-semibold text-[#474747]">
-                {t(`profile.university.${comment.university}`)}
+                {t(`universities:universities.${comment.university}`)}
               </MyText>
               <MyText size="text-sm" color="text-textDescription" className="mx-[5px]">
                 {'·'}

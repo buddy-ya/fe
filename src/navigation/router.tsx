@@ -87,14 +87,14 @@ function TabNavigator() {
           },
         })}
       />
-      <Tab.Screen
+      {/* <Tab.Screen
         name="Matching"
         component={MatchingScreen}
         options={() => ({
           ...getTabScreenOptions('Matching'),
           tabBarLabel: t('tab.matching'),
         })}
-      />
+      /> */}
       <Tab.Screen
         name="Chat"
         component={ChatNavigator}

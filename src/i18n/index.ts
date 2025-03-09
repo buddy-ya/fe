@@ -12,6 +12,7 @@ import en_languages from './en/languages.json';
 import en_majors from './en/majors.json';
 import en_onboarding from './en/onboarding.json';
 import en_toast from './en/toast.json';
+import en_universities from './en/universities.json';
 import ko_certification from './ko/certification.json';
 import ko_chat from './ko/chat.json';
 import ko_common from './ko/common.json';
@@ -25,11 +26,13 @@ import ko_mypage from './ko/mypage.json';
 import en_mypage from './ko/mypage.json';
 import ko_onboarding from './ko/onboarding.json';
 import ko_toast from './ko/toast.json';
+import ko_universities from './ko/universities.json';
 
 const resources = {
   ko: {
     chat: ko_chat,
     onboarding: ko_onboarding,
+    universities: ko_universities,
     majors: ko_majors,
     countries: ko_countries,
     languages: ko_languages,
@@ -44,6 +47,7 @@ const resources = {
   en: {
     chat: en_chat,
     onboarding: en_onboarding,
+    universities: en_universities,
     majors: en_majors,
     countries: en_countries,
     languages: en_languages,
