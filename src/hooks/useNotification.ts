@@ -28,9 +28,7 @@ export default function useNotification() {
 
   useEffect(() => {
     const backgroundListener = Notifications.addNotificationResponseReceivedListener((response) => {
-      // 🔥 푸시 알림의 데이터 가져오기
       const data = response.notification.request.content.data;
-      console.log(data);
 
       if (data?.type === 'AUTHORIZATION') {
         if (data?.isCertificated) {

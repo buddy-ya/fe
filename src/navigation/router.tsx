@@ -196,7 +196,7 @@ function FeedNavigator() {
   }, []);
 
   return (
-    <FeedStack.Navigator screenOptions={{ headerShown: false }}>
+    <FeedStack.Navigator initialRouteName="FeedHome" screenOptions={{ headerShown: false }}>
       <FeedStack.Screen
         name="FeedHome"
         component={HomeScreen}
@@ -212,7 +212,10 @@ function FeedNavigator() {
 
 function VerificationNavigator() {
   return (
-    <VerificationStack.Navigator screenOptions={{ headerShown: false }}>
+    <VerificationStack.Navigator
+      initialRouteName="VerificationSelect"
+      screenOptions={{ headerShown: false }}
+    >
       <VerificationStack.Screen name="VerificationSelect" component={VerificationScreen} />
       <VerificationStack.Screen name="EmailVerification" component={EmailScreen} />
       <VerificationStack.Screen
@@ -264,7 +267,7 @@ function ChatNavigator() {
   }, []);
 
   return (
-    <ChatStack.Navigator screenOptions={{ headerShown: false }}>
+    <ChatStack.Navigator initialRouteName="RoomList" screenOptions={{ headerShown: false }}>
       <ChatStack.Screen
         name="RoomList"
         component={SuspendedRoomListScreen}
@@ -297,7 +300,7 @@ function MyPageNavigator() {
   }, []);
 
   return (
-    <MyPageStack.Navigator screenOptions={{ headerShown: false }}>
+    <MyPageStack.Navigator initialRouteName="MyPageHome" screenOptions={{ headerShown: false }}>
       <MyPageStack.Screen
         name="MyPageHome"
         component={MyPageScreen}
