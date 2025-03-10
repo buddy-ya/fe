@@ -253,7 +253,7 @@ function ChatNavigator() {
           activeScreen = (route.params as { screen?: string })?.screen;
         }
       }
-      const visible = activeScreen !== 'ChatRoom';
+      const visible = activeScreen !== 'ChatRoom' && activeScreen !== 'Profile';
       navigation.setOptions({
         tabBarStyle: animateTabBar(visible),
       });

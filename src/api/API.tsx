@@ -1,6 +1,5 @@
-import { useTranslation } from 'react-i18next';
-import { Text } from 'react-native';
 import { MyText } from '@/components';
+import i18n from '@/i18n';
 import { useToastStore, useUserStore } from '@/store';
 import axios from 'axios';
 import Constants from 'expo-constants';
@@ -8,8 +7,6 @@ import * as SecureStore from 'expo-secure-store';
 import { showErrorModal, TOKEN_KEYS } from '@/utils';
 
 const BASE_URL = Constants?.expoConfig?.extra?.BASE_URL || '';
-const { showToast } = useToastStore();
-const { t } = useTranslation('common');
 
 export const API = axios.create({
   baseURL: BASE_URL,
@@ -27,7 +24,9 @@ API.interceptors.response.use(
   (response) => response,
   async (error) => {
     if (!error.response) {
-      showToast(<MyText>🌐</MyText>, t('toast.error.network'), 2000);
+      useToastStore
+        .getState()
+        .showToast(<MyText>🌐</MyText>, i18n.t('common:toast.error.network'), 2000);
       return Promise.reject(error);
     }
     const errorCode = error.response?.data?.code;
@@ -51,8 +50,9 @@ API.interceptors.response.use(
         return Promise.reject(reissueError);
       }
     }
-    // 최종 상위 에러
-    showToast(<MyText>⚠️</MyText>, t('toast.error.unknown'), 2000);
+    useToastStore
+      .getState()
+      .showToast(<MyText>⚠️</MyText>, i18n.t('common:toast.error.unknown'), 2000);
     return Promise.reject(error);
   }
 );
