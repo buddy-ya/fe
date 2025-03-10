@@ -81,6 +81,7 @@ export default function UniversitySelectScreen({
           options={options}
           selectedValues={selected ? [{ id: selected }] : []}
           onSelect={handleSelect}
+          className="mt-0"
           multiple={false}
           nameSpace="universities"
         />

@@ -1,14 +1,26 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
-import { useOnboardingStore } from '@/store';
-import { Button, Heading, HeadingDescription, InnerLayout, Label, Layout, MyText, SelectItem } from '@/components';
+import {
+  Button,
+  Heading,
+  HeadingDescription,
+  InnerLayout,
+  Label,
+  Layout,
+  MyText,
+  SelectItem,
+} from '@/components';
 import { OnboardingStackParamList } from '@/navigation/navigationRef';
+import { useOnboardingStore } from '@/store';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
-type Gender = 'male' | 'female' | 'unknown' | null;
+type Gender = 'male' | 'female' | null;
 
-export type OnboardingGenderSelectScreenProps = NativeStackScreenProps<OnboardingStackParamList, 'OnboardingGenderSelect'>;
+export type OnboardingGenderSelectScreenProps = NativeStackScreenProps<
+  OnboardingStackParamList,
+  'OnboardingGenderSelect'
+>;
 
 export default function GenderScreen({ navigation }: OnboardingGenderSelectScreenProps) {
   const [selectedGender, setSelectedGender] = useState<Gender>(null);
@@ -25,7 +37,6 @@ export default function GenderScreen({ navigation }: OnboardingGenderSelectScree
   const GENDER_OPTIONS = [
     { id: 'male', label: 'gender.male' },
     { id: 'female', label: 'gender.female' },
-    { id: 'unknown', label: 'gender.preferNotToSay' },
   ] as const;
 
   return (
@@ -35,14 +46,16 @@ export default function GenderScreen({ navigation }: OnboardingGenderSelectScree
           <Heading>{t('gender.title')}</Heading>
           <HeadingDescription>{t('gender.title')}</HeadingDescription>
           <Label>{t('gender.label')}</Label>
-          {GENDER_OPTIONS.map((item) => (
-            <SelectItem
-              key={item.id}
-              selected={selectedGender === item.id}
-              onPress={() => setSelectedGender(item.id)}
-              item={t(item.label)}
-            />
-          ))}
+          <View className="mt-2">
+            {GENDER_OPTIONS.map((item) => (
+              <SelectItem
+                key={item.id}
+                selected={selectedGender === item.id}
+                onPress={() => setSelectedGender(item.id)}
+                item={t(item.label)}
+              />
+            ))}
+          </View>
         </View>
         <Button onPress={handleNavigate} disabled={!selectedGender}>
           <MyText size="text-lg" color="text-white" className="font-semibold">
