@@ -10,7 +10,7 @@ import {
   Label,
   Layout,
   MyText,
-  MultiSelectItem,
+  SelectItem,
 } from '@/components';
 import { OnboardingStackParamList } from '@/navigation/navigationRef';
 import { useOnboardingStore } from '@/store';
@@ -60,8 +60,8 @@ export default function UniversitySelectScreen({
     };
   });
 
-  const handleSelect = (value: { id: string }) => {
-    setSelected(value.id);
+  const handleSelect = (id: string) => {
+    setSelected(id);
   };
 
   const handleNavigateButton = () => {
@@ -74,17 +74,23 @@ export default function UniversitySelectScreen({
   return (
     <Layout preserveHeader>
       <InnerLayout>
-        <Heading>{t('universitySelect.title')}</Heading>
-        <HeadingDescription>{t('universitySelect.description')}</HeadingDescription>
-        <Label className="mb-0">{t('universitySelect.label')}</Label>
-        <MultiSelectItem
-          options={options}
-          selectedValues={selected ? [{ id: selected }] : []}
-          onSelect={handleSelect}
-          className="mt-0"
-          multiple={false}
-          nameSpace="universities"
-        />
+        <View className="flex-1">
+          <Heading>{t('universitySelect.title')}</Heading>
+          <HeadingDescription>{t('universitySelect.description')}</HeadingDescription>
+          <Label>{t('universitySelect.label')}</Label>
+          <View className="mt-2">
+            {options.map((option) => (
+              <SelectItem
+                key={option.id}
+                selected={selected === option.id}
+                onPress={() => handleSelect(option.id)}
+                item={t(`universities:universities.${option.id}`)}
+              >
+                {option.icon}
+              </SelectItem>
+            ))}
+          </View>
+        </View>
         <Button onPress={handleNavigateButton} disabled={!selected}>
           <MyText size="text-lg" color="text-white" className="font-semibold">
             {t('common.next')}
