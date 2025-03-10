@@ -76,5 +76,12 @@
       "verified": "사진 인증 완료",
       "unverified": "사진 미인증"
     }
+  },
+  "error": {
+    "deletedFeed": "삭제된 게시글입니다.",
+    "deletedComment": "삭제된 게시글입니다.",
+    "alreadyBlocked": "이미 차단한 사용자입니다.",
+    "alreadyExistChatroom": "이미 채팅방이 존재합니다.",
+    "alreadyExistChatRequest": "이미 채팅요청을 보냈습니다."
   }
 }

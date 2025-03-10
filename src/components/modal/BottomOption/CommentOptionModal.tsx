@@ -1,6 +1,8 @@
 import React, { useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Text } from 'react-native';
 import { useFeedDetail } from '@/hooks';
-import { useModalStore, useUserStore } from '@/store';
+import { useModalStore, useToastStore, useUserStore } from '@/store';
 import { useNavigation } from '@react-navigation/native';
 import i18next from 'i18next';
 import { Ban, Siren, Trash2, Send } from 'lucide-react-native';
@@ -15,25 +17,26 @@ interface CommentOptionModalProps {
 
 export function CommentOptionModal({ visible, onClose, feed, comment }: CommentOptionModalProps) {
   const { handleCommentActions } = useFeedDetail({ feedId: feed.id });
-
+  const { t } = useTranslation();
   const handleModalOpen = useModalStore((state) => state.handleOpen);
   const handleModalClose = useModalStore((state) => state.handleClose);
+  const { showToast } = useToastStore();
   const isCertificated = useUserStore((state) => state.isCertificated);
 
   const handleReportOption = useCallback(() => {
     onClose();
     isCertificated ? handleModalOpen('report') : handleModalOpen('studentCertification');
-  }, [handleModalClose, handleModalOpen]);
+  }, [onClose, handleModalClose, handleModalOpen]);
 
   const handleBlockOption = useCallback(() => {
     onClose();
     isCertificated ? handleModalOpen('block') : handleModalOpen('studentCertification');
-  }, [handleModalClose, handleModalOpen]);
+  }, [onClose, handleModalClose, handleModalOpen]);
 
   const handleChatRequestOption = useCallback(() => {
     onClose();
     isCertificated ? handleModalOpen('chatRequest') : handleModalOpen('studentCertification');
-  }, [handleModalClose, handleModalOpen]);
+  }, [onClose, handleModalClose, handleModalOpen]);
 
   const options: OptionItem[] = comment.isCommentOwner
     ? [
@@ -42,7 +45,19 @@ export function CommentOptionModal({ visible, onClose, feed, comment }: CommentO
           label: i18next.t('feed:modal.delete'),
           icon: <Trash2 size={16} color="#282828" />,
           onPress: async () => {
-            await handleCommentActions.delete(comment.id);
+            try {
+              await handleCommentActions.delete(comment.id);
+            } catch (error: any) {
+              const errorCode = error.response?.data?.code;
+              const errorMapping: Record<number, { emoji: string; translationKey: string }> = {
+                4000: { emoji: '🗑️', translationKey: 'feed:error.deletedFeed' },
+                4006: { emoji: '🗑️', translationKey: 'feed:error.deletedComment' },
+              };
+              const errorInfo = errorMapping[errorCode];
+              if (errorInfo) {
+                showToast(<Text>{errorInfo.emoji}</Text>, t(errorInfo.translationKey), 2000);
+              }
+            }
           },
         },
       ]

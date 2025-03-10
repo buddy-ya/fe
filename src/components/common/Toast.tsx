@@ -44,7 +44,7 @@ export function Toast({ visible, icon, text, duration = 1200, onClose }: ToastPr
 
   return (
     <Animated.View
-      className="absolute bottom-[100px] left-10 right-10 flex-row items-center rounded-[12px] bg-toastBackground px-5 py-4"
+      className="absolute bottom-[100px] left-10 right-10 z-10 flex-row items-center rounded-[12px] bg-toastBackground px-5 py-4"
       style={{
         opacity: fadeAnim,
         transform: [

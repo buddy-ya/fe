@@ -48,6 +48,10 @@
   "toast": {
     "reportSuccess": "Report submitted successfully!",
     "blockSuccess": "User has been blocked successfully!",
-    "exitSuccess": "You have left the chat."
+    "exitSuccess": "You have left the chat.",
+    "error": {
+      "unknown": "An unknown error has occurred.",
+      "network": "The network connection is unstable."
+    }
   }
 }

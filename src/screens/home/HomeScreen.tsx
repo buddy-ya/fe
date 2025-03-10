@@ -35,7 +35,7 @@ export function HomeScreen({ navigation }: FeedHomeScreenProps) {
   };
 
   const handlePressFeed = (feedId: number) => {
-    navigation.navigate('FeedDetail', { feedId, feedCategory: activeCategory });
+    navigation.navigate('FeedDetail', { feedId });
   };
 
   const handleWriteButton = async () => {

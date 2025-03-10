@@ -7,12 +7,14 @@ export default {
       Tab: {
         screens: {
           FeedTab: {
+            initialRouteName: 'FeedHome',
             screens: {
               Feed: 'feeds',
               FeedDetail: 'feeds/:feedId',
             },
           },
           Chat: {
+            initialRouteName: 'RoomList',
             screens: {
               ChatRequests: 'chatRequests',
               ChatRoom: 'chats/:id',

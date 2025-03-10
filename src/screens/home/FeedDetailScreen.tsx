@@ -35,7 +35,7 @@ type FeedDetailScreenProps = NativeStackScreenProps<FeedStackParamList, 'FeedDet
 
 export default function FeedDetailScreen({ navigation, route }: FeedDetailScreenProps) {
   const [isRefreshing, setIsRefreshing] = useState(false);
-  const { feedId, feedCategory, source, searchKeyword } = route.params;
+  const { feedId, source, searchKeyword } = route.params;
   const { t } = useTranslation('feed');
   const queryClient = useQueryClient();
   const modalVisible = useModalStore((state) => state.visible);
@@ -45,11 +45,6 @@ export default function FeedDetailScreen({ navigation, route }: FeedDetailScreen
   const [commentInput, setCommentInput] = useState('');
   const [parentCommentId, setParentCommentId] = useState<number | null>(null);
   const commentInputRef = useRef<TextInput | null>(null);
-
-  const updateBookmarkCache = source === 'bookmark';
-  const updateMyPostsCache = source === 'myPosts';
-  const updateSearchCache = source === 'search';
-  const effectiveFeedCategory = updateSearchCache ? undefined : feedCategory || 'free';
 
   const results = useSuspenseQueries({
     queries: [
@@ -69,6 +64,11 @@ export default function FeedDetailScreen({ navigation, route }: FeedDetailScreen
     { data: comments, refetch: refetchComments },
   ] = results;
 
+  const updateBookmarkCache = source === 'bookmark';
+  const updateMyPostsCache = source === 'myPosts';
+  const updateSearchCache = source === 'search';
+  const effectiveFeedCategory = updateSearchCache ? undefined : feed.category;
+
   const { handleFeedActions, handleCommentActions } = useFeedDetail({
     feedId,
     feedCategory: effectiveFeedCategory,
@@ -85,7 +85,7 @@ export default function FeedDetailScreen({ navigation, route }: FeedDetailScreen
   };
 
   useEffect(() => {
-    FeedService.incrementViewCount(queryClient, feedKeys.lists('free'), feedId);
+    FeedService.incrementViewCount(queryClient, feedKeys.lists(feed.category || 'free'), feedId);
   }, [feedId, queryClient]);
 
   const handleCommentReply = (commentId: number) => {

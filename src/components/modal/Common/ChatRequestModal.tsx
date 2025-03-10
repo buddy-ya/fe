@@ -1,7 +1,8 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Image, View } from 'react-native';
+import { Image, Text, View } from 'react-native';
 import { API, ChatRequestRepository } from '@/api';
+import { useToastStore } from '@/store';
 import { getCountryFlag } from '@/utils';
 import MyText from '@/components/common/MyText';
 import { BottomModalWrapper } from './BottomModalWrapper';
@@ -25,11 +26,26 @@ export function ChatRequestModal({ visible, data, onClose }: CommonModalProps) {
   const confirmText = t('chatRequestModal.confirm');
   const cancelText = t('chatRequestModal.cancel');
 
+  const { showToast } = useToastStore();
+
   const onConfirm = async () => {
     const userId = data?.userId;
     try {
       await ChatRequestRepository.create({ receiverId: userId });
-    } catch (error) {}
+    } catch (error: any) {
+      const errorCode = error.response?.data?.code;
+      const errorMapping: Record<number, { emoji: string; translationKey: string }> = {
+        4000: { emoji: '🗑️', translationKey: 'feed:error.deletedFeed' },
+        4006: { emoji: '🗑️', translationKey: 'feed:error.deletedComment' },
+        5004: { emoji: '📩', translationKey: 'feed:error.alreadyExistChatRequest' },
+        5005: { emoji: '💬', translationKey: 'feed:error.alreadyExistChatroom' },
+      };
+      const errorInfo = errorMapping[errorCode];
+
+      if (errorInfo) {
+        showToast(<Text>{errorInfo.emoji}</Text>, t(errorInfo.translationKey), 2000);
+      }
+    }
   };
 
   return (
@@ -46,7 +62,7 @@ export function ChatRequestModal({ visible, data, onClose }: CommonModalProps) {
         <View className="items-center">
           <Image className="h-[48px] w-[48px] rounded-[12px]" source={{ uri: profileImageUrl }} />
           <MyText size="text-[12px]" className="mt-3 font-semibold leading-[1]">
-            {t(`profile.university.${university}`)}
+            {t(`universities:universities.${university}`)}
           </MyText>
           <View className="flex-row items-center">
             <MyText size="text-[12px]" className="leading-norma1 mr-1">

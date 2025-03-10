@@ -1,11 +1,12 @@
-import { useUserStore } from '@/store';
+import { MyText } from '@/components';
+import i18n from '@/i18n';
+import { useToastStore, useUserStore } from '@/store';
 import axios from 'axios';
 import Constants from 'expo-constants';
 import * as SecureStore from 'expo-secure-store';
 import { showErrorModal, TOKEN_KEYS } from '@/utils';
 
 const BASE_URL = Constants?.expoConfig?.extra?.BASE_URL || '';
-console.log(BASE_URL);
 
 export const API = axios.create({
   baseURL: BASE_URL,
@@ -22,9 +23,10 @@ export const reissueToken = async (
 API.interceptors.response.use(
   (response) => response,
   async (error) => {
-    // TODO: 리액트 쿼리에서 기본 3회 재요청 때문에 모달이 3번 뜨는 현상이 있어 추후 주석 처리 필요해 보임
     if (!error.response) {
-      showErrorModal('network');
+      useToastStore
+        .getState()
+        .showToast(<MyText>🌐</MyText>, i18n.t('common:toast.error.network'), 2000);
       return Promise.reject(error);
     }
     const errorCode = error.response?.data?.code;
@@ -48,6 +50,9 @@ API.interceptors.response.use(
         return Promise.reject(reissueError);
       }
     }
+    useToastStore
+      .getState()
+      .showToast(<MyText>⚠️</MyText>, i18n.t('common:toast.error.unknown'), 2000);
     return Promise.reject(error);
   }
 );

@@ -1,8 +1,8 @@
 import React, { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Alert } from 'react-native';
+import { Alert, Text } from 'react-native';
 import { feedKeys, FeedRepository } from '@/api';
-import { useModalStore, useUserStore } from '@/store';
+import { useModalStore, useToastStore, useUserStore } from '@/store';
 import { Feed } from '@/types';
 import { useNavigation } from '@react-navigation/native';
 import { useQueryClient } from '@tanstack/react-query';
@@ -25,18 +25,17 @@ export function FeedOptionModal({ visible, onClose, feed }: FeedOptionModalProps
   const isCertificated = useUserStore((state) => state.isCertificated);
   const handleModalOpen = useModalStore((state) => state.handleOpen);
   const handleModalClose = useModalStore((state) => state.handleClose);
+  const { showToast } = useToastStore();
 
   const handleReportOption = useCallback(() => {
     onClose();
     isCertificated ? handleModalOpen('report') : handleModalOpen('studentCertification');
-  }, [handleModalClose, handleModalOpen]);
+  }, [onClose, handleModalClose, handleModalOpen]);
 
   const handleBlockOption = useCallback(() => {
     onClose();
     isCertificated ? handleModalOpen('block') : handleModalOpen('studentCertification');
-  }, [handleModalClose, handleModalOpen]);
-
-  const { id, userId } = feed;
+  }, [onClose, handleModalClose, handleModalOpen]);
 
   const showDeleteAlert = (onConfirm: () => void) => {
     Alert.alert(
@@ -70,10 +69,21 @@ export function FeedOptionModal({ visible, onClose, feed }: FeedOptionModalProps
           icon: <Trash2 size={16} color="#282828" />,
           onPress: () =>
             showDeleteAlert(async () => {
-              await FeedRepository.delete({ feedId: feed.id });
-              queryClient.invalidateQueries({ queryKey: feedKeys.all });
-              navigation.goBack();
-              onClose();
+              try {
+                await FeedRepository.delete({ feedId: feed.id });
+                queryClient.invalidateQueries({ queryKey: feedKeys.all });
+                navigation.goBack();
+                onClose();
+              } catch (error: any) {
+                const errorCode = error.response?.data?.code;
+                const errorMapping: Record<number, { emoji: string; translationKey: string }> = {
+                  4000: { emoji: '🗑️', translationKey: 'feed:error.deletedFeed' },
+                };
+                const errorInfo = errorMapping[errorCode];
+                if (errorInfo) {
+                  showToast(<Text>{errorInfo.emoji}</Text>, t(errorInfo.translationKey), 2000);
+                }
+              }
             }),
         },
       ]

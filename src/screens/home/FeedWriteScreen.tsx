@@ -172,7 +172,7 @@ export default function FeedWriteScreen({ navigation, route }: FeedWriteScreenPr
         });
       }
     } catch (error) {
-      Alert.alert('오류', `Feed ${isEdit ? 'Edit' : 'Upload'} Fail.`);
+      Alert.alert('Error', `Feed ${isEdit ? 'Edit' : 'Upload'} Fail.`);
     } finally {
       setIsLoading(false);
       navigation.goBack();
@@ -240,12 +240,14 @@ export default function FeedWriteScreen({ navigation, route }: FeedWriteScreenPr
                 placeholder={t('write.titlePlaceholder')}
                 placeholderTextColor="#CBCBCB"
                 value={title}
+                maxLength={300}
                 onChangeText={setTitle}
               />
               <TextInput
                 className="mt-4 font-semibold text-[18px]"
                 placeholder={t('write.contentPlaceholder')}
                 placeholderTextColor="#CBCBCB"
+                maxLength={10000}
                 value={content}
                 onChangeText={setContent}
                 multiline
