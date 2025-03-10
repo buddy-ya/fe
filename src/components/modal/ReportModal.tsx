@@ -43,8 +43,16 @@ export function ReportModal({
         onReportSuccess();
       }
       showToast(<Text>🙌</Text>, t('toast.reportSuccess'), 2000);
-    } catch (error) {
-      logError(error);
+    } catch (error: any) {
+      const errorCode = error.response?.data?.code;
+      const errorMapping: Record<number, { emoji: string; translationKey: string }> = {
+        4000: { emoji: '🗑️', translationKey: 'feed:error.deletedFeed' },
+        4006: { emoji: '🗑️', translationKey: 'feed:error.deletedComment' },
+      };
+      const errorInfo = errorMapping[errorCode];
+      if (errorInfo) {
+        showToast(<Text>{errorInfo.emoji}</Text>, t(errorInfo.translationKey), 2000);
+      }
     } finally {
       handleCancel();
     }

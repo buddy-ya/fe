@@ -172,7 +172,7 @@ export default function FeedWriteScreen({ navigation, route }: FeedWriteScreenPr
         });
       }
     } catch (error) {
-      Alert.alert('오류', `Feed ${isEdit ? 'Edit' : 'Upload'} Fail.`);
+      Alert.alert('Error', `Feed ${isEdit ? 'Edit' : 'Upload'} Fail.`);
     } finally {
       setIsLoading(false);
       navigation.goBack();

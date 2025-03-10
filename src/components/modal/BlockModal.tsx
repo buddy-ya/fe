@@ -1,9 +1,7 @@
-import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { ChatSocketRepository, UserRepository } from '@/api';
+import { Text } from 'react-native';
+import { UserRepository } from '@/api';
 import { useToastStore } from '@/store';
-import { useNavigation } from '@react-navigation/native';
-import { logError } from '@/utils';
 import { MyText } from '../common';
 import { StandardModal } from './Common';
 
@@ -26,8 +24,17 @@ export function BlockModal({ visible, roomId, buddyId, onClose, onBlockSuccess }
         await onBlockSuccess();
       }
       showToast(<MyText>🚫</MyText>, t('toast.blockSuccess'), 2000);
-    } catch (error) {
-      logError(error);
+    } catch (error: any) {
+      const errorCode = error.response?.data?.code;
+      const errorMapping: Record<number, { emoji: string; translationKey: string }> = {
+        2011: { emoji: '🚫', translationKey: 'feed:error.alreadyBlocked' },
+        4000: { emoji: '🗑️', translationKey: 'feed:error.deletedFeed' },
+        4006: { emoji: '🗑️', translationKey: 'feed:error.deletedComment' },
+      };
+      const errorInfo = errorMapping[errorCode];
+      if (errorInfo) {
+        showToast(<Text>{errorInfo.emoji}</Text>, t(errorInfo.translationKey), 2000);
+      }
     }
   };
 

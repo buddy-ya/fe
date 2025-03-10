@@ -76,5 +76,12 @@
       "verified": "Photo verified",
       "unverified": "Photo not verified"
     }
+  },
+  "error": {
+    "deletedFeed": "This post has been deleted.",
+    "deletedComment": "This comment has been deleted.",
+    "alreadyBlocked": "User is already blocked.",
+    "alreadyExistChatroom": "A chatroom already exists.",
+    "alreadyExistChatRequest": "A chat request has already been sent."
   }
 }

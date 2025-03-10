@@ -4,14 +4,6 @@ import API from './API';
 const url = '/chat-requests';
 
 class ChatRequestRepository {
-  async get({ receiverId }: { receiverId: number }): Promise<{
-    isAlreadyExistChatRequest: boolean;
-    isAlreadyExistChatroom: boolean;
-  }> {
-    const { data } = await API.get(`${url}/${receiverId}`);
-    return data;
-  }
-
   async getRequestList(): Promise<ChatRequest[]> {
     const { data } = await API.get(`${url}`);
     return data;

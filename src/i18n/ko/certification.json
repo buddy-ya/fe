@@ -29,9 +29,6 @@
     "description": "이메일로 인증코드를 보내드렸어요!",
     "label": "학교 이메일",
     "placeholder": "이메일 입력",
-    "domain": {
-      "sju": "@sju.ac.kr"
-    },
     "footer": "이메일은 인증에만 사용됩니다.",
     "warning": "올바른 이메일을 입력해 주세요."
   },
@@ -44,7 +41,9 @@
     "warning": "잘못된 인증번호입니다."
   },
   "error": {
-    "invalidCode": "잘못된 인증번호입니다."
+    "invalidCode": "잘못된 인증번호입니다",
+    "registered": "이미 등록된 이메일 주소입니다",
+    "sendFail": "이메일 전송에 실패했습니다"
   },
   "verificationComplete": {
     "title": "학생 인증이 완료되었습니다.",

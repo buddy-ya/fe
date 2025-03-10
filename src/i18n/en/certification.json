@@ -29,9 +29,6 @@
     "description": "We have sent a verification code to your email!",
     "label": "School Email",
     "placeholder": "Enter email",
-    "domain": {
-      "sju": "@sju.ac.kr"
-    },
     "footer": "Your email will be used only for verification.",
     "warning": "Please enter a valid email address."
   },
@@ -44,7 +41,9 @@
     "warning": "Invalid verification code."
   },
   "error": {
-    "invalidCode": "Invalid verification code."
+    "invalidCode": "Invalid verification code",
+    "registered": "Email address already registered",
+    "sendFail": "Failed to send email"
   },
   "verificationComplete": {
     "title": "Student verification is complete.",

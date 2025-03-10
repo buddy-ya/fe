@@ -14,7 +14,7 @@ import {
   MyText,
 } from '@/components';
 import { FeedStackParamList } from '@/navigation/navigationRef';
-import { useUserStore } from '@/store';
+import { useUserStore, useToastStore } from '@/store';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { Mail } from 'lucide-react-native';
 import { EMAIL_REGEX, UNIVERSITY_EMAIL_DOMAINS, UniversityID } from '@/utils';
@@ -24,11 +24,12 @@ type EmailScreenProps = NativeStackScreenProps<FeedStackParamList, 'EmailVerific
 export default function EmailScreen({ navigation }: EmailScreenProps) {
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
-
+  const [errorMessage, setErrorMessage] = useState('');
   const { t } = useTranslation('certification');
 
   const handleEmailChange = (text: string) => {
     setEmail(text);
+    setErrorMessage('');
   };
 
   const university = useUserStore((state) => state.university);
@@ -39,11 +40,16 @@ export default function EmailScreen({ navigation }: EmailScreenProps) {
     try {
       setLoading(true);
       const { success } = await AuthRepository.sendCodeByMail({ email: fullEmail });
-      navigation.navigate('EmailVerificationCode', {
-        email: fullEmail,
-      });
-    } catch (e) {
-      console.log(e);
+      if (success) {
+        navigation.navigate('EmailVerificationCode', { email: fullEmail });
+      }
+    } catch (error: any) {
+      const errorCode = error.response?.data?.code;
+      if (errorCode === 1002) {
+        setErrorMessage(t('email.registered'));
+      } else if (errorCode === 1004) {
+        setErrorMessage(t('email.sendFail'));
+      }
     } finally {
       setLoading(false);
     }
@@ -91,6 +97,7 @@ export default function EmailScreen({ navigation }: EmailScreenProps) {
               </View>
             </View>
             {email.length > 0 && !isValidEmail && <ErrorMessage>{t('email.warning')}</ErrorMessage>}
+            {errorMessage !== '' && <ErrorMessage>{errorMessage}</ErrorMessage>}
           </View>
         </InnerLayout>
       </KeyboardLayout>
