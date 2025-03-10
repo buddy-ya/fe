@@ -14,10 +14,14 @@ module.exports = {
     userInterfaceStyle: 'light',
     newArchEnabled: false,
     splash: {
+      // 스플래시 스크린 이미지: 앱 로딩 시 표시되는 이미지의 경로
       image: './assets/images/logo.png',
+      // resizeMode: 이미지의 크기 조정 방식 ('contain'은 이미지 비율을 유지하며 전체가 보이도록 조정)
       resizeMode: 'contain',
+      // 배경색: 스플래시 이미지 주변에 적용할 배경색
       backgroundColor: '#ffffff',
     },
+    // 앱 아이콘: 앱 아이콘 이미지 파일의 경로 (일반적으로 정사각형의 고해상도 이미지 권장)
     icon: './assets/images/icon.png',
     plugins: [
       [

@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import { useFeedDetail } from '@/hooks';
-import { useModalStore } from '@/store';
+import { useModalStore, useUserStore } from '@/store';
 import { useNavigation } from '@react-navigation/native';
 import i18next from 'i18next';
 import { Ban, Siren, Trash2, Send } from 'lucide-react-native';
@@ -18,20 +18,21 @@ export function CommentOptionModal({ visible, onClose, feed, comment }: CommentO
 
   const handleModalOpen = useModalStore((state) => state.handleOpen);
   const handleModalClose = useModalStore((state) => state.handleClose);
+  const isCertificated = useUserStore((state) => state.isCertificated);
 
   const handleReportOption = useCallback(() => {
-    handleModalClose('comment');
-    handleModalOpen('report');
+    onClose();
+    isCertificated ? handleModalOpen('report') : handleModalOpen('studentCertification');
   }, [handleModalClose, handleModalOpen]);
 
   const handleBlockOption = useCallback(() => {
-    handleModalClose('comment');
-    handleModalOpen('block');
+    onClose();
+    isCertificated ? handleModalOpen('block') : handleModalOpen('studentCertification');
   }, [handleModalClose, handleModalOpen]);
 
   const handleChatRequestOption = useCallback(() => {
-    handleModalClose('comment');
-    handleModalOpen('chatRequest');
+    onClose();
+    isCertificated ? handleModalOpen('chatRequest') : handleModalOpen('studentCertification');
   }, [handleModalClose, handleModalOpen]);
 
   const options: OptionItem[] = comment.isCommentOwner

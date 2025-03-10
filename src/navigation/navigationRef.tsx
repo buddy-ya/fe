@@ -1,4 +1,11 @@
 import { Feed, Room } from '@/types';
+import { createNavigationContainerRef } from '@react-navigation/native';
+
+export type RootStackParamList = {
+  Onboarding: undefined;
+  Verification: undefined;
+  Tab: undefined;
+};
 
 export type OnboardingStackParamList = {
   OnboardingWelcome: undefined;

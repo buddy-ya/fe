@@ -25,10 +25,10 @@ export default function SelectItem({
         selected ? 'border-[1px] border-primary bg-chipActive' : 'border-border'
       } `}
     >
+      {children && <MyText className="mr-2">{children}</MyText>}
       <MyText size="text-base" color={selected ? 'text-active' : undefined}>
         {item}
       </MyText>
-      {children}
     </TouchableOpacity>
   );
 }
