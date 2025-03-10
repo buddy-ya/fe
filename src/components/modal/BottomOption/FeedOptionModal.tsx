@@ -2,7 +2,7 @@ import React, { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Alert } from 'react-native';
 import { feedKeys, FeedRepository } from '@/api';
-import { useModalStore } from '@/store';
+import { useModalStore, useUserStore } from '@/store';
 import { Feed } from '@/types';
 import { useNavigation } from '@react-navigation/native';
 import { useQueryClient } from '@tanstack/react-query';
@@ -22,17 +22,18 @@ export function FeedOptionModal({ visible, onClose, feed }: FeedOptionModalProps
 
   const { t } = useTranslation('feed');
 
+  const isCertificated = useUserStore((state) => state.isCertificated);
   const handleModalOpen = useModalStore((state) => state.handleOpen);
   const handleModalClose = useModalStore((state) => state.handleClose);
 
   const handleReportOption = useCallback(() => {
-    handleModalClose('feed');
-    handleModalOpen('report');
+    onClose();
+    isCertificated ? handleModalOpen('report') : handleModalOpen('studentCertification');
   }, [handleModalClose, handleModalOpen]);
 
   const handleBlockOption = useCallback(() => {
-    handleModalClose('feed');
-    handleModalOpen('block');
+    onClose();
+    isCertificated ? handleModalOpen('block') : handleModalOpen('studentCertification');
   }, [handleModalClose, handleModalOpen]);
 
   const { id, userId } = feed;
