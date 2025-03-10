@@ -30,14 +30,12 @@ export function FeedOptionModal({ visible, onClose, feed }: FeedOptionModalProps
   const handleReportOption = useCallback(() => {
     onClose();
     isCertificated ? handleModalOpen('report') : handleModalOpen('studentCertification');
-  }, [handleModalClose, handleModalOpen]);
+  }, [onClose, handleModalClose, handleModalOpen]);
 
   const handleBlockOption = useCallback(() => {
     onClose();
     isCertificated ? handleModalOpen('block') : handleModalOpen('studentCertification');
-  }, [handleModalClose, handleModalOpen]);
-
-  const { id, userId } = feed;
+  }, [onClose, handleModalClose, handleModalOpen]);
 
   const showDeleteAlert = (onConfirm: () => void) => {
     Alert.alert(

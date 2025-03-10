@@ -26,17 +26,17 @@ export function CommentOptionModal({ visible, onClose, feed, comment }: CommentO
   const handleReportOption = useCallback(() => {
     onClose();
     isCertificated ? handleModalOpen('report') : handleModalOpen('studentCertification');
-  }, [handleModalClose, handleModalOpen]);
+  }, [onClose, handleModalClose, handleModalOpen]);
 
   const handleBlockOption = useCallback(() => {
     onClose();
     isCertificated ? handleModalOpen('block') : handleModalOpen('studentCertification');
-  }, [handleModalClose, handleModalOpen]);
+  }, [onClose, handleModalClose, handleModalOpen]);
 
   const handleChatRequestOption = useCallback(() => {
     onClose();
     isCertificated ? handleModalOpen('chatRequest') : handleModalOpen('studentCertification');
-  }, [handleModalClose, handleModalOpen]);
+  }, [onClose, handleModalClose, handleModalOpen]);
 
   const options: OptionItem[] = comment.isCommentOwner
     ? [
