@@ -76,7 +76,7 @@ export default function UniversitySelectScreen({
       <InnerLayout>
         <Heading>{t('universitySelect.title')}</Heading>
         <HeadingDescription>{t('universitySelect.description')}</HeadingDescription>
-        <Label>{t('universitySelect.label')}</Label>
+        <Label className="mb-0">{t('universitySelect.label')}</Label>
         <MultiSelectItem
           options={options}
           selectedValues={selected ? [{ id: selected }] : []}
