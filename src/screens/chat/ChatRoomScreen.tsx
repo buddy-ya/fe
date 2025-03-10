@@ -26,7 +26,7 @@ import {
 import { useImageUpload, useRoomStateHandler } from '@/hooks';
 import { Message } from '@/model';
 import { ChatStackParamList } from '@/navigation/navigationRef';
-import { getValidAccessToken } from '@/provider/AuthProvider';
+import { getValidAccessToken } from '@/provider/AppInitializationProvider';
 import { useMessageStore, useModalStore, useUserStore, useToastStore } from '@/store';
 import { ChatListResponse } from '@/types';
 import { useNavigation } from '@react-navigation/native';

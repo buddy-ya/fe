@@ -1,14 +1,14 @@
-import { Suspense } from 'react';
+import React, { Suspense } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 import { I18nextProvider } from 'react-i18next';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import i18n from '@/i18n';
 import linking from '@/navigation/Linking';
 import Router from '@/navigation/router';
-import { AuthProvider } from '@/provider';
+import AppInitializationProvider from '@/provider/AppInitializationProvider';
 import ErrorPage from '@/screens/ErrorPage';
 import { useToastStore } from '@/store';
-import { createNavigationContainerRef, NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, createNavigationContainerRef } from '@react-navigation/native';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Toast } from '@/components/common/Toast';
 
@@ -22,10 +22,10 @@ export default function App() {
     <QueryClientProvider client={queryClient}>
       <I18nextProvider i18n={i18n}>
         <ErrorBoundary FallbackComponent={ErrorPage}>
-          <Suspense fallback={<></>}>
-            <GestureHandlerRootView>
-              <AuthProvider>
-                <NavigationContainer ref={navigationRef} linking={linking}>
+          <Suspense fallback={null}>
+            <GestureHandlerRootView style={{ flex: 1 }}>
+              <NavigationContainer ref={navigationRef} linking={linking}>
+                <AppInitializationProvider>
                   <Router />
                   <Toast
                     visible={visible}
@@ -34,8 +34,8 @@ export default function App() {
                     duration={duration}
                     onClose={hideToast}
                   />
-                </NavigationContainer>
-              </AuthProvider>
+                </AppInitializationProvider>
+              </NavigationContainer>
             </GestureHandlerRootView>
           </Suspense>
         </ErrorBoundary>

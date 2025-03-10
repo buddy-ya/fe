@@ -52,10 +52,11 @@ import {
   FeedStackParamList,
   MyPageStackParamList,
   OnboardingStackParamList,
+  RootStackParamList,
   VerificationStackParamList,
 } from './navigationRef';
 
-const Stack = createNativeStackNavigator();
+const Stack = createNativeStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator();
 const OnboardingStack = createNativeStackNavigator<OnboardingStackParamList>();
 const FeedStack = createNativeStackNavigator<FeedStackParamList>();
@@ -63,7 +64,7 @@ const VerificationStack = createNativeStackNavigator<VerificationStackParamList>
 const ChatStack = createNativeStackNavigator<ChatStackParamList>();
 const MyPageStack = createNativeStackNavigator<MyPageStackParamList>();
 
-export const navigationRef = createNavigationContainerRef();
+export const navigationRef = createNavigationContainerRef<RootStackParamList>();
 
 function TabNavigator() {
   const { t } = useTranslation('common');
