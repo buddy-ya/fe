@@ -21,7 +21,6 @@ type CountryID = (typeof COUNTRIES)[number]['id'];
 interface Country {
   id: CountryID;
   icon: string;
-  // name: string;
 }
 
 type CountrySelectScreenProps = NativeStackScreenProps<

@@ -41,9 +41,9 @@ function MultiSelectItem<T extends { id: string; icon?: string | React.ReactNode
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingBottom: 20 }}
       >
-        {options.map((option) => (
+        {options.map((option, index) => (
           <TouchableOpacity
-            key={option.id}
+            key={index}
             onPress={() => onSelect(option)}
             disabled={isDisabled(option)}
             className="flex-row items-center justify-between border-b border-borderSelect py-4"
