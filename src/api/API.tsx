@@ -1,3 +1,4 @@
+import { Alert } from 'react-native';
 import { MyText } from '@/components';
 import i18n from '@/i18n';
 import { useToastStore, useUserStore } from '@/store';
@@ -51,6 +52,10 @@ API.interceptors.response.use(
     useToastStore
       .getState()
       .showToast(<MyText>⚠️</MyText>, i18n.t('common:toast.error.unknown'), 2000);
+
+    setTimeout(() => {
+      useToastStore.getState().showToast(<MyText>⚠️</MyText>, error.response.data.message, 2000);
+    }, 2000);
     return Promise.reject(error);
   }
 );

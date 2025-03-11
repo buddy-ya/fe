@@ -18,13 +18,14 @@ module.exports = {
       [
         'expo-notifications',
         {
+          icon: './assets/images/icon/96.png',
           color: '#ffffff',
         },
       ],
       [
         'expo-splash-screen',
         {
-          backgroundColor: '#232323',
+          backgroundColor: '#00A176',
           image: './assets/images/splash/splash-icon.png',
         },
       ],
