@@ -23,20 +23,26 @@ export function CommentOptionModal({ visible, onClose, feed, comment }: CommentO
   const { showToast } = useToastStore();
   const isCertificated = useUserStore((state) => state.isCertificated);
 
-  const handleReportOption = useCallback(() => {
+  const handleReportOption = () => {
     onClose();
-    isCertificated ? handleModalOpen('report') : handleModalOpen('studentCertification');
-  }, [onClose, handleModalClose, handleModalOpen]);
+    setTimeout(() => {
+      isCertificated ? handleModalOpen('report') : handleModalOpen('studentCertification');
+    }, 300);
+  };
 
-  const handleBlockOption = useCallback(() => {
+  const handleBlockOption = () => {
     onClose();
-    isCertificated ? handleModalOpen('block') : handleModalOpen('studentCertification');
-  }, [onClose, handleModalClose, handleModalOpen]);
+    setTimeout(() => {
+      isCertificated ? handleModalOpen('block') : handleModalOpen('studentCertification');
+    }, 300);
+  };
 
-  const handleChatRequestOption = useCallback(() => {
+  const handleChatRequestOption = () => {
     onClose();
-    isCertificated ? handleModalOpen('chatRequest') : handleModalOpen('studentCertification');
-  }, [onClose, handleModalClose, handleModalOpen]);
+    setTimeout(() => {
+      isCertificated ? handleModalOpen('chatRequest') : handleModalOpen('studentCertification');
+    }, 300);
+  };
 
   const options: OptionItem[] = comment.isCommentOwner
     ? [
