@@ -87,7 +87,7 @@ export default function RoomListScreen({ navigation }: RoomListNavigationProps) 
               </View>
             </View>
           </TouchableOpacity>
-          <View className="flex-1">
+          <View className="flex-1 border">
             <RoomList
               rooms={rooms}
               onPress={handlePressRoom}
