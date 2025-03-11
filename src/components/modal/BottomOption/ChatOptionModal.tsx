@@ -15,19 +15,25 @@ export function ChatOptionModal({ visible, onClose }: ChatOptionModalProps) {
   const handleModalClose = useModalStore((state) => state.handleClose);
 
   const handleReportOption = useCallback(() => {
-    handleModalClose('chat');
-    handleModalOpen('report');
-  }, [handleModalClose, handleModalOpen]);
+    onClose();
+    setTimeout(() => {
+      handleModalOpen('report');
+    }, 300);
+  }, [onClose, handleModalClose, handleModalOpen]);
 
   const handleBlockOption = useCallback(() => {
-    handleModalClose('chat');
-    handleModalOpen('block');
-  }, [handleModalClose, handleModalOpen]);
+    onClose();
+    setTimeout(() => {
+      handleModalOpen('block');
+    }, 300);
+  }, [onClose, handleModalClose, handleModalOpen]);
 
   const handleExitOption = useCallback(() => {
-    handleModalClose('chat');
-    handleModalOpen('exit');
-  }, [handleModalClose, handleModalOpen]);
+    onClose();
+    setTimeout(() => {
+      handleModalOpen('exit');
+    }, 300);
+  }, [onClose, handleModalClose, handleModalOpen]);
 
   const options: OptionItem[] = [
     {

@@ -19,9 +19,7 @@ interface FeedOptionModalProps {
 export function FeedOptionModal({ visible, onClose, feed }: FeedOptionModalProps) {
   const queryClient = useQueryClient();
   const navigation = useNavigation<any>();
-
   const { t } = useTranslation('feed');
-
   const isCertificated = useUserStore((state) => state.isCertificated);
   const handleModalOpen = useModalStore((state) => state.handleOpen);
   const handleModalClose = useModalStore((state) => state.handleClose);
@@ -29,13 +27,17 @@ export function FeedOptionModal({ visible, onClose, feed }: FeedOptionModalProps
 
   const handleReportOption = useCallback(() => {
     onClose();
-    isCertificated ? handleModalOpen('report') : handleModalOpen('studentCertification');
-  }, [onClose, handleModalClose, handleModalOpen]);
+    setTimeout(() => {
+      isCertificated ? handleModalOpen('report') : handleModalOpen('studentCertification');
+    }, 300);
+  }, [onClose, isCertificated, handleModalClose, handleModalOpen]);
 
   const handleBlockOption = useCallback(() => {
     onClose();
-    isCertificated ? handleModalOpen('block') : handleModalOpen('studentCertification');
-  }, [onClose, handleModalClose, handleModalOpen]);
+    setTimeout(() => {
+      isCertificated ? handleModalOpen('block') : handleModalOpen('studentCertification');
+    }, 300);
+  }, [onClose, isCertificated, handleModalClose, handleModalOpen]);
 
   const showDeleteAlert = (onConfirm: () => void) => {
     Alert.alert(
