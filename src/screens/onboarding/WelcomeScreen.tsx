@@ -33,16 +33,10 @@ export default function WelcomeScreen({ navigation }: OnboardingWelcomeScreenPro
             <WelcomeTextBackground />
             <View className="absolute left-2 top-0">
               <MyText size="text-[45px]" className="font-light leading-[1.27]">
-                글로벌
-              </MyText>
-              <MyText size="text-[45px]" className="font-light leading-[1.27]">
-                버디와 함께
-              </MyText>
-              <MyText size="text-[45px]" className="font-light leading-[1.27]">
-                즐🌸거운
-              </MyText>
-              <MyText size="text-[45px]" className="font-light leading-[1.27]">
-                캠퍼스👀 생활
+                {t('intro.title', {
+                  flower: '🌸',
+                  eye: '👀',
+                })}
               </MyText>
             </View>
           </View>

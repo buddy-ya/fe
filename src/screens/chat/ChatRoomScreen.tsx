@@ -197,6 +197,7 @@ export const ChatRoomScreen: React.FC<ChatRoomScreenProps> = ({ route }) => {
   const { images, handleUpload } = useImageUpload({ options: IMAGE_PICKER_OPTIONS });
 
   const onAddImage = useCallback(async () => {
+    if (buddyExited) return;
     const selectedImages = await handleUpload();
     if (!selectedImages || selectedImages.length === 0) {
       showToast(<Text>⚠️</Text>, t('toast.noImageSelected'));
