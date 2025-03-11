@@ -34,8 +34,11 @@ import { NativeStackNavigationProp, NativeStackScreenProps } from '@react-naviga
 import { useSuspenseQuery, useInfiniteQuery, useQueryClient } from '@tanstack/react-query';
 import * as Clipboard from 'expo-clipboard';
 import { ImagePickerOptions } from 'expo-image-picker';
+import * as ImagePicker from 'expo-image-picker';
 import { EllipsisVertical, ChevronLeft, Image } from 'lucide-react-native';
 import ChatRepository from '@/api/ChatRepository';
+import { ImageFile } from '@/utils';
+import { processImageForUpload } from '@/utils/image';
 
 const IMAGE_PICKER_OPTIONS: ImagePickerOptions = {
   mediaTypes: ['images'],
@@ -196,20 +199,45 @@ export const ChatRoomScreen: React.FC<ChatRoomScreenProps> = ({ route }) => {
 
   const { images, handleUpload } = useImageUpload({ options: IMAGE_PICKER_OPTIONS });
 
-  const onAddImage = useCallback(async () => {
+  const prepareFileForUpload = async (file: any) => {
+    const uriParts = file.uri.split('.');
+    const fileType = uriParts[uriParts.length - 1];
+    return {
+      uri: file.uri,
+      name: file.fileName || `image.${fileType}`,
+      type: `image/${fileType}`,
+    };
+  };
+
+  const onAddImage = async () => {
     if (buddyExited) return;
-    const selectedImages = await handleUpload();
-    if (!selectedImages || selectedImages.length === 0) {
-      showToast(<Text>⚠️</Text>, t('toast.noImageSelected'));
-      return;
-    }
-    const file = selectedImages[0];
+
     try {
-      await sendImageMessage(roomId, file);
+      const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+      if (status !== 'granted') {
+        showToast(<Text>⚠️</Text>, t('toast.permissionDenied'));
+        return;
+      }
+
+      const result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        quality: 0.5,
+        allowsEditing: true,
+      });
+
+      // 사용자가 이미지를 선택하지 않았을 경우
+      if (result.canceled || !result.assets || result.assets.length === 0) {
+        showToast(<Text>⚠️</Text>, t('toast.noImageSelected'));
+        return;
+      }
+      const selectedAsset = result.assets[0];
+      const processedFile = processImageForUpload(selectedAsset as ImageFile);
+
+      await sendImageMessage(roomId, processedFile);
     } catch (error: any) {
       showToast(<Text>⚠️</Text>, t('toast.sendFailed'));
     }
-  }, [handleUpload, roomId, sendImageMessage, showToast, t]);
+  };
 
   const renderMessageItem = useCallback(
     ({ item, index }: { item: Message; index: number }) => {

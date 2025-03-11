@@ -46,7 +46,7 @@ module.exports = {
       supportsTablet: true,
       infoPlist: {
         UIBackgroundModes: ['remote-notification'],
-        'aps-environment': 'development',
+        'aps-environment': 'production',
         NSAppTransportSecurity: {
           NSAllowsArbitraryLoads: true,
         },

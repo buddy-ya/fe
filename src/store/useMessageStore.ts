@@ -93,7 +93,8 @@ export const useMessageStore = create<MessageStore>((set, get) => ({
     const tempMessage: Message = {
       id: tempId,
       sender: 'me',
-      content: '',
+      content:
+        'https://buddyya.s3.ap-northeast-2.amazonaws.com/chats/350f84d5-fd52-4161-aca3-b6ad510be4c7-IMG_7558_2.PNG',
       type: 'IMAGE',
       createdDate: new Date().toISOString(),
       status: 'pending',

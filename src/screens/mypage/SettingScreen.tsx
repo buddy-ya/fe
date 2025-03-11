@@ -86,7 +86,6 @@ export default function SettingScreen({ navigation }: SettingScreenProps) {
       onPress: async () => {
         await UserRepository.delete();
         await TokenService.remove();
-        init();
       },
     },
     {
