@@ -87,17 +87,15 @@ export default function RoomListScreen({ navigation }: RoomListNavigationProps) 
               </View>
             </View>
           </TouchableOpacity>
-          <View className="flex-1 border">
-            <RoomList
-              rooms={rooms}
-              onPress={handlePressRoom}
-              refreshControl={{
-                refreshing: isFetching,
-                onRefresh: handleRefresh,
-                tintColor: '#4AA366',
-              }}
-            />
-          </View>
+          <RoomList
+            rooms={rooms}
+            onPress={handlePressRoom}
+            refreshControl={{
+              refreshing: isFetching,
+              onRefresh: handleRefresh,
+              tintColor: '#4AA366',
+            }}
+          />
         </View>
       </InnerLayout>
     </Layout>

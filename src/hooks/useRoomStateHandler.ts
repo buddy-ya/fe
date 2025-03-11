@@ -1,12 +1,15 @@
 import { useEffect, useCallback, useState } from 'react';
 import { AppState, AppStateStatus } from 'react-native';
 import { ChatSocketRepository } from '@/api';
+import { useQueryClient } from '@tanstack/react-query';
 
 export const useRoomStateHandler = (roomId: number) => {
   const [appState, setAppState] = useState<AppStateStatus>(AppState.currentState);
+  const queryClient = useQueryClient();
 
   const joinChatRoom = useCallback(async () => {
     try {
+      queryClient.invalidateQueries({ queryKey: ['chats', roomId] });
       await ChatSocketRepository.roomIn(roomId);
       console.log('roomIn 호출(채팅방 입장 성공)');
     } catch (error) {

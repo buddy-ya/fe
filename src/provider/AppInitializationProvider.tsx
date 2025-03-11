@@ -56,11 +56,11 @@ async function getUser(): Promise<'Tab' | 'Onboarding'> {
   }
   const accessToken = await getValidAccessToken();
   API.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
-  const tokenPayload: CustomJwtPayload = jwtDecode(accessToken);
-  const userId = tokenPayload.studentId;
-  const user = await UserRepository.get({ id: userId });
-  useUserStore.getState().update({ ...user, isAuthenticated: true });
   await ChatSocketRepository.initialize();
+  // const tokenPayload: CustomJwtPayload = jwtDecode(accessToken);
+  // const userId = tokenPayload.studentId;
+  // const user = await UserRepository.get({ id: userId });
+  // useUserStore.getState().update({ ...user, isAuthenticated: true });
   return 'Tab';
 }
 
@@ -113,7 +113,6 @@ const AppInitializationProvider: React.FC<Props> = ({ children }) => {
         await SplashScreen.preventAutoHideAsync();
         await initializeApp();
         setIsInitialized(true);
-        await SplashScreen.hideAsync();
       } catch (error) {
         console.error(error);
       }
