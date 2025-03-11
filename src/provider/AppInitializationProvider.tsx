@@ -48,6 +48,7 @@ export async function getValidAccessToken(): Promise<string> {
   return accessToken;
 }
 
+// 최초 실행 시 호출되어 사용자 정보를 받아오고, 웹소켓 초기화를 수행합니다.
 async function getUser(): Promise<'Tab' | 'Onboarding'> {
   const token = await TokenService.getAccessToken();
   if (!token) {
@@ -57,10 +58,10 @@ async function getUser(): Promise<'Tab' | 'Onboarding'> {
   const accessToken = await getValidAccessToken();
   API.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
   await ChatSocketRepository.initialize();
-  // const tokenPayload: CustomJwtPayload = jwtDecode(accessToken);
-  // const userId = tokenPayload.studentId;
-  // const user = await UserRepository.get({ id: userId });
-  // useUserStore.getState().update({ ...user, isAuthenticated: true });
+  const tokenPayload: CustomJwtPayload = jwtDecode(accessToken);
+  const userId = tokenPayload.studentId;
+  const user = await UserRepository.get({ id: userId });
+  useUserStore.getState().update({ ...user });
   return 'Tab';
 }
 
@@ -79,6 +80,7 @@ const AppInitializationProvider: React.FC<Props> = ({ children }) => {
     await Font.loadAsync(FONTS);
   };
 
+  // 초기 실행 시 호출되는 함수: 폰트 로드 및 사용자 정보 설정 포함
   const initializeAppOnLaunch = async () => {
     try {
       await loadFonts();
@@ -90,9 +92,12 @@ const AppInitializationProvider: React.FC<Props> = ({ children }) => {
     }
   };
 
+  // 포그라운드 전환 시에는 토큰 유효성만 검사합니다.
   const refreshTokenOnForeground = async () => {
     try {
-      await getUser();
+      const accessToken = await getValidAccessToken();
+      API.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+      await ChatSocketRepository.initialize();
     } catch (error) {
       console.error('Foreground token refresh error:', error);
     }
@@ -122,7 +127,7 @@ const AppInitializationProvider: React.FC<Props> = ({ children }) => {
       'change',
       async (nextAppState: AppStateStatus) => {
         if (appState.current.match(/inactive|background/) && nextAppState === 'active') {
-          console.log('Foreground transition: refreshing token and websocket connection');
+          console.log('Foreground transition: refreshing token');
           await initializeApp();
         }
         appState.current = nextAppState;
