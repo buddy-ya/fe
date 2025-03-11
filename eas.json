@@ -15,7 +15,6 @@
     "preview": {
       "distribution": "internal",
       "ios": {
-        "buildConfiguration": "Release",
         "scheme": "buddyya"
       }
     },

@@ -69,7 +69,7 @@
   "chatRequestModal": {
     "title": "Do you want to send a chat request?",
     "description": "You can view the profile if the recipient accepts the chat request.",
-    "confirm": "40",
+    "confirm": "Yes",
     "cancel": "Cancel",
     "verified": "Photo verified",
     "photoStatus": {

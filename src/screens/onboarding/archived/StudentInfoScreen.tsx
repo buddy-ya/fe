@@ -1,13 +1,15 @@
 import { useTranslation } from 'react-i18next';
 import { Text, View, Image } from 'react-native';
 import { Heading, HeadingDescription, InnerLayout, Layout, Button } from '@/components';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { OnboardingStackParamList } from '@/navigation/navigationRef';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
-type StudentInfoScreenProps = NativeStackScreenProps<OnboardingStackParamList, 'OnboardingStudentInfo'>;
+type StudentInfoScreenProps = NativeStackScreenProps<
+  OnboardingStackParamList,
+  'OnboardingStudentInfo'
+>;
 
 export default function StudentInfoScreen({ navigation, route }: StudentInfoScreenProps) {
-
   const { t } = useTranslation('onboarding');
   const handleNavigate = () => {
     navigation.replace('OnboardingUniversitySelect');
@@ -18,10 +20,10 @@ export default function StudentInfoScreen({ navigation, route }: StudentInfoScre
         <Heading>{t('studentInfo.title')}</Heading>
         <HeadingDescription>{t('studentInfo.description')}</HeadingDescription>
         <View className="flex-1">
-          <Image className="w-[385px] h-[290px]" source={require('@assets/images/onboarding/id-card.png')} />
+          {/* <Image className="w-[385px] h-[290px]" source={require('@assets/images/onboarding/id-card.png')} /> */}
         </View>
         <Button onPress={handleNavigate}>
-          <Text className="text-white text-lg font-semibold">{t('common.next')}</Text>
+          <Text className="font-semibold text-lg text-white">{t('common.next')}</Text>
         </Button>
       </InnerLayout>
     </Layout>

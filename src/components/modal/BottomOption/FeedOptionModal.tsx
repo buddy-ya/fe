@@ -19,23 +19,25 @@ interface FeedOptionModalProps {
 export function FeedOptionModal({ visible, onClose, feed }: FeedOptionModalProps) {
   const queryClient = useQueryClient();
   const navigation = useNavigation<any>();
-
   const { t } = useTranslation('feed');
-
   const isCertificated = useUserStore((state) => state.isCertificated);
   const handleModalOpen = useModalStore((state) => state.handleOpen);
   const handleModalClose = useModalStore((state) => state.handleClose);
   const { showToast } = useToastStore();
 
-  const handleReportOption = useCallback(() => {
+  const handleReportOption = () => {
     onClose();
-    isCertificated ? handleModalOpen('report') : handleModalOpen('studentCertification');
-  }, [onClose, handleModalClose, handleModalOpen]);
+    setTimeout(() => {
+      isCertificated ? handleModalOpen('report') : handleModalOpen('studentCertification');
+    }, 300);
+  };
 
-  const handleBlockOption = useCallback(() => {
+  const handleBlockOption = () => {
     onClose();
-    isCertificated ? handleModalOpen('block') : handleModalOpen('studentCertification');
-  }, [onClose, handleModalClose, handleModalOpen]);
+    setTimeout(() => {
+      isCertificated ? handleModalOpen('block') : handleModalOpen('studentCertification');
+    }, 300);
+  };
 
   const showDeleteAlert = (onConfirm: () => void) => {
     Alert.alert(
