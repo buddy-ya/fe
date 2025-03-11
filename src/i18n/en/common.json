@@ -51,7 +51,7 @@
     "exitSuccess": "You have left the chat.",
     "error": {
       "unknown": "An unknown error has occurred.",
-      "network": "The network connection is unstable."
+      "network": "A network error occurred."
     }
   }
 }
