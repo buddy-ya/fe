@@ -136,6 +136,7 @@ const AppInitializationProvider: React.FC<Props> = ({ children }) => {
   useEffect(() => {
     if (isInitialized && initialRoute) {
       navigation.navigate(initialRoute);
+      SplashScreen.hideAsync();
     }
   }, [isInitialized, initialRoute, navigation]);
 

@@ -13,15 +13,19 @@ module.exports = {
     orientation: 'portrait',
     userInterfaceStyle: 'light',
     newArchEnabled: false,
-    splash: {
-      image: './assets/images/splash/ios.png',
-    },
-    icon: './assets/images/icon/1024.png',
+    icon: './assets/images/icon/icon.png',
     plugins: [
       [
         'expo-notifications',
         {
           color: '#ffffff',
+        },
+      ],
+      [
+        'expo-splash-screen',
+        {
+          backgroundColor: '#232323',
+          image: './assets/images/splash/splash-icon.png',
         },
       ],
       'expo-dev-client',
