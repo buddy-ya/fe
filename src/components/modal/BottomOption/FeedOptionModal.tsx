@@ -25,19 +25,19 @@ export function FeedOptionModal({ visible, onClose, feed }: FeedOptionModalProps
   const handleModalClose = useModalStore((state) => state.handleClose);
   const { showToast } = useToastStore();
 
-  const handleReportOption = useCallback(() => {
+  const handleReportOption = () => {
     onClose();
     setTimeout(() => {
       isCertificated ? handleModalOpen('report') : handleModalOpen('studentCertification');
     }, 300);
-  }, [onClose, isCertificated, handleModalClose, handleModalOpen]);
+  };
 
-  const handleBlockOption = useCallback(() => {
+  const handleBlockOption = () => {
     onClose();
     setTimeout(() => {
       isCertificated ? handleModalOpen('block') : handleModalOpen('studentCertification');
     }, 300);
-  }, [onClose, isCertificated, handleModalClose, handleModalOpen]);
+  };
 
   const showDeleteAlert = (onConfirm: () => void) => {
     Alert.alert(
