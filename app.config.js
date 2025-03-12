@@ -9,7 +9,7 @@ module.exports = {
     owner: 'buddyya',
     description: 'A friendly app for buddy management.',
     slug: 'buddyya',
-    version: '1.0.2',
+    version: '1.0.3',
     orientation: 'portrait',
     userInterfaceStyle: 'light',
     newArchEnabled: false,
@@ -20,13 +20,6 @@ module.exports = {
         {
           icon: './assets/images/icon/96.png',
           color: '#ffffff',
-        },
-      ],
-      [
-        'expo-splash-screen',
-        {
-          backgroundColor: '#00A176',
-          image: './assets/images/splash/splash-icon.png',
         },
       ],
       'expo-dev-client',

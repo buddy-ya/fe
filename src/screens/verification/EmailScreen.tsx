@@ -46,9 +46,9 @@ export default function EmailScreen({ navigation }: EmailScreenProps) {
     } catch (error: any) {
       const errorCode = error.response?.data?.code;
       if (errorCode === 1002) {
-        setErrorMessage(t('email.registered'));
+        setErrorMessage(t('error.registered'));
       } else if (errorCode === 1004) {
-        setErrorMessage(t('email.sendFail'));
+        setErrorMessage(t('error.sendFail'));
       }
     } finally {
       setLoading(false);

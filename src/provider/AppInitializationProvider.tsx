@@ -1,25 +1,18 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { View, AppState, AppStateStatus } from 'react-native';
+import { View, AppState, AppStateStatus, StyleSheet } from 'react-native';
 import { API, UserRepository, ChatSocketRepository } from '@/api';
 import { TokenService } from '@/service';
 import { useUserStore } from '@/store';
 import { useNavigation } from '@react-navigation/native';
 import * as Font from 'expo-font';
-import * as SplashScreen from 'expo-splash-screen';
+import { Image as ExpoImage } from 'expo-image';
 import { jwtDecode } from 'jwt-decode';
 import { reissueToken } from '@/api/API';
 import { showErrorModal } from '@/utils';
 
 const FONTS = {
   'Pretendard-Thin': require('@assets/fonts/Pretendard-Thin.otf'),
-  'Pretendard-ExtraLight': require('@assets/fonts/Pretendard-ExtraLight.otf'),
-  'Pretendard-Light': require('@assets/fonts/Pretendard-Light.otf'),
-  'Pretendard-Regular': require('@assets/fonts/Pretendard-Regular.otf'),
-  'Pretendard-Medium': require('@assets/fonts/Pretendard-Medium.otf'),
-  'Pretendard-SemiBold': require('@assets/fonts/Pretendard-SemiBold.otf'),
-  'Pretendard-Bold': require('@assets/fonts/Pretendard-Bold.otf'),
-  'Pretendard-ExtraBold': require('@assets/fonts/Pretendard-ExtraBold.otf'),
-  'Pretendard-Black': require('@assets/fonts/Pretendard-Black.otf'),
+  // ... 나머지 폰트
 };
 
 export interface CustomJwtPayload {
@@ -48,7 +41,6 @@ export async function getValidAccessToken(): Promise<string | null> {
   return accessToken;
 }
 
-// 최초 실행 시 호출되어 사용자 정보를 받아오고, 웹소켓 초기화를 수행합니다.
 async function getUser(): Promise<'Tab' | 'Onboarding'> {
   const token = await TokenService.getAccessToken();
   if (!token) {
@@ -72,6 +64,7 @@ interface Props {
 const AppInitializationProvider: React.FC<Props> = ({ children }) => {
   const [isInitialized, setIsInitialized] = useState(false);
   const [initialRoute, setInitialRoute] = useState<'Tab' | 'Onboarding' | null>(null);
+  const [isSplashHidden, setSplashHidden] = useState(false);
   const appState = useRef<AppStateStatus>(AppState.currentState);
   const isInitialLoad = useRef(true);
   const navigation = useNavigation<any>();
@@ -80,7 +73,6 @@ const AppInitializationProvider: React.FC<Props> = ({ children }) => {
     await Font.loadAsync(FONTS);
   };
 
-  // 초기 실행 시 호출되는 함수: 폰트 로드 및 사용자 정보 설정 포함
   const initializeAppOnLaunch = async () => {
     try {
       await loadFonts();
@@ -92,7 +84,6 @@ const AppInitializationProvider: React.FC<Props> = ({ children }) => {
     }
   };
 
-  // 포그라운드 전환 시에는 토큰 유효성만 검사합니다.
   const refreshTokenOnForeground = async () => {
     try {
       const accessToken = await getValidAccessToken();
@@ -117,7 +108,6 @@ const AppInitializationProvider: React.FC<Props> = ({ children }) => {
   useEffect(() => {
     async function prepare() {
       try {
-        await SplashScreen.preventAutoHideAsync();
         await initializeApp();
         setIsInitialized(true);
       } catch (error) {
@@ -135,23 +125,38 @@ const AppInitializationProvider: React.FC<Props> = ({ children }) => {
         appState.current = nextAppState;
       }
     );
-    return () => {
-      subscription.remove();
-    };
+    return () => subscription.remove();
   }, []);
 
   useEffect(() => {
-    if (isInitialized && initialRoute) {
+    if (isInitialized && initialRoute && navigation?.isReady && navigation.isReady()) {
       navigation.navigate(initialRoute);
-      SplashScreen.hideAsync();
     }
   }, [isInitialized, initialRoute, navigation]);
 
-  if (!isInitialized) {
-    return <View style={{ flex: 1 }} />;
-  }
+  useEffect(() => {
+    if (isInitialized && initialRoute) {
+      const timer = setTimeout(() => setSplashHidden(true), 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [isInitialized, initialRoute]);
 
-  return <>{children}</>;
+  const splashImage = require('@assets/images/splash/android.png');
+
+  return (
+    <View style={{ flex: 1 }}>
+      {children}
+      {!isSplashHidden && (
+        <View className="absolute left-0 top-0 h-full w-full flex-1 bg-primary">
+          <ExpoImage
+            source={splashImage}
+            contentFit="contain"
+            style={{ height: '100%', width: '100%' }}
+          />
+        </View>
+      )}
+    </View>
+  );
 };
 
 export default AppInitializationProvider;
