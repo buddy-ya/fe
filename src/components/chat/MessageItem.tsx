@@ -71,9 +71,6 @@ const MessageItem: React.FC<MessageProps> = ({
   // 메시지 타입에 따라 컨텐츠 렌더링
   const renderContent = useMemo(() => {
     if (message.type === 'IMAGE') {
-      if (message.content.trim() === '') {
-        return <View style={{ width: 180, height: 180, borderRadius: 10 }} />;
-      }
       return (
         <TouchableOpacity onPress={handleImagePress} activeOpacity={0.8}>
           <ExpoImage
@@ -152,12 +149,9 @@ const MessageItem: React.FC<MessageProps> = ({
                   {message.status === 'pending' ? (
                     <ActivityIndicator size="small" style={{ marginLeft: 5 }} />
                   ) : (
-                    <TouchableOpacity
-                      onPress={() => onRetry && onRetry(message)}
-                      style={{ marginLeft: 5 }}
-                    >
-                      <MyText color="text-red" className="">
-                        Retry
+                    <TouchableOpacity className="ml-[5px]">
+                      <MyText size="text-sm" className="mr-1">
+                        ⚠️
                       </MyText>
                     </TouchableOpacity>
                   )}

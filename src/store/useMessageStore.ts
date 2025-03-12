@@ -93,7 +93,7 @@ export const useMessageStore = create<MessageStore>((set, get) => ({
     const tempMessage: Message = {
       id: tempId,
       sender: 'me',
-      content: '',
+      content: file.uri,
       type: 'IMAGE',
       createdDate: new Date().toISOString(),
       status: 'pending',
