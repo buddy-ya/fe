@@ -104,9 +104,7 @@ export const useMessageStore = create<MessageStore>((set, get) => ({
     }));
 
     try {
-      const processedImage = await processImageForUpload(file);
-      const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
-      await delay(300);
+      const processedImage = processImageForUpload(file);
       const ack = await ChatRepository.sendImage({
         roomId,
         file: processedImage,

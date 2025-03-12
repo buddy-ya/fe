@@ -18,6 +18,7 @@ export interface User {
   isNotificationEnabled?: boolean;
   isAuthenticated?: boolean;
   isKorean?: boolean;
+  isBanned?: boolean;
   accessToken?: string;
   refreshToken?: string;
 }

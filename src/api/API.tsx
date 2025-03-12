@@ -52,13 +52,17 @@ API.interceptors.response.use(
         return Promise.reject(reissueError);
       }
     }
+    // useToastStore
+    //   .getState()
+    //   .showToast(<MyText>⚠️</MyText>, i18n.t('common:toast.error.unknown'), 2000);
+
     useToastStore
       .getState()
-      .showToast(<MyText>⚠️</MyText>, i18n.t('common:toast.error.unknown'), 2000);
-
-    setTimeout(() => {
-      useToastStore.getState().showToast(<MyText>⚠️</MyText>, error.response.data.message, 2000);
-    }, 2000);
+      .showToast(
+        <MyText>⚠️</MyText>,
+        `[${error.config.url}: ${error.response.status}: ${error.response.data.message}]`,
+        2000
+      );
     return Promise.reject(error);
   }
 );

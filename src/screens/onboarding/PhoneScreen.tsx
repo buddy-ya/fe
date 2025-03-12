@@ -1,12 +1,22 @@
-import { Lock } from 'lucide-react-native';
 import { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { TextInput, View } from 'react-native';
-import { formatPhone } from '@/utils';
-import { ErrorMessage, FooterLayout, Heading, HeadingDescription, InnerLayout, KeyboardLayout, Label, Layout, MyText } from '@/components';
 import { AuthRepository } from '@/api';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import {
+  ErrorMessage,
+  FooterLayout,
+  Heading,
+  HeadingDescription,
+  InnerLayout,
+  KeyboardLayout,
+  Label,
+  Layout,
+  MyText,
+} from '@/components';
 import { OnboardingStackParamList } from '@/navigation/navigationRef';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { Lock } from 'lucide-react-native';
+import { formatPhone } from '@/utils';
 
 const COUNTRY_CODE = '+82';
 const MAX_PHONE_LENGTH = 11;
@@ -88,6 +98,7 @@ export default function PhoneScreen({ navigation }: OnboardingPhoneScreenProps) 
       }
       onPress={handleVerificationRequest}
       disabled={!isPhoneValid || isLoading}
+      loading={isLoading}
     />
   );
 

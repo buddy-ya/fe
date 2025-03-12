@@ -27,9 +27,9 @@ export interface CustomJwtPayload {
   studentId: number;
 }
 
-export async function getValidAccessToken(): Promise<string> {
+export async function getValidAccessToken(): Promise<string | null> {
   let accessToken = await TokenService.getAccessToken();
-  if (!accessToken) throw new Error('Access token not found');
+  if (!accessToken) return null;
   const tokenPayload: CustomJwtPayload = jwtDecode(accessToken);
   const now = Date.now() / 1000;
   if (tokenPayload.exp < now + 300) {
@@ -96,8 +96,10 @@ const AppInitializationProvider: React.FC<Props> = ({ children }) => {
   const refreshTokenOnForeground = async () => {
     try {
       const accessToken = await getValidAccessToken();
-      API.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
-      await ChatSocketRepository.initialize();
+      if (accessToken) {
+        API.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+        await ChatSocketRepository.initialize();
+      }
     } catch (error) {
       console.error('Foreground token refresh error:', error);
     }

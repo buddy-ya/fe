@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { memo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ScrollView, View } from 'react-native';
-import { ChatSocketRepository, UserRepository } from '@/api';
+import { API, ChatSocketRepository, NotificationRepository, UserRepository } from '@/api';
 import { Button, Chip, Heading, InnerLayout, Layout, MyText } from '@/components';
 import { MyPageStackParamList, OnboardingStackParamList } from '@/navigation/navigationRef';
 import { TokenService } from '@/service';
@@ -25,6 +25,7 @@ const MAX_SELECT = 8;
 function InterestSelectScreen({ navigation, route }: InterestSelectProps) {
   const { t } = useTranslation(['onboarding', 'interests']);
   const { updateOnboardingData, ...onboardingData } = useOnboardingStore();
+  const token = useOnboardingStore((state) => state.expoToken);
   const update = useUserStore((state) => state.update);
 
   const isEditMode =
@@ -74,6 +75,8 @@ function InterestSelectScreen({ navigation, route }: InterestSelectProps) {
         if (accessToken && refreshToken) {
           await TokenService.save(accessToken, refreshToken);
           update({ ...removeNullValues(rest), isAuthenticated: true });
+          API.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+          await NotificationRepository.registerToken({ token });
           await ChatSocketRepository.initialize();
           const onboardNav = navigation as NativeStackNavigationProp<
             OnboardingStackParamList,
