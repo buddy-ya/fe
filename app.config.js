@@ -48,9 +48,6 @@ module.exports = {
     android: {
       package: 'com.buddyya.app',
     },
-    web: {
-      favicon: './assets/favicon.png',
-    },
     extra: {
       BASE_URL: process.env.BASE_URL,
       BASE_DOMAIN: process.env.BASE_DOMAIN,

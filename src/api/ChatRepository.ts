@@ -1,3 +1,4 @@
+import { TokenService } from '@/service';
 import { ChatListResponse, ChatDTO } from '@/types/ChatDTO';
 import API from './API';
 
@@ -16,10 +17,11 @@ class ChatRepository {
     file: any;
     tempId: number;
   }): Promise<{ status: string; chat: any }> {
+    const accessToken = await TokenService.getAccessToken();
+    API.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
     const image = new FormData();
     image.append('image', file);
     image.append('tempId', String(tempId));
-
     const { data } = await API.post(`/node/rooms/${roomId}/image`, image, {
       headers: {
         ...API.defaults.headers.common,
