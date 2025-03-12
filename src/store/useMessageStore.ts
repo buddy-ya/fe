@@ -128,28 +128,13 @@ export const useMessageStore = create<MessageStore>((set, get) => ({
         isLoading: false,
       }));
     } catch (error: any) {
-      const debugMessage: Message = {
-        id: generateTempId(),
-        sender: 'system',
-        content: (error.message as string) || 'Image sending failed',
-        type: 'SYSTEM',
-        createdDate: new Date().toISOString(),
-        status: 'failed',
-      };
-
-      set(
-        (state) =>
-          ({
-            messages: [
-              ...state.messages.map((msg) =>
-                msg.id === tempId ? { ...msg, status: 'failed' } : msg
-              ),
-              debugMessage,
-            ],
-            isLoading: false,
-            error: (error.response.data.message as string) || 'Image sending failed',
-          }) as Partial<MessageStore>
-      );
+      set((state) => ({
+        messages: state.messages.map((msg) =>
+          msg.id === tempId ? { ...msg, status: 'failed' } : msg
+        ),
+        isLoading: false,
+        error: error.message || 'Image sending failed',
+      }));
     }
   },
 
