@@ -71,6 +71,9 @@ const MessageItem: React.FC<MessageProps> = ({
   // 메시지 타입에 따라 컨텐츠 렌더링
   const renderContent = useMemo(() => {
     if (message.type === 'IMAGE') {
+      if (message.content.trim() === '') {
+        return <View style={{ width: 180, height: 180, borderRadius: 10 }} />;
+      }
       return (
         <TouchableOpacity onPress={handleImagePress} activeOpacity={0.8}>
           <ExpoImage

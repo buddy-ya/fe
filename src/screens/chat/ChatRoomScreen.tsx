@@ -34,17 +34,13 @@ import { NativeStackNavigationProp, NativeStackScreenProps } from '@react-naviga
 import { useSuspenseQuery, useInfiniteQuery, useQueryClient } from '@tanstack/react-query';
 import * as Clipboard from 'expo-clipboard';
 import { ImagePickerOptions } from 'expo-image-picker';
-import * as ImagePicker from 'expo-image-picker';
 import { EllipsisVertical, ChevronLeft, Image } from 'lucide-react-native';
 import ChatRepository from '@/api/ChatRepository';
-import { ImageFile } from '@/utils';
-import { processImageForUpload } from '@/utils/image';
 
 const IMAGE_PICKER_OPTIONS: ImagePickerOptions = {
   mediaTypes: ['images'],
   allowsEditing: false,
-  quality: 0.7,
-  allowsMultipleSelection: true,
+  quality: 0.5,
   selectionLimit: 1,
 };
 
@@ -65,6 +61,8 @@ export const ChatRoomScreen: React.FC<ChatRoomScreenProps> = ({ route }) => {
   const roomId = route.params.id;
   const queryClient = useQueryClient();
   const [buddyExited, setBuddyExited] = useState(false);
+
+  useRoomStateHandler(roomId);
 
   const { data: roomData } = useSuspenseQuery({
     queryKey: ['room', roomId],
@@ -111,7 +109,6 @@ export const ChatRoomScreen: React.FC<ChatRoomScreenProps> = ({ route }) => {
       API.defaults.headers.common['Authorization'] = `Bearer ${validToken}`;
       await ChatSocketRepository.initialize();
       await ChatSocketRepository.roomIn(roomId);
-      console.log('채팅방 입장 성공');
     } catch (error) {
       console.error('채팅방 입장 실패', error);
     }
@@ -120,7 +117,6 @@ export const ChatRoomScreen: React.FC<ChatRoomScreenProps> = ({ route }) => {
   const leaveChatRoom = useCallback(async () => {
     try {
       await ChatSocketRepository.roomBack(roomId);
-      console.log('채팅방 퇴장 성공');
       queryClient.invalidateQueries({ queryKey: ['roomList'] });
     } catch (error) {
       console.error('채팅방 뒤로가기 실패', error);
@@ -135,8 +131,6 @@ export const ChatRoomScreen: React.FC<ChatRoomScreenProps> = ({ route }) => {
     const unsubscribe = navigation.addListener('beforeRemove', leaveChatRoom);
     return unsubscribe;
   }, [roomId, navigation, leaveChatRoom]);
-
-  useRoomStateHandler(roomId);
 
   const handleScroll = useCallback((event: NativeSyntheticEvent<NativeScrollEvent>) => {
     setScrollOffset(event.nativeEvent.contentOffset.y);
@@ -197,43 +191,18 @@ export const ChatRoomScreen: React.FC<ChatRoomScreenProps> = ({ route }) => {
     }
   }, [buddyExited, messages, setMessage, roomData, t]);
 
-  const { images, handleUpload } = useImageUpload({ options: IMAGE_PICKER_OPTIONS });
-
-  const prepareFileForUpload = async (file: any) => {
-    const uriParts = file.uri.split('.');
-    const fileType = uriParts[uriParts.length - 1];
-    return {
-      uri: file.uri,
-      name: file.fileName || `image.${fileType}`,
-      type: `image/${fileType}`,
-    };
-  };
+  const { handleUpload } = useImageUpload({ options: IMAGE_PICKER_OPTIONS });
 
   const onAddImage = async () => {
     if (buddyExited) return;
-
     try {
-      const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-      if (status !== 'granted') {
-        showToast(<Text>⚠️</Text>, t('toast.permissionDenied'));
+      const selectedImages = await handleUpload();
+      if (!selectedImages || selectedImages.length === 0) {
         return;
       }
-
-      const result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.Images,
-        quality: 0.5,
-        allowsEditing: true,
-      });
-
-      // 사용자가 이미지를 선택하지 않았을 경우
-      if (result.canceled || !result.assets || result.assets.length === 0) {
-        showToast(<Text>⚠️</Text>, t('toast.noImageSelected'));
-        return;
-      }
-      const selectedAsset = result.assets[0];
-      const processedFile = processImageForUpload(selectedAsset as ImageFile);
-
-      await sendImageMessage(roomId, processedFile);
+      const file = selectedImages[0];
+      showToast(<Text>⚠️</Text>, file.fileName);
+      await sendImageMessage(roomId, file);
     } catch (error: any) {
       showToast(<Text>⚠️</Text>, t('toast.sendFailed'));
     }

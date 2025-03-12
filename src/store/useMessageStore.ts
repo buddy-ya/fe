@@ -1,6 +1,6 @@
 import { ChatSocketRepository } from '@/api';
 import { Message } from '@/model';
-import { useUserStore } from '@/store';
+import { useToastStore, useUserStore } from '@/store';
 import { create } from 'zustand';
 import ChatRepository from '@/api/ChatRepository';
 import { processImageForUpload } from '@/utils';
@@ -93,8 +93,7 @@ export const useMessageStore = create<MessageStore>((set, get) => ({
     const tempMessage: Message = {
       id: tempId,
       sender: 'me',
-      content:
-        'https://buddyya.s3.ap-northeast-2.amazonaws.com/chats/350f84d5-fd52-4161-aca3-b6ad510be4c7-IMG_7558_2.PNG',
+      content: '',
       type: 'IMAGE',
       createdDate: new Date().toISOString(),
       status: 'pending',
@@ -105,7 +104,9 @@ export const useMessageStore = create<MessageStore>((set, get) => ({
     }));
 
     try {
-      const processedImage = processImageForUpload(file);
+      const processedImage = await processImageForUpload(file);
+      const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+      await delay(300);
       const ack = await ChatRepository.sendImage({
         roomId,
         file: processedImage,
@@ -129,13 +130,28 @@ export const useMessageStore = create<MessageStore>((set, get) => ({
         isLoading: false,
       }));
     } catch (error: any) {
-      set((state) => ({
-        messages: state.messages.map((msg) =>
-          msg.id === tempId ? { ...msg, status: 'failed' } : msg
-        ),
-        isLoading: false,
-        error: error.message || 'Image sending failed',
-      }));
+      const debugMessage: Message = {
+        id: generateTempId(),
+        sender: 'system',
+        content: (error.message as string) || 'Image sending failed',
+        type: 'SYSTEM',
+        createdDate: new Date().toISOString(),
+        status: 'failed',
+      };
+
+      set(
+        (state) =>
+          ({
+            messages: [
+              ...state.messages.map((msg) =>
+                msg.id === tempId ? { ...msg, status: 'failed' } : msg
+              ),
+              debugMessage,
+            ],
+            isLoading: false,
+            error: (error.response.data.message as string) || 'Image sending failed',
+          }) as Partial<MessageStore>
+      );
     }
   },
 

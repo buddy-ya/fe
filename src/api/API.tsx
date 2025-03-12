@@ -29,6 +29,9 @@ API.interceptors.response.use(
       return Promise.reject(error);
     }
     const errorCode = error.response?.data?.code;
+    if (errorCode === 9000) {
+      useToastStore.getState().showToast(<MyText>⚠️</MyText>, error.response.data.message, 2000);
+    }
     if (error.response?.status === 401 && errorCode === 3002 && !error.config._retry) {
       error.config._retry = true;
       try {
