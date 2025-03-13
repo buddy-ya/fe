@@ -46,7 +46,11 @@ export default function MyPageScreen({ navigation }: MyPageScreenProps) {
           {t('mypage:quickMenu.verification')}
         </MyText>
       ),
-      icon: isCertificated ? <ShieldCheck /> : <ShieldAlert size={24} color="#282828" />,
+      icon: isCertificated ? (
+        <ShieldCheck />
+      ) : (
+        <ShieldAlert size={24} color="#282828" strokeWidth={1.5} />
+      ),
       onPress: isCertificated
         ? () => {
             handleShowToast();
@@ -103,7 +107,7 @@ export default function MyPageScreen({ navigation }: MyPageScreenProps) {
             <ChevronRight size={24} color="#CBCBCB" />
           </View>
         </TouchableOpacity>
-        <View className="mt-3 flex-row justify-around rounded-[20px] bg-white py-5">
+        <View className="mt-4 flex-row justify-around rounded-[20px] bg-white py-5">
           {quickMenuItems.map(({ key, label, icon, onPress }) => (
             <TouchableOpacity key={key} className="items-center" onPress={onPress}>
               <View className="mb-1">{icon}</View>
