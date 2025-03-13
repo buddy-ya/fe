@@ -96,16 +96,16 @@ export default function SettingScreen({ navigation }: SettingScreenProps) {
         });
       },
     },
-    {
-      key: 'refresh',
-      emoji: '🔄',
-      label: t('menuItems.refresh'),
-      onPress: async () => {
-        await AuthRepository.refreshStudentCertification();
-        update({ isCertificated: false });
-        update({ isStudentIdCardRequested: false });
-      },
-    },
+    // {
+    //   key: 'refresh',
+    //   emoji: '🔄',
+    //   label: t('menuItems.refresh'),
+    //   onPress: async () => {
+    //     await AuthRepository.refreshStudentCertification();
+    //     update({ isCertificated: false });
+    //     update({ isStudentIdCardRequested: false });
+    //   },
+    // },
   ];
 
   return (
