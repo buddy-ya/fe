@@ -64,7 +64,7 @@ export default function RoomListScreen({ navigation }: RoomListNavigationProps) 
           onPress={handleGoToRequests}
           hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}
         >
-          <UserRoundPlus strokeWidth={1.3} size={24} color={'#797979'} />
+          <UserRoundPlus strokeWidth={2} size={24} color={'#797979'} />
           {hasChatRequest && (
             <View className="absolute right-[8px] top-[5px] h-2 w-2 rounded-full bg-primary"></View>
           )}
