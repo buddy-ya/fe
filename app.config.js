@@ -14,11 +14,6 @@ module.exports = {
     userInterfaceStyle: 'light',
     newArchEnabled: false,
     icon: './assets/images/icon/icon.png',
-    splash: {
-      image: './assets/images/splash/android.png',
-      resizeMode: 'contain',
-      backgroundColor: '#ffffff',
-    },
     plugins: [
       [
         'expo-notifications',
