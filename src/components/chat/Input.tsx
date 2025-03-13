@@ -1,6 +1,6 @@
 import { forwardRef, ReactNode, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { TextInput, TouchableOpacity, View } from 'react-native';
+import { Platform, TextInput, TouchableOpacity, View } from 'react-native';
 import { Send, Image } from 'lucide-react-native';
 
 interface CommentInputProps {
@@ -29,7 +29,7 @@ export const Input = forwardRef<TextInput, CommentInputProps>(
     return (
       <View
         className={`w-full flex-row items-center justify-between border-t border-borderBottom bg-white px-4 py-[10px] ${
-          isFocused ? '' : 'pb-8'
+          isFocused ? '' : Platform.OS === 'android' ? 'pb-[10px]' : 'pb-8'
         } ${disabled ? 'opacity-50' : ''}`} // disabled일 경우 opacity 조정(옵션)
       >
         <View className="flex-1 flex-row items-center">

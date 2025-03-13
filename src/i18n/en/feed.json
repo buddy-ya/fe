@@ -75,7 +75,8 @@
     "photoStatus": {
       "verified": "Photo verified",
       "unverified": "Photo not verified"
-    }
+    },
+    "success": "Chat request sent."
   },
   "error": {
     "deletedFeed": "This post has been deleted.",
