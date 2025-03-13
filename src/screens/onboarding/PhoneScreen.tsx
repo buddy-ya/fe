@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { TextInput, View } from 'react-native';
 import { AuthRepository } from '@/api';
@@ -55,9 +55,28 @@ export default function PhoneScreen({ navigation }: OnboardingPhoneScreenProps) 
 
   const [phoneNumber, setPhoneNumber] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [isTestAccount, setIsTestAccount] = useState(false);
 
   const isPhoneValid = formatPhone.validate(phoneNumber);
   const isPrefixError = formatPhone.checkPrefix(phoneNumber);
+
+  useEffect(() => {
+    const checkTestAccount = async () => {
+      if (phoneNumber.length === MAX_PHONE_LENGTH && !phoneNumber.startsWith('010')) {
+        try {
+          const response = await AuthRepository.checkTestAccount({ phoneNumber });
+          setIsTestAccount(response.isTestAccount);
+        } catch (error) {
+          console.error('Test account check failed:', error);
+          setIsTestAccount(false);
+        }
+      } else {
+        setIsTestAccount(false);
+      }
+    };
+
+    checkTestAccount();
+  }, [phoneNumber]);
 
   const handleBack = () => {
     inputRef.current?.blur();
@@ -66,7 +85,6 @@ export default function PhoneScreen({ navigation }: OnboardingPhoneScreenProps) 
 
   const handlePhoneNumberInput = (text: string) => {
     const formattedNumber = formatPhone.removeHyphen(text);
-
     if (formattedNumber.length <= MAX_PHONE_LENGTH) {
       setPhoneNumber(formattedNumber);
     }
@@ -88,6 +106,11 @@ export default function PhoneScreen({ navigation }: OnboardingPhoneScreenProps) 
     }
   };
 
+  const isValid = phoneNumber.startsWith('010')
+    ? isPhoneValid
+    : phoneNumber.length === MAX_PHONE_LENGTH && isTestAccount;
+  const isButtonDisabled = isLoading || !isValid;
+
   const footer = (
     <FooterLayout
       icon={<Lock strokeWidth={1} size={23} color="#797979" />}
@@ -97,7 +120,7 @@ export default function PhoneScreen({ navigation }: OnboardingPhoneScreenProps) 
         </MyText>
       }
       onPress={handleVerificationRequest}
-      disabled={!isPhoneValid || isLoading}
+      disabled={isButtonDisabled}
       loading={isLoading}
     />
   );

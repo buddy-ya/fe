@@ -52,7 +52,7 @@ export const Input = forwardRef<TextInput, CommentInputProps>(
               onFocus={handleFocus}
               onBlur={handleBlur}
               textAlignVertical="center"
-              editable={!disabled} // disabled가 true이면 입력 불가능
+              editable={!disabled}
             />
           </View>
         </View>

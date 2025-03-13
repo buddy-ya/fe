@@ -30,13 +30,13 @@ export default function MyPageScreen({ navigation }: MyPageScreenProps) {
     {
       key: 'bookmark',
       label: <MyText>{t('mypage:quickMenu.bookmark')}</MyText>,
-      icon: <Bookmark size={24} color="#282828" />,
+      icon: <Bookmark size={24} color="#282828" strokeWidth={1.5} />,
       onPress: () => navigation.navigate('Bookmark'),
     },
     {
       key: 'myPosts',
       label: <MyText>{t('mypage:quickMenu.myPosts')}</MyText>,
-      icon: <NotebookPen size={24} color="#282828" />,
+      icon: <NotebookPen size={24} color="#282828" strokeWidth={1.5} />,
       onPress: () => navigation.navigate('MyPosts'),
     },
     {

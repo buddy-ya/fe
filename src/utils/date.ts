@@ -20,13 +20,13 @@ export const getTimeAgo = (date: string) => {
     distance = distance
       .replace(/^about /, '')
       .replace(/^less than a minute ago$/, 'just now')
-      .replace(/^(\d+)\sminutes?\sago$/, '$1m')
-      .replace(/^(\d+)\sminute\sago$/, '$1m')
-      .replace(/^(\d+)\shours?\sago$/, '$1h')
-      .replace(/^(\d+)\sdays?\sago$/, '$1d')
-      .replace(/^(\d+)\sweeks?\sago$/, '$1w')
-      .replace(/^(\d+)\smonths?\sago$/, '$1mo')
-      .replace(/^(\d+)\syears?\sago$/, '$1y')
+      .replace(/^(\d+)\sminutes?\sago$/, '$1m ago')
+      .replace(/^(\d+)\sminute\sago$/, '$1m ago')
+      .replace(/^(\d+)\shours?\sago$/, '$1h ago')
+      .replace(/^(\d+)\sdays?\sago$/, '$1d ago')
+      .replace(/^(\d+)\sweeks?\sago$/, '$1w ago')
+      .replace(/^(\d+)\smonths?\sago$/, '$1mo ago')
+      .replace(/^(\d+)\syears?\sago$/, '$1y ago')
       .trim();
   }
 

@@ -90,6 +90,10 @@ export default function SettingScreen({ navigation }: SettingScreenProps) {
         await UserRepository.delete();
         await TokenService.remove();
         update({ isAuthenticated: false });
+        navigation.reset({
+          index: 0,
+          routes: [{ name: 'Onboarding' }],
+        });
       },
     },
     {

@@ -18,7 +18,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useQueryClient } from '@tanstack/react-query';
 import * as ImagePicker from 'expo-image-picker';
 import { Camera, ChevronDown, ImagePlus, X } from 'lucide-react-native';
-import { CATEGORIES } from '@/utils';
+import { CATEGORIES, logError } from '@/utils';
 
 const FILTERED_CATEGORIES = CATEGORIES;
 
@@ -249,7 +249,7 @@ export default function FeedWriteScreen({ navigation, route }: FeedWriteScreenPr
                 }}
               />
               <TextInput
-                className="mt-4 font-semibold text-[18px]"
+                className="mt-4 font-medium text-[18px]"
                 placeholder={t('write.contentPlaceholder')}
                 placeholderTextColor="#CBCBCB"
                 maxLength={10000}
