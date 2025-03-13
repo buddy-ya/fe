@@ -303,15 +303,15 @@ export const ChatRoomScreen: React.FC<ChatRoomScreenProps> = ({ route }) => {
           <View>
             <Input
               value={text}
-              leftImage={
-                <TouchableOpacity onPress={onAddImage}>
-                  <View className="ml-2 h-[24px] w-[24px] flex-row items-center">
-                    <Image size={24} strokeWidth={1.3} color="#797979" />
-                  </View>
-                </TouchableOpacity>
-              }
+              // leftImage={
+              //   <TouchableOpacity onPress={onAddImage}>
+              //     <View className="ml-2 h-[24px] w-[24px] flex-row items-center">
+              //       <Image size={24} strokeWidth={1.3} color="#797979" />
+              //     </View>
+              //   </TouchableOpacity>
+              // }
               onChange={handleChange}
-              onSubmit={onSubmit}
+              // onSubmit={onSubmit}
               disabled={buddyExited}
               placeholder={
                 buddyExited
