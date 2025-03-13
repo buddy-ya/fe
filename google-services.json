@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "356392066199",
+    "project_id": "buddyya-4d301",
+    "storage_bucket": "buddyya-4d301.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:356392066199:android:f6cadf3fcedcc1c09c9dd2",
+        "android_client_info": {
+          "package_name": "com.buddyya.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAbwpQaL_WuO22BxaqkGK8FCJzSYSShX6Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
