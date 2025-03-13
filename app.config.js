@@ -47,6 +47,7 @@ module.exports = {
     },
     android: {
       package: 'com.buddyya.app',
+      permissions: ['NOTIFICATIONS', 'VIBRATE', 'WAKE_LOCK'],
     },
     extra: {
       BASE_URL: process.env.BASE_URL,
