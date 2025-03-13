@@ -48,7 +48,7 @@ export default function CategoryPager({ categories, onPageChange, children }: Ca
           <Chip
             key={category.id}
             icon={category.icon}
-            label={t(category.label)}
+            label={t(`category.${category.label}`)}
             selected={activeIndex === index}
             onPress={() => handleChipPress(index)}
             className="mr-2 bg-white"

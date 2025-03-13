@@ -139,7 +139,10 @@ const AppInitializationProvider: React.FC<Props> = ({ children }) => {
 
   useEffect(() => {
     if (isInitialized && initialRoute && navigation?.isReady && navigation.isReady()) {
-      navigation.navigate(initialRoute);
+      navigation.reset({
+        index: 0,
+        routes: [{ name: initialRoute }],
+      });
     }
   }, [isInitialized, initialRoute, navigation]);
 
