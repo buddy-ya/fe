@@ -20,6 +20,7 @@
     }
   },
   "modal": {
+    "cancel": "닫기",
     "report": {
       "title": "신고하기",
       "chat": {

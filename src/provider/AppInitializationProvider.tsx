@@ -12,7 +12,14 @@ import { showErrorModal } from '@/utils';
 
 const FONTS = {
   'Pretendard-Thin': require('@assets/fonts/Pretendard-Thin.otf'),
-  // ... 나머지 폰트
+  'Pretendard-ExtraLight': require('@assets/fonts/Pretendard-ExtraLight.otf'),
+  'Pretendard-Light': require('@assets/fonts/Pretendard-Light.otf'),
+  'Pretendard-Regular': require('@assets/fonts/Pretendard-Regular.otf'),
+  'Pretendard-Medium': require('@assets/fonts/Pretendard-Medium.otf'),
+  'Pretendard-SemiBold': require('@assets/fonts/Pretendard-SemiBold.otf'),
+  'Pretendard-Bold': require('@assets/fonts/Pretendard-Bold.otf'),
+  'Pretendard-ExtraBold': require('@assets/fonts/Pretendard-ExtraBold.otf'),
+  'Pretendard-Black': require('@assets/fonts/Pretendard-Black.otf'),
 };
 
 export interface CustomJwtPayload {
@@ -48,12 +55,14 @@ async function getUser(): Promise<'Tab' | 'Onboarding'> {
     return 'Onboarding';
   }
   const accessToken = await getValidAccessToken();
-  API.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
-  await ChatSocketRepository.initialize();
-  const tokenPayload: CustomJwtPayload = jwtDecode(accessToken);
-  const userId = tokenPayload.studentId;
-  const user = await UserRepository.get({ id: userId });
-  useUserStore.getState().update({ ...user });
+  if (accessToken) {
+    API.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+    const tokenPayload: CustomJwtPayload = jwtDecode(accessToken);
+    const userId = tokenPayload.studentId;
+    const user = await UserRepository.get({ id: userId });
+    await ChatSocketRepository.initialize();
+    useUserStore.getState().update({ ...user });
+  }
   return 'Tab';
 }
 

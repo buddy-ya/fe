@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Modal, TouchableOpacity, View, Animated } from 'react-native';
 import MyText from '@/components/common/MyText';
 
@@ -18,6 +19,7 @@ interface ActionSheetWrapperProps {
 export function ActionSheetWrapper({ visible, onClose, options }: ActionSheetWrapperProps) {
   // Animated value for sliding effect
   const slideAnim = useRef(new Animated.Value(100)).current;
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (visible) {
@@ -56,7 +58,7 @@ export function ActionSheetWrapper({ visible, onClose, options }: ActionSheetWra
             </View>
             <View className="mt-4 rounded-[12px] bg-white">
               <TouchableOpacity className="p-[15px]" onPress={onClose}>
-                <MyText className="text-center font-medium">닫기</MyText>
+                <MyText className="text-center font-medium">{t('common:modal.cancel')}</MyText>
               </TouchableOpacity>
             </View>
           </Animated.View>

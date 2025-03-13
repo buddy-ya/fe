@@ -22,7 +22,7 @@
     "resend": "Resend code"
   },
   "notification": {
-    "title": "Would you like Buddya to notify you\nfor quick chats with new friends?",
+    "title": "Would you like Buddya to notify you for quick chats with new friends?",
     "description": "Allow notifications to help you use Buddya more conveniently!",
     "allow": "Allow Notification"
   },

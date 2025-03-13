@@ -61,5 +61,6 @@
   "common": {
     "complete": "Done"
   },
-  "setting": "Setting"
+  "setting": "Setting",
+  "certification": "Verification is already complete."
 }

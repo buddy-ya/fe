@@ -18,7 +18,7 @@ import ShieldCheck from './shieldCheck.svg';
 type MyPageScreenProps = NativeStackScreenProps<MyPageStackParamList, 'MyPageHome'>;
 
 export default function MyPageScreen({ navigation }: MyPageScreenProps) {
-  const { t } = useTranslation(['mypage', 'universities']);
+  const { t } = useTranslation('mypage');
 
   const { visible, icon, text, showToast, hideToast } = useToastStore();
 
@@ -32,13 +32,13 @@ export default function MyPageScreen({ navigation }: MyPageScreenProps) {
   const quickMenuItems = [
     {
       key: 'bookmark',
-      label: <MyText>{t('quickMenu.bookmark')}</MyText>,
+      label: <MyText>{t('mypage:quickMenu.bookmark')}</MyText>,
       icon: <Bookmark size={24} color="#282828" />,
       onPress: () => navigation.navigate('Bookmark'),
     },
     {
       key: 'myPosts',
-      label: <MyText>{t('quickMenu.myPosts')}</MyText>,
+      label: <MyText>{t('mypage:quickMenu.myPosts')}</MyText>,
       icon: <NotebookPen size={24} color="#282828" />,
       onPress: () => navigation.navigate('MyPosts'),
     },
@@ -46,7 +46,7 @@ export default function MyPageScreen({ navigation }: MyPageScreenProps) {
       key: 'verification',
       label: (
         <MyText color={`${isCertificated && 'text-[#CBCBCB]'}`}>
-          {t('quickMenu.verification')}
+          {t('mypage:quickMenu.verification')}
         </MyText>
       ),
       icon: isCertificated ? <ShieldCheck /> : <ShieldAlert size={24} color="#282828" />,
@@ -59,8 +59,7 @@ export default function MyPageScreen({ navigation }: MyPageScreenProps) {
   ];
 
   const handleShowToast = () => {
-    const message = '이미 인증이 완료되었습니다.'; // t('toastMessage') should return a string.
-    showToast(<CircleCheck />, message);
+    showToast(<CircleCheck />, t('mypage:certification'));
   };
 
   const handleNotification = () => {
