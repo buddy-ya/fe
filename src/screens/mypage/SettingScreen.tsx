@@ -53,16 +53,16 @@ export default function SettingScreen({ navigation }: SettingScreenProps) {
     //     console.log('문의하기 클릭');
     //   },
     // },
-    {
-      key: 'terms',
-      emoji: '📃',
-      label: t('menuItems.terms'),
-      onPress: () => {
-        Linking.openURL(
-          'https://thinkable-durian-178.notion.site/1b1badc2aadc80878bd2f2c08e026fa4?pvs=4'
-        ).catch((err) => console.error('Error opening privacy:', err));
-      },
-    },
+    // {
+    //   key: 'terms',
+    //   emoji: '📃',
+    //   label: t('menuItems.terms'),
+    //   onPress: () => {
+    //     Linking.openURL(
+    //       'https://thinkable-durian-178.notion.site/1b1badc2aadc80878bd2f2c08e026fa4?pvs=4'
+    //     ).catch((err) => console.error('Error opening privacy:', err));
+    //   },
+    // },
     {
       key: 'privacy',
       emoji: '🔒',
