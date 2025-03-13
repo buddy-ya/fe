@@ -311,7 +311,7 @@ export const ChatRoomScreen: React.FC<ChatRoomScreenProps> = ({ route }) => {
               //   </TouchableOpacity>
               // }
               onChange={handleChange}
-              // onSubmit={onSubmit}
+              onSubmit={onSubmit}
               disabled={buddyExited}
               placeholder={
                 buddyExited

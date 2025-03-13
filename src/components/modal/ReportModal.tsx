@@ -81,8 +81,7 @@ export function ReportModal({
         onChangeText={setReason}
         multiline
         className="rounded-lg bg-[#F6F6F6] p-2 text-base"
-        placeholder={t('modal.report.placeholder')}
-        style={{ height: 100 }}
+        style={{ height: 100, textAlignVertical: 'top' }}
       />
     </StandardModal>
   );

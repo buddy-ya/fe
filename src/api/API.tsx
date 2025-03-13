@@ -5,7 +5,7 @@ import { useToastStore, useUserStore } from '@/store';
 import axios from 'axios';
 import Constants from 'expo-constants';
 import * as SecureStore from 'expo-secure-store';
-import { showErrorModal, TOKEN_KEYS } from '@/utils';
+import { logError, showErrorModal, TOKEN_KEYS } from '@/utils';
 
 const BASE_URL = Constants?.expoConfig?.extra?.BASE_URL || '';
 
@@ -26,6 +26,7 @@ API.interceptors.response.use(
   async (error) => {
     if (!error.response) {
       useToastStore.getState().showToast(<MyText>🌐</MyText>, i18n.t('common:toast.error.network'));
+      logError(error);
       return Promise.reject(error);
     }
     const errorCode = error.response?.data?.code;

@@ -1,10 +1,8 @@
 import { useTranslation } from 'react-i18next';
 import { View, TouchableOpacity, Image } from 'react-native';
-import { AuthRepository, UserRepository } from '@/api';
 import { InnerLayout, Layout, MyText } from '@/components';
 import { useBackButton } from '@/hooks';
 import { MyPageStackParamList } from '@/navigation/navigationRef';
-import { TokenService } from '@/service';
 import { useUserStore } from '@/store';
 import CircleCheck from '@assets/icons/circleCheck.svg';
 import LogoIcon from '@assets/icons/logo.svg';
@@ -12,7 +10,6 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { Bookmark, ChevronRight, NotebookPen, Settings, ShieldAlert } from 'lucide-react-native';
 import { useToastStore } from '@/store/useToastStore';
 import { CountryID, getCountryFlag } from '@/utils';
-import { Toast } from '@/components/common/Toast';
 import ShieldCheck from './shieldCheck.svg';
 
 type MyPageScreenProps = NativeStackScreenProps<MyPageStackParamList, 'MyPageHome'>;
