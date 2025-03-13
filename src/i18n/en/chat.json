@@ -18,7 +18,8 @@
     "placeholder": "Please enter your message"
   },
   "room": {
-    "systemExit": "{{name}} has left the room."
+    "systemExit": "{{name}} has left the room.",
+    "startMessage": "Start a conversation with Buddy!"
   },
   "toast": {
     "sendFailed": "Message sending failed",
