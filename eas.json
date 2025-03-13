@@ -21,8 +21,7 @@
     "production": {
       "autoIncrement": true,
       "android": {
-        "buildType": "apk",
-        "googleServicesFile": "./google-services.json"
+        "buildType": "apk"
       },
       "ios": {
         "buildConfiguration": "Release",
