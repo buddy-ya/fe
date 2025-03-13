@@ -17,7 +17,7 @@ type MyPageScreenProps = NativeStackScreenProps<MyPageStackParamList, 'MyPageHom
 export default function MyPageScreen({ navigation }: MyPageScreenProps) {
   const { t } = useTranslation('mypage');
 
-  const { visible, icon, text, showToast, hideToast } = useToastStore();
+  const { showToast } = useToastStore();
 
   const profileImageUrl = useUserStore((state) => state.profileImageUrl);
   const name = useUserStore((state) => state.name);

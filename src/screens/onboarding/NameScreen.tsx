@@ -101,6 +101,7 @@ export default function NameScreen({ navigation, route }: NameScreenProps) {
             className={`border-inputBorder mb-4 h-[50px] w-[262px] rounded-xl border px-4 py-3 text-[18px] tracking-wide text-text`}
             keyboardType="ascii-capable"
             placeholderTextColor="placeholderPrimary"
+            maxLength={MAX_NAME_LENGTH}
             autoFocus
           />
           {isNonEnglish && <ErrorMessage>{t('name.warning')}</ErrorMessage>}

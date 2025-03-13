@@ -14,7 +14,7 @@ import {
   MyText,
 } from '@/components';
 import { FeedStackParamList } from '@/navigation/navigationRef';
-import { useUserStore, useToastStore } from '@/store';
+import { useUserStore } from '@/store';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { Mail } from 'lucide-react-native';
 import { EMAIL_REGEX, UNIVERSITY_EMAIL_DOMAINS, UniversityID } from '@/utils';
@@ -85,6 +85,7 @@ export default function EmailScreen({ navigation }: EmailScreenProps) {
                 className="border-inputBorder h-[50px] flex-1 rounded-xl border px-4 py-3 text-[18px] text-text"
                 keyboardType="email-address"
                 placeholderTextColor="#DFDFDF"
+                maxLength={30}
                 autoFocus
               />
               <View className="border-inputBorder ml-2 h-[50px] flex-row items-center justify-center rounded-xl border px-4 py-3">

@@ -1,11 +1,11 @@
+import { useCallback, useMemo, useRef, useState } from 'react';
+import { Keyboard, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import BottomSheet, {
   BottomSheetBackdrop,
   BottomSheetScrollView,
   BottomSheetView,
 } from '@gorhom/bottom-sheet';
 import { Check, Search, X } from 'lucide-react-native';
-import { useCallback, useMemo, useRef, useState } from 'react';
-import { Keyboard, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
 interface CustomBottomSheetProps {
   isVisible: boolean;
@@ -87,6 +87,7 @@ export default function CustomBottomSheet({
                 placeholder="검색"
                 className="ml-2 flex-1 text-base"
                 autoCapitalize="none"
+                maxLength={50}
                 clearButtonMode="while-editing"
               />
             </View>

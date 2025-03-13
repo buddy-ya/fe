@@ -37,6 +37,7 @@ const PhoneInput = ({ value, onChange, inputRef }: any) => (
     onChangeText={onChange}
     keyboardType="number-pad"
     placeholder={PHONE_PLACEHOLDER}
+    maxLength={MAX_PHONE_LENGTH}
     className="h-[52px] w-[172px] rounded-xl border border-border px-[14px] text-[18px] text-text"
     placeholderTextColor="#DFDFDF"
     textAlignVertical="center"

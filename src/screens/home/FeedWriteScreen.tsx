@@ -172,6 +172,7 @@ export default function FeedWriteScreen({ navigation, route }: FeedWriteScreenPr
         });
       }
     } catch (error) {
+      logError(error);
       Alert.alert('Error', `Feed ${isEdit ? 'Edit' : 'Upload'} Fail.`);
     } finally {
       setIsLoading(false);
@@ -240,7 +241,7 @@ export default function FeedWriteScreen({ navigation, route }: FeedWriteScreenPr
                 placeholder={t('write.titlePlaceholder')}
                 placeholderTextColor="#CBCBCB"
                 value={title}
-                maxLength={300}
+                maxLength={30}
                 onChangeText={setTitle}
                 style={{
                   textAlignVertical: 'top',
@@ -252,7 +253,7 @@ export default function FeedWriteScreen({ navigation, route }: FeedWriteScreenPr
                 className="mt-4 font-medium text-[18px]"
                 placeholder={t('write.contentPlaceholder')}
                 placeholderTextColor="#CBCBCB"
-                maxLength={10000}
+                maxLength={600}
                 value={content}
                 onChangeText={setContent}
                 multiline
