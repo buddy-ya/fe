@@ -21,11 +21,6 @@ type UniversityItem = {
   university: string;
 };
 
-type OptionItem = {
-  id: string;
-  icon?: React.ReactNode;
-};
-
 type OnboardingUniversitySelectScreenProps = NativeStackScreenProps<
   OnboardingStackParamList,
   'OnboardingUniversitySelect'
@@ -59,14 +54,6 @@ export default function UniversitySelectScreen({
     fetchUniversities();
   }, [t]);
 
-  const options: OptionItem[] = universities.map((item) => {
-    const IconComponent = UNIVERSITY_ICONS[item.university as UniversityID];
-    return {
-      id: item.university,
-      icon: IconComponent ? <IconComponent /> : null,
-    };
-  });
-
   const handleSelect = (id: string) => {
     setSelected(id);
   };
@@ -87,15 +74,19 @@ export default function UniversitySelectScreen({
           <Label>{t('universitySelect.label')}</Label>
           <View className="mt-2">
             {!loading &&
-              options.map((option) => (
-                <SelectItem
-                  key={option.id}
-                  selected={selected === option.id}
-                  onPress={() => handleSelect(option.id)}
-                  item={t(`universities:universities.${option.id}`)}
-                  icon={option.icon}
-                />
-              ))}
+              universities.map((item, index) => {
+                const IconComponent = UNIVERSITY_ICONS[item.university as UniversityID];
+                return (
+                  <SelectItem
+                    key={index}
+                    selected={selected === item.university}
+                    onPress={() => handleSelect(item.university)}
+                    item={t(`universities:universities.${item.university}`)}
+                  >
+                    <IconComponent />
+                  </SelectItem>
+                );
+              })}
           </View>
         </View>
         <Button onPress={handleNavigateButton} disabled={!selected}>
