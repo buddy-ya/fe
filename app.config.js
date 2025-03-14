@@ -9,7 +9,7 @@ module.exports = {
     owner: 'buddyya',
     description: 'A friendly app for buddy management.',
     slug: 'buddyya',
-    version: '1.0.2',
+    version: '1.0.4',
     orientation: 'portrait',
     userInterfaceStyle: 'light',
     newArchEnabled: false,
@@ -20,13 +20,6 @@ module.exports = {
         {
           icon: './assets/images/icon/96.png',
           color: '#ffffff',
-        },
-      ],
-      [
-        'expo-splash-screen',
-        {
-          backgroundColor: '#00A176',
-          image: './assets/images/splash/splash-icon.png',
         },
       ],
       'expo-dev-client',
@@ -46,7 +39,7 @@ module.exports = {
       supportsTablet: true,
       infoPlist: {
         UIBackgroundModes: ['remote-notification'],
-        'aps-environment': 'development',
+        'aps-environment': 'production',
         NSAppTransportSecurity: {
           NSAllowsArbitraryLoads: true,
         },
@@ -54,9 +47,8 @@ module.exports = {
     },
     android: {
       package: 'com.buddyya.app',
-    },
-    web: {
-      favicon: './assets/favicon.png',
+      permissions: ['NOTIFICATIONS', 'VIBRATE', 'WAKE_LOCK'],
+      googleServicesFile: './google-services.json',
     },
     extra: {
       BASE_URL: process.env.BASE_URL,

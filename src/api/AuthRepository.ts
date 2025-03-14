@@ -6,15 +6,20 @@ import {
   PhoneDTO,
   VerifyCodeResponse,
 } from '@/types/AuthDTO';
-import Constants from 'expo-constants';
 import API from './API';
 
-const BASE_URL = Constants?.expoConfig?.extra?.BASE_URL || '';
-
-// 인증/인가 관련 API를 다루는 클래스
 class AuthRepository {
   async sendCodeByPhone({ phoneNumber }: PhoneDTO): Promise<PhoneDTO> {
     const { data } = await API.post('/phone-auth/send-code', { phoneNumber });
+    return data;
+  }
+
+  async checkTestAccount({
+    phoneNumber,
+  }: {
+    phoneNumber: string;
+  }): Promise<{ isTestAccount: boolean }> {
+    const { data } = await API.post('/phone-auth/check-test-account', { phoneNumber });
     return data;
   }
 

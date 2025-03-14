@@ -52,7 +52,6 @@ android/
 !android/.gitkeep
 
 # Firebase specific
-google-services.json
 GoogleService-Info.plist
 
 # Testing

@@ -40,8 +40,7 @@ import ChatRepository from '@/api/ChatRepository';
 const IMAGE_PICKER_OPTIONS: ImagePickerOptions = {
   mediaTypes: ['images'],
   allowsEditing: false,
-  quality: 0.7,
-  allowsMultipleSelection: true,
+  quality: 0.5,
   selectionLimit: 1,
 };
 
@@ -62,6 +61,8 @@ export const ChatRoomScreen: React.FC<ChatRoomScreenProps> = ({ route }) => {
   const roomId = route.params.id;
   const queryClient = useQueryClient();
   const [buddyExited, setBuddyExited] = useState(false);
+
+  useRoomStateHandler(roomId);
 
   const { data: roomData } = useSuspenseQuery({
     queryKey: ['room', roomId],
@@ -108,7 +109,6 @@ export const ChatRoomScreen: React.FC<ChatRoomScreenProps> = ({ route }) => {
       API.defaults.headers.common['Authorization'] = `Bearer ${validToken}`;
       await ChatSocketRepository.initialize();
       await ChatSocketRepository.roomIn(roomId);
-      console.log('채팅방 입장 성공');
     } catch (error) {
       console.error('채팅방 입장 실패', error);
     }
@@ -117,7 +117,6 @@ export const ChatRoomScreen: React.FC<ChatRoomScreenProps> = ({ route }) => {
   const leaveChatRoom = useCallback(async () => {
     try {
       await ChatSocketRepository.roomBack(roomId);
-      console.log('채팅방 퇴장 성공');
       queryClient.invalidateQueries({ queryKey: ['roomList'] });
     } catch (error) {
       console.error('채팅방 뒤로가기 실패', error);
@@ -132,8 +131,6 @@ export const ChatRoomScreen: React.FC<ChatRoomScreenProps> = ({ route }) => {
     const unsubscribe = navigation.addListener('beforeRemove', leaveChatRoom);
     return unsubscribe;
   }, [roomId, navigation, leaveChatRoom]);
-
-  useRoomStateHandler(roomId);
 
   const handleScroll = useCallback((event: NativeSyntheticEvent<NativeScrollEvent>) => {
     setScrollOffset(event.nativeEvent.contentOffset.y);
@@ -194,22 +191,22 @@ export const ChatRoomScreen: React.FC<ChatRoomScreenProps> = ({ route }) => {
     }
   }, [buddyExited, messages, setMessage, roomData, t]);
 
-  const { images, handleUpload } = useImageUpload({ options: IMAGE_PICKER_OPTIONS });
+  const { handleUpload } = useImageUpload({ options: IMAGE_PICKER_OPTIONS });
 
-  const onAddImage = useCallback(async () => {
+  const onAddImage = async () => {
     if (buddyExited) return;
-    const selectedImages = await handleUpload();
-    if (!selectedImages || selectedImages.length === 0) {
-      showToast(<Text>⚠️</Text>, t('toast.noImageSelected'));
-      return;
-    }
-    const file = selectedImages[0];
     try {
+      const selectedImages = await handleUpload();
+      if (!selectedImages || selectedImages.length === 0) {
+        return;
+      }
+      const file = selectedImages[0];
+      showToast(<Text>⚠️</Text>, file.fileName);
       await sendImageMessage(roomId, file);
     } catch (error: any) {
       showToast(<Text>⚠️</Text>, t('toast.sendFailed'));
     }
-  }, [handleUpload, roomId, sendImageMessage, showToast, t]);
+  };
 
   const renderMessageItem = useCallback(
     ({ item, index }: { item: Message; index: number }) => {
@@ -306,13 +303,13 @@ export const ChatRoomScreen: React.FC<ChatRoomScreenProps> = ({ route }) => {
           <View>
             <Input
               value={text}
-              leftImage={
-                <TouchableOpacity onPress={onAddImage}>
-                  <View className="ml-2 h-[24px] w-[24px] flex-row items-center">
-                    <Image size={24} strokeWidth={1.3} color="#797979" />
-                  </View>
-                </TouchableOpacity>
-              }
+              // leftImage={
+              //   <TouchableOpacity onPress={onAddImage}>
+              //     <View className="ml-2 h-[24px] w-[24px] flex-row items-center">
+              //       <Image size={24} strokeWidth={1.3} color="#797979" />
+              //     </View>
+              //   </TouchableOpacity>
+              // }
               onChange={handleChange}
               onSubmit={onSubmit}
               disabled={buddyExited}

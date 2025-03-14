@@ -1,12 +1,13 @@
 import { forwardRef, ReactNode, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { TextInput, TouchableOpacity, View } from 'react-native';
+import { Platform, TextInput, TouchableOpacity, View } from 'react-native';
 import { Send, Image } from 'lucide-react-native';
 
 interface CommentInputProps {
   value: string;
   leftImage?: ReactNode;
   placeholder: string;
+  maxLength?: number;
   onChange: (text: string) => void;
   onSubmit: () => void;
   isLoading?: boolean;
@@ -14,7 +15,10 @@ interface CommentInputProps {
 }
 
 export const Input = forwardRef<TextInput, CommentInputProps>(
-  ({ value, leftImage, onChange, onSubmit, placeholder, isLoading, disabled }, ref) => {
+  (
+    { value, leftImage, onChange, onSubmit, placeholder, isLoading, disabled, maxLength = 100 },
+    ref
+  ) => {
     const { t } = useTranslation('feed');
     const [isFocused, setIsFocused] = useState(false);
 
@@ -29,7 +33,7 @@ export const Input = forwardRef<TextInput, CommentInputProps>(
     return (
       <View
         className={`w-full flex-row items-center justify-between border-t border-borderBottom bg-white px-4 py-[10px] ${
-          isFocused ? '' : 'pb-8'
+          isFocused ? '' : Platform.OS === 'android' ? 'pb-[10px]' : 'pb-8'
         } ${disabled ? 'opacity-50' : ''}`} // disabled일 경우 opacity 조정(옵션)
       >
         <View className="flex-1 flex-row items-center">
@@ -47,12 +51,12 @@ export const Input = forwardRef<TextInput, CommentInputProps>(
               className={`max-h-[90px] min-h-[40px] w-full bg-[#F1F1F1] ${leftImage ? 'px-[8px]' : 'px-[16px]'} rounded-[12px] py-2.5 text-[15px] leading-[20px]`}
               multiline
               scrollEnabled={true}
-              maxLength={500}
+              maxLength={maxLength}
               onSubmitEditing={onSubmit}
               onFocus={handleFocus}
               onBlur={handleBlur}
               textAlignVertical="center"
-              editable={!disabled} // disabled가 true이면 입력 불가능
+              editable={!disabled}
             />
           </View>
         </View>

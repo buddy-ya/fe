@@ -99,9 +99,7 @@ export default function FeedItem({
                 <MyText size="text-sm" color="text-textProfile">
                   {name}
                 </MyText>
-                <MyText size="text-sm" className="ml-[3px]">
-                  {getCountryFlag(country as any)}
-                </MyText>
+                <MyText className="ml-[3px]">{getCountryFlag(country as any)}</MyText>
               </View>
             </View>
           </View>

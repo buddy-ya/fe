@@ -149,12 +149,9 @@ const MessageItem: React.FC<MessageProps> = ({
                   {message.status === 'pending' ? (
                     <ActivityIndicator size="small" style={{ marginLeft: 5 }} />
                   ) : (
-                    <TouchableOpacity
-                      onPress={() => onRetry && onRetry(message)}
-                      style={{ marginLeft: 5 }}
-                    >
-                      <MyText color="text-red" className="">
-                        Retry
+                    <TouchableOpacity className="ml-[5px]">
+                      <MyText size="text-sm" className="mr-1">
+                        ⚠️
                       </MyText>
                     </TouchableOpacity>
                   )}

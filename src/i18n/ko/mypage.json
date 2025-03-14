@@ -61,5 +61,6 @@
   "common": {
     "complete": "완료"
   },
-  "setting": "설정"
+  "setting": "설정",
+  "certification": "이미 인증이 완료되었습니다."
 }

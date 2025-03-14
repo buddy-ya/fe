@@ -1,11 +1,11 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { View, AppState, AppStateStatus } from 'react-native';
+import { View, AppState, AppStateStatus, StyleSheet } from 'react-native';
 import { API, UserRepository, ChatSocketRepository } from '@/api';
 import { TokenService } from '@/service';
 import { useUserStore } from '@/store';
 import { useNavigation } from '@react-navigation/native';
 import * as Font from 'expo-font';
-import * as SplashScreen from 'expo-splash-screen';
+import { Image as ExpoImage } from 'expo-image';
 import { jwtDecode } from 'jwt-decode';
 import { reissueToken } from '@/api/API';
 import { showErrorModal } from '@/utils';
@@ -27,9 +27,9 @@ export interface CustomJwtPayload {
   studentId: number;
 }
 
-export async function getValidAccessToken(): Promise<string> {
+export async function getValidAccessToken(): Promise<string | null> {
   let accessToken = await TokenService.getAccessToken();
-  if (!accessToken) throw new Error('Access token not found');
+  if (!accessToken) return null;
   const tokenPayload: CustomJwtPayload = jwtDecode(accessToken);
   const now = Date.now() / 1000;
   if (tokenPayload.exp < now + 300) {
@@ -55,12 +55,14 @@ async function getUser(): Promise<'Tab' | 'Onboarding'> {
     return 'Onboarding';
   }
   const accessToken = await getValidAccessToken();
-  API.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
-  await ChatSocketRepository.initialize();
-  // const tokenPayload: CustomJwtPayload = jwtDecode(accessToken);
-  // const userId = tokenPayload.studentId;
-  // const user = await UserRepository.get({ id: userId });
-  // useUserStore.getState().update({ ...user, isAuthenticated: true });
+  if (accessToken) {
+    API.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+    const tokenPayload: CustomJwtPayload = jwtDecode(accessToken);
+    const userId = tokenPayload.studentId;
+    const user = await UserRepository.get({ id: userId });
+    await ChatSocketRepository.initialize();
+    useUserStore.getState().update({ ...user });
+  }
   return 'Tab';
 }
 
@@ -71,6 +73,7 @@ interface Props {
 const AppInitializationProvider: React.FC<Props> = ({ children }) => {
   const [isInitialized, setIsInitialized] = useState(false);
   const [initialRoute, setInitialRoute] = useState<'Tab' | 'Onboarding' | null>(null);
+  const [isSplashHidden, setSplashHidden] = useState(false);
   const appState = useRef<AppStateStatus>(AppState.currentState);
   const isInitialLoad = useRef(true);
   const navigation = useNavigation<any>();
@@ -92,7 +95,11 @@ const AppInitializationProvider: React.FC<Props> = ({ children }) => {
 
   const refreshTokenOnForeground = async () => {
     try {
-      await getUser();
+      const accessToken = await getValidAccessToken();
+      if (accessToken) {
+        API.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+        await ChatSocketRepository.initialize();
+      }
     } catch (error) {
       console.error('Foreground token refresh error:', error);
     }
@@ -110,7 +117,6 @@ const AppInitializationProvider: React.FC<Props> = ({ children }) => {
   useEffect(() => {
     async function prepare() {
       try {
-        await SplashScreen.preventAutoHideAsync();
         await initializeApp();
         setIsInitialized(true);
       } catch (error) {
@@ -122,29 +128,47 @@ const AppInitializationProvider: React.FC<Props> = ({ children }) => {
       'change',
       async (nextAppState: AppStateStatus) => {
         if (appState.current.match(/inactive|background/) && nextAppState === 'active') {
-          console.log('Foreground transition: refreshing token and websocket connection');
+          console.log('Foreground transition: refreshing token');
           await initializeApp();
         }
         appState.current = nextAppState;
       }
     );
-    return () => {
-      subscription.remove();
-    };
+    return () => subscription.remove();
   }, []);
 
   useEffect(() => {
-    if (isInitialized && initialRoute) {
-      navigation.navigate(initialRoute);
-      SplashScreen.hideAsync();
+    if (isInitialized && initialRoute && navigation?.isReady && navigation.isReady()) {
+      navigation.reset({
+        index: 0,
+        routes: [{ name: initialRoute }],
+      });
     }
   }, [isInitialized, initialRoute, navigation]);
 
-  if (!isInitialized) {
-    return <View style={{ flex: 1 }} />;
-  }
+  useEffect(() => {
+    if (isInitialized && initialRoute) {
+      const timer = setTimeout(() => setSplashHidden(true), 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [isInitialized, initialRoute]);
 
-  return <>{children}</>;
+  const splashImage = require('@assets/images/splash/android.png');
+
+  return (
+    <View style={{ flex: 1 }}>
+      {children}
+      {!isSplashHidden && (
+        <View className="absolute left-0 top-0 h-full w-full flex-1 bg-primary">
+          <ExpoImage
+            source={splashImage}
+            contentFit="contain"
+            style={{ height: '100%', width: '100%' }}
+          />
+        </View>
+      )}
+    </View>
+  );
 };
 
 export default AppInitializationProvider;

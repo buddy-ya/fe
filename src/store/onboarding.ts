@@ -1,7 +1,6 @@
-// store/onboarding.ts
 import { create } from 'zustand';
 
-type Gender = 'male' | 'female' | 'unknown' | null;
+type Gender = 'male' | 'female' | null;
 
 interface OnboardingStore {
   name: string;
@@ -14,6 +13,7 @@ interface OnboardingStore {
   majors: string[];
   languages: string[];
   interests: string[];
+  expoToken: string | null; // 알림 토큰
   updateOnboardingData: (data: Partial<Omit<OnboardingStore, 'updateOnboardingData'>>) => void;
 }
 
@@ -23,10 +23,11 @@ export const useOnboardingStore = create<OnboardingStore>((set) => ({
   isKorean: false,
   isNotificationEnabled: false,
   phoneNumber: '',
-  gender: 'unknown',
+  gender: null,
   university: '',
   majors: [],
   languages: [],
   interests: [],
+  expoToken: null,
   updateOnboardingData: (data) => set((state) => ({ ...state, ...data })),
 }));

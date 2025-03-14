@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { View, TouchableOpacity, TextInput, ScrollView, Alert } from 'react-native';
+import { View, TouchableOpacity, TextInput, ScrollView, Alert, Platform } from 'react-native';
 import { feedKeys, FeedRepository } from '@/api';
 import {
   Layout,
@@ -18,14 +18,14 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useQueryClient } from '@tanstack/react-query';
 import * as ImagePicker from 'expo-image-picker';
 import { Camera, ChevronDown, ImagePlus, X } from 'lucide-react-native';
-import { CATEGORIES } from '@/utils';
+import { CATEGORIES, logError } from '@/utils';
 
 const FILTERED_CATEGORIES = CATEGORIES;
 
 const IMAGE_PICKER_OPTIONS: ImagePicker.ImagePickerOptions = {
   mediaTypes: 'images',
   allowsEditing: false,
-  quality: 0.7,
+  quality: 0.6,
   allowsMultipleSelection: true,
   selectionLimit: 5,
 };
@@ -172,6 +172,7 @@ export default function FeedWriteScreen({ navigation, route }: FeedWriteScreenPr
         });
       }
     } catch (error) {
+      logError(error);
       Alert.alert('Error', `Feed ${isEdit ? 'Edit' : 'Upload'} Fail.`);
     } finally {
       setIsLoading(false);
@@ -191,7 +192,7 @@ export default function FeedWriteScreen({ navigation, route }: FeedWriteScreenPr
       headerCenter={
         <TouchableOpacity onPress={handleOpenCategoryModal} className="flex-row items-center">
           <MyText size="text-xl" className="mr-[2px] font-semibold">
-            {selectedCategory.icon} {selectedCategory.label}
+            {selectedCategory.icon} {t(`category.${selectedCategory.label}`)}
           </MyText>
           <ChevronDown size={24} color="#282828" />
         </TouchableOpacity>
@@ -240,19 +241,28 @@ export default function FeedWriteScreen({ navigation, route }: FeedWriteScreenPr
                 placeholder={t('write.titlePlaceholder')}
                 placeholderTextColor="#CBCBCB"
                 value={title}
-                maxLength={300}
+                maxLength={40}
                 onChangeText={setTitle}
+                style={{
+                  textAlignVertical: 'top',
+                  paddingBottom: Platform.OS === 'android' ? 0 : undefined,
+                  paddingTop: Platform.OS === 'android' ? 0 : undefined,
+                }}
               />
               <TextInput
-                className="mt-4 font-semibold text-[18px]"
+                className="mt-4 font-medium text-[18px]"
                 placeholder={t('write.contentPlaceholder')}
                 placeholderTextColor="#CBCBCB"
-                maxLength={10000}
+                maxLength={600}
                 value={content}
                 onChangeText={setContent}
                 multiline
                 textAlignVertical="top"
-                style={{ minHeight: 150 }}
+                style={{
+                  minHeight: 150,
+                  textAlignVertical: 'top',
+                  paddingTop: Platform.OS === 'android' ? 0 : undefined,
+                }}
               />
             </ScrollView>
           </InnerLayout>

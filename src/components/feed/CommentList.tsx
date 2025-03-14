@@ -44,7 +44,6 @@ export default function CommentList({ feed, comments, onLike, onReply }: Comment
 
   const handleCommentOptions = (comment: Comment) => {
     setComment(comment);
-    console.log(comment);
     handleModalOpen('comment');
   };
 

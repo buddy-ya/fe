@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { View, TouchableOpacity } from 'react-native';
 import { Room } from '@/types';
 import { CountryID, getCountryFlag, getTimeAgo } from '@/utils';
@@ -11,6 +12,7 @@ interface RoomItemProps {
 
 export default function RoomItem({ room, onPress }: RoomItemProps) {
   const { id, name, country, lastMessage, profileImageUrl, unreadCount, lastMessageDate } = room;
+  const { t } = useTranslation('chat');
 
   const handleClick = () => {
     onPress?.(id);
@@ -36,7 +38,7 @@ export default function RoomItem({ room, onPress }: RoomItemProps) {
               color={isNewMessage ? '' : 'text-[#797979]'}
               className={isNewMessage ? 'font-medium' : ''}
             >
-              {lastMessage === null ? '버디와 대화를 시작해보세요!' : lastMessage}
+              {lastMessage === null ? t('room.startMessage') : lastMessage}
             </MyText>
           </View>
         </View>

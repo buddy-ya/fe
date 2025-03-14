@@ -1,6 +1,6 @@
 import { ChatSocketRepository } from '@/api';
 import { Message } from '@/model';
-import { useUserStore } from '@/store';
+import { useToastStore, useUserStore } from '@/store';
 import { create } from 'zustand';
 import ChatRepository from '@/api/ChatRepository';
 import { processImageForUpload } from '@/utils';
@@ -93,7 +93,7 @@ export const useMessageStore = create<MessageStore>((set, get) => ({
     const tempMessage: Message = {
       id: tempId,
       sender: 'me',
-      content: '',
+      content: file.uri,
       type: 'IMAGE',
       createdDate: new Date().toISOString(),
       status: 'pending',

@@ -10,10 +10,10 @@ export const CATEGORY_ICONS: Record<CategoryID, string> = {
 };
 
 export const CATEGORY_LABELS: Record<CategoryID, string> = {
-  free: '자유',
+  free: 'free',
   // popular: "인기",
-  recruitment: '모임',
-  info: '정보공유',
+  recruitment: 'recruitment',
+  info: 'info',
 };
 
 export const CATEGORIES = CATEGORY_IDS.map((id) => ({

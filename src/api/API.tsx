@@ -5,7 +5,7 @@ import { useToastStore, useUserStore } from '@/store';
 import axios from 'axios';
 import Constants from 'expo-constants';
 import * as SecureStore from 'expo-secure-store';
-import { showErrorModal, TOKEN_KEYS } from '@/utils';
+import { logError, showErrorModal, TOKEN_KEYS } from '@/utils';
 
 const BASE_URL = Constants?.expoConfig?.extra?.BASE_URL || '';
 
@@ -26,9 +26,13 @@ API.interceptors.response.use(
   async (error) => {
     if (!error.response) {
       useToastStore.getState().showToast(<MyText>🌐</MyText>, i18n.t('common:toast.error.network'));
+      logError(error);
       return Promise.reject(error);
     }
     const errorCode = error.response?.data?.code;
+    if (errorCode === 9000) {
+      useToastStore.getState().showToast(<MyText>⚠️</MyText>, error.response.data.message, 2000);
+    }
     if (error.response?.status === 401 && errorCode === 3002 && !error.config._retry) {
       error.config._retry = true;
       try {
@@ -52,10 +56,6 @@ API.interceptors.response.use(
     useToastStore
       .getState()
       .showToast(<MyText>⚠️</MyText>, i18n.t('common:toast.error.unknown'), 2000);
-
-    setTimeout(() => {
-      useToastStore.getState().showToast(<MyText>⚠️</MyText>, error.response.data.message, 2000);
-    }, 2000);
     return Promise.reject(error);
   }
 );

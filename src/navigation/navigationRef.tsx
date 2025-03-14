@@ -81,4 +81,5 @@ export type MyPageStackParamList = {
     source?: 'bookmark' | 'myPosts' | 'search';
     searchKeyword?: string;
   };
+  Onboarding: undefined;
 };

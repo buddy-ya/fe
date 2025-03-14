@@ -75,7 +75,8 @@
     "photoStatus": {
       "verified": "사진 인증 완료",
       "unverified": "사진 미인증"
-    }
+    },
+    "success": "채팅 요청을 보냈습니다."
   },
   "error": {
     "deletedFeed": "삭제된 게시글입니다.",

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { View } from 'react-native';
+import { View, ActivityIndicator } from 'react-native';
 import { UserRepository } from '@/api';
 import {
   Button,
@@ -21,11 +21,6 @@ type UniversityItem = {
   university: string;
 };
 
-type OptionItem = {
-  id: string;
-  icon?: React.ReactNode;
-};
-
 type OnboardingUniversitySelectScreenProps = NativeStackScreenProps<
   OnboardingStackParamList,
   'OnboardingUniversitySelect'
@@ -39,26 +34,25 @@ export default function UniversitySelectScreen({
 
   const [universities, setUniversities] = useState<UniversityItem[]>([]);
   const [selected, setSelected] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     async function fetchUniversities() {
+      setLoading(true);
       try {
         const data = await UserRepository.getUniversities();
         setUniversities(data);
-      } catch (error) {
-        console.error('Failed to fetch universities', error);
+        setError(null);
+      } catch (err) {
+        console.error('Failed to fetch universities', err);
+        setError(t('universitySelect.fetchError'));
+      } finally {
+        setLoading(false);
       }
     }
     fetchUniversities();
-  }, []);
-
-  const options: OptionItem[] = universities.map((item) => {
-    const IconComponent = UNIVERSITY_ICONS[item.university as UniversityID];
-    return {
-      id: item.university,
-      icon: IconComponent ? <IconComponent /> : null,
-    };
-  });
+  }, [t]);
 
   const handleSelect = (id: string) => {
     setSelected(id);
@@ -79,16 +73,20 @@ export default function UniversitySelectScreen({
           <HeadingDescription>{t('universitySelect.description')}</HeadingDescription>
           <Label>{t('universitySelect.label')}</Label>
           <View className="mt-2">
-            {options.map((option) => (
-              <SelectItem
-                key={option.id}
-                selected={selected === option.id}
-                onPress={() => handleSelect(option.id)}
-                item={t(`universities:universities.${option.id}`)}
-              >
-                {option.icon}
-              </SelectItem>
-            ))}
+            {!loading &&
+              universities.map((item, index) => {
+                const IconComponent = UNIVERSITY_ICONS[item.university as UniversityID];
+                return (
+                  <SelectItem
+                    key={index}
+                    selected={selected === item.university}
+                    onPress={() => handleSelect(item.university)}
+                    item={t(`universities:universities.${item.university}`)}
+                  >
+                    <IconComponent />
+                  </SelectItem>
+                );
+              })}
           </View>
         </View>
         <Button onPress={handleNavigateButton} disabled={!selected}>

@@ -1,10 +1,8 @@
 import { useTranslation } from 'react-i18next';
 import { View, TouchableOpacity, Image } from 'react-native';
-import { AuthRepository, UserRepository } from '@/api';
 import { InnerLayout, Layout, MyText } from '@/components';
 import { useBackButton } from '@/hooks';
 import { MyPageStackParamList } from '@/navigation/navigationRef';
-import { TokenService } from '@/service';
 import { useUserStore } from '@/store';
 import CircleCheck from '@assets/icons/circleCheck.svg';
 import LogoIcon from '@assets/icons/logo.svg';
@@ -12,15 +10,14 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { Bookmark, ChevronRight, NotebookPen, Settings, ShieldAlert } from 'lucide-react-native';
 import { useToastStore } from '@/store/useToastStore';
 import { CountryID, getCountryFlag } from '@/utils';
-import { Toast } from '@/components/common/Toast';
 import ShieldCheck from './shieldCheck.svg';
 
 type MyPageScreenProps = NativeStackScreenProps<MyPageStackParamList, 'MyPageHome'>;
 
 export default function MyPageScreen({ navigation }: MyPageScreenProps) {
-  const { t } = useTranslation(['mypage', 'universities']);
+  const { t } = useTranslation('mypage');
 
-  const { visible, icon, text, showToast, hideToast } = useToastStore();
+  const { showToast } = useToastStore();
 
   const profileImageUrl = useUserStore((state) => state.profileImageUrl);
   const name = useUserStore((state) => state.name);
@@ -32,24 +29,28 @@ export default function MyPageScreen({ navigation }: MyPageScreenProps) {
   const quickMenuItems = [
     {
       key: 'bookmark',
-      label: <MyText>{t('quickMenu.bookmark')}</MyText>,
-      icon: <Bookmark size={24} color="#282828" />,
+      label: <MyText>{t('mypage:quickMenu.bookmark')}</MyText>,
+      icon: <Bookmark size={24} color="#282828" strokeWidth={1.5} />,
       onPress: () => navigation.navigate('Bookmark'),
     },
     {
       key: 'myPosts',
-      label: <MyText>{t('quickMenu.myPosts')}</MyText>,
-      icon: <NotebookPen size={24} color="#282828" />,
+      label: <MyText>{t('mypage:quickMenu.myPosts')}</MyText>,
+      icon: <NotebookPen size={24} color="#282828" strokeWidth={1.5} />,
       onPress: () => navigation.navigate('MyPosts'),
     },
     {
       key: 'verification',
       label: (
         <MyText color={`${isCertificated && 'text-[#CBCBCB]'}`}>
-          {t('quickMenu.verification')}
+          {t('mypage:quickMenu.verification')}
         </MyText>
       ),
-      icon: isCertificated ? <ShieldCheck /> : <ShieldAlert size={24} color="#282828" />,
+      icon: isCertificated ? (
+        <ShieldCheck />
+      ) : (
+        <ShieldAlert size={24} color="#282828" strokeWidth={1.5} />
+      ),
       onPress: isCertificated
         ? () => {
             handleShowToast();
@@ -59,8 +60,7 @@ export default function MyPageScreen({ navigation }: MyPageScreenProps) {
   ];
 
   const handleShowToast = () => {
-    const message = '이미 인증이 완료되었습니다.'; // t('toastMessage') should return a string.
-    showToast(<CircleCheck />, message);
+    showToast(<CircleCheck />, t('mypage:certification'));
   };
 
   const handleNotification = () => {
@@ -107,7 +107,7 @@ export default function MyPageScreen({ navigation }: MyPageScreenProps) {
             <ChevronRight size={24} color="#CBCBCB" />
           </View>
         </TouchableOpacity>
-        <View className="mt-3 flex-row justify-around rounded-[20px] bg-white py-5">
+        <View className="mt-4 flex-row justify-around rounded-[20px] bg-white py-5">
           {quickMenuItems.map(({ key, label, icon, onPress }) => (
             <TouchableOpacity key={key} className="items-center" onPress={onPress}>
               <View className="mb-1">{icon}</View>

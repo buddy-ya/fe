@@ -2,10 +2,12 @@ import { useTranslation, Trans } from 'react-i18next';
 import { View, Linking, Text } from 'react-native';
 import '@/../global.css';
 import { Button, InnerLayout, Layout, MyText } from '@/components';
+import i18n from '@/i18n';
 import { OnboardingStackParamList } from '@/navigation/navigationRef';
 import Charactrers from '@assets/images/onboarding/characters.svg';
 import WelcomeTextBackground from '@assets/images/onboarding/welcomeBg.svg';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { PRIVACY_POLICY_URL } from '@/utils';
 
 type OnboardingWelcomeScreenProps = NativeStackScreenProps<
   OnboardingStackParamList,
@@ -20,9 +22,8 @@ export default function WelcomeScreen({ navigation }: OnboardingWelcomeScreenPro
   };
 
   const handlePrivacyPolicyPress = () => {
-    Linking.openURL(
-      'https://thinkable-durian-178.notion.site/1b1badc2aadc80559650dd4dbde70532?pvs=74'
-    ).catch((err) => console.error('Failed to open URL:', err));
+    const url = i18n.language === 'ko' ? PRIVACY_POLICY_URL.ko : PRIVACY_POLICY_URL.en;
+    Linking.openURL(url).catch((err) => console.error('Failed to open URL:', err));
   };
 
   return (

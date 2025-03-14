@@ -3,11 +3,13 @@ import { useTranslation } from 'react-i18next';
 import { View, TouchableOpacity, Linking } from 'react-native';
 import { AuthRepository, UserRepository } from '@/api';
 import { Layout, InnerLayout, MyText } from '@/components';
+import i18n from '@/i18n';
 import { MyPageStackParamList } from '@/navigation/navigationRef';
 import { TokenService } from '@/service';
 import { useUserStore } from '@/store';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { ChevronRight } from 'lucide-react-native';
+import { PRIVACY_POLICY_URL } from '@/utils';
 
 interface SettingItemProps {
   emoji: string; // 이모지를 따로 받음
@@ -36,6 +38,11 @@ export default function SettingScreen({ navigation }: SettingScreenProps) {
   const update = useUserStore((state) => state.update);
   const init = useUserStore((state) => state.init);
 
+  const handlePrivacyPolicyPress = () => {
+    const url = i18n.language === 'ko' ? PRIVACY_POLICY_URL.ko : PRIVACY_POLICY_URL.en;
+    Linking.openURL(url).catch((err) => console.error('Failed to open URL:', err));
+  };
+
   // 그룹1: 상단 박스 (문의하기, 이용약관, 개인정보처리방침)
   const group1 = [
     // {
@@ -46,25 +53,21 @@ export default function SettingScreen({ navigation }: SettingScreenProps) {
     //     console.log('문의하기 클릭');
     //   },
     // },
-    {
-      key: 'terms',
-      emoji: '📃',
-      label: t('menuItems.terms'),
-      onPress: () => {
-        Linking.openURL(
-          'https://thinkable-durian-178.notion.site/1b1badc2aadc80878bd2f2c08e026fa4?pvs=4'
-        ).catch((err) => console.error('Error opening privacy:', err));
-      },
-    },
+    // {
+    //   key: 'terms',
+    //   emoji: '📃',
+    //   label: t('menuItems.terms'),
+    //   onPress: () => {
+    //     Linking.openURL(
+    //       'https://thinkable-durian-178.notion.site/1b1badc2aadc80878bd2f2c08e026fa4?pvs=4'
+    //     ).catch((err) => console.error('Error opening privacy:', err));
+    //   },
+    // },
     {
       key: 'privacy',
       emoji: '🔒',
       label: t('menuItems.privacy'),
-      onPress: () => {
-        Linking.openURL(
-          'https://thinkable-durian-178.notion.site/1b1badc2aadc80559650dd4dbde70532?pvs=4'
-        ).catch((err) => console.error('Error opening privacy:', err));
-      },
+      onPress: handlePrivacyPolicyPress,
     },
   ];
 
@@ -86,19 +89,23 @@ export default function SettingScreen({ navigation }: SettingScreenProps) {
       onPress: async () => {
         await UserRepository.delete();
         await TokenService.remove();
-        init();
+        update({ isAuthenticated: false });
+        navigation.reset({
+          index: 0,
+          routes: [{ name: 'Onboarding' }],
+        });
       },
     },
-    {
-      key: 'refresh',
-      emoji: '🔄',
-      label: t('menuItems.refresh'),
-      onPress: async () => {
-        await AuthRepository.refreshStudentCertification();
-        update({ isCertificated: false });
-        update({ isStudentIdCardRequested: false });
-      },
-    },
+    // {
+    //   key: 'refresh',
+    //   emoji: '🔄',
+    //   label: t('menuItems.refresh'),
+    //   onPress: async () => {
+    //     await AuthRepository.refreshStudentCertification();
+    //     update({ isCertificated: false });
+    //     update({ isStudentIdCardRequested: false });
+    //   },
+    // },
   ];
 
   return (

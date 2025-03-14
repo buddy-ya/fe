@@ -32,6 +32,7 @@ export function ChatRequestModal({ visible, data, onClose }: CommonModalProps) {
     const userId = data?.userId;
     try {
       await ChatRequestRepository.create({ receiverId: userId });
+      showToast(<Text>💬</Text>, t('chatRequestModal.success'));
     } catch (error: any) {
       const errorCode = error.response?.data?.code;
       const errorMapping: Record<number, { emoji: string; translationKey: string }> = {

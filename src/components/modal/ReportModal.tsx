@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Alert, TextInput, Text } from 'react-native';
 import { UserRepository } from '@/api';
 import { useToastStore } from '@/store';
-import { logError } from '@/utils';
 import { StandardModal } from './Common';
 
 interface ReportModalProps {
@@ -80,9 +79,9 @@ export function ReportModal({
         value={reason}
         onChangeText={setReason}
         multiline
+        maxLength={100}
         className="rounded-lg bg-[#F6F6F6] p-2 text-base"
-        placeholder={t('modal.report.placeholder')}
-        style={{ height: 100 }}
+        style={{ height: 100, textAlignVertical: 'top' }}
       />
     </StandardModal>
   );
