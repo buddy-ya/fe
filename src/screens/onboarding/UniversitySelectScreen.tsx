@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { View, ActivityIndicator } from 'react-native';
+import { View } from 'react-native';
 import { UserRepository } from '@/api';
 import {
   Button,
@@ -19,6 +19,11 @@ import { UNIVERSITY_ICONS, UniversityID } from '@/utils';
 
 type UniversityItem = {
   university: string;
+};
+
+type OptionItem = {
+  id: string;
+  icon?: React.ReactNode;
 };
 
 type OnboardingUniversitySelectScreenProps = NativeStackScreenProps<
@@ -54,6 +59,14 @@ export default function UniversitySelectScreen({
     fetchUniversities();
   }, [t]);
 
+  const options: OptionItem[] = universities.map((item) => {
+    const IconComponent = UNIVERSITY_ICONS[item.university as UniversityID];
+    return {
+      id: item.university,
+      icon: IconComponent ? <IconComponent /> : null,
+    };
+  });
+
   const handleSelect = (id: string) => {
     setSelected(id);
   };
@@ -74,19 +87,16 @@ export default function UniversitySelectScreen({
           <Label>{t('universitySelect.label')}</Label>
           <View className="mt-2">
             {!loading &&
-              universities.map((item, index) => {
-                const IconComponent = UNIVERSITY_ICONS[item.university as UniversityID];
-                return (
-                  <SelectItem
-                    key={index}
-                    selected={selected === item.university}
-                    onPress={() => handleSelect(item.university)}
-                    item={t(`universities:universities.${item.university}`)}
-                  >
-                    <IconComponent />
-                  </SelectItem>
-                );
-              })}
+              options.map((option) => (
+                <SelectItem
+                  key={option.id}
+                  selected={selected === option.id}
+                  onPress={() => handleSelect(option.id)}
+                  item={t(`universities:universities.${option.id}`)}
+                >
+                  {option.icon}
+                </SelectItem>
+              ))}
           </View>
         </View>
         <Button onPress={handleNavigateButton} disabled={!selected}>
