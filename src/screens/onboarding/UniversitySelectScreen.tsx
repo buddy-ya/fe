@@ -93,9 +93,8 @@ export default function UniversitySelectScreen({
                   selected={selected === option.id}
                   onPress={() => handleSelect(option.id)}
                   item={t(`universities:universities.${option.id}`)}
-                >
-                  {option.icon}
-                </SelectItem>
+                  icon={option.icon}
+                />
               ))}
           </View>
         </View>

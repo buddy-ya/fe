@@ -241,7 +241,7 @@ export default function FeedWriteScreen({ navigation, route }: FeedWriteScreenPr
                 placeholder={t('write.titlePlaceholder')}
                 placeholderTextColor="#CBCBCB"
                 value={title}
-                maxLength={30}
+                maxLength={40}
                 onChangeText={setTitle}
                 style={{
                   textAlignVertical: 'top',
