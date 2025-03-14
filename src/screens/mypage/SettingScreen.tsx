@@ -73,15 +73,19 @@ export default function SettingScreen({ navigation }: SettingScreenProps) {
 
   // 그룹2: 하단 박스 (로그아웃, 회원탈퇴, 갱신)
   const group2 = [
-    // {
-    //   key: 'logout',
-    //   emoji: '🚪',
-    //   label: t('menuItems.logout'),
-    //   onPress: async () => {
-    //     await TokenService.remove();
-    //     update({ isAuthenticated: false });
-    //   },
-    // },
+    {
+      key: 'logout',
+      emoji: '🚪',
+      label: t('menuItems.logout'),
+      onPress: async () => {
+        await TokenService.remove();
+        update({ isAuthenticated: false });
+        navigation.reset({
+          index: 0,
+          routes: [{ name: 'Onboarding' }],
+        });
+      },
+    },
     {
       key: 'delete',
       emoji: '👋',
