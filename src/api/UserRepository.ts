@@ -48,6 +48,11 @@ class UserRepository {
     await API.post(`/users/block/${userId}`);
   }
 
+  async logout() {
+    const { data } = await API.post(`/users/logout`);
+    return data;
+  }
+
   async delete() {
     const { data } = await API.delete(`/users`);
     return data;

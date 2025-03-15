@@ -78,6 +78,7 @@ export default function SettingScreen({ navigation }: SettingScreenProps) {
       emoji: '🚪',
       label: t('menuItems.logout'),
       onPress: async () => {
+        await UserRepository.logout();
         await TokenService.remove();
         update({ isAuthenticated: false });
         navigation.reset({
