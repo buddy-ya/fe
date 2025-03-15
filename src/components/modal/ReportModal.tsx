@@ -79,7 +79,7 @@ export function ReportModal({
         value={reason}
         onChangeText={setReason}
         multiline
-        maxLength={100}
+        maxLength={300}
         className="rounded-lg bg-[#F6F6F6] p-2 text-base"
         style={{ height: 100, textAlignVertical: 'top' }}
       />

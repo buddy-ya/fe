@@ -241,7 +241,7 @@ export default function FeedWriteScreen({ navigation, route }: FeedWriteScreenPr
                 placeholder={t('write.titlePlaceholder')}
                 placeholderTextColor="#CBCBCB"
                 value={title}
-                maxLength={40}
+                maxLength={100}
                 onChangeText={setTitle}
                 style={{
                   textAlignVertical: 'top',
@@ -253,7 +253,7 @@ export default function FeedWriteScreen({ navigation, route }: FeedWriteScreenPr
                 className="mt-4 font-medium text-[18px]"
                 placeholder={t('write.contentPlaceholder')}
                 placeholderTextColor="#CBCBCB"
-                maxLength={600}
+                maxLength={2000}
                 value={content}
                 onChangeText={setContent}
                 multiline

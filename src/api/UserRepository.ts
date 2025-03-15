@@ -1,4 +1,5 @@
 import { ReportDTO, User } from '@/types';
+import { getFormDataHeaders } from '@/utils';
 import API from './API';
 
 class UserRepository {
@@ -24,10 +25,9 @@ class UserRepository {
     isDefault: boolean;
     profileImage: FormData | null;
   }): Promise<User> {
+    const headers = getFormDataHeaders();
     const { data } = await API.patch(`/users/profile-image?isDefault=${isDefault}`, profileImage, {
-      headers: {
-        ...API.defaults.headers.common,
-      },
+      headers,
     });
     return data;
   }

@@ -1,5 +1,5 @@
 import { Feed, FeedDTO, FeedUpdateDTO } from '@/types/FeedDTO';
-import { createFeedFormData, FeedFormData } from '@/utils';
+import { createFeedFormData, FeedFormData, getFormDataHeaders } from '@/utils';
 import API from './API';
 
 class FeedRepository {
@@ -21,21 +21,15 @@ class FeedRepository {
 
   async create(feedData: FeedFormData) {
     const formData = createFeedFormData(feedData);
-    const { data } = await API.post('/feeds', formData, {
-      headers: {
-        ...API.defaults.headers.common,
-      },
-    });
+    const headers = getFormDataHeaders();
+    const { data } = await API.post('/feeds', formData, { headers });
     return data;
   }
 
   async update({ feedId, ...feedData }: FeedUpdateDTO) {
     const formData = createFeedFormData(feedData);
-    const { data } = await API.patch(`/feeds/${feedId}`, formData, {
-      headers: {
-        ...API.defaults.headers.common,
-      },
-    });
+    const headers = getFormDataHeaders();
+    const { data } = await API.patch(`/feeds/${feedId}`, formData, { headers });
     return data;
   }
 

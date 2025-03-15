@@ -85,7 +85,7 @@ export default function EmailScreen({ navigation }: EmailScreenProps) {
                 className="border-inputBorder h-[50px] flex-1 rounded-xl border px-4 py-3 text-[18px] text-text"
                 keyboardType="email-address"
                 placeholderTextColor="#DFDFDF"
-                maxLength={30}
+                maxLength={50}
                 autoFocus
               />
               <View className="border-inputBorder ml-2 h-[50px] flex-row items-center justify-center rounded-xl border px-4 py-3">
