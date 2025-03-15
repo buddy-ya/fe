@@ -10,14 +10,15 @@ import ErrorPage from '@/screens/ErrorPage';
 import { useToastStore } from '@/store';
 import { NavigationContainer, createNavigationContainerRef } from '@react-navigation/native';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import registerNNPushToken from 'native-notify';
 import { Toast } from '@/components/common/Toast';
 
 export const navigationRef = createNavigationContainerRef();
 
 export default function App() {
+  registerNNPushToken(28286, 'M9D40bb7v4Dd9FWfqb6g0Z');
   const queryClient = new QueryClient();
   const { visible, icon, text, duration, hideToast } = useToastStore();
-
   return (
     <QueryClientProvider client={queryClient}>
       <I18nextProvider i18n={i18n}>
