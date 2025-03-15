@@ -25,7 +25,10 @@ class UserRepository {
     isDefault: boolean;
     profileImage: FormData | null;
   }): Promise<User> {
-    const headers = getFormDataHeaders();
+    let headers = getFormDataHeaders();
+    if (profileImage == null) {
+      headers = { ...API.defaults.headers.common };
+    }
     const { data } = await API.patch(`/users/profile-image?isDefault=${isDefault}`, profileImage, {
       headers,
     });
