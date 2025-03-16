@@ -89,7 +89,7 @@ export default function UniversitySelectScreen({
           <Heading>{t('universitySelect.title')}</Heading>
           <HeadingDescription>{t('universitySelect.description')}</HeadingDescription>
           <Label>{t('universitySelect.label')}</Label>
-          <View className="mt-2">
+          <View className="mt-2 border">
             {!loading &&
               options.map((option) => (
                 <SelectItem
@@ -97,9 +97,7 @@ export default function UniversitySelectScreen({
                   selected={selected === option.id}
                   onPress={() => handleSelect(option.id)}
                   item={t(`universities:universities.${option.id}`)}
-                >
-                  {option.icon}
-                </SelectItem>
+                />
               ))}
           </View>
         </View>
