@@ -41,6 +41,7 @@ export const Input = forwardRef<TextInput, CommentInputProps>(
             className={`flex-row items-center ${leftImage ? 'w-[88%] pl-1' : 'w-[97%]'} rounded-[12px] bg-[#F1F1F1]`}
           >
             {leftImage}
+
             <TextInput
               ref={ref}
               value={value}
@@ -48,8 +49,8 @@ export const Input = forwardRef<TextInput, CommentInputProps>(
                 onChange(text);
               }}
               placeholder={placeholder}
-              className={`max-h-[80px] min-h-[40px] w-full bg-[#F1F1F1] ${leftImage ? 'px-[8px]' : 'px-[16px]'} rounded-[12px] py-2.5 text-[15px] leading-[20px]`}
-              multiline
+              className={`max-h-[80px] min-h-[40px] w-full bg-[#F1F1F1] ${leftImage ? 'px-[8px]' : 'px-[16px]'} rounded-[12px] text-[15px] leading-[20px] ${Platform.select({ ios: 'py-2.5', android: 'py-0' })} `}
+              multiline={true}
               scrollEnabled={true}
               maxLength={maxLength}
               onSubmitEditing={onSubmit}

@@ -36,7 +36,7 @@ export default function WelcomeScreen({ navigation }: OnboardingWelcomeScreenPro
           <View className="relative mt-12">
             <WelcomeTextBackground />
             <View className="absolute left-2 top-0">
-              <MyText size="text-[45px]" className="font-light leading-[1.27]">
+              <MyText size="text-5xl" className="font-light leading-[1.27]">
                 {t('intro.title', {
                   flower: '🌸',
                   eye: '👀',
@@ -45,7 +45,7 @@ export default function WelcomeScreen({ navigation }: OnboardingWelcomeScreenPro
             </View>
           </View>
           <View className="flex-1 items-center justify-center">
-            <View className="mt-8">
+            <View className="mt-6">
               <Charactrers />
             </View>
             <View className="mt-16">

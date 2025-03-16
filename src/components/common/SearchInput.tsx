@@ -1,12 +1,13 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
-  Keyboard,
-  Text,
+  Platform,
   TextInput,
   TouchableOpacity,
   TouchableWithoutFeedback,
   View,
+  Text,
+  Keyboard,
 } from 'react-native';
 import { Search } from 'lucide-react-native';
 
@@ -26,18 +27,16 @@ export default function SearchInput({
   const [isFocused, setIsFocused] = useState(false);
   const { t } = useTranslation('onboarding');
 
-  const DismissButton = ({ onPress }: { onPress: () => void }) => {
-    return (
-      <TouchableOpacity onPress={onPress}>
-        <Text className="text-textDescription">{t('common.cancel')}</Text>
-      </TouchableOpacity>
-    );
-  };
-
   const handleDismissButton = () => {
     onChangeText('');
     Keyboard.dismiss();
   };
+
+  const DismissButton = ({ onPress }: { onPress: () => void }) => (
+    <TouchableOpacity onPress={onPress}>
+      <Text className="text-textDescription">{t('common.cancel')}</Text>
+    </TouchableOpacity>
+  );
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -50,11 +49,15 @@ export default function SearchInput({
           onChangeText={onChangeText}
           placeholder={placeholder}
           allowFontScaling={false}
+          maxLength={30}
+          multiline={false}
+          numberOfLines={1}
           onFocus={() => setIsFocused(true)}
-          onBlur={() => {
-            setIsFocused(false);
-          }}
-          style={{ marginLeft: 7, flex: 1, paddingVertical: 10, fontSize: 15, lineHeight: 20 }}
+          onBlur={() => setIsFocused(false)}
+          className={Platform.select({
+            ios: 'ml-[7px] flex-1 py-[12px] text-[15px] leading-[20px] text-text',
+            android: 'ml-[7px] flex-1 py-[8px] text-[14px] leading-[18px] text-text',
+          })}
         />
         <View>{isFocused && <DismissButton onPress={handleDismissButton} />}</View>
       </View>
