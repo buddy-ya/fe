@@ -49,7 +49,6 @@ export default function SearchInput({
           value={value}
           onChangeText={onChangeText}
           placeholder={placeholder}
-          maxLength={30}
           allowFontScaling={false}
           onFocus={() => setIsFocused(true)}
           onBlur={() => {
