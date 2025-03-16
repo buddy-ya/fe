@@ -48,7 +48,7 @@ export const Input = forwardRef<TextInput, CommentInputProps>(
                 onChange(text);
               }}
               placeholder={placeholder}
-              className={`max-h-[90px] min-h-[40px] w-full bg-[#F1F1F1] ${leftImage ? 'px-[8px]' : 'px-[16px]'} rounded-[12px] py-2.5 text-[15px] leading-[20px]`}
+              className={`max-h-[80px] min-h-[40px] w-full bg-[#F1F1F1] ${leftImage ? 'px-[8px]' : 'px-[16px]'} rounded-[12px] py-2.5 text-[15px] leading-[20px]`}
               multiline
               scrollEnabled={true}
               maxLength={maxLength}
@@ -57,6 +57,7 @@ export const Input = forwardRef<TextInput, CommentInputProps>(
               onBlur={handleBlur}
               textAlignVertical="center"
               editable={!disabled}
+              style={{ textAlignVertical: 'top' }}
             />
           </View>
         </View>

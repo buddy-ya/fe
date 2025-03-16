@@ -2,6 +2,7 @@ import { useTranslation, Trans } from 'react-i18next';
 import { View, Linking, Text } from 'react-native';
 import '@/../global.css';
 import { Button, InnerLayout, Layout, MyText } from '@/components';
+import { useBackButton } from '@/hooks';
 import i18n from '@/i18n';
 import { OnboardingStackParamList } from '@/navigation/navigationRef';
 import Charactrers from '@assets/images/onboarding/characters.svg';
@@ -25,6 +26,8 @@ export default function WelcomeScreen({ navigation }: OnboardingWelcomeScreenPro
     const url = i18n.language === 'ko' ? PRIVACY_POLICY_URL.ko : PRIVACY_POLICY_URL.en;
     Linking.openURL(url).catch((err) => console.error('Failed to open URL:', err));
   };
+
+  useBackButton();
 
   return (
     <Layout showHeader={false}>

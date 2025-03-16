@@ -2,6 +2,7 @@ import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 import { API, ChatSocketRepository, NotificationRepository } from '@/api';
 import { Button, Heading, HeadingDescription, InnerLayout, Layout, MyText } from '@/components';
+import { useBackButton } from '@/hooks';
 import { OnboardingStackParamList } from '@/navigation/navigationRef';
 import { TokenService } from '@/service';
 import { useOnboardingStore } from '@/store';
@@ -66,6 +67,8 @@ export default function NotificationScreen({
       logError(error);
     }
   };
+
+  useBackButton();
 
   return (
     <Layout preserveHeader>

@@ -313,6 +313,7 @@ export const ChatRoomScreen: React.FC<ChatRoomScreenProps> = ({ route }) => {
               onChange={handleChange}
               onSubmit={onSubmit}
               disabled={buddyExited}
+              maxLength={1000}
               placeholder={
                 buddyExited
                   ? t('room.systemExit', { name: roomData?.name })

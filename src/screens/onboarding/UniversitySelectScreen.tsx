@@ -12,6 +12,7 @@ import {
   MyText,
   SelectItem,
 } from '@/components';
+import { useBackButton } from '@/hooks';
 import { OnboardingStackParamList } from '@/navigation/navigationRef';
 import { useOnboardingStore } from '@/store';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
@@ -47,6 +48,7 @@ export default function UniversitySelectScreen({
       setLoading(true);
       try {
         const data = await UserRepository.getUniversities();
+        console.log(data);
         setUniversities(data);
         setError(null);
       } catch (err) {
@@ -58,6 +60,8 @@ export default function UniversitySelectScreen({
     }
     fetchUniversities();
   }, [t]);
+
+  useBackButton();
 
   const options: OptionItem[] = universities.map((item) => {
     const IconComponent = UNIVERSITY_ICONS[item.university as UniversityID];

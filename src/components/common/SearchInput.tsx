@@ -1,4 +1,3 @@
-import { Search } from 'lucide-react-native';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
@@ -9,6 +8,7 @@ import {
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
+import { Search } from 'lucide-react-native';
 
 interface SearchInputProps {
   value: string;
@@ -50,6 +50,7 @@ export default function SearchInput({
           onChangeText={onChangeText}
           placeholder={placeholder}
           className="ml-[7px] flex-1 py-[12px] text-text"
+          maxLength={30}
           onFocus={() => setIsFocused(true)}
           onBlur={() => {
             setIsFocused(false);

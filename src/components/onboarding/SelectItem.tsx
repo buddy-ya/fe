@@ -1,5 +1,5 @@
 import React from 'react';
-import { TouchableOpacity } from 'react-native';
+import { TouchableOpacity, View } from 'react-native';
 import MyText from '../common/MyText';
 
 interface SelectItemProps {
@@ -25,7 +25,7 @@ export default function SelectItem({
         selected ? 'border-[1px] border-primary bg-chipActive' : 'border-border'
       } `}
     >
-      {children && <MyText className="mr-2">{children}</MyText>}
+      {children && <View className="mr-2">{children}</View>}
       <MyText size="text-base" color={selected ? 'text-active' : undefined}>
         {item}
       </MyText>
