@@ -49,12 +49,13 @@ export default function SearchInput({
           value={value}
           onChangeText={onChangeText}
           placeholder={placeholder}
-          className="ml-[7px] flex-1 py-[12px] text-text"
           maxLength={30}
+          allowFontScaling={false}
           onFocus={() => setIsFocused(true)}
           onBlur={() => {
             setIsFocused(false);
           }}
+          style={{ marginLeft: 7, flex: 1, paddingVertical: 10, fontSize: 15, lineHeight: 20 }}
         />
         <View>{isFocused && <DismissButton onPress={handleDismissButton} />}</View>
       </View>
