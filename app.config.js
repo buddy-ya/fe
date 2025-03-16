@@ -15,9 +15,9 @@ module.exports = {
     newArchEnabled: false,
     icon: './assets/images/icon/icon.png',
     splash: {
-      image: './assets/images/splash/2000.png',
+      image: './assets/images/icon/icon.png',
       resizeMode: 'contain',
-      backgroundColor: '#ffffff',
+      backgroundColor: '#00A176',
     },
     plugins: [
       [
