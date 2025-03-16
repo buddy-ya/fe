@@ -160,14 +160,18 @@ function OnboardingNavigator() {
       <OnboardingStack.Screen
         name="OnboardingUniversitySelect"
         component={UniversitySelectScreen}
-        options={{ gestureEnabled: false }}
       />
       <OnboardingStack.Screen
         name="OnboardingStudentTypeSelect"
         component={StudentTypeSelectScreen}
       />
       <OnboardingStack.Screen name="OnboardingGenderSelect" component={GenderSelectScreen} />
-      <OnboardingStack.Screen name="OnboardingName" component={NameScreen} />
+
+      <OnboardingStack.Screen
+        name="OnboardingName"
+        component={NameScreen}
+        options={{ gestureEnabled: false }}
+      />
       <OnboardingStack.Screen name="OnboardingCountrySelect" component={CountrySelectScreen} />
       <OnboardingStack.Screen name="OnboardingLanguageSelect" component={LanguageSelectScreen} />
       <OnboardingStack.Screen name="OnboardingMajorSelect" component={MajorSelectScreen} />

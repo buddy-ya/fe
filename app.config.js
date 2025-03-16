@@ -15,15 +15,15 @@ module.exports = {
     newArchEnabled: false,
     icon: './assets/images/icon/icon.png',
     splash: {
-      image: './assets/images/splash/android.png',
+      image: './assets/images/splash/2000.png',
       resizeMode: 'contain',
-      backgroundColor: '#00A176',
+      backgroundColor: '#ffffff',
     },
     plugins: [
       [
         'expo-notifications',
         {
-          icon: './assets/images/icon/android.png',
+          icon: './assets/images/icon/96.png',
           color: '#00A176',
         },
       ],

@@ -57,7 +57,6 @@ export const Input = forwardRef<TextInput, CommentInputProps>(
               onBlur={handleBlur}
               textAlignVertical="center"
               editable={!disabled}
-              style={{ textAlignVertical: 'top' }}
             />
           </View>
         </View>
