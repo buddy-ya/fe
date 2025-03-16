@@ -47,7 +47,7 @@ export default function NotificationScreen({
     } else {
       navigation.reset({
         index: 0,
-        routes: [{ name: 'OnboardingUniversitySelect' }],
+        routes: [{ name: 'OnboardingName' }],
       });
     }
   };

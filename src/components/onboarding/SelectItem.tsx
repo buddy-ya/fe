@@ -23,7 +23,7 @@ export default function SelectItem({
     <TouchableOpacity
       onPress={onPress}
       disabled={disabled}
-      className={`mb-3 h-[52px] w-[262px] flex-row items-center rounded-xl border px-4 py-4 ${
+      className={`mb-3 w-[262px] flex-row items-center rounded-xl border px-4 py-4 ${
         selected ? 'border-[1px] border-primary bg-chipActive' : 'border-border'
       } ${className}`}
     >

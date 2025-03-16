@@ -31,7 +31,7 @@ export default function GenderScreen({ navigation }: OnboardingGenderSelectScree
     updateOnboardingData({
       gender: selectedGender,
     });
-    navigation.navigate('OnboardingName');
+    navigation.navigate('OnboardingUniversitySelect');
   };
 
   const GENDER_OPTIONS = [

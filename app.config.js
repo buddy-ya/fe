@@ -15,7 +15,7 @@ module.exports = {
     newArchEnabled: false,
     icon: './assets/images/icon/icon.png',
     splash: {
-      image: './assets/images/splash/2000.png',
+      image: './assets/images/splash/android.png',
       resizeMode: 'contain',
       backgroundColor: '#00A176',
     },
@@ -23,7 +23,7 @@ module.exports = {
       [
         'expo-notifications',
         {
-          icon: './assets/images/icon/96.png',
+          icon: './assets/images/icon/android.png',
           color: '#00A176',
         },
       ],
