@@ -117,7 +117,7 @@ const CommentItem = ({
                     className="mr-5 h-[20px] w-[30px] flex-row"
                     hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
                   >
-                    <Icon size={16} color={isActive ? '#00A176' : '#797979'} />
+                    <Icon size={16} color={isActive ? '#00A176' : '#797979'} strokeWidth={1} />
                     <MyText size="text-[12px]" color="text-textDescription" className="ml-1">
                       {count && count > 0 ? count : ''}
                     </MyText>
