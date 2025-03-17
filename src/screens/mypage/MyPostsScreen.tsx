@@ -27,9 +27,9 @@ export default function MyPostsScreen({ navigation }: MyPostsScreenProps) {
       onBack={() => navigation.goBack()}
       headerCenter={
         <View className="flex-row items-center">
-          <MyText className="mr-[6px]">
+          <View className="mr-[6px]">
             <NotebookPen size={19} strokeWidth={2} color="#282828" />
-          </MyText>
+          </View>
           <MyText size="text-lg" className="font-semibold">
             {t('quickMenu.myPosts')}
           </MyText>
