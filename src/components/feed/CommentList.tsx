@@ -53,7 +53,7 @@ export default function CommentList({ feed, comments, onLike, onReply }: Comment
 
   return (
     <>
-      <View className="mb-4 mt-0 overflow-hidden rounded-[20px]">
+      <View className="mb-4 mt-0 overflow-hidden">
         {comments?.map((comment) => (
           <React.Fragment key={comment.id}>
             <CommentItem

@@ -80,7 +80,7 @@ export default function FeedItem({
     const hasImage = imageUrls.length > 0;
     return (
       <View
-        className={`mb-4 mt-[4px] rounded-[20px] border-[0.3px] border-b-[0px] border-borderFeed bg-white p-4 pb-5`}
+        className={`mb-4 mt-[4px] rounded-[20px] border-[0.3px] border-b-[0px] border-borderFeed bg-white p-4 pb-5 ${showAllContent && 'rounded-none'}`}
       >
         <View className="flex-row justify-between">
           <View className="flex-row items-center">
