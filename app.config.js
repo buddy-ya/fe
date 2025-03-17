@@ -14,12 +14,17 @@ module.exports = {
     userInterfaceStyle: 'light',
     newArchEnabled: false,
     icon: './assets/images/icon/icon.png',
+    splash: {
+      image: './assets/images/icon/icon.png',
+      resizeMode: 'contain',
+      backgroundColor: '#00A176',
+    },
     plugins: [
       [
         'expo-notifications',
         {
-          icon: './assets/images/icon/96.png',
-          color: '#ffffff',
+          icon: './assets/images/icon/128.png',
+          color: '#00A176',
         },
       ],
       'expo-dev-client',

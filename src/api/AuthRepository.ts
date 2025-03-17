@@ -6,6 +6,7 @@ import {
   PhoneDTO,
   VerifyCodeResponse,
 } from '@/types/AuthDTO';
+import { getFormDataHeaders } from '@/utils';
 import API from './API';
 
 class AuthRepository {
@@ -49,11 +50,8 @@ class AuthRepository {
   }
 
   async uploadStudentIdCard(formData: FormData): Promise<AuthResponse> {
-    const { data } = await API.post('/certification/student-id-card', formData, {
-      headers: {
-        ...API.defaults.headers.common,
-      },
-    });
+    const headers = getFormDataHeaders();
+    const { data } = await API.post('/certification/student-id-card', formData, { headers });
     return data;
   }
 

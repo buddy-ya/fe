@@ -73,7 +73,15 @@ export function FeedOptionModal({ visible, onClose, feed }: FeedOptionModalProps
             showDeleteAlert(async () => {
               try {
                 await FeedRepository.delete({ feedId: feed.id });
-                queryClient.invalidateQueries({ queryKey: feedKeys.all });
+                queryClient.invalidateQueries({
+                  predicate: (query) => {
+                    const key = query.queryKey;
+                    if (key[0] !== 'feeds') return false;
+                    if (key[1] === 'detail') return false;
+                    return true;
+                  },
+                });
+
                 navigation.goBack();
                 onClose();
               } catch (error: any) {

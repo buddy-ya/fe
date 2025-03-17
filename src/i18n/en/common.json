@@ -52,7 +52,7 @@
     "exitSuccess": "You have left the chat.",
     "error": {
       "unknown": "An unknown error has occurred.",
-      "network": "A network error occurred."
+      "network": "Please check your internet connection."
     }
   }
 }

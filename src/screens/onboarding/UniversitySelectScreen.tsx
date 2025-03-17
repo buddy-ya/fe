@@ -10,7 +10,7 @@ import {
   Label,
   Layout,
   MyText,
-  SelectItem,
+  MultiSelectItem,
 } from '@/components';
 import { OnboardingStackParamList } from '@/navigation/navigationRef';
 import { useOnboardingStore } from '@/store';
@@ -38,22 +38,15 @@ export default function UniversitySelectScreen({
   const { updateOnboardingData } = useOnboardingStore();
 
   const [universities, setUniversities] = useState<UniversityItem[]>([]);
-  const [selected, setSelected] = useState<string | null>(null);
-  const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
+  const [selectedOption, setSelectedOption] = useState<OptionItem | null>(null);
 
   useEffect(() => {
     async function fetchUniversities() {
-      setLoading(true);
       try {
         const data = await UserRepository.getUniversities();
         setUniversities(data);
-        setError(null);
       } catch (err) {
         console.error('Failed to fetch universities', err);
-        setError(t('universitySelect.fetchError'));
-      } finally {
-        setLoading(false);
       }
     }
     fetchUniversities();
@@ -63,43 +56,40 @@ export default function UniversitySelectScreen({
     const IconComponent = UNIVERSITY_ICONS[item.university as UniversityID];
     return {
       id: item.university,
-      icon: IconComponent ? <IconComponent /> : null,
+      icon: IconComponent ? (
+        <View pointerEvents="none" className="overflow-hidden">
+          <IconComponent />
+        </View>
+      ) : null,
     };
   });
 
-  const handleSelect = (id: string) => {
-    setSelected(id);
+  const handleSelect = (option: OptionItem) => {
+    setSelectedOption(option);
   };
 
   const handleNavigateButton = () => {
-    if (selected) {
-      updateOnboardingData({ university: selected });
-      navigation.navigate('OnboardingGenderSelect');
+    if (selectedOption) {
+      updateOnboardingData({ university: selectedOption.id });
+      navigation.navigate('OnboardingCountrySelect');
     }
   };
 
   return (
-    <Layout preserveHeader>
+    <Layout showHeader onBack={() => navigation.goBack()}>
       <InnerLayout>
-        <View className="flex-1">
-          <Heading>{t('universitySelect.title')}</Heading>
-          <HeadingDescription>{t('universitySelect.description')}</HeadingDescription>
-          <Label>{t('universitySelect.label')}</Label>
-          <View className="mt-2">
-            {!loading &&
-              options.map((option) => (
-                <SelectItem
-                  key={option.id}
-                  selected={selected === option.id}
-                  onPress={() => handleSelect(option.id)}
-                  item={t(`universities:universities.${option.id}`)}
-                >
-                  {option.icon}
-                </SelectItem>
-              ))}
-          </View>
-        </View>
-        <Button onPress={handleNavigateButton} disabled={!selected}>
+        <Heading>{t('universitySelect.title')}</Heading>
+        <HeadingDescription>{t('universitySelect.description')}</HeadingDescription>
+        <Label className="mb-0">{t('universitySelect.label')}</Label>
+        <MultiSelectItem
+          options={options}
+          selectedValues={selectedOption ? [selectedOption] : []}
+          onSelect={handleSelect}
+          multiple={false}
+          nameSpace="universities:universities"
+          className="mt-0"
+        />
+        <Button onPress={handleNavigateButton} disabled={!selectedOption}>
           <MyText size="text-lg" color="text-white" className="font-semibold">
             {t('common.next')}
           </MyText>

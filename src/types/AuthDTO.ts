@@ -32,4 +32,5 @@ export interface CheckCertificatedResponse {
 
 export interface GetStudentIdCardResponse {
   studentIdCardUrl: string;
+  rejectionReason: string;
 }

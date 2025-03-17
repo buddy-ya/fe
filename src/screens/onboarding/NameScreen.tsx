@@ -13,6 +13,7 @@ import {
   Layout,
   MyText,
 } from '@/components';
+import { useBackButton } from '@/hooks';
 import { MyPageStackParamList, OnboardingStackParamList } from '@/navigation/navigationRef';
 import { useUserStore } from '@/store';
 import { NativeStackNavigationProp, NativeStackScreenProps } from '@react-navigation/native-stack';
@@ -70,7 +71,7 @@ export default function NameScreen({ navigation, route }: NameScreenProps) {
         OnboardingStackParamList,
         'OnboardingName'
       >;
-      onboardNav.navigate('OnboardingCountrySelect');
+      onboardNav.navigate('OnboardingGenderSelect');
     }
   };
 
@@ -87,8 +88,10 @@ export default function NameScreen({ navigation, route }: NameScreenProps) {
     />
   );
 
+  useBackButton();
+
   return (
-    <Layout showHeader onBack={() => navigation.goBack()}>
+    <Layout preserveHeader>
       <KeyboardLayout footer={footer}>
         <InnerLayout>
           <Heading>{t('name.title')}</Heading>

@@ -70,11 +70,15 @@ export default function MyProfileScreen({ navigation, route }: any) {
   };
 
   const handleProfileImageDefault = async () => {
-    const data = await UserRepository.updateProfileImage({
-      isDefault: true,
-      profileImage: null,
-    });
-    update(removeNullValues(data));
+    try {
+      const data = await UserRepository.updateProfileImage({
+        isDefault: true,
+        profileImage: null,
+      });
+      update(removeNullValues(data));
+    } catch (error) {
+      logError(error);
+    }
   };
 
   const handleProfileImageUpload = async () => {

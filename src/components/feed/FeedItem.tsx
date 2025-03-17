@@ -114,9 +114,9 @@ export default function FeedItem({
           </MyText>
           <View className="mt-3 flex flex-row justify-between">
             <MyText
-              size="text-[14px]"
+              size="text-[15px]"
               color="text-textDescription"
-              className={`font-semibold ${!showAllContent && hasImage ? 'flex-1' : ''}`}
+              className={`${!showAllContent && hasImage ? 'flex-1' : ''}`}
               numberOfLines={showAllContent ? 0 : 4}
             >
               {content}

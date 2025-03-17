@@ -156,6 +156,7 @@ export default function FeedDetailScreen({ navigation, route }: FeedDetailScreen
               onChange={setCommentInput}
               onSubmit={handleCommentSubmit}
               placeholder={t('comment.placeholder')}
+              maxLength={500}
             />
           }
         >

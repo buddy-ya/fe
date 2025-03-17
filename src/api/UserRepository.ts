@@ -1,4 +1,5 @@
 import { ReportDTO, User } from '@/types';
+import { getFormDataHeaders } from '@/utils';
 import API from './API';
 
 class UserRepository {
@@ -24,10 +25,12 @@ class UserRepository {
     isDefault: boolean;
     profileImage: FormData | null;
   }): Promise<User> {
+    let headers = getFormDataHeaders();
+    if (profileImage == null) {
+      headers = { ...API.defaults.headers.common };
+    }
     const { data } = await API.patch(`/users/profile-image?isDefault=${isDefault}`, profileImage, {
-      headers: {
-        ...API.defaults.headers.common,
-      },
+      headers,
     });
     return data;
   }
@@ -43,6 +46,11 @@ class UserRepository {
 
   async block({ userId }: { userId: number }) {
     await API.post(`/users/block/${userId}`);
+  }
+
+  async logout() {
+    const { data } = await API.post(`/users/logout`);
+    return data;
   }
 
   async delete() {

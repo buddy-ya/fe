@@ -2,6 +2,7 @@ import { useTranslation, Trans } from 'react-i18next';
 import { View, Linking, Text } from 'react-native';
 import '@/../global.css';
 import { Button, InnerLayout, Layout, MyText } from '@/components';
+import { useBackButton } from '@/hooks';
 import i18n from '@/i18n';
 import { OnboardingStackParamList } from '@/navigation/navigationRef';
 import Charactrers from '@assets/images/onboarding/characters.svg';
@@ -26,6 +27,8 @@ export default function WelcomeScreen({ navigation }: OnboardingWelcomeScreenPro
     Linking.openURL(url).catch((err) => console.error('Failed to open URL:', err));
   };
 
+  useBackButton();
+
   return (
     <Layout showHeader={false}>
       <InnerLayout>
@@ -33,7 +36,7 @@ export default function WelcomeScreen({ navigation }: OnboardingWelcomeScreenPro
           <View className="relative mt-12">
             <WelcomeTextBackground />
             <View className="absolute left-2 top-0">
-              <MyText size="text-[45px]" className="font-light leading-[1.27]">
+              <MyText size="text-5xl" className="font-light leading-[1.27]">
                 {t('intro.title', {
                   flower: '🌸',
                   eye: '👀',
@@ -42,7 +45,7 @@ export default function WelcomeScreen({ navigation }: OnboardingWelcomeScreenPro
             </View>
           </View>
           <View className="flex-1 items-center justify-center">
-            <View className="mt-8">
+            <View className="mt-6">
               <Charactrers />
             </View>
             <View className="mt-16">

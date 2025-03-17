@@ -18,17 +18,17 @@ export type OnboardingStackParamList = {
         isExistingMember: boolean;
       }
     | undefined;
-  OnboardingStudentInfo: undefined;
-  OnboardingUniversitySelect: undefined;
-  OnboardingStudentTypeSelect: undefined;
-  OnboardingGenderSelect: undefined;
   OnboardingName: undefined;
+  OnboardingGenderSelect: undefined;
+  OnboardingUniversitySelect: undefined;
   OnboardingCountrySelect: undefined;
   OnboardingLanguageSelect: undefined;
   OnboardingMajorSelect: undefined;
   OnboardingInterestSelect: undefined;
   UniversitySelect: undefined;
   Tab: undefined;
+  OnboardingStudentInfo: undefined;
+  OnboardingStudentTypeSelect: undefined;
 };
 
 export type FeedStackParamList = {
