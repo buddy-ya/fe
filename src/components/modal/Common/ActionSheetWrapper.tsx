@@ -14,11 +14,16 @@ interface ActionSheetWrapperProps {
   visible: boolean;
   onClose: () => void;
   options: OptionItem[];
+  onAfterClose?: () => void;
 }
 
-export function ActionSheetWrapper({ visible, onClose, options }: ActionSheetWrapperProps) {
-  // Animated value for sliding effect
-  const slideAnim = useRef(new Animated.Value(100)).current;
+export function ActionSheetWrapper({
+  visible,
+  onClose,
+  options,
+  onAfterClose,
+}: ActionSheetWrapperProps) {
+  const slideAnim = useRef(new Animated.Value(visible ? 0 : 500)).current;
   const { t } = useTranslation();
 
   useEffect(() => {
@@ -27,12 +32,22 @@ export function ActionSheetWrapper({ visible, onClose, options }: ActionSheetWra
       Animated.spring(slideAnim, {
         toValue: 0,
         useNativeDriver: true,
-        damping: 100, // 마찰, 클수록 진동 감소
-        stiffness: 200, // 강도, 클수록 빠른 반응
-        overshootClamping: true, // 약간의 오버슈팅(넘침) 방지
+        damping: 100,
+        stiffness: 200,
+        overshootClamping: true,
       }).start();
+    } else {
+      Animated.timing(slideAnim, {
+        toValue: 500,
+        duration: 100,
+        useNativeDriver: true,
+      }).start(() => {
+        if (onAfterClose) {
+          onAfterClose();
+        }
+      });
     }
-  }, [visible, slideAnim]);
+  }, [visible, slideAnim, onAfterClose]);
 
   return (
     <Modal visible={visible} transparent animationType="none" onRequestClose={onClose}>

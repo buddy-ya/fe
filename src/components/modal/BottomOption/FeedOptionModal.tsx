@@ -1,13 +1,13 @@
-import React, { useCallback } from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Alert, Text } from 'react-native';
-import { feedKeys, FeedRepository } from '@/api';
+import { FeedRepository } from '@/api';
 import { useModalStore, useToastStore, useUserStore } from '@/store';
 import { Feed } from '@/types';
 import { useNavigation } from '@react-navigation/native';
 import { useQueryClient } from '@tanstack/react-query';
 import i18next from 'i18next';
-import { Pencil, Trash2, Flag, Ban, Siren } from 'lucide-react-native';
+import { Pencil, Trash2, Siren, Ban } from 'lucide-react-native';
 import { ActionSheetWrapper, OptionItem } from '../Common';
 
 interface FeedOptionModalProps {
@@ -22,21 +22,24 @@ export function FeedOptionModal({ visible, onClose, feed }: FeedOptionModalProps
   const { t } = useTranslation('feed');
   const isCertificated = useUserStore((state) => state.isCertificated);
   const handleModalOpen = useModalStore((state) => state.handleOpen);
-  const handleModalClose = useModalStore((state) => state.handleClose);
   const { showToast } = useToastStore();
 
+  const [afterCloseCallback, setAfterCloseCallback] = useState<(() => void) | null>(null);
+
   const handleReportOption = () => {
-    onClose();
-    setTimeout(() => {
+    setAfterCloseCallback(() => {
       isCertificated ? handleModalOpen('report') : handleModalOpen('studentCertification');
-    }, 300);
+      setAfterCloseCallback(null);
+    });
+    onClose();
   };
 
   const handleBlockOption = () => {
-    onClose();
-    setTimeout(() => {
+    setAfterCloseCallback(() => {
       isCertificated ? handleModalOpen('block') : handleModalOpen('studentCertification');
-    }, 300);
+      setAfterCloseCallback(null);
+    });
+    onClose();
   };
 
   const showDeleteAlert = (onConfirm: () => void) => {
@@ -81,7 +84,6 @@ export function FeedOptionModal({ visible, onClose, feed }: FeedOptionModalProps
                     return true;
                   },
                 });
-
                 navigation.goBack();
                 onClose();
               } catch (error: any) {
@@ -112,5 +114,12 @@ export function FeedOptionModal({ visible, onClose, feed }: FeedOptionModalProps
         },
       ];
 
-  return <ActionSheetWrapper visible={visible} onClose={onClose} options={options} />;
+  return (
+    <ActionSheetWrapper
+      visible={visible}
+      onClose={onClose}
+      onAfterClose={afterCloseCallback || undefined}
+      options={options}
+    />
+  );
 }
