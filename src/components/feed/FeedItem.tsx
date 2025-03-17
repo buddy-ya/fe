@@ -109,7 +109,11 @@ export default function FeedItem({
         </View>
 
         <View className="mt-4">
-          <MyText size="text-[16px]" className="font-semibold">
+          <MyText
+            size="text-[16px]"
+            className="font-semibold"
+            numberOfLines={!showAllContent ? 1 : undefined}
+          >
             {title}
           </MyText>
           <View className="mt-3 flex flex-row justify-between">
