@@ -19,7 +19,8 @@
   },
   "room": {
     "systemExit": "{{name}} 님이 나갔습니다.",
-    "startMessage": "버디와 대화를 시작해보세요!"
+    "startMessage": "버디와 대화를 시작해보세요!",
+    "buddyExitedMessage": "상대방이 채팅방을 나갔습니다."
   },
   "toast": {
     "sendFailed": "메시지 전송 실패",

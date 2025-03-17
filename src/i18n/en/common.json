@@ -10,6 +10,14 @@
       "title": "No feeds yet.",
       "description": "Create your first feed\nand communicate with various global buddies!"
     },
+    "bookmark": {
+      "title": "No bookmarked feeds.",
+      "description": "Bookmark the feeds you like."
+    },
+    "search": {
+      "title": "No search results found.",
+      "description": "No matching content was found.\nTry again with a different keyword!"
+    },
     "chat": {
       "title": "No chats yet.",
       "description": "Start a chat now and connect with more global buddies!"

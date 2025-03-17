@@ -30,9 +30,11 @@ export default function MyPostsScreen({ navigation }: MyPostsScreenProps) {
           <View className="mr-[6px]">
             <NotebookPen size={19} strokeWidth={2} color="#282828" />
           </View>
-          <MyText size="text-lg" className="font-semibold">
-            {t('quickMenu.myPosts')}
-          </MyText>
+          <View>
+            <MyText size="text-lg" className="font-semibold">
+              {t('quickMenu.myPosts')}
+            </MyText>
+          </View>
         </View>
       }
     >
