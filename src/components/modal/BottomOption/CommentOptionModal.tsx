@@ -27,21 +27,21 @@ export function CommentOptionModal({ visible, onClose, feed, comment }: CommentO
     onClose();
     setTimeout(() => {
       isCertificated ? handleModalOpen('report') : handleModalOpen('studentCertification');
-    }, 300);
+    }, 100);
   };
 
   const handleBlockOption = () => {
     onClose();
     setTimeout(() => {
       isCertificated ? handleModalOpen('block') : handleModalOpen('studentCertification');
-    }, 300);
+    }, 100);
   };
 
   const handleChatRequestOption = () => {
     onClose();
     setTimeout(() => {
       isCertificated ? handleModalOpen('chatRequest') : handleModalOpen('studentCertification');
-    }, 300);
+    }, 100);
   };
 
   const options: OptionItem[] = comment.isCommentOwner
