@@ -1,6 +1,6 @@
-import { ChevronLeft } from 'lucide-react-native';
 import { ReactNode } from 'react';
 import { TouchableOpacity, View } from 'react-native';
+import { ChevronLeft } from 'lucide-react-native';
 
 interface HeaderProps {
   leftContent?: ReactNode;
@@ -16,7 +16,7 @@ export const BackButton = ({ onPress }: { onPress?: () => void }) => (
     className="relative right-2 flex-row items-center"
     hitSlop={{ right: 20 }}
   >
-    <ChevronLeft strokeWidth={2} size={30} color="#282828" />
+    <ChevronLeft strokeWidth={2} size={30} color="#797979" />
   </TouchableOpacity>
 );
 
