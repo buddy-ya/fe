@@ -17,33 +17,15 @@ interface CommentListProps {
 
 export default function CommentList({ feed, comments, onLike, onReply }: CommentListProps) {
   const { t } = useTranslation('feed');
-  const [comment, setComment] = useState<Comment>({
-    id: -1,
-    userId: 0,
-    content: '',
-    name: '',
-    country: '',
-    university: '',
-    profileImageUrl: '',
-    likeCount: 0,
-    createdDate: '',
-    isDeleted: false,
-    isLiked: false,
-    isBlocked: false,
-    isFeedOwner: false,
-    isCommentOwner: false,
-    isProfileImageUpload: false,
-    replies: [],
-  });
+  const [selectedComment, setSelectedComment] = useState<Comment | null>(null);
 
   const modalVisible = useModalStore((state) => state.visible);
   const handleModalOpen = useModalStore((state) => state.handleOpen);
   const handleModalClose = useModalStore((state) => state.handleClose);
-
   const queryClient = useQueryClient();
 
   const handleCommentOptions = (comment: Comment) => {
-    setComment(comment);
+    setSelectedComment(comment);
     handleModalOpen('comment');
   };
 
@@ -54,17 +36,16 @@ export default function CommentList({ feed, comments, onLike, onReply }: Comment
   return (
     <>
       <View className="mb-4 mt-0 overflow-hidden">
-        {comments?.map((comment) => (
-          <React.Fragment key={comment.id}>
+        {comments?.map((c) => (
+          <React.Fragment key={c.id}>
             <CommentItem
-              key={comment.id}
-              comment={comment}
+              comment={c}
               onLike={onLike}
               onReply={onReply}
               onOptions={handleCommentOptions}
             />
-            {comment.replies.length > 0 &&
-              comment.replies.map((reply) => (
+            {c.replies.length > 0 &&
+              c.replies.map((reply) => (
                 <CommentItem
                   key={reply.id}
                   comment={reply}
@@ -77,29 +58,29 @@ export default function CommentList({ feed, comments, onLike, onReply }: Comment
           </React.Fragment>
         ))}
       </View>
-      {comment.id !== -1 && (
+      {selectedComment && (
         <>
           <CommentOptionModal
             visible={modalVisible.comment}
-            feed={feed}
-            comment={comment}
+            feedId={feed.id}
+            comment={selectedComment}
             onClose={() => handleModalClose('comment')}
           />
           <ChatRequestModal
             visible={modalVisible.chatRequest}
-            data={comment}
+            data={selectedComment}
             onClose={() => handleModalClose('chatRequest')}
           />
           <ReportModal
             visible={modalVisible.report}
             type="COMMENT"
-            reportedId={comment.id}
-            reportedUserId={comment.userId}
+            reportedId={selectedComment.id}
+            reportedUserId={selectedComment.userId}
             onClose={() => handleModalClose('report')}
           />
           <BlockModal
             visible={modalVisible.block}
-            buddyId={comment.userId}
+            buddyId={selectedComment.userId}
             onClose={() => handleModalClose('block')}
             onBlockSuccess={handleBlock}
           />

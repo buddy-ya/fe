@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Text } from 'react-native';
 import { useFeedDetail } from '@/hooks';
 import { useModalStore, useToastStore, useUserStore } from '@/store';
+import { Comment } from '@/types';
 import { useNavigation } from '@react-navigation/native';
 import i18next from 'i18next';
 import { Ban, Siren, Trash2, Send } from 'lucide-react-native';
@@ -11,12 +12,12 @@ import { ActionSheetWrapper, OptionItem } from '../Common';
 interface CommentOptionModalProps {
   visible: boolean;
   onClose: () => void;
-  feed: any;
-  comment: any;
+  feedId: number;
+  comment: Comment;
 }
 
-export function CommentOptionModal({ visible, onClose, feed, comment }: CommentOptionModalProps) {
-  const { handleCommentActions } = useFeedDetail({ feedId: feed.id });
+export function CommentOptionModal({ visible, onClose, feedId, comment }: CommentOptionModalProps) {
+  const { handleCommentActions } = useFeedDetail({ feedId });
   const { t } = useTranslation();
   const handleModalOpen = useModalStore((state) => state.handleOpen);
   const handleModalClose = useModalStore((state) => state.handleClose);

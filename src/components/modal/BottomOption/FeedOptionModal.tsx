@@ -24,22 +24,18 @@ export function FeedOptionModal({ visible, onClose, feed }: FeedOptionModalProps
   const handleModalOpen = useModalStore((state) => state.handleOpen);
   const { showToast } = useToastStore();
 
-  const [afterCloseCallback, setAfterCloseCallback] = useState<(() => void) | null>(null);
-
   const handleReportOption = () => {
-    setAfterCloseCallback(() => {
-      isCertificated ? handleModalOpen('report') : handleModalOpen('studentCertification');
-      setAfterCloseCallback(null);
-    });
     onClose();
+    setTimeout(() => {
+      isCertificated ? handleModalOpen('report') : handleModalOpen('studentCertification');
+    }, 100);
   };
 
   const handleBlockOption = () => {
-    setAfterCloseCallback(() => {
-      isCertificated ? handleModalOpen('block') : handleModalOpen('studentCertification');
-      setAfterCloseCallback(null);
-    });
     onClose();
+    setTimeout(() => {
+      isCertificated ? handleModalOpen('block') : handleModalOpen('studentCertification');
+    }, 100);
   };
 
   const showDeleteAlert = (onConfirm: () => void) => {
@@ -114,12 +110,5 @@ export function FeedOptionModal({ visible, onClose, feed }: FeedOptionModalProps
         },
       ];
 
-  return (
-    <ActionSheetWrapper
-      visible={visible}
-      onClose={onClose}
-      onAfterClose={afterCloseCallback || undefined}
-      options={options}
-    />
-  );
+  return <ActionSheetWrapper visible={visible} onClose={onClose} options={options} />;
 }

@@ -18,21 +18,21 @@ export function ChatOptionModal({ visible, onClose }: ChatOptionModalProps) {
     onClose();
     setTimeout(() => {
       handleModalOpen('report');
-    }, 300);
+    }, 100);
   };
 
   const handleBlockOption = () => {
     onClose();
     setTimeout(() => {
       handleModalOpen('block');
-    }, 300);
+    }, 100);
   };
 
   const handleExitOption = () => {
     onClose();
     setTimeout(() => {
       handleModalOpen('exit');
-    }, 300);
+    }, 100);
   };
 
   const options: OptionItem[] = [
