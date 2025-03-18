@@ -9,7 +9,7 @@ module.exports = {
     owner: 'buddyya-personal',
     description: 'A friendly app for buddy management.',
     slug: 'buddyya',
-    version: '1.0.5',
+    version: '1.0.6',
     orientation: 'portrait',
     userInterfaceStyle: 'light',
     newArchEnabled: false,
@@ -48,6 +48,7 @@ module.exports = {
         NSAppTransportSecurity: {
           NSAllowsArbitraryLoads: true,
         },
+        ITSAppUsesNonExemptEncryption: false,
       },
     },
     android: {
