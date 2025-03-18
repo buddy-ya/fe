@@ -6,7 +6,7 @@ module.exports = {
   expo: {
     scheme: 'buddyya',
     name: 'buddyya',
-    owner: 'buddyya',
+    owner: 'buddyya-personal',
     description: 'A friendly app for buddy management.',
     slug: 'buddyya',
     version: '1.0.5',
