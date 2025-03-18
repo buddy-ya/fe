@@ -8,6 +8,7 @@ import { useNavigation } from '@react-navigation/native';
 import { useQueryClient } from '@tanstack/react-query';
 import i18next from 'i18next';
 import { Pencil, Trash2, Siren, Ban } from 'lucide-react-native';
+import { logError } from '@/utils';
 import { ActionSheetWrapper, OptionItem } from '../Common';
 
 interface FeedOptionModalProps {
@@ -100,14 +101,7 @@ export function FeedOptionModal({ visible, onClose, feed }: FeedOptionModalProps
                 navigation.goBack();
                 onClose();
               } catch (error: any) {
-                const errorCode = error.response?.data?.code;
-                const errorMapping: Record<number, { emoji: string; translationKey: string }> = {
-                  4000: { emoji: '🗑️', translationKey: 'feed:error.deletedFeed' },
-                };
-                const errorInfo = errorMapping[errorCode];
-                if (errorInfo) {
-                  showToast(<Text>{errorInfo.emoji}</Text>, t(errorInfo.translationKey), 2000);
-                }
+                logError(error);
               }
             }),
         },

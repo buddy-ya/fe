@@ -8,6 +8,7 @@ import { useNavigation } from '@react-navigation/native';
 import { useQueryClient } from '@tanstack/react-query';
 import i18next from 'i18next';
 import { Ban, Siren, Trash2, Send } from 'lucide-react-native';
+import { logError } from '@/utils';
 import { ActionSheetWrapper, OptionItem } from '../Common';
 
 interface CommentOptionModalProps {
@@ -80,15 +81,7 @@ export function CommentOptionModal({ visible, onClose, feedId, comment }: Commen
             try {
               await handleCommentActions.delete(comment.id);
             } catch (error: any) {
-              const errorCode = error.response?.data?.code;
-              const errorMapping: Record<number, { emoji: string; translationKey: string }> = {
-                4000: { emoji: '🗑️', translationKey: 'feed:error.deletedFeed' },
-                4006: { emoji: '🗑️', translationKey: 'feed:error.deletedComment' },
-              };
-              const errorInfo = errorMapping[errorCode];
-              if (errorInfo) {
-                showToast(<Text>{errorInfo.emoji}</Text>, t(errorInfo.translationKey), 2000);
-              }
+              logError(error);
             }
           },
         },

@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Image, Text, View } from 'react-native';
 import { API, ChatRequestRepository } from '@/api';
 import { useToastStore } from '@/store';
-import { getCountryFlag } from '@/utils';
+import { getCountryFlag, logError } from '@/utils';
 import MyText from '@/components/common/MyText';
 import { BottomModalWrapper } from './BottomModalWrapper';
 
@@ -34,18 +34,7 @@ export function ChatRequestModal({ visible, data, onClose }: CommonModalProps) {
       await ChatRequestRepository.create({ receiverId: userId });
       showToast(<Text>💬</Text>, t('chatRequestModal.success'));
     } catch (error: any) {
-      const errorCode = error.response?.data?.code;
-      const errorMapping: Record<number, { emoji: string; translationKey: string }> = {
-        4000: { emoji: '🗑️', translationKey: 'feed:error.deletedFeed' },
-        4006: { emoji: '🗑️', translationKey: 'feed:error.deletedComment' },
-        5004: { emoji: '📩', translationKey: 'feed:error.alreadyExistChatRequest' },
-        5005: { emoji: '💬', translationKey: 'feed:error.alreadyExistChatroom' },
-      };
-      const errorInfo = errorMapping[errorCode];
-
-      if (errorInfo) {
-        showToast(<Text>{errorInfo.emoji}</Text>, t(errorInfo.translationKey), 2000);
-      }
+      logError(error);
     }
   };
 
