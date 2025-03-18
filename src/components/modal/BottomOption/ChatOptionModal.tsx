@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useModalStore } from '@/store';
 import { Ban, LogOut, Siren } from 'lucide-react-native';
@@ -7,32 +7,52 @@ import { ActionSheetWrapper, OptionItem } from '../Common';
 interface ChatOptionModalProps {
   visible: boolean;
   onClose: () => void;
+  roomId: number;
+  buddyId: number;
+  onExit: () => void;
 }
 
-export function ChatOptionModal({ visible, onClose }: ChatOptionModalProps) {
-  const { t } = useTranslation('feed');
+export function ChatOptionModal({
+  visible,
+  onClose,
+  roomId,
+  buddyId,
+  onExit,
+}: ChatOptionModalProps) {
+  const { t } = useTranslation('chat');
   const handleModalOpen = useModalStore((state) => state.handleOpen);
-  const handleModalClose = useModalStore((state) => state.handleClose);
 
   const handleReportOption = () => {
     onClose();
     setTimeout(() => {
-      handleModalOpen('report');
-    }, 100);
+      handleModalOpen('report', {
+        type: 'CHATROOM',
+        reportedId: roomId,
+        reportedUserId: buddyId,
+        onReportSuccess: onExit,
+      });
+    }, 200);
   };
 
   const handleBlockOption = () => {
     onClose();
     setTimeout(() => {
-      handleModalOpen('block');
-    }, 100);
+      handleModalOpen('block', {
+        buddyId: buddyId,
+        roomId: roomId,
+        onBlockSuccess: onExit,
+      });
+    }, 200);
   };
 
   const handleExitOption = () => {
     onClose();
     setTimeout(() => {
-      handleModalOpen('exit');
-    }, 100);
+      handleModalOpen('exit', {
+        roomId: roomId,
+        onExit: onExit,
+      });
+    }, 200);
   };
 
   const options: OptionItem[] = [

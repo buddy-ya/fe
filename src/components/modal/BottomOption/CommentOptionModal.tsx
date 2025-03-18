@@ -25,42 +25,49 @@ export function CommentOptionModal({ visible, onClose, feedId, comment }: Commen
   const { showToast } = useToastStore();
   const isCertificated = useUserStore((state) => state.isCertificated);
 
+  // handleBlock: 쿼리 무효화로 댓글 리스트 갱신 (필요 시)
   const handleBlock = async () => {
     await queryClient.invalidateQueries({ queryKey: ['feedComments', feedId] });
   };
 
   const handleReportOption = () => {
     onClose();
-    if (isCertificated) {
-      handleModalOpen('report', {
-        type: 'COMMENT',
-        reportedId: comment.id,
-        reportedUserId: comment.userId,
-      });
-    } else {
-      handleModalOpen('studentCertification');
-    }
+    setTimeout(() => {
+      if (isCertificated) {
+        handleModalOpen('report', {
+          type: 'COMMENT',
+          reportedId: comment.id,
+          reportedUserId: comment.userId,
+        });
+      } else {
+        handleModalOpen('studentCertification');
+      }
+    }, 200);
   };
 
   const handleBlockOption = () => {
     onClose();
-    if (isCertificated) {
-      handleModalOpen('block', {
-        buddyId: comment.userId,
-        onBlockSuccess: handleBlock,
-      });
-    } else {
-      handleModalOpen('studentCertification');
-    }
+    setTimeout(() => {
+      if (isCertificated) {
+        handleModalOpen('block', {
+          buddyId: comment.userId,
+          onBlockSuccess: handleBlock,
+        });
+      } else {
+        handleModalOpen('studentCertification');
+      }
+    }, 200);
   };
 
   const handleChatRequestOption = () => {
     onClose();
-    if (isCertificated) {
-      handleModalOpen('chatRequest', { data: comment });
-    } else {
-      handleModalOpen('studentCertification');
-    }
+    setTimeout(() => {
+      if (isCertificated) {
+        handleModalOpen('chatRequest', { data: comment });
+      } else {
+        handleModalOpen('studentCertification');
+      }
+    }, 200);
   };
 
   const options: OptionItem[] = comment.isCommentOwner

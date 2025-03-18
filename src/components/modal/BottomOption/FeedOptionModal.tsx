@@ -24,31 +24,40 @@ export function FeedOptionModal({ visible, onClose, feed }: FeedOptionModalProps
   const handleModalOpen = useModalStore((state) => state.handleOpen);
   const { showToast } = useToastStore();
 
-  const handleBlock = async () => {
+  async function handleBlock() {
     navigation.reset({
       index: 0,
       routes: [{ name: 'FeedHome' }],
     });
     await queryClient.invalidateQueries({ queryKey: feedKeys.all });
-  };
+  }
 
   const handleReportOption = () => {
     onClose();
-    if (isCertificated) {
-      handleModalOpen('report', { type: 'FEED', reportedId: feed.id, reportedUserId: feed.userId });
-    } else {
-      handleModalOpen('studentCertification');
-    }
+    setTimeout(() => {
+      if (isCertificated) {
+        handleModalOpen('report', {
+          type: 'FEED',
+          reportedId: feed.id,
+          reportedUserId: feed.userId,
+        });
+      } else {
+        handleModalOpen('studentCertification');
+      }
+    }, 200);
   };
 
   const handleBlockOption = () => {
     onClose();
-    if (isCertificated) {
-      handleModalOpen('block', { buddyId: feed.userId, onBlockSuccess: handleBlock });
-    } else {
-      handleModalOpen('studentCertification');
-    }
+    setTimeout(() => {
+      if (isCertificated) {
+        handleModalOpen('block', { buddyId: feed.userId, onBlockSuccess: handleBlock });
+      } else {
+        handleModalOpen('studentCertification');
+      }
+    }, 200);
   };
+
   const showDeleteAlert = (onConfirm: () => void) => {
     Alert.alert(
       t('delete.title'),

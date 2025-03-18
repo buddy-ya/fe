@@ -7,13 +7,12 @@ import { StandardModal } from './Common';
 
 interface BlockModalProps {
   visible: boolean;
-  roomId?: number;
   buddyId: number;
   onClose: () => void;
   onBlockSuccess?: () => Promise<void>;
 }
 
-export function BlockModal({ visible, roomId, buddyId, onClose, onBlockSuccess }: BlockModalProps) {
+export function BlockModal({ visible, buddyId, onClose, onBlockSuccess }: BlockModalProps) {
   const { t } = useTranslation('common');
   const { showToast } = useToastStore();
   const handleBlock = async () => {
