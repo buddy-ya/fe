@@ -1,6 +1,10 @@
 import React from 'react';
 import { useModalStore } from '@/store';
-import { CommentOptionModal, FeedOptionModal } from '@/components/modal/BottomOption';
+import {
+  ChatOptionModal,
+  CommentOptionModal,
+  FeedOptionModal,
+} from '@/components/modal/BottomOption';
 import { StudentCertificationModal } from '@/components/modal/Common';
 import { ChatRequestModal } from '@/components/modal/Common/ChatRequestModal';
 import { BlockModal, ReportModal } from '../modal';
@@ -26,6 +30,9 @@ export function GlobalModalContainer() {
           visible={true}
           onClose={() => handleClose('comment')}
         />
+      )}
+      {visible.chat && (
+        <ChatOptionModal {...modalProps.chat} visible={true} onClose={() => handleClose('chat')} />
       )}
       {visible.report && (
         <ReportModal {...modalProps.report} visible={true} onClose={() => handleClose('report')} />

@@ -49,6 +49,10 @@ module.exports = {
           NSAllowsArbitraryLoads: true,
         },
         ITSAppUsesNonExemptEncryption: false,
+        NSCameraUsageDescription:
+          'Buddyya requires camera access to capture photos for content creation.',
+        NSPhotoLibraryUsageDescription:
+          'Buddyya requires photo library access to select images for your profile and to provide content sharing.',
       },
     },
     android: {
