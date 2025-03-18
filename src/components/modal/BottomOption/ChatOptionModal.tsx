@@ -19,7 +19,7 @@ export function ChatOptionModal({
   buddyId,
   onExit,
 }: ChatOptionModalProps) {
-  const { t } = useTranslation('chat');
+  const { t } = useTranslation('feed');
   const handleModalOpen = useModalStore((state) => state.handleOpen);
 
   const handleReportOption = () => {

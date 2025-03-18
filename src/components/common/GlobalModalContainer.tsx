@@ -7,7 +7,7 @@ import {
 } from '@/components/modal/BottomOption';
 import { StudentCertificationModal } from '@/components/modal/Common';
 import { ChatRequestModal } from '@/components/modal/Common/ChatRequestModal';
-import { BlockModal, ReportModal } from '../modal';
+import { BlockModal, ExitModal, ReportModal } from '../modal';
 
 export function GlobalModalContainer() {
   const { visible, modalProps, handleClose } = useModalStore();
@@ -39,6 +39,9 @@ export function GlobalModalContainer() {
       )}
       {visible.block && (
         <BlockModal {...modalProps.block} visible={true} onClose={() => handleClose('block')} />
+      )}
+      {visible.exit && (
+        <ExitModal {...modalProps.exit} visible={true} onClose={() => handleClose('exit')} />
       )}
       {visible.chatRequest && (
         <ChatRequestModal
