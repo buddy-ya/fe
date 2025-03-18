@@ -1,10 +1,11 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Text } from 'react-native';
 import { useFeedDetail } from '@/hooks';
 import { useModalStore, useToastStore, useUserStore } from '@/store';
 import { Comment } from '@/types';
 import { useNavigation } from '@react-navigation/native';
+import { useQueryClient } from '@tanstack/react-query';
 import i18next from 'i18next';
 import { Ban, Siren, Trash2, Send } from 'lucide-react-native';
 import { ActionSheetWrapper, OptionItem } from '../Common';
@@ -17,32 +18,49 @@ interface CommentOptionModalProps {
 }
 
 export function CommentOptionModal({ visible, onClose, feedId, comment }: CommentOptionModalProps) {
+  const queryClient = useQueryClient();
   const { handleCommentActions } = useFeedDetail({ feedId });
   const { t } = useTranslation();
   const handleModalOpen = useModalStore((state) => state.handleOpen);
-  const handleModalClose = useModalStore((state) => state.handleClose);
   const { showToast } = useToastStore();
   const isCertificated = useUserStore((state) => state.isCertificated);
 
+  const handleBlock = async () => {
+    await queryClient.invalidateQueries({ queryKey: ['feedComments', feedId] });
+  };
+
   const handleReportOption = () => {
     onClose();
-    setTimeout(() => {
-      isCertificated ? handleModalOpen('report') : handleModalOpen('studentCertification');
-    }, 100);
+    if (isCertificated) {
+      handleModalOpen('report', {
+        type: 'COMMENT',
+        reportedId: comment.id,
+        reportedUserId: comment.userId,
+      });
+    } else {
+      handleModalOpen('studentCertification');
+    }
   };
 
   const handleBlockOption = () => {
     onClose();
-    setTimeout(() => {
-      isCertificated ? handleModalOpen('block') : handleModalOpen('studentCertification');
-    }, 100);
+    if (isCertificated) {
+      handleModalOpen('block', {
+        buddyId: comment.userId,
+        onBlockSuccess: handleBlock,
+      });
+    } else {
+      handleModalOpen('studentCertification');
+    }
   };
 
   const handleChatRequestOption = () => {
     onClose();
-    setTimeout(() => {
-      isCertificated ? handleModalOpen('chatRequest') : handleModalOpen('studentCertification');
-    }, 100);
+    if (isCertificated) {
+      handleModalOpen('chatRequest', { data: comment });
+    } else {
+      handleModalOpen('studentCertification');
+    }
   };
 
   const options: OptionItem[] = comment.isCommentOwner

@@ -4,8 +4,6 @@ import { View } from 'react-native';
 import { useModalStore } from '@/store';
 import { Comment, Feed } from '@/types';
 import { useQueryClient } from '@tanstack/react-query';
-import { BlockModal, CommentOptionModal, ReportModal } from '../common';
-import { ChatRequestModal } from '../modal/Common/ChatRequestModal';
 import CommentItem from './CommentItem';
 
 interface CommentListProps {
@@ -19,18 +17,11 @@ export default function CommentList({ feed, comments, onLike, onReply }: Comment
   const { t } = useTranslation('feed');
   const [selectedComment, setSelectedComment] = useState<Comment | null>(null);
 
-  const modalVisible = useModalStore((state) => state.visible);
   const handleModalOpen = useModalStore((state) => state.handleOpen);
-  const handleModalClose = useModalStore((state) => state.handleClose);
-  const queryClient = useQueryClient();
 
   const handleCommentOptions = (comment: Comment) => {
     setSelectedComment(comment);
-    handleModalOpen('comment');
-  };
-
-  const handleBlock = async () => {
-    queryClient.invalidateQueries({ queryKey: ['feedComments', feed.id] });
+    handleModalOpen('comment', { feedId: feed.id, comment });
   };
 
   return (
@@ -58,34 +49,6 @@ export default function CommentList({ feed, comments, onLike, onReply }: Comment
           </React.Fragment>
         ))}
       </View>
-      {selectedComment && (
-        <>
-          <CommentOptionModal
-            visible={modalVisible.comment}
-            feedId={feed.id}
-            comment={selectedComment}
-            onClose={() => handleModalClose('comment')}
-          />
-          <ChatRequestModal
-            visible={modalVisible.chatRequest}
-            data={selectedComment}
-            onClose={() => handleModalClose('chatRequest')}
-          />
-          <ReportModal
-            visible={modalVisible.report}
-            type="COMMENT"
-            reportedId={selectedComment.id}
-            reportedUserId={selectedComment.userId}
-            onClose={() => handleModalClose('report')}
-          />
-          <BlockModal
-            visible={modalVisible.block}
-            buddyId={selectedComment.userId}
-            onClose={() => handleModalClose('block')}
-            onBlockSuccess={handleBlock}
-          />
-        </>
-      )}
     </>
   );
 }

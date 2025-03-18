@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Alert, Text } from 'react-native';
-import { FeedRepository } from '@/api';
+import { feedKeys, FeedRepository } from '@/api';
 import { useModalStore, useToastStore, useUserStore } from '@/store';
 import { Feed } from '@/types';
 import { useNavigation } from '@react-navigation/native';
@@ -24,20 +24,31 @@ export function FeedOptionModal({ visible, onClose, feed }: FeedOptionModalProps
   const handleModalOpen = useModalStore((state) => state.handleOpen);
   const { showToast } = useToastStore();
 
+  const handleBlock = async () => {
+    navigation.reset({
+      index: 0,
+      routes: [{ name: 'FeedHome' }],
+    });
+    await queryClient.invalidateQueries({ queryKey: feedKeys.all });
+  };
+
   const handleReportOption = () => {
     onClose();
-    setTimeout(() => {
-      isCertificated ? handleModalOpen('report') : handleModalOpen('studentCertification');
-    }, 100);
+    if (isCertificated) {
+      handleModalOpen('report', { type: 'FEED', reportedId: feed.id, reportedUserId: feed.userId });
+    } else {
+      handleModalOpen('studentCertification');
+    }
   };
 
   const handleBlockOption = () => {
     onClose();
-    setTimeout(() => {
-      isCertificated ? handleModalOpen('block') : handleModalOpen('studentCertification');
-    }, 100);
+    if (isCertificated) {
+      handleModalOpen('block', { buddyId: feed.userId, onBlockSuccess: handleBlock });
+    } else {
+      handleModalOpen('studentCertification');
+    }
   };
-
   const showDeleteAlert = (onConfirm: () => void) => {
     Alert.alert(
       t('delete.title'),
@@ -57,10 +68,7 @@ export function FeedOptionModal({ visible, onClose, feed }: FeedOptionModalProps
           label: i18next.t('feed:modal.edit'),
           icon: <Pencil size={16} color="#282828" />,
           onPress: () => {
-            navigation.navigate('FeedWrite', {
-              feed,
-              isEdit: true,
-            });
+            navigation.navigate('FeedWrite', { feed, isEdit: true });
             onClose();
           },
         },

@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-type ModalType =
+export type ModalType =
   | 'comment'
   | 'feed'
   | 'studentCertification'
@@ -14,10 +14,11 @@ type ModalType =
 
 interface ModalState {
   visible: Record<ModalType, boolean>;
+  modalProps: Partial<Record<ModalType, any>>;
 }
 
 interface ModalAction {
-  handleOpen: (type: ModalType) => void;
+  handleOpen: (type: ModalType, props?: any) => void;
   handleClose: (type: ModalType) => void;
 }
 
@@ -34,6 +35,15 @@ export const useModalStore = create<ModalState & ModalAction>((set) => ({
     block: false,
     exit: false,
   },
-  handleOpen: (type) => set((state) => ({ visible: { ...state.visible, [type]: true } })),
-  handleClose: (type) => set((state) => ({ visible: { ...state.visible, [type]: false } })),
+  modalProps: {},
+  handleOpen: (type, props = {}) =>
+    set((state) => ({
+      visible: { ...state.visible, [type]: true },
+      modalProps: { ...state.modalProps, [type]: props },
+    })),
+  handleClose: (type) =>
+    set((state) => ({
+      visible: { ...state.visible, [type]: false },
+      modalProps: { ...state.modalProps, [type]: {} },
+    })),
 }));

@@ -11,15 +11,7 @@ import {
   View,
 } from 'react-native';
 import { CommentRepository, feedKeys, FeedRepository } from '@/api';
-import {
-  CommentList,
-  FeedItem,
-  KeyboardLayout,
-  Layout,
-  Input,
-  ReportModal,
-  BlockModal,
-} from '@/components';
+import { CommentList, FeedItem, KeyboardLayout, Layout, Input } from '@/components';
 import { useFeedDetail } from '@/hooks';
 import { FeedStackParamList } from '@/navigation/navigationRef';
 import { FeedService } from '@/service';
@@ -28,8 +20,6 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useQueryClient, useSuspenseQueries } from '@tanstack/react-query';
 import { MoreVertical, Send } from 'lucide-react-native';
 import FeedSkeleton from '@/components/feed/FeedSkeleton';
-import { FeedOptionModal } from '@/components/modal/BottomOption/FeedOptionModal';
-import { ChatRequestModal } from '@/components/modal/Common/ChatRequestModal';
 
 type FeedDetailScreenProps = NativeStackScreenProps<FeedStackParamList, 'FeedDetail'>;
 
@@ -38,9 +28,7 @@ export default function FeedDetailScreen({ navigation, route }: FeedDetailScreen
   const { feedId, source, searchKeyword } = route.params;
   const { t } = useTranslation('feed');
   const queryClient = useQueryClient();
-  const modalVisible = useModalStore((state) => state.visible);
   const handleModalOpen = useModalStore((state) => state.handleOpen);
-  const handleModalClose = useModalStore((state) => state.handleClose);
   const isCertificated = useUserStore((state) => state.isCertificated);
   const [commentInput, setCommentInput] = useState('');
   const [parentCommentId, setParentCommentId] = useState<number | null>(null);
@@ -94,7 +82,11 @@ export default function FeedDetailScreen({ navigation, route }: FeedDetailScreen
   };
 
   const handleChatRequest = () => {
-    isCertificated ? handleModalOpen('chatRequest') : handleModalOpen('studentCertification');
+    if (isCertificated) {
+      handleModalOpen('chatRequest', { data: feed });
+    } else {
+      handleModalOpen('studentCertification');
+    }
   };
 
   const handleCommentSubmit = async () => {
@@ -117,12 +109,8 @@ export default function FeedDetailScreen({ navigation, route }: FeedDetailScreen
     }
   };
 
-  const handleBlock = async () => {
-    navigation.reset({
-      index: 0,
-      routes: [{ name: 'FeedHome' }],
-    });
-    queryClient.invalidateQueries({ queryKey: feedKeys.all });
+  const openFeedOptionModal = () => {
+    handleModalOpen('feed', { feed });
   };
 
   return (
@@ -139,7 +127,7 @@ export default function FeedDetailScreen({ navigation, route }: FeedDetailScreen
               </TouchableOpacity>
             )}
             <TouchableOpacity
-              onPress={() => handleModalOpen('feed')}
+              onPress={openFeedOptionModal}
               hitSlop={{ bottom: 20, left: 10 }}
               className="ml-4"
             >
@@ -187,30 +175,6 @@ export default function FeedDetailScreen({ navigation, route }: FeedDetailScreen
           </ScrollView>
         </KeyboardLayout>
       </Layout>
-
-      <FeedOptionModal
-        visible={modalVisible.feed}
-        feed={feed}
-        onClose={() => handleModalClose('feed')}
-      />
-      <ChatRequestModal
-        visible={modalVisible.chatRequest}
-        data={feed}
-        onClose={() => handleModalClose('chatRequest')}
-      />
-      <ReportModal
-        visible={modalVisible.report}
-        type="FEED"
-        reportedId={feedId}
-        reportedUserId={feed.userId}
-        onClose={() => handleModalClose('report')}
-      />
-      <BlockModal
-        visible={modalVisible.block}
-        buddyId={feed.userId}
-        onClose={() => handleModalClose('block')}
-        onBlockSuccess={handleBlock}
-      />
     </>
   );
 }
