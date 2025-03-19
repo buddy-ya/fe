@@ -25,6 +25,7 @@ import NotificationScreen from '@/screens/onboarding/NotificationScreen';
 import PhoneScreen from '@/screens/onboarding/PhoneScreen';
 import PhoneVerificationScreen from '@/screens/onboarding/PhoneVerificationScreen';
 import UniversitySelectScreen from '@/screens/onboarding/UniversitySelectScreen';
+import UserGuideScreen from '@/screens/onboarding/UserGuideScreen';
 import StudentInfo from '@/screens/onboarding/archived/StudentInfoScreen';
 import StudentTypeSelectScreen from '@/screens/onboarding/archived/StudentTypeSelectScreen';
 import EmailCompleteScreen from '@/screens/verification/EmailCompleteScreen';
@@ -137,7 +138,10 @@ function TabNavigator() {
 
 function OnboardingNavigator() {
   return (
-    <OnboardingStack.Navigator screenOptions={{ headerShown: false }}>
+    <OnboardingStack.Navigator
+      initialRouteName="OnboardingWelcome"
+      screenOptions={{ headerShown: false }}
+    >
       <OnboardingStack.Screen
         name="OnboardingWelcome"
         component={WelcomeScreen}
@@ -177,6 +181,11 @@ function OnboardingNavigator() {
       <OnboardingStack.Screen name="OnboardingLanguageSelect" component={LanguageSelectScreen} />
       <OnboardingStack.Screen name="OnboardingMajorSelect" component={MajorSelectScreen} />
       <OnboardingStack.Screen name="OnboardingInterestSelect" component={InterestSelectScreen} />
+      <OnboardingStack.Screen
+        name="OnboardingUserGuide"
+        component={UserGuideScreen}
+        options={{ gestureEnabled: false }}
+      />
     </OnboardingStack.Navigator>
   );
 }

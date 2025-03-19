@@ -82,10 +82,7 @@ function InterestSelectScreen({ navigation, route }: InterestSelectProps) {
             OnboardingStackParamList,
             'OnboardingInterestSelect'
           >;
-          onboardNav.reset({
-            index: 0,
-            routes: [{ name: 'Tab' }],
-          });
+          onboardNav.navigate('OnboardingUserGuide');
         }
       }
     } catch (error) {
