@@ -5,3 +5,4 @@ export * from './UserDTO';
 export * from './ImageFile';
 export * from './RoomDTO';
 export * from './ChatDTO';
+export * from './MatchDTO';

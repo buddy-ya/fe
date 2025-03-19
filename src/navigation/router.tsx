@@ -96,7 +96,7 @@ function TabNavigator() {
         component={MatchScreen}
         options={() => ({
           ...getTabScreenOptions('Match'),
-          tabBarLabel: t('tab.matching'),
+          tabBarLabel: t('tab.match'),
         })}
       />
       <Tab.Screen
