@@ -29,6 +29,7 @@ export type OnboardingStackParamList = {
   Tab: undefined;
   OnboardingStudentInfo: undefined;
   OnboardingStudentTypeSelect: undefined;
+  OnboardingUserGuide: undefined;
 };
 
 export type FeedStackParamList = {

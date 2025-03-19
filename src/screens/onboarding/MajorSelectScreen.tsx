@@ -1,13 +1,12 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
+import { Button, Heading, InnerLayout, Layout, MultiSelectItem, MyText } from '@/components';
+import { OnboardingStackParamList } from '@/navigation/navigationRef';
 import { useOnboardingStore } from '@/store';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import type { MajorID } from '@/utils';
 import { MAJORS } from '@/utils';
-import { Button, Heading, InnerLayout, Layout, MultiSelectItem, MyText } from '@/components';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { OnboardingStackParamList } from '@/navigation/navigationRef';
-
 
 interface Major {
   id: MajorID;

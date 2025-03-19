@@ -17,6 +17,7 @@ interface FeedListProps {
   onLoadMore: () => void;
   refreshControl?: RefreshControlProps | null;
   emptyStateMessage?: string;
+  emptyStateNamespace?: string;
 }
 
 function FeedList({
@@ -29,14 +30,15 @@ function FeedList({
   onLoadMore,
   refreshControl,
   hasMore,
+  emptyStateNamespace = 'feed',
 }: FeedListProps) {
   const { t } = useTranslation('common');
 
   if (feeds.length === 0) {
     return (
       <EmptyState
-        title={t('emptyState.feed.title')}
-        description={t('emptyState.feed.description')}
+        title={t(`emptyState.${emptyStateNamespace}.title`)}
+        description={t(`emptyState.${emptyStateNamespace}.description`)}
       />
     );
   }

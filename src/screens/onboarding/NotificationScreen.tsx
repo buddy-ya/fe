@@ -42,7 +42,7 @@ export default function NotificationScreen({
     if (isExistingMember) {
       const response = await handshake();
       if (response) {
-        navigation.reset({ index: 0, routes: [{ name: 'Tab' }] });
+        navigation.reset({ index: 0, routes: [{ name: 'OnboardingUserGuide' }] });
       }
     } else {
       navigation.reset({

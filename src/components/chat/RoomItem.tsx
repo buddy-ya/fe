@@ -11,7 +11,16 @@ interface RoomItemProps {
 }
 
 export default function RoomItem({ room, onPress }: RoomItemProps) {
-  const { id, name, country, lastMessage, profileImageUrl, unreadCount, lastMessageDate } = room;
+  const {
+    id,
+    name,
+    country,
+    lastMessage,
+    profileImageUrl,
+    unreadCount,
+    isBuddyExited,
+    lastMessageDate,
+  } = room;
   const { t } = useTranslation('chat');
 
   const handleClick = () => {
@@ -19,6 +28,13 @@ export default function RoomItem({ room, onPress }: RoomItemProps) {
   };
 
   const isNewMessage = unreadCount > 0;
+
+  const renderMessage = () => {
+    if (isBuddyExited) {
+      return t('room.buddyExitedMessage');
+    }
+    return lastMessage === null ? t('room.startMessage') : lastMessage;
+  };
 
   return (
     <TouchableOpacity onPress={handleClick} activeOpacity={0.7}>
@@ -38,7 +54,7 @@ export default function RoomItem({ room, onPress }: RoomItemProps) {
               color={isNewMessage ? '' : 'text-[#797979]'}
               className={isNewMessage ? 'font-medium' : ''}
             >
-              {lastMessage === null ? t('room.startMessage') : lastMessage}
+              {renderMessage()}
             </MyText>
           </View>
         </View>

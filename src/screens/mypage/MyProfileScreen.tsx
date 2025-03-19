@@ -85,7 +85,6 @@ export default function MyProfileScreen({ navigation, route }: any) {
     try {
       const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
       if (status !== 'granted') {
-        alert(t('studentId.permission.gallery'));
         return;
       }
       const result = await ImagePicker.launchImageLibraryAsync({

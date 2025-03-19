@@ -67,6 +67,10 @@ export default function FeedWriteScreen({ navigation, route }: FeedWriteScreenPr
   const pickImage = async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
 
+    if (status !== 'granted') {
+      return;
+    }
+
     try {
       const result = await ImagePicker.launchImageLibraryAsync({
         ...IMAGE_PICKER_OPTIONS,
@@ -87,7 +91,7 @@ export default function FeedWriteScreen({ navigation, route }: FeedWriteScreenPr
         });
       }
     } catch (error) {
-      Alert.alert('오류', '이미지를 불러오는데 실패했습니다.');
+      Alert.alert('Error', 'Failed to upload image');
     }
   };
 
@@ -95,7 +99,6 @@ export default function FeedWriteScreen({ navigation, route }: FeedWriteScreenPr
     const { status } = await ImagePicker.requestCameraPermissionsAsync();
 
     if (status !== 'granted') {
-      alert(t('studentId.permission.gallery'));
       return;
     }
 
@@ -120,23 +123,12 @@ export default function FeedWriteScreen({ navigation, route }: FeedWriteScreenPr
         });
       }
     } catch (error) {
-      Alert.alert('오류', '사진 촬영에 실패했습니다.');
+      Alert.alert('Error', 'Failed to take a photo');
     }
   };
 
   const handleOpenCategoryModal = () => {
     handleModalOpen('category');
-    // const options = FILTERED_CATEGORIES.map((category) => ({
-    //   label: `${category.icon} ${category.label}`,
-    //   onPress: () => handleCategorySelect(category),
-    //   color: category.id === selectedCategory.id ? 'text-textActive' : '#797979',
-    //   icon:
-    //     category.id === selectedCategory.id ? (
-    //       <View className="h-4 w-4 rounded-full bg-primary" />
-    //     ) : (
-    //       <View className="h-4 w-4 rounded-full border border-gray-300" />
-    //     ),
-    // }));
   };
 
   const removeImage = (index: number) => {

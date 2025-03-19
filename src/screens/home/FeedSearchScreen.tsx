@@ -101,6 +101,7 @@ export default function SearchScreen({ navigation, route }: SearchScreenProps) {
                 emptyStateMessage={
                   submittedText ? t('search.empty.result') : t('search.empty.default')
                 }
+                emptyStateNamespace="search"
                 refreshControl={{
                   refreshing: feedListData.isLoading && feedListData.feeds.length > 0,
                   onRefresh: feedListData.handleRefresh,

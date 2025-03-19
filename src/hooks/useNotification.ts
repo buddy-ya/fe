@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { NotificationRepository } from '@/api';
 import { useUserStore } from '@/store';
 import * as Linking from 'expo-linking';
@@ -24,19 +24,19 @@ export function useNotification() {
       }
       if (data?.type === 'FEED' && data?.feedId) {
         const deepLinkUrl = `${prefix}feeds/${data.feedId}`;
-        Linking.openURL(deepLinkUrl);
+        setTimeout(() => Linking.openURL(deepLinkUrl), 100);
       }
       if (data?.type === 'CHAT_REQUEST') {
         const deepLinkUrl = `${prefix}chatRequests`;
-        Linking.openURL(deepLinkUrl);
+        setTimeout(() => Linking.openURL(deepLinkUrl), 100);
       }
       if (data?.type === 'CHAT_ACCEPT' && data?.roomId) {
         const deepLinkUrl = `${prefix}chats/${data.roomId}`;
-        Linking.openURL(deepLinkUrl);
+        setTimeout(() => Linking.openURL(deepLinkUrl), 100);
       }
       if (data?.type === 'CHAT' && data?.chatroomId) {
         const deepLinkUrl = `${prefix}chats/${data.chatroomId}`;
-        Linking.openURL(deepLinkUrl);
+        setTimeout(() => Linking.openURL(deepLinkUrl), 100);
       }
     });
 

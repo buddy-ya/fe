@@ -17,7 +17,6 @@ interface ActionSheetWrapperProps {
 }
 
 export function ActionSheetWrapper({ visible, onClose, options }: ActionSheetWrapperProps) {
-  // Animated value for sliding effect
   const slideAnim = useRef(new Animated.Value(100)).current;
   const { t } = useTranslation();
 
@@ -27,9 +26,9 @@ export function ActionSheetWrapper({ visible, onClose, options }: ActionSheetWra
       Animated.spring(slideAnim, {
         toValue: 0,
         useNativeDriver: true,
-        damping: 100, // 마찰, 클수록 진동 감소
-        stiffness: 200, // 강도, 클수록 빠른 반응
-        overshootClamping: true, // 약간의 오버슈팅(넘침) 방지
+        damping: 100,
+        stiffness: 200,
+        overshootClamping: true,
       }).start();
     }
   }, [visible, slideAnim]);

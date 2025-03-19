@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Alert, Text } from 'react-native';
 import { feedKeys, FeedRepository } from '@/api';
@@ -7,7 +7,8 @@ import { Feed } from '@/types';
 import { useNavigation } from '@react-navigation/native';
 import { useQueryClient } from '@tanstack/react-query';
 import i18next from 'i18next';
-import { Pencil, Trash2, Flag, Ban, Siren } from 'lucide-react-native';
+import { Pencil, Trash2, Siren, Ban } from 'lucide-react-native';
+import { logError } from '@/utils';
 import { ActionSheetWrapper, OptionItem } from '../Common';
 
 interface FeedOptionModalProps {
@@ -22,21 +23,40 @@ export function FeedOptionModal({ visible, onClose, feed }: FeedOptionModalProps
   const { t } = useTranslation('feed');
   const isCertificated = useUserStore((state) => state.isCertificated);
   const handleModalOpen = useModalStore((state) => state.handleOpen);
-  const handleModalClose = useModalStore((state) => state.handleClose);
   const { showToast } = useToastStore();
+
+  async function handleBlock() {
+    navigation.reset({
+      index: 0,
+      routes: [{ name: 'FeedHome' }],
+    });
+    await queryClient.invalidateQueries({ queryKey: feedKeys.all });
+  }
 
   const handleReportOption = () => {
     onClose();
     setTimeout(() => {
-      isCertificated ? handleModalOpen('report') : handleModalOpen('studentCertification');
-    }, 300);
+      if (isCertificated) {
+        handleModalOpen('report', {
+          type: 'FEED',
+          reportedId: feed.id,
+          reportedUserId: feed.userId,
+        });
+      } else {
+        handleModalOpen('studentCertification');
+      }
+    }, 200);
   };
 
   const handleBlockOption = () => {
     onClose();
     setTimeout(() => {
-      isCertificated ? handleModalOpen('block') : handleModalOpen('studentCertification');
-    }, 300);
+      if (isCertificated) {
+        handleModalOpen('block', { buddyId: feed.userId, onBlockSuccess: handleBlock });
+      } else {
+        handleModalOpen('studentCertification');
+      }
+    }, 200);
   };
 
   const showDeleteAlert = (onConfirm: () => void) => {
@@ -58,10 +78,7 @@ export function FeedOptionModal({ visible, onClose, feed }: FeedOptionModalProps
           label: i18next.t('feed:modal.edit'),
           icon: <Pencil size={16} color="#282828" />,
           onPress: () => {
-            navigation.navigate('FeedWrite', {
-              feed,
-              isEdit: true,
-            });
+            navigation.navigate('FeedWrite', { feed, isEdit: true });
             onClose();
           },
         },
@@ -81,18 +98,10 @@ export function FeedOptionModal({ visible, onClose, feed }: FeedOptionModalProps
                     return true;
                   },
                 });
-
                 navigation.goBack();
                 onClose();
               } catch (error: any) {
-                const errorCode = error.response?.data?.code;
-                const errorMapping: Record<number, { emoji: string; translationKey: string }> = {
-                  4000: { emoji: '🗑️', translationKey: 'feed:error.deletedFeed' },
-                };
-                const errorInfo = errorMapping[errorCode];
-                if (errorInfo) {
-                  showToast(<Text>{errorInfo.emoji}</Text>, t(errorInfo.translationKey), 2000);
-                }
+                logError(error);
               }
             }),
         },

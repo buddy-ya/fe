@@ -104,7 +104,7 @@ export default function MyPageScreen({ navigation }: MyPageScreenProps) {
                 </MyText>
               </View>
             </View>
-            <ChevronRight size={24} color="#CBCBCB" />
+            <ChevronRight size={24} color="#636363" strokeWidth={1.3} />
           </View>
         </TouchableOpacity>
         <View className="mt-4 flex-row justify-around rounded-[20px] bg-white py-5">

@@ -88,10 +88,14 @@ export default function NameScreen({ navigation, route }: NameScreenProps) {
     />
   );
 
+  const headerProps = isEditMode
+    ? { showHeader: true, onBack: () => navigation.goBack() }
+    : { preserveHeader: true };
+
   useBackButton();
 
   return (
-    <Layout preserveHeader>
+    <Layout {...headerProps}>
       <KeyboardLayout footer={footer}>
         <InnerLayout>
           <Heading>{t('name.title')}</Heading>

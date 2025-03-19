@@ -25,6 +25,7 @@ import NotificationScreen from '@/screens/onboarding/NotificationScreen';
 import PhoneScreen from '@/screens/onboarding/PhoneScreen';
 import PhoneVerificationScreen from '@/screens/onboarding/PhoneVerificationScreen';
 import UniversitySelectScreen from '@/screens/onboarding/UniversitySelectScreen';
+import UserGuideScreen from '@/screens/onboarding/UserGuideScreen';
 import StudentInfo from '@/screens/onboarding/archived/StudentInfoScreen';
 import StudentTypeSelectScreen from '@/screens/onboarding/archived/StudentTypeSelectScreen';
 import EmailCompleteScreen from '@/screens/verification/EmailCompleteScreen';
@@ -44,6 +45,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import MatchingScreen from '@screens/matching/MatchingScreen';
 import MyPageScreen from '@screens/mypage/MyPageScreen';
 import { useNotification } from '@/hooks/useNotification';
+import { GlobalModalContainer } from '@/components/common/GlobalModalContainer';
 import { StudentCertificationModal } from '@/components/modal/Common';
 import WelcomeScreen from '../screens/onboarding/WelcomeScreen';
 import { getTabScreenOptions, tabScreenOptions, useTabBarAnimation } from './TabBar';
@@ -136,7 +138,10 @@ function TabNavigator() {
 
 function OnboardingNavigator() {
   return (
-    <OnboardingStack.Navigator screenOptions={{ headerShown: false }}>
+    <OnboardingStack.Navigator
+      initialRouteName="OnboardingWelcome"
+      screenOptions={{ headerShown: false }}
+    >
       <OnboardingStack.Screen
         name="OnboardingWelcome"
         component={WelcomeScreen}
@@ -176,6 +181,11 @@ function OnboardingNavigator() {
       <OnboardingStack.Screen name="OnboardingLanguageSelect" component={LanguageSelectScreen} />
       <OnboardingStack.Screen name="OnboardingMajorSelect" component={MajorSelectScreen} />
       <OnboardingStack.Screen name="OnboardingInterestSelect" component={InterestSelectScreen} />
+      <OnboardingStack.Screen
+        name="OnboardingUserGuide"
+        component={UserGuideScreen}
+        options={{ gestureEnabled: false }}
+      />
     </OnboardingStack.Navigator>
   );
 }
@@ -348,10 +358,7 @@ export default function Router() {
         <Stack.Screen name="Verification" component={VerificationNavigator} />
         <Stack.Screen name="Tab" component={TabNavigator} />
       </Stack.Navigator>
-      <StudentCertificationModal
-        visible={modalVisible}
-        onClose={() => handleModalClose('studentCertification')}
-      />
+      <GlobalModalContainer />
     </>
   );
 }

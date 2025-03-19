@@ -87,6 +87,16 @@
       "food": "Food & Beverage"
     }
   },
+  "userGuide": {
+    "title": "Buddyya Guidelines",
+    "description": "Our community is built on respect.\nPlease review the guidelines below.",
+    "guideline1": "Posting inappropriate content is prohibited.",
+    "guideline2": "Racist or discriminatory remarks are not allowed.",
+    "guideline3": "Please write all posts in either English or Korean.",
+    "guideline4": "Buddyya is a community for real college students. Please respect one another and communicate respectfully.",
+    "button": "Buddyya Start",
+    "terms": "By tapping 'Buddyya Start', you agree to our <termsLink>Terms of Service</termsLink>."
+  },
   "common": {
     "next": "Next",
     "back": "Back",

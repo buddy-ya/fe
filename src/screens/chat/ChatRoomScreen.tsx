@@ -11,18 +11,7 @@ import {
   Text,
 } from 'react-native';
 import { API, ChatSocketRepository, RoomRepository, UserRepository } from '@/api';
-import {
-  ChatOptionModal,
-  ReportModal,
-  ExitModal,
-  InnerLayout,
-  Input,
-  KeyboardLayout,
-  Layout,
-  MessageItem,
-  MyText,
-  BlockModal,
-} from '@/components';
+import { InnerLayout, Input, KeyboardLayout, Layout, MessageItem, MyText } from '@/components';
 import { useImageUpload, useRoomStateHandler } from '@/hooks';
 import { Message } from '@/model';
 import { ChatStackParamList } from '@/navigation/navigationRef';
@@ -49,7 +38,7 @@ type ChatRoomScreenProps = NativeStackScreenProps<ChatStackParamList, 'ChatRoom'
 export const ChatRoomScreen: React.FC<ChatRoomScreenProps> = ({ route }) => {
   const navigation = useNavigation<NativeStackNavigationProp<ChatStackParamList>>();
   const { t } = useTranslation('chat');
-  const modalVisible = useModalStore((state) => state.visible);
+  // 전역 모달은 GlobalModalContainer에서 관리하므로, 여기서는 visible 관련 코드는 제거합니다.
   const handleModalOpen = useModalStore((state) => state.handleOpen);
   const handleModalClose = useModalStore((state) => state.handleClose);
   const CURRENT_USER_ID = useUserStore((state) => state.id);
@@ -293,7 +282,15 @@ export const ChatRoomScreen: React.FC<ChatRoomScreenProps> = ({ route }) => {
         </MyText>
       }
       headerRight={
-        <TouchableOpacity onPress={() => handleModalOpen('chat')}>
+        <TouchableOpacity
+          onPress={() =>
+            handleModalOpen('chat', {
+              roomId: roomId,
+              buddyId: roomData.buddyId,
+              onExit: handleExit,
+            })
+          }
+        >
           <EllipsisVertical strokeWidth={2} size={24} color="#797979" />
         </TouchableOpacity>
       }
@@ -303,13 +300,6 @@ export const ChatRoomScreen: React.FC<ChatRoomScreenProps> = ({ route }) => {
           <View>
             <Input
               value={text}
-              // leftImage={
-              //   <TouchableOpacity onPress={onAddImage}>
-              //     <View className="ml-2 h-[24px] w-[24px] flex-row items-center">
-              //       <Image size={24} strokeWidth={1.3} color="#797979" />
-              //     </View>
-              //   </TouchableOpacity>
-              // }
               onChange={handleChange}
               onSubmit={onSubmit}
               disabled={buddyExited}
@@ -345,30 +335,6 @@ export const ChatRoomScreen: React.FC<ChatRoomScreenProps> = ({ route }) => {
           )}
         </InnerLayout>
       </KeyboardLayout>
-      <>
-        <ChatOptionModal visible={modalVisible.chat} onClose={() => handleModalClose('chat')} />
-        <ReportModal
-          visible={modalVisible.report}
-          type="CHATROOM"
-          reportedId={roomId}
-          reportedUserId={roomData.buddyId}
-          onClose={() => handleModalClose('report')}
-          onReportSuccess={handleExit}
-        />
-        <BlockModal
-          visible={modalVisible.block}
-          buddyId={roomData.buddyId}
-          roomId={roomId}
-          onClose={() => handleModalClose('block')}
-          onBlockSuccess={handleExit}
-        />
-        <ExitModal
-          visible={modalVisible.exit}
-          roomId={roomId}
-          onClose={() => handleModalClose('exit')}
-          onExit={handleExit}
-        />
-      </>
     </Layout>
   );
 };

@@ -9,7 +9,7 @@ import { TokenService } from '@/service';
 import { useUserStore } from '@/store';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { ChevronRight } from 'lucide-react-native';
-import { PRIVACY_POLICY_URL } from '@/utils';
+import { PRIVACY_POLICY_URL, TERMS_URL } from '@/utils';
 
 interface SettingItemProps {
   emoji: string; // 이모지를 따로 받음
@@ -43,6 +43,11 @@ export default function SettingScreen({ navigation }: SettingScreenProps) {
     Linking.openURL(url).catch((err) => console.error('Failed to open URL:', err));
   };
 
+  const openTermsLink = () => {
+    const url = i18n.language === 'ko' ? TERMS_URL.ko : TERMS_URL.en;
+    Linking.openURL(url).catch((err) => console.error('Failed to open URL:', err));
+  };
+
   // 그룹1: 상단 박스 (문의하기, 이용약관, 개인정보처리방침)
   const group1 = [
     // {
@@ -53,16 +58,12 @@ export default function SettingScreen({ navigation }: SettingScreenProps) {
     //     console.log('문의하기 클릭');
     //   },
     // },
-    // {
-    //   key: 'terms',
-    //   emoji: '📃',
-    //   label: t('menuItems.terms'),
-    //   onPress: () => {
-    //     Linking.openURL(
-    //       'https://thinkable-durian-178.notion.site/1b1badc2aadc80878bd2f2c08e026fa4?pvs=4'
-    //     ).catch((err) => console.error('Error opening privacy:', err));
-    //   },
-    // },
+    {
+      key: 'terms',
+      emoji: '📃',
+      label: t('menuItems.terms'),
+      onPress: openTermsLink,
+    },
     {
       key: 'privacy',
       emoji: '🔒',
