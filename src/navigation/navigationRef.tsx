@@ -59,6 +59,10 @@ export type VerificationStackParamList = {
   StudentIdComplete: undefined;
 };
 
+export type MatchstackParamList = {
+  Match: undefined;
+};
+
 export type ChatStackParamList = {
   RoomList: undefined;
   ChatRoom: { id: number };

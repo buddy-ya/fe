@@ -1,0 +1,20 @@
+{
+  "match": {
+    "title": "매칭",
+    "not_requested": {
+      "title": "매칭 조건을 선택해주세요!",
+      "description": "매칭된 상대와 바로 채팅이 가능합니다!",
+      "button": "매칭하기"
+    },
+    "pending": {
+      "title": "매칭 대기 중",
+      "description": "버디를 찾는 중입니다. 잠시만 기다려주세요.",
+      "button": "취소"
+    },
+    "success": {
+      "title": "매칭 성공",
+      "description": "'{{buddyName}}'님과 매칭되었습니다. 채팅을 시작해보세요!",
+      "button": "채팅 보내기"
+    }
+  }
+}

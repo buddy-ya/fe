@@ -10,6 +10,7 @@ import en_feed from './en/feed.json';
 import en_interests from './en/interests.json';
 import en_languages from './en/languages.json';
 import en_majors from './en/majors.json';
+import en_match from './en/match.json';
 import en_mypage from './en/mypage.json';
 import en_onboarding from './en/onboarding.json';
 import en_toast from './en/toast.json';
@@ -23,6 +24,7 @@ import ko_feed from './ko/feed.json';
 import ko_interests from './ko/interests.json';
 import ko_languages from './ko/languages.json';
 import ko_majors from './ko/majors.json';
+import ko_match from './ko/match.json';
 import ko_mypage from './ko/mypage.json';
 import ko_onboarding from './ko/onboarding.json';
 import ko_toast from './ko/toast.json';
@@ -43,6 +45,7 @@ const resources = {
     mypage: ko_mypage,
     error: ko_error,
     toast: ko_toast,
+    match: ko_match,
   },
   en: {
     chat: en_chat,
@@ -58,6 +61,7 @@ const resources = {
     mypage: en_mypage,
     error: en_error,
     toast: en_toast,
+    match: en_match,
   },
 };
 
