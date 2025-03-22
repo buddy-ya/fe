@@ -45,6 +45,7 @@
   },
   "gender": {
     "title": "성별을 선택해 주세요.",
+    "description": "성별은 이후 더 정확한 매칭을 위해 활용됩니다.",
     "male": "남성",
     "female": "여성",
     "preferNotToSay": "밝히고 싶지 않음",

@@ -45,6 +45,7 @@
   },
   "gender": {
     "title": "Please select your gender.",
+    "description": "Gender information will be used to deliver more precise matches.",
     "male": "Male",
     "female": "Female",
     "label": "gender",
