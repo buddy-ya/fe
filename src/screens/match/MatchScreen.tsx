@@ -10,7 +10,6 @@ import SuccessView from '@/components/match/SuccessView';
 
 export default function MatchingScreen() {
   const { t } = useTranslation('match');
-
   const [matchData, setMatchData] = useState<MatchDTO | null>(null);
   const appStateRef = useRef(AppState.currentState);
 
@@ -38,8 +37,9 @@ export default function MatchingScreen() {
     [fetchMatchStatus]
   );
 
-  const handleMatchRequest = () => {
-    // TODO: 매칭 요청 POST 후 pending 상태로 전환
+  const handleMatchRequest = async (request) => {
+    const data = await MatchRepository.createMatchRequest(request);
+    setMatchData(data);
   };
 
   const handlePointPress = () => {};
@@ -57,7 +57,7 @@ export default function MatchingScreen() {
         return <SuccessView />;
       case 'not_requested':
       default:
-        return <NotRequestedView />;
+        return <NotRequestedView handleMatchRequest={handleMatchRequest} />;
     }
   };
 
@@ -66,20 +66,19 @@ export default function MatchingScreen() {
       hasTabBar
       showHeader
       headerLeft={
-        <MyText size="text-2xl" color="text-white" className="font-semibold">
+        <MyText size="text-2xl" color="text-black" className="font-semibold">
           매칭
         </MyText>
       }
       headerRight={
         <TouchableOpacity onPress={handlePointPress} className="mr-3">
-          <MyText size="text-xl" color="text-white" className="font-semibold">
+          <MyText size="text-xl" color="text-black" className="font-semibold">
             100
           </MyText>
         </TouchableOpacity>
       }
-      className="bg-primary"
     >
-      <InnerLayout className="border">{renderMatchContent()}</InnerLayout>
+      <InnerLayout>{renderMatchContent()}</InnerLayout>
     </Layout>
   );
 }

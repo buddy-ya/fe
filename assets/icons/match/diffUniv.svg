@@ -1,0 +1,20 @@
+<svg width="50" height="50" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+<mask id="mask0_4196_14605" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="50" height="50">
+<circle cx="25" cy="25" r="25" fill="#E3FFF7"/>
+</mask>
+<g mask="url(#mask0_4196_14605)">
+<circle cx="25" cy="25" r="25" fill="#FFF1DD"/>
+<path d="M9.5 11H40.5L46.1111 19H4.11108L9.5 11Z" fill="#253152" stroke="#282828" stroke-width="0.7" stroke-linejoin="round"/>
+<rect x="7.11108" y="20.1113" width="36" height="17" fill="#F6E8DE" stroke="#282828" stroke-width="0.7" stroke-linejoin="round"/>
+<rect x="7.11108" y="26" width="36" height="2" fill="#F8CCA5" stroke="#282828" stroke-width="0.7" stroke-linejoin="round"/>
+<rect x="7.11108" y="20.1113" width="2" height="17" fill="#F8CCA5" stroke="#282828" stroke-width="0.7" stroke-linejoin="round"/>
+<rect x="18.1111" y="20.1113" width="2" height="17" fill="#F8CCA5" stroke="#282828" stroke-width="0.7" stroke-linejoin="round"/>
+<rect x="30.1111" y="20.1113" width="2" height="17" fill="#F8CCA5" stroke="#282828" stroke-width="0.7" stroke-linejoin="round"/>
+<rect x="41.1111" y="20.1113" width="2" height="17" fill="#F8CCA5" stroke="#282828" stroke-width="0.7" stroke-linejoin="round"/>
+<rect x="4.05566" y="19" width="42" height="2" fill="#F8CCA5" stroke="#282828" stroke-width="0.7" stroke-linejoin="round"/>
+<rect x="4.05566" y="35" width="42" height="3" fill="#D3D7DB" stroke="#282828" stroke-width="0.7" stroke-linejoin="round"/>
+<rect x="0.0556641" y="37.6665" width="51" height="14" fill="#D3D7DB" stroke="#282828" stroke-width="0.7" stroke-linejoin="round"/>
+<rect y="37" width="51" height="8" fill="#D3D7DB" stroke="#282828" stroke-width="0.7" stroke-linejoin="round"/>
+<circle cx="25" cy="25" r="24.65" stroke="#282828" stroke-width="0.7"/>
+</g>
+</svg>

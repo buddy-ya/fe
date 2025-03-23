@@ -6,6 +6,11 @@ class MatchRepository {
     const { data } = await API.get<MatchDTO>('/matches/status');
     return data;
   }
+
+  async createMatchRequest(matchRequest): Promise<MatchDTO> {
+    const { data } = await API.post('/matches', matchRequest);
+    return data;
+  }
 }
 
 export default new MatchRepository();
