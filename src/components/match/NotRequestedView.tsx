@@ -11,6 +11,7 @@ import { Image as ExpoImage } from 'expo-image';
 import { Lock, SendHorizonal, Check } from 'lucide-react-native';
 import { CountryID, getCountryFlag, UNIVERSITY_ICONS, UniversityID } from '@/utils';
 import { MyText } from '../common';
+import { PlaneAnimation } from './PlaneAnimation';
 
 interface Option {
   value: string;
@@ -97,11 +98,15 @@ const OptionSection = ({
 interface NotRequestedViewProps {
   handleMatchRequest: (options: {
     universityType: 'SAME' | 'DIFFERENT';
-    genderType: 'MALE' | 'FEMALE' | 'ALL';
+    genderType: 'SAME' | 'ALL';
   }) => void;
+  navigation: any;
 }
 
-export default function NotRequestedView({ handleMatchRequest }: NotRequestedViewProps) {
+export default function NotRequestedView({
+  handleMatchRequest,
+  navigation,
+}: NotRequestedViewProps) {
   const { t } = useTranslation('match');
   const [universityType, setUniversityType] = useState<'SAME' | 'DIFFERENT' | null>(null);
   const [genderType, setGenderType] = useState<'MALE' | 'FEMALE' | 'ALL' | null>(null);
@@ -114,13 +119,11 @@ export default function NotRequestedView({ handleMatchRequest }: NotRequestedVie
   const userName = useUserStore((state) => state.name);
   const userCountry = useUserStore((state) => state.country);
 
-  // 대학 옵션
   const universityOptions: Option[] = [
     { value: 'SAME', label: '같은 학교', icon: UNIVERSITY_ICONS[userUniv as UniversityID] },
     { value: 'DIFFERENT', label: '다른 학교', icon: DiffUniIcon },
   ];
 
-  // 사용자 성별에 따른 성별 옵션 배열 생성
   let genderOptions: Option[] = [];
   if (userGender === 'male') {
     genderOptions = [
@@ -137,44 +140,52 @@ export default function NotRequestedView({ handleMatchRequest }: NotRequestedVie
   }
 
   const handlePressMatch = () => {
-    handleModalOpen('chatRequest');
-    // let mappedGender: 'SAME' | 'ALL' = 'ALL';
-    // if (
-    //   (userGender === 'male' && genderType === 'MALE') ||
-    //   (userGender === 'female' && genderType === 'FEMALE')
-    // ) {
-    //   mappedGender = 'SAME';
-    // } else {
-    //   mappedGender = 'ALL';
-    // }
-    // handleMatchRequest({
-    //   universityType: universityType || 'SAME',
-    //   genderType: mappedGender,
-    // });
+    let mappedGender: 'SAME' | 'ALL' = 'ALL';
+    if (
+      (userGender === 'male' && genderType === 'MALE') ||
+      (userGender === 'female' && genderType === 'FEMALE')
+    ) {
+      mappedGender = 'SAME';
+    } else {
+      mappedGender = 'ALL';
+    }
+    handleModalOpen('matchRequest', {
+      onConfirm: () =>
+        handleMatchRequest({
+          universityType: universityType || 'SAME',
+          genderType: mappedGender,
+        }),
+    });
+  };
+
+  const handleProfilePress = () => {
+    navigation.navigate('MyProfile');
   };
 
   return (
     <View className="flex-1">
       <View className="mt-8 w-full flex-row items-center justify-between gap-4 px-4">
-        <View className="flex-row items-center gap-3">
-          <ExpoImage
-            style={{ height: 48, width: 48, borderRadius: 12 }}
-            source={{ uri: userProfileImageUrl }}
-            contentFit="contain"
-          />
-          <View>
-            <MyText size="text-sm" color="text-black" className="font-semibold">
-              {t(`universities:universities.${userUniv}`)}
-            </MyText>
-            <View className="flex-row items-center gap-1">
-              <MyText size="text-sm" color="text-black">
-                {userName}
+        <TouchableOpacity onPress={handleProfilePress}>
+          <View className="flex-row items-center gap-3">
+            <ExpoImage
+              style={{ height: 48, width: 48, borderRadius: 12 }}
+              source={{ uri: userProfileImageUrl }}
+              contentFit="contain"
+            />
+            <View>
+              <MyText size="text-sm" color="text-black" className="font-semibold">
+                {t(`universities:universities.${userUniv}`)}
               </MyText>
-              <MyText>{getCountryFlag(userCountry as CountryID)}</MyText>
+              <View className="flex-row items-center gap-1">
+                <MyText size="text-sm" color="text-black">
+                  {userName}
+                </MyText>
+                <MyText>{getCountryFlag(userCountry as CountryID)}</MyText>
+              </View>
             </View>
           </View>
-        </View>
-        <SendHorizonal size={18} color={'black'} />
+        </TouchableOpacity>
+        <PlaneAnimation />
         <View className="h-[48px] w-[48px] flex-row items-center justify-center rounded-xl bg-white">
           <QuestionMarkIcon />
         </View>
@@ -183,7 +194,6 @@ export default function NotRequestedView({ handleMatchRequest }: NotRequestedVie
         <MyText size="text-xl" className="mb-4 font-semibold">
           매칭 조건을 선택해주세요!
         </MyText>
-        {/* 대학 옵션: 대학은 아이콘 사이즈를 좀 크게 (예: 60) */}
         <OptionSection
           title="학교"
           options={universityOptions}
@@ -204,9 +214,11 @@ export default function NotRequestedView({ handleMatchRequest }: NotRequestedVie
       <TouchableOpacity
         onPress={handlePressMatch}
         disabled={!universityType || !genderType}
-        className="mt-10 h-12 w-full items-center justify-center rounded-full bg-white"
+        className={`mt-8 h-12 items-center justify-center rounded-full ${
+          !universityType || !genderType ? 'bg-[#CBCBCB]' : 'bg-primary'
+        }`}
       >
-        <MyText size="text-base" className="font-semibold text-black">
+        <MyText size="text-lg" className="font-semibold text-white">
           매칭하기
         </MyText>
       </TouchableOpacity>

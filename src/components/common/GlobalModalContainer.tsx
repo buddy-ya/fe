@@ -8,6 +8,8 @@ import {
 import { StudentCertificationModal } from '@/components/modal/Common';
 import { ChatRequestModal } from '@/components/modal/Common/ChatRequestModal';
 import { BlockModal, ExitModal, ReportModal } from '../modal';
+import { MatchRequestModal } from '../modal/MatchRequestModal';
+import { PointModal } from '../modal/PointModal';
 
 export function GlobalModalContainer() {
   const { visible, modalProps, handleClose } = useModalStore();
@@ -49,6 +51,16 @@ export function GlobalModalContainer() {
           visible={true}
           onClose={() => handleClose('chatRequest')}
         />
+      )}
+      {visible.matchRequest && (
+        <MatchRequestModal
+          {...modalProps.matchRequest}
+          visible={true}
+          onClose={() => handleClose('matchRequest')}
+        />
+      )}
+      {visible.point && (
+        <PointModal {...modalProps.point} visible={true} onClose={() => handleClose('point')} />
       )}
     </>
   );

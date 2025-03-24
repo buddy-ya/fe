@@ -11,6 +11,10 @@ class MatchRepository {
     const { data } = await API.post('/matches', matchRequest);
     return data;
   }
+
+  async deleteMatchRequest() {
+    await API.delete('/matches');
+  }
 }
 
 export default new MatchRepository();

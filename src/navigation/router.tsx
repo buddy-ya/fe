@@ -93,7 +93,7 @@ function TabNavigator() {
       />
       <Tab.Screen
         name="Match"
-        component={MatchScreen}
+        component={MatchNavigator}
         options={() => ({
           ...getTabScreenOptions('Match'),
           tabBarLabel: t('tab.match'),
@@ -256,6 +256,15 @@ function VerificationNavigator() {
   );
 }
 
+function MatchNavigator() {
+  return (
+    <MatchStack.Navigator initialRouteName="MatchHome" screenOptions={{ headerShown: false }}>
+      <MatchStack.Screen name="MatchHome" component={MatchScreen} />
+      <MatchStack.Screen name="MyProfile" component={MyProfileScreen} />
+    </MatchStack.Navigator>
+  );
+}
+
 function ChatNavigator() {
   const navigation = useNavigation();
   const { animateTabBar } = useTabBarAnimation();
@@ -335,8 +344,6 @@ function MyPageNavigator() {
 }
 
 export default function Router() {
-  const modalVisible = useModalStore((state) => state.visible.studentCertification);
-  const handleModalClose = useModalStore((state) => state.handleClose);
   const isAuthenticated = useUserStore((state) => state.isAuthenticated);
   const navigation = useNavigation<any>();
   const { t } = useTranslation('common');

@@ -1,27 +1,38 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { View, Text, TouchableOpacity, AppState, AppStateStatus } from 'react-native';
+import { TouchableOpacity, AppState, AppStateStatus } from 'react-native';
 import { InnerLayout, Layout, MyText } from '@/components';
-import { MatchDTO } from '@/types';
+import { MatchstackParamList } from '@/navigation/navigationRef';
+import { useModalStore } from '@/store';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { useMatchStore } from '@/store/useMatchStore';
 import MatchRepository from '@/api/MatchRepository';
+import { logError } from '@/utils';
 import NotRequestedView from '@/components/match/NotRequestedView';
 import PendingView from '@/components/match/PendingView';
 import SuccessView from '@/components/match/SuccessView';
 
-export default function MatchingScreen() {
+type MatchScreenProps = NativeStackScreenProps<MatchstackParamList, 'MatchHome'>;
+
+export default function MatchScreen({ navigation }: MatchScreenProps) {
   const { t } = useTranslation('match');
-  const [matchData, setMatchData] = useState<MatchDTO | null>(null);
+
+  const matchData = useMatchStore((state) => state.matchData);
+  const handleModalOpen = useModalStore((state) => state.handleOpen);
+  const handleModalClose = useModalStore((state) => state.handleClose);
+  const matchStatus = useMatchStore((state) => state.matchStatus);
+  const updateMatchData = useMatchStore((state) => state.updateMatchData);
   const appStateRef = useRef(AppState.currentState);
 
   const fetchMatchStatus = useCallback(async () => {
     try {
       const data = await MatchRepository.getStatus();
-      setMatchData(data);
+      updateMatchData(data);
       console.log('Match status:', data.matchStatus);
     } catch (error) {
       console.error(error);
     }
-  }, []);
+  }, [updateMatchData]);
 
   useEffect(() => {
     fetchMatchStatus();
@@ -37,9 +48,20 @@ export default function MatchingScreen() {
     [fetchMatchStatus]
   );
 
-  const handleMatchRequest = async (request) => {
-    const data = await MatchRepository.createMatchRequest(request);
-    setMatchData(data);
+  const handleMatchRequest = async (request: any) => {
+    handleModalClose('matchRequest');
+    try {
+      const data = await MatchRepository.createMatchRequest(request);
+      handleModalOpen('point', {
+        usedPoint: 15,
+        currentPoint: 77,
+      });
+      setTimeout(() => {
+        updateMatchData(data);
+      }, 2000);
+    } catch (error) {
+      logError(error);
+    }
   };
 
   const handlePointPress = () => {};
@@ -50,14 +72,14 @@ export default function MatchingScreen() {
   }, [handleAppStateChange]);
 
   const renderMatchContent = () => {
-    switch (matchData?.matchStatus) {
+    switch (matchStatus) {
       case 'pending':
         return <PendingView />;
       case 'success':
         return <SuccessView />;
       case 'not_requested':
       default:
-        return <NotRequestedView handleMatchRequest={handleMatchRequest} />;
+        return <NotRequestedView handleMatchRequest={handleMatchRequest} navigation={navigation} />;
     }
   };
 
