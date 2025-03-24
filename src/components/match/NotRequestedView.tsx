@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { View, TouchableOpacity } from 'react-native';
+import { View, TouchableOpacity, FlatList, ScrollView } from 'react-native';
 import { useModalStore, useUserStore } from '@/store';
+import GlobalIcon from '@assets/icons/match/countryGlobal.svg';
+import KoreaIcon from '@assets/icons/match/countryKorea.svg';
 import DiffUniIcon from '@assets/icons/match/diffUniv.svg';
 import AllGenderIcon from '@assets/icons/match/genderAll.svg';
 import FemaleGenderIcon from '@assets/icons/match/genderFemale.svg';
@@ -36,12 +38,13 @@ const OptionButton = ({
   overlaySize,
 }: OptionButtonProps) => {
   const IconComponent = option.icon;
+
   return (
     <TouchableOpacity onPress={onPress} disabled={option.locked} className="items-center">
       <View className="relative mb-2 overflow-hidden" pointerEvents="none">
         <IconComponent width={iconSize} height={iconSize} />
         {(isSelected || option.locked) && (
-          <View className="absolute left-0 top-0 flex h-full w-full items-center justify-center">
+          <View className="absolute left-0 top-0 flex h-full w-full items-center justify-center rounded-full bg-black/20">
             {option.locked ? (
               <Lock width={overlaySize} height={overlaySize} color="white" />
             ) : (
@@ -108,34 +111,57 @@ export default function NotRequestedView({
   navigation,
 }: NotRequestedViewProps) {
   const { t } = useTranslation('match');
+  const [countryType, setCountryType] = useState<'GLOBAL' | 'KOREA' | null>(null);
   const [universityType, setUniversityType] = useState<'SAME' | 'DIFFERENT' | null>(null);
   const [genderType, setGenderType] = useState<'MALE' | 'FEMALE' | 'ALL' | null>(null);
 
   const handleModalOpen = useModalStore((state) => state.handleOpen);
   const userUniv = useUserStore((state) => state.university);
   const userGender = useUserStore((state) => state.gender);
-
   const userProfileImageUrl = useUserStore((state) => state.profileImageUrl);
   const userName = useUserStore((state) => state.name);
   const userCountry = useUserStore((state) => state.country);
 
   const universityOptions: Option[] = [
-    { value: 'SAME', label: '같은 학교', icon: UNIVERSITY_ICONS[userUniv as UniversityID] },
-    { value: 'DIFFERENT', label: '다른 학교', icon: DiffUniIcon },
+    {
+      value: 'SAME',
+      label: t('match.not_requested.university.same'),
+      icon: UNIVERSITY_ICONS[userUniv as UniversityID],
+    },
+    {
+      value: 'DIFFERENT',
+      label: t('match.not_requested.university.different'),
+      icon: DiffUniIcon,
+    },
+  ];
+
+  const countryOption: Option[] = [
+    { value: 'GLOBAL', label: t('match.not_requested.country.global'), icon: GlobalIcon },
+    { value: 'KOREA', label: t('match.not_requested.country.korea'), icon: KoreaIcon },
   ];
 
   let genderOptions: Option[] = [];
   if (userGender === 'male') {
     genderOptions = [
-      { value: 'ALL', label: '모두', icon: AllGenderIcon },
-      { value: 'MALE', label: '남성', icon: MaleGenderIcon },
-      { value: 'FEMALE', label: '여성', icon: FemaleGenderIcon, locked: true },
+      { value: 'ALL', label: t('match.not_requested.gender.all'), icon: AllGenderIcon },
+      { value: 'MALE', label: t('match.not_requested.gender.male'), icon: MaleGenderIcon },
+      {
+        value: 'FEMALE',
+        label: t('match.not_requested.gender.female'),
+        icon: FemaleGenderIcon,
+        locked: true,
+      },
     ];
   } else if (userGender === 'female') {
     genderOptions = [
-      { value: 'ALL', label: '모두', icon: AllGenderIcon },
-      { value: 'FEMALE', label: '여성', icon: FemaleGenderIcon },
-      { value: 'MALE', label: '남성', icon: MaleGenderIcon, locked: true },
+      { value: 'ALL', label: t('match.not_requested.gender.all'), icon: AllGenderIcon },
+      { value: 'FEMALE', label: t('match.not_requested.gender.female'), icon: FemaleGenderIcon },
+      {
+        value: 'MALE',
+        label: t('match.not_requested.gender.male'),
+        icon: MaleGenderIcon,
+        locked: true,
+      },
     ];
   }
 
@@ -164,7 +190,7 @@ export default function NotRequestedView({
 
   return (
     <View className="flex-1">
-      <View className="mt-8 w-full flex-row items-center justify-between gap-4 px-4">
+      <View className="mt-4 w-full flex-row items-center justify-between gap-4 px-4">
         <TouchableOpacity onPress={handleProfilePress}>
           <View className="flex-row items-center gap-3">
             <ExpoImage
@@ -190,38 +216,48 @@ export default function NotRequestedView({
           <QuestionMarkIcon />
         </View>
       </View>
-      <View className="mt-8 rounded-xl bg-white p-5">
-        <MyText size="text-xl" className="mb-4 font-semibold">
-          매칭 조건을 선택해주세요!
-        </MyText>
-        <OptionSection
-          title="학교"
-          options={universityOptions}
-          selected={universityType}
-          onSelect={(value) => setUniversityType(value as 'SAME' | 'DIFFERENT')}
-          iconSize={50}
-          overlaySize={20}
-        />
-        <OptionSection
-          title="성별"
-          options={genderOptions}
-          selected={genderType}
-          onSelect={(value) => setGenderType(value as 'MALE' | 'FEMALE' | 'ALL')}
-          iconSize={60}
-          overlaySize={24}
-        />
-      </View>
-      <TouchableOpacity
-        onPress={handlePressMatch}
-        disabled={!universityType || !genderType}
-        className={`mt-8 h-12 items-center justify-center rounded-full ${
-          !universityType || !genderType ? 'bg-[#CBCBCB]' : 'bg-primary'
-        }`}
-      >
-        <MyText size="text-lg" className="font-semibold text-white">
-          매칭하기
-        </MyText>
-      </TouchableOpacity>
+      <ScrollView className="pb-20">
+        <View className="mt-6 rounded-xl bg-white p-5">
+          <MyText size="text-xl" className="mb-4 font-semibold">
+            {t('match.not_requested.choose_conditions')}
+          </MyText>
+          <OptionSection
+            title={t('match.not_requested.country.title')}
+            options={countryOption}
+            selected={countryType}
+            onSelect={(value) => setCountryType(value as 'GLOBAL' | 'KOREA')}
+            iconSize={50}
+            overlaySize={20}
+          />
+          <OptionSection
+            title={t('match.not_requested.university.title')}
+            options={universityOptions}
+            selected={universityType}
+            onSelect={(value) => setUniversityType(value as 'SAME' | 'DIFFERENT')}
+            iconSize={50}
+            overlaySize={20}
+          />
+          <OptionSection
+            title={t('match.not_requested.gender.title')}
+            options={genderOptions}
+            selected={genderType}
+            onSelect={(value) => setGenderType(value as 'MALE' | 'FEMALE' | 'ALL')}
+            iconSize={60}
+            overlaySize={24}
+          />
+        </View>
+        <TouchableOpacity
+          onPress={handlePressMatch}
+          disabled={!universityType || !genderType}
+          className={`bottom-4 mt-10 h-12 w-full items-center justify-center rounded-xl ${
+            !universityType || !genderType ? 'bg-[#CBCBCB]' : 'bg-primary'
+          }`}
+        >
+          <MyText size="text-lg" className="font-semibold text-white">
+            {t('match.not_requested.button')}
+          </MyText>
+        </TouchableOpacity>
+      </ScrollView>
     </View>
   );
 }

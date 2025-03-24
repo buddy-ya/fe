@@ -181,7 +181,7 @@ export default function MyProfileScreen({ navigation, route }: any) {
       <Layout showHeader onBack={() => navigation.goBack()} className="bg-gray-600">
         <InnerLayout>
           <ScrollView showsVerticalScrollIndicator={false}>
-            <View className="mt-3 rounded-[20px]">
+            <View className="mt-3 rounded-[12px]">
               <View className="items-center">
                 <View className="relative h-[110px] w-[110px] overflow-hidden rounded-[25px]">
                   <Image source={{ uri: user.profileImageUrl }} className="mb-4 h-full w-full" />

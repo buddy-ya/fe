@@ -257,6 +257,30 @@ function VerificationNavigator() {
 }
 
 function MatchNavigator() {
+  const navigation = useNavigation();
+  const { animateTabBar } = useTabBarAnimation();
+  const route = useRoute();
+
+  React.useEffect(() => {
+    const onStateChange = () => {
+      const state = navigation.getState();
+      const activeTab = state?.routes[state.index];
+      let activeScreen = activeTab?.state?.routes?.[activeTab.state.index as any]?.name;
+      if (!activeScreen) {
+        if (!activeScreen) {
+          activeScreen = (route.params as { screen?: string })?.screen;
+        }
+      }
+      const visible = activeScreen !== 'MyProfile';
+      navigation.setOptions({
+        tabBarStyle: animateTabBar(visible),
+      });
+    };
+
+    const unsubscribe = navigation.addListener('state', onStateChange);
+    return unsubscribe;
+  }, []);
+
   return (
     <MatchStack.Navigator initialRouteName="MatchHome" screenOptions={{ headerShown: false }}>
       <MatchStack.Screen name="MatchHome" component={MatchScreen} />

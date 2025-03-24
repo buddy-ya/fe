@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { TouchableOpacity, AppState, AppStateStatus } from 'react-native';
+import { TouchableOpacity, AppState, AppStateStatus, ScrollView } from 'react-native';
 import { InnerLayout, Layout, MyText } from '@/components';
 import { MatchstackParamList } from '@/navigation/navigationRef';
 import { useModalStore } from '@/store';
@@ -49,7 +49,6 @@ export default function MatchScreen({ navigation }: MatchScreenProps) {
   );
 
   const handleMatchRequest = async (request: any) => {
-    handleModalClose('matchRequest');
     try {
       const data = await MatchRepository.createMatchRequest(request);
       handleModalOpen('point', {
@@ -74,7 +73,7 @@ export default function MatchScreen({ navigation }: MatchScreenProps) {
   const renderMatchContent = () => {
     switch (matchStatus) {
       case 'pending':
-        return <PendingView />;
+        return <PendingView navigation={navigation} />;
       case 'success':
         return <SuccessView />;
       case 'not_requested':
@@ -89,7 +88,7 @@ export default function MatchScreen({ navigation }: MatchScreenProps) {
       showHeader
       headerLeft={
         <MyText size="text-2xl" color="text-black" className="font-semibold">
-          매칭
+          {t('match.title')}
         </MyText>
       }
       headerRight={

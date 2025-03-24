@@ -4,17 +4,40 @@
     "not_requested": {
       "title": "Select your matching conditions!",
       "description": "Once matched, you can start chatting right away!",
-      "button": "Match Now"
+      "choose_conditions": "Please select matching conditions!",
+      "button": "Match",
+      "country": {
+        "title": "Nationality",
+        "global": "Global",
+        "korea": "Korea"
+      },
+      "university": {
+        "title": "University",
+        "same": "Same University",
+        "different": "Different University"
+      },
+      "gender": {
+        "title": "Gender",
+        "all": "All",
+        "male": "Male",
+        "female": "Female"
+      }
     },
     "pending": {
-      "title": "Waiting for Match",
-      "description": "Searching for a buddy. Please wait a moment.",
+      "title": "Finding your buddy..",
+      "description": "We will notify you once the match is complete!",
       "button": "Cancel"
     },
     "success": {
       "title": "Match Successful",
       "description": "You are matched with '{{buddyName}}'. Start chatting now!",
       "button": "Send a Chat"
+    },
+    "requestModal": {
+      "title": "Shall we search for a buddy?",
+      "description": "It may take n days to complete the match,\nand 0 points will be used for matching.",
+      "cancelText": "Close",
+      "confirmText": "Confirm"
     }
   }
 }

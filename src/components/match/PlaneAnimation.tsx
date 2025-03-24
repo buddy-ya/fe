@@ -39,7 +39,7 @@ export function PlaneAnimation() {
       <Animated.View
         style={[styles.iconWrapper, { transform: [{ translateX }, { translateY }], opacity }]}
       >
-        <SendHorizonal size={18} color="black" />
+        <SendHorizonal size={18} color="#797979" />
       </Animated.View>
     </View>
   );
@@ -47,7 +47,6 @@ export function PlaneAnimation() {
 
 const styles = StyleSheet.create({
   container: {
-    // 원하는 크기와 배경으로 조절 (예시)
     justifyContent: 'center',
     alignItems: 'center',
   },

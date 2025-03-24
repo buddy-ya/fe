@@ -1,7 +1,7 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 import SearchIcon from '@assets/icons/match/search.svg';
-import MyText from '@/components/common/MyText';
 import { BottomModalWrapper } from './Common';
 
 interface CommonModalProps {
@@ -11,11 +11,12 @@ interface CommonModalProps {
 }
 
 export function MatchRequestModal({ visible, onConfirm, onClose }: CommonModalProps) {
-  const title = '버디를 찾아볼까요?';
-  const description =
-    '매칭이 완료되기까지 n일의 시간이 소요될 수 있으며,\n매칭에 0 포인트가 사용됩니다.';
-  const cancelText = '닫기';
-  const confirmText = '확인하기';
+  const { t } = useTranslation('match');
+
+  const title = t('match.requestModal.title');
+  const description = t('match.requestModal.description');
+  const cancelText = t('match.requestModal.cancelText');
+  const confirmText = t('match.requestModal.confirmText');
 
   return (
     <BottomModalWrapper
