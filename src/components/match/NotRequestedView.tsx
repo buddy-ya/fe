@@ -20,14 +20,15 @@ interface Option {
   label: string;
   icon: any;
   locked?: boolean;
+  category?: 'university' | 'country' | 'gender';
 }
 
 interface OptionButtonProps {
   option: Option;
   isSelected: boolean;
   onPress: () => void;
-  iconSize: number;
-  overlaySize: number;
+  iconSize?: number;
+  overlaySize?: number;
 }
 
 const OptionButton = ({
@@ -44,7 +45,9 @@ const OptionButton = ({
       <View className="relative mb-2 overflow-hidden" pointerEvents="none">
         <IconComponent width={iconSize} height={iconSize} />
         {(isSelected || option.locked) && (
-          <View className="absolute left-0 top-0 flex h-full w-full items-center justify-center rounded-full bg-black/20">
+          <View
+            className={`absolute left-0 top-0 flex h-full w-full items-center justify-center rounded-full ${option.category === 'gender' && 'rounded-[17.5px]'} bg-black/30`}
+          >
             {option.locked ? (
               <Lock width={overlaySize} height={overlaySize} color="white" />
             ) : (
@@ -67,6 +70,7 @@ interface OptionSectionProps {
   onSelect: (value: string) => void;
   iconSize?: number;
   overlaySize?: number;
+  showBorder?: boolean;
 }
 
 const OptionSection = ({
@@ -76,9 +80,10 @@ const OptionSection = ({
   onSelect,
   iconSize = 60,
   overlaySize = 24,
+  showBorder = false,
 }: OptionSectionProps) => {
   return (
-    <View className="mb-6">
+    <View className={`${showBorder && 'border-b'} border-[#F6F6F6] px-5 py-3`}>
       <MyText size="text-sm" color="text-textDescription" className="mb-4">
         {title}
       </MyText>
@@ -127,40 +132,74 @@ export default function NotRequestedView({
       value: 'SAME',
       label: t('match.not_requested.university.same'),
       icon: UNIVERSITY_ICONS[userUniv as UniversityID],
+      category: 'university',
     },
     {
       value: 'DIFFERENT',
       label: t('match.not_requested.university.different'),
       icon: DiffUniIcon,
+      category: 'university',
     },
   ];
 
   const countryOption: Option[] = [
-    { value: 'GLOBAL', label: t('match.not_requested.country.global'), icon: GlobalIcon },
-    { value: 'KOREA', label: t('match.not_requested.country.korea'), icon: KoreaIcon },
+    {
+      value: 'GLOBAL',
+      label: t('match.not_requested.country.global'),
+      icon: GlobalIcon,
+      category: 'country',
+    },
+    {
+      value: 'KOREA',
+      label: t('match.not_requested.country.korea'),
+      icon: KoreaIcon,
+      category: 'country',
+    },
   ];
 
   let genderOptions: Option[] = [];
   if (userGender === 'male') {
     genderOptions = [
-      { value: 'ALL', label: t('match.not_requested.gender.all'), icon: AllGenderIcon },
-      { value: 'MALE', label: t('match.not_requested.gender.male'), icon: MaleGenderIcon },
+      {
+        value: 'ALL',
+        label: t('match.not_requested.gender.all'),
+        icon: AllGenderIcon,
+        category: 'gender',
+      },
+      {
+        value: 'MALE',
+        label: t('match.not_requested.gender.male'),
+        icon: MaleGenderIcon,
+        category: 'gender',
+      },
       {
         value: 'FEMALE',
         label: t('match.not_requested.gender.female'),
         icon: FemaleGenderIcon,
         locked: true,
+        category: 'gender',
       },
     ];
   } else if (userGender === 'female') {
     genderOptions = [
-      { value: 'ALL', label: t('match.not_requested.gender.all'), icon: AllGenderIcon },
-      { value: 'FEMALE', label: t('match.not_requested.gender.female'), icon: FemaleGenderIcon },
+      {
+        value: 'ALL',
+        label: t('match.not_requested.gender.all'),
+        icon: AllGenderIcon,
+        category: 'gender',
+      },
+      {
+        value: 'FEMALE',
+        label: t('match.not_requested.gender.female'),
+        icon: FemaleGenderIcon,
+        category: 'gender',
+      },
       {
         value: 'MALE',
         label: t('match.not_requested.gender.male'),
         icon: MaleGenderIcon,
         locked: true,
+        category: 'gender',
       },
     ];
   }
@@ -217,8 +256,8 @@ export default function NotRequestedView({
         </View>
       </View>
       <ScrollView className="pb-20">
-        <View className="mt-6 rounded-xl bg-white p-5">
-          <MyText size="text-xl" className="mb-4 font-semibold">
+        <View className="mt-6 rounded-xl bg-white pb-3">
+          <MyText size="text-xl" className="px-5 pt-5 font-semibold">
             {t('match.not_requested.choose_conditions')}
           </MyText>
           <OptionSection
@@ -228,6 +267,7 @@ export default function NotRequestedView({
             onSelect={(value) => setCountryType(value as 'GLOBAL' | 'KOREA')}
             iconSize={50}
             overlaySize={20}
+            showBorder
           />
           <OptionSection
             title={t('match.not_requested.university.title')}
@@ -236,6 +276,7 @@ export default function NotRequestedView({
             onSelect={(value) => setUniversityType(value as 'SAME' | 'DIFFERENT')}
             iconSize={50}
             overlaySize={20}
+            showBorder
           />
           <OptionSection
             title={t('match.not_requested.gender.title')}
@@ -249,7 +290,7 @@ export default function NotRequestedView({
         <TouchableOpacity
           onPress={handlePressMatch}
           disabled={!universityType || !genderType}
-          className={`bottom-4 mt-10 h-12 w-full items-center justify-center rounded-xl ${
+          className={`bottom-0 mt-10 h-12 w-full items-center justify-center rounded-xl ${
             !universityType || !genderType ? 'bg-[#CBCBCB]' : 'bg-primary'
           }`}
         >
