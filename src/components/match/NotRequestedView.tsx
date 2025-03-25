@@ -29,6 +29,7 @@ interface OptionButtonProps {
   onPress: () => void;
   iconSize?: number;
   overlaySize?: number;
+  checkSize?: number;
 }
 
 const OptionButton = ({
@@ -37,6 +38,7 @@ const OptionButton = ({
   onPress,
   iconSize,
   overlaySize,
+  checkSize,
 }: OptionButtonProps) => {
   const IconComponent = option.icon;
 
@@ -46,12 +48,12 @@ const OptionButton = ({
         <IconComponent width={iconSize} height={iconSize} />
         {(isSelected || option.locked) && (
           <View
-            className={`absolute left-0 top-0 flex h-full w-full items-center justify-center rounded-full ${option.category === 'gender' && 'rounded-[17.5px]'} bg-black/30`}
+            className={`absolute left-0 top-0 flex h-full w-full items-center justify-center ${option.category === 'gender' ? 'rounded-[17.5px]' : 'rounded-full'} bg-black/30`}
           >
             {option.locked ? (
               <Lock width={overlaySize} height={overlaySize} color="white" />
             ) : (
-              <Check width={overlaySize} height={overlaySize} color="white" />
+              <Check width={checkSize} height={checkSize} color="white" />
             )}
           </View>
         )}
@@ -70,6 +72,7 @@ interface OptionSectionProps {
   onSelect: (value: string) => void;
   iconSize?: number;
   overlaySize?: number;
+  checkSize?: number;
   showBorder?: boolean;
 }
 
@@ -80,6 +83,7 @@ const OptionSection = ({
   onSelect,
   iconSize = 60,
   overlaySize = 24,
+  checkSize,
   showBorder = false,
 }: OptionSectionProps) => {
   return (
@@ -96,6 +100,7 @@ const OptionSection = ({
             onPress={() => onSelect(option.value)}
             iconSize={iconSize}
             overlaySize={overlaySize}
+            checkSize={checkSize}
           />
         ))}
       </View>
@@ -148,61 +153,39 @@ export default function NotRequestedView({
       label: t('match.not_requested.country.global'),
       icon: GlobalIcon,
       category: 'country',
+      locked: userCountry !== 'ko',
     },
     {
       value: 'KOREA',
       label: t('match.not_requested.country.korea'),
       icon: KoreaIcon,
       category: 'country',
+      locked: userCountry === 'ko',
     },
   ];
 
-  let genderOptions: Option[] = [];
-  if (userGender === 'male') {
-    genderOptions = [
-      {
-        value: 'ALL',
-        label: t('match.not_requested.gender.all'),
-        icon: AllGenderIcon,
-        category: 'gender',
-      },
-      {
-        value: 'MALE',
-        label: t('match.not_requested.gender.male'),
-        icon: MaleGenderIcon,
-        category: 'gender',
-      },
-      {
-        value: 'FEMALE',
-        label: t('match.not_requested.gender.female'),
-        icon: FemaleGenderIcon,
-        locked: true,
-        category: 'gender',
-      },
-    ];
-  } else if (userGender === 'female') {
-    genderOptions = [
-      {
-        value: 'ALL',
-        label: t('match.not_requested.gender.all'),
-        icon: AllGenderIcon,
-        category: 'gender',
-      },
-      {
-        value: 'FEMALE',
-        label: t('match.not_requested.gender.female'),
-        icon: FemaleGenderIcon,
-        category: 'gender',
-      },
-      {
-        value: 'MALE',
-        label: t('match.not_requested.gender.male'),
-        icon: MaleGenderIcon,
-        locked: true,
-        category: 'gender',
-      },
-    ];
-  }
+  const genderOptions: Option[] = [
+    {
+      value: 'ALL',
+      label: t('match.not_requested.gender.all'),
+      icon: AllGenderIcon,
+      category: 'gender',
+    },
+    {
+      value: 'FEMALE',
+      label: t('match.not_requested.gender.female'),
+      icon: FemaleGenderIcon,
+      category: 'gender',
+      locked: userGender === 'male',
+    },
+    {
+      value: 'MALE',
+      label: t('match.not_requested.gender.male'),
+      icon: MaleGenderIcon,
+      category: 'gender',
+      locked: userGender === 'female',
+    },
+  ];
 
   const handlePressMatch = () => {
     let mappedGender: 'SAME' | 'ALL' = 'ALL';
@@ -256,7 +239,7 @@ export default function NotRequestedView({
         </View>
       </View>
       <ScrollView className="pb-20">
-        <View className="mt-6 rounded-xl bg-white pb-3">
+        <View className="mt-6 rounded-xl bg-white pb-2">
           <MyText size="text-xl" className="px-5 pt-5 font-semibold">
             {t('match.not_requested.choose_conditions')}
           </MyText>
@@ -266,7 +249,8 @@ export default function NotRequestedView({
             selected={countryType}
             onSelect={(value) => setCountryType(value as 'GLOBAL' | 'KOREA')}
             iconSize={50}
-            overlaySize={20}
+            overlaySize={12}
+            checkSize={20}
             showBorder
           />
           <OptionSection
@@ -275,7 +259,8 @@ export default function NotRequestedView({
             selected={universityType}
             onSelect={(value) => setUniversityType(value as 'SAME' | 'DIFFERENT')}
             iconSize={50}
-            overlaySize={20}
+            overlaySize={12}
+            checkSize={20}
             showBorder
           />
           <OptionSection
@@ -284,7 +269,8 @@ export default function NotRequestedView({
             selected={genderType}
             onSelect={(value) => setGenderType(value as 'MALE' | 'FEMALE' | 'ALL')}
             iconSize={60}
-            overlaySize={24}
+            overlaySize={18}
+            checkSize={30}
           />
         </View>
         <TouchableOpacity

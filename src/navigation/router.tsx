@@ -304,7 +304,10 @@ function ChatNavigator() {
           activeScreen = (route.params as { screen?: string })?.screen;
         }
       }
-      const visible = activeScreen !== 'ChatRoom' && activeScreen !== 'Profile';
+      const visible =
+        activeScreen !== 'ChatRoom' &&
+        activeScreen !== 'Profile' &&
+        activeScreen !== 'ChatRequests';
       navigation.setOptions({
         tabBarStyle: animateTabBar(visible),
       });

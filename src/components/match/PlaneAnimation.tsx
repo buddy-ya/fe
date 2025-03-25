@@ -15,7 +15,7 @@ export function PlaneAnimation() {
     Animated.parallel([
       Animated.timing(translateX, {
         toValue: 30, // 시작점에서 오른쪽으로 300까지 이동
-        duration: 800,
+        duration: 1000,
         easing: Easing.out(Easing.quad),
         useNativeDriver: true,
       }),
