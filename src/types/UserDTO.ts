@@ -1,4 +1,4 @@
-type Gender = 'male' | 'female' | 'unknown' | null;
+export type Gender = 'male' | 'female' | 'unknown' | null;
 
 export interface User {
   id?: number;
