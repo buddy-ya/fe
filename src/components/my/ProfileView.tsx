@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { View, Image, TouchableOpacity } from 'react-native';
 import { MyText, Chip } from '@/components';
 import { User } from '@/types';
@@ -19,26 +20,27 @@ interface Section {
 export interface ProfileViewProps {
   user: User;
   isMyProfile: boolean;
-  isDefaultProfileImage: boolean;
-  t: (key: string) => string;
-  handleProfileImageUpload: () => void;
-  handleModalOpen: () => void;
-  handleEditName: () => void;
-  handleEditLanguages: () => void;
-  handleEditInterests: () => void;
+  isDefaultProfileImage?: boolean;
+  handleProfileImageUpload?: () => void;
+  handleModalOpen?: () => void;
+  handleEditName?: () => void;
+  handleEditLanguages?: () => void;
+  handleEditInterests?: () => void;
 }
 
 const ProfileView: React.FC<ProfileViewProps> = ({
   user,
   isMyProfile,
   isDefaultProfileImage,
-  t,
   handleProfileImageUpload,
   handleModalOpen,
   handleEditName,
   handleEditLanguages,
   handleEditInterests,
 }) => {
+  // 컴포넌트 내부에서 t를 선언
+  const { t } = useTranslation(['mypage', 'countries', 'majors', 'languages', 'interests']);
+
   const renderSectionHeader = (title: string, onEdit?: () => void) => (
     <View className="mb-2 flex-row items-center justify-between">
       <MyText size="text-[12px]" color="text-textDescription">
@@ -109,7 +111,7 @@ const ProfileView: React.FC<ProfileViewProps> = ({
             <MyText size="text-3xl" className="font-bold">
               {user.name}
             </MyText>
-            {isMyProfile && (
+            {isMyProfile && handleEditName && (
               <TouchableOpacity className="ml-2" onPress={handleEditName}>
                 <Pencil size={18} color="#797979" />
               </TouchableOpacity>

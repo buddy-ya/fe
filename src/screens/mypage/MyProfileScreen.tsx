@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { View, ScrollView, Image, TouchableOpacity } from 'react-native';
+import { View, ScrollView } from 'react-native';
 import { UserRepository } from '@/api';
-import { Chip, FeedOptionModal, InnerLayout, Layout, MyText } from '@/components';
+import { InnerLayout, Layout } from '@/components';
 import { ChatStackParamList, MyPageStackParamList } from '@/navigation/navigationRef';
 import { useModalStore, useUserStore } from '@/store';
 import { Gender, User } from '@/types';
@@ -102,26 +102,31 @@ export default function MyProfileScreen({ navigation, route }: any) {
     handleModalOpen('myProfile');
   };
 
-  const handleEditName = () => {
-    navigation.navigate('EditName', {
-      isEditMode: true,
-      initialName: name,
-    });
-  };
-
-  const handleEditLanguages = () => {
-    navigation.navigate('EditLanguage', {
-      isEditMode: true,
-      initialLanguages: languages,
-    });
-  };
-
-  const handleEditInterests = () => {
-    navigation.navigate('EditInterest', {
-      isEditMode: true,
-      initialInterests: interests,
-    });
-  };
+  // 내 프로필일 때만 편집 핸들러 전달
+  const editHandlers = isMyProfile
+    ? {
+        handleEditName: () => {
+          navigation.navigate('EditName', {
+            isEditMode: true,
+            initialName: name,
+          });
+        },
+        handleEditLanguages: () => {
+          navigation.navigate('EditLanguage', {
+            isEditMode: true,
+            initialLanguages: languages,
+          });
+        },
+        handleEditInterests: () => {
+          navigation.navigate('EditInterest', {
+            isEditMode: true,
+            initialInterests: interests,
+          });
+        },
+        handleProfileImageUpload,
+        handleModalOpen: handleModal,
+      }
+    : {};
 
   return (
     <>
@@ -132,12 +137,7 @@ export default function MyProfileScreen({ navigation, route }: any) {
               user={user}
               isMyProfile={isMyProfile}
               isDefaultProfileImage={isDefaultProfileImage}
-              t={t}
-              handleProfileImageUpload={handleProfileImageUpload}
-              handleModalOpen={handleModal}
-              handleEditName={handleEditName}
-              handleEditLanguages={handleEditLanguages}
-              handleEditInterests={handleEditInterests}
+              {...editHandlers}
             />
           </ScrollView>
         </InnerLayout>

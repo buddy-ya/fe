@@ -60,7 +60,8 @@
     "exitSuccess": "You have left the chat.",
     "error": {
       "unknown": "An unknown error has occurred.",
-      "network": "Please check your internet connection."
+      "network": "Please check your internet connection.",
+      "point": "Not enough points"
     }
   }
 }

@@ -13,6 +13,7 @@ import BookmarkScreen from '@/screens/mypage/BookmarkScreen';
 import EditProfileImageScreen from '@/screens/mypage/EditProfileImageScreen';
 import MyPostsScreen from '@/screens/mypage/MyPostsScreen';
 import MyProfileScreen from '@/screens/mypage/MyProfileScreen';
+import PointScreen from '@/screens/mypage/PointScreen';
 import SettingScreen from '@/screens/mypage/SettingScreen';
 import VerificationScreen from '@/screens/mypage/VerificationScreen';
 import CountrySelectScreen from '@/screens/onboarding/CountrySelectScreen';
@@ -271,7 +272,7 @@ function MatchNavigator() {
           activeScreen = (route.params as { screen?: string })?.screen;
         }
       }
-      const visible = activeScreen !== 'MyProfile';
+      const visible = activeScreen !== 'MyProfile' && activeScreen !== 'Point';
       navigation.setOptions({
         tabBarStyle: animateTabBar(visible),
       });
@@ -285,6 +286,7 @@ function MatchNavigator() {
     <MatchStack.Navigator initialRouteName="MatchHome" screenOptions={{ headerShown: false }}>
       <MatchStack.Screen name="MatchHome" component={MatchScreen} />
       <MatchStack.Screen name="MyProfile" component={MyProfileScreen} />
+      <MatchStack.Screen name="Point" component={PointScreen} />
     </MatchStack.Navigator>
   );
 }

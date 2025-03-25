@@ -62,6 +62,7 @@ export type VerificationStackParamList = {
 export type MatchstackParamList = {
   MatchHome: undefined;
   MyProfile: undefined;
+  Point: undefined;
 };
 
 export type ChatStackParamList = {

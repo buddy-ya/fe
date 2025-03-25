@@ -71,7 +71,9 @@ export default function MatchScreen({ navigation }: MatchScreenProps) {
     }
   };
 
-  const handlePointPress = () => {};
+  const handlePointPress = () => {
+    navigation.navigate('Point');
+  };
 
   useEffect(() => {
     const subscription = AppState.addEventListener('change', handleAppStateChange);
