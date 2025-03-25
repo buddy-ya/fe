@@ -1,12 +1,12 @@
 import { useTranslation } from 'react-i18next';
 import { View, TouchableOpacity } from 'react-native';
-import { useUserStore } from '@/store';
+import { useModalStore, useUserStore } from '@/store';
 import PendingIcon from '@assets/icons/match/pending.svg';
 import QuestionMarkIcon from '@assets/icons/match/question.svg';
 import { Image as ExpoImage } from 'expo-image';
 import { useMatchStore } from '@/store/useMatchStore';
 import MatchRepository from '@/api/MatchRepository';
-import { CountryID, getCountryFlag } from '@/utils';
+import { CountryID, getCountryFlag, logError } from '@/utils';
 import { MyText } from '../common';
 import { PlaneAnimation } from './PlaneAnimation';
 import { ThreeDotLoader } from './ThreeDotLoader';
@@ -22,10 +22,22 @@ export default function PendingView({ navigation }: PendingViewProps) {
   const userName = useUserStore((state) => state.name);
   const userCountry = useUserStore((state) => state.country);
   const updateMatchStatus = useMatchStore((state) => state.updateMatchStatus);
+  const userUpdate = useUserStore((state) => state.update);
+  const handleModalOpen = useModalStore((state) => state.handleOpen);
 
   const handlePressCancel = async () => {
-    await MatchRepository.deleteMatchRequest();
-    updateMatchStatus('not_requested');
+    try {
+      const deleteMatchResponse = await MatchRepository.deleteMatchRequest();
+      userUpdate({ point: deleteMatchResponse.point });
+      handleModalOpen('point', {
+        usedPoint: deleteMatchResponse.pointChange,
+        currentPoint: deleteMatchResponse.point,
+        action: 'INCREASE',
+      });
+      updateMatchStatus('not_requested');
+    } catch (error) {
+      logError(error);
+    }
   };
 
   const handleProfilePress = () => {

@@ -1,5 +1,7 @@
 export type Gender = 'male' | 'female' | 'unknown' | null;
 
+export type Role = 'STUDENT' | 'ADMIN';
+
 export interface User {
   id?: number;
   name?: string;
@@ -11,7 +13,7 @@ export interface User {
   majors?: string[];
   languages?: string[];
   interests?: string[];
-  status?: string;
+  status?: string | null;
   isCertificated?: boolean;
   isStudentIdCardRequested?: boolean;
   isDefaultProfileImage?: boolean;
@@ -19,6 +21,8 @@ export interface User {
   isAuthenticated?: boolean;
   isKorean?: boolean;
   isBanned?: boolean;
+  point?: number;
+  role?: Role;
   accessToken?: string;
   refreshToken?: string;
 }

@@ -9,6 +9,7 @@ interface PointModalProps {
   usedPoint: number;
   currentPoint: number;
   autoHideDuration?: number;
+  action: 'INCREASE' | 'DECREASE';
 }
 
 export function PointModal({
@@ -16,7 +17,8 @@ export function PointModal({
   onClose,
   usedPoint,
   currentPoint,
-  autoHideDuration = 1500,
+  autoHideDuration = 2000,
+  action,
 }: PointModalProps) {
   useEffect(() => {
     let timer: NodeJS.Timeout;
@@ -29,6 +31,12 @@ export function PointModal({
       if (timer) clearTimeout(timer);
     };
   }, [visible, autoHideDuration, onClose]);
+
+  const formattedPoint = Math.abs(usedPoint);
+  const message =
+    action === 'DECREASE'
+      ? `${formattedPoint}밋이 차감되었어요!`
+      : `${formattedPoint}밋을 받았어요!`;
 
   return (
     <Modal visible={visible} transparent animationType="fade" onRequestClose={onClose}>
@@ -43,7 +51,7 @@ export function PointModal({
               <Check size={28} color="black" />
             </View>
             <MyText size="text-lg" color="text-black" className="mb-2 text-center font-semibold">
-              {usedPoint}밋이 차감되었어요!
+              {message}
             </MyText>
             <MyText size="text-base" color="text-[#777777]" className="text-center">
               보유 밋 {currentPoint}밋

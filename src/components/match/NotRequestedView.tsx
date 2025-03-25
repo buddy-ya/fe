@@ -10,7 +10,7 @@ import FemaleGenderIcon from '@assets/icons/match/genderFemale.svg';
 import MaleGenderIcon from '@assets/icons/match/genderMale.svg';
 import QuestionMarkIcon from '@assets/icons/match/question.svg';
 import { Image as ExpoImage } from 'expo-image';
-import { Lock, SendHorizonal, Check } from 'lucide-react-native';
+import { Lock, Check } from 'lucide-react-native';
 import { CountryID, getCountryFlag, UNIVERSITY_ICONS, UniversityID } from '@/utils';
 import { MyText } from '../common';
 import { PlaneAnimation } from './PlaneAnimation';
@@ -111,7 +111,7 @@ const OptionSection = ({
 interface NotRequestedViewProps {
   handleMatchRequest: (options: {
     universityType: 'SAME' | 'DIFFERENT';
-    genderType: 'SAME' | 'ALL';
+    genderType: 'MALE' | 'FEMALE' | 'ALL';
   }) => void;
   navigation: any;
 }
@@ -188,20 +188,11 @@ export default function NotRequestedView({
   ];
 
   const handlePressMatch = () => {
-    let mappedGender: 'SAME' | 'ALL' = 'ALL';
-    if (
-      (userGender === 'male' && genderType === 'MALE') ||
-      (userGender === 'female' && genderType === 'FEMALE')
-    ) {
-      mappedGender = 'SAME';
-    } else {
-      mappedGender = 'ALL';
-    }
     handleModalOpen('matchRequest', {
       onConfirm: () =>
         handleMatchRequest({
           universityType: universityType || 'SAME',
-          genderType: mappedGender,
+          genderType: genderType || 'ALL',
         }),
     });
   };
@@ -275,9 +266,9 @@ export default function NotRequestedView({
         </View>
         <TouchableOpacity
           onPress={handlePressMatch}
-          disabled={!universityType || !genderType}
+          disabled={!countryType || !universityType || !genderType}
           className={`bottom-0 mt-10 h-12 w-full items-center justify-center rounded-xl ${
-            !universityType || !genderType ? 'bg-[#CBCBCB]' : 'bg-primary'
+            !countryType || !universityType || !genderType ? 'bg-[#CBCBCB]' : 'bg-primary'
           }`}
         >
           <MyText size="text-lg" className="font-semibold text-white">

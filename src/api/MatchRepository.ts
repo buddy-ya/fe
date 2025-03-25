@@ -1,4 +1,4 @@
-import { MatchDTO } from '@/types';
+import { DeleteMatchResponse, MatchDTO, MatchRequest } from '@/types';
 import API from './API';
 
 class MatchRepository {
@@ -7,13 +7,14 @@ class MatchRepository {
     return data;
   }
 
-  async createMatchRequest(matchRequest): Promise<MatchDTO> {
+  async createMatchRequest(matchRequest: MatchRequest): Promise<MatchDTO> {
     const { data } = await API.post('/matches', matchRequest);
     return data;
   }
 
-  async deleteMatchRequest() {
-    await API.delete('/matches');
+  async deleteMatchRequest(): Promise<DeleteMatchResponse> {
+    const { data } = await API.delete('/matches');
+    return data;
   }
 }
 
