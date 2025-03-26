@@ -369,6 +369,7 @@ function MyPageNavigator() {
       <MyPageStack.Screen name="MyPosts" component={MyPostsScreen} />
       <MyPageStack.Screen name="Settings" component={SettingScreen} />
       <MyPageStack.Screen name="FeedDetail" component={SuspendedFeedDetailScreen} />
+      <MyPageStack.Screen name="Point" component={PointScreen} />
     </MyPageStack.Navigator>
   );
 }

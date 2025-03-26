@@ -82,6 +82,7 @@ export type MyPageStackParamList = {
   Bookmark: undefined;
   MyPosts: undefined;
   Settings: undefined;
+  Point: undefined;
   FeedDetail: {
     feedId: number;
     feedCategory?: string;
