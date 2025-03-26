@@ -18,15 +18,15 @@ export default function SuccessView({ navigation }: any) {
 
   const handlePressCancel = async () => {
     try {
-      const deleteMatchResponse = await MatchRepository.deleteMatchRequest();
+      await MatchRepository.deleteMatchRequest();
       updateMatchData({ matchStatus: 'not_requested' });
     } catch (error) {}
   };
 
   const handlePressChat = async () => {
     try {
-      // await MatchRepository.deleteMatchRequest();
-      // updateMatchData({ matchStatus: 'not_requested' });
+      await MatchRepository.deleteMatchRequest();
+      updateMatchData({ matchStatus: 'not_requested' });
       if (matchData?.isExited) {
         showToast(<MyText>💬</MyText>, t('common:toast.error.chatRoom'), 2000);
         return;
