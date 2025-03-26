@@ -131,6 +131,7 @@ export default function NotRequestedView({
   const userProfileImageUrl = useUserStore((state) => state.profileImageUrl);
   const userName = useUserStore((state) => state.name);
   const userCountry = useUserStore((state) => state.country);
+  const userIsCertificated = useUserStore((state) => state.isCertificated);
 
   const universityOptions: Option[] = [
     {
@@ -188,13 +189,15 @@ export default function NotRequestedView({
   ];
 
   const handlePressMatch = () => {
-    handleModalOpen('matchRequest', {
-      onConfirm: () =>
-        handleMatchRequest({
-          universityType: universityType || 'SAME',
-          genderType: genderType || 'ALL',
-        }),
-    });
+    userIsCertificated
+      ? handleModalOpen('matchRequest', {
+          onConfirm: () =>
+            handleMatchRequest({
+              universityType: universityType || 'SAME',
+              genderType: genderType || 'ALL',
+            }),
+        })
+      : handleModalOpen('studentCertification');
   };
 
   const handleProfilePress = () => {
