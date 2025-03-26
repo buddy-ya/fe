@@ -1,31 +1,23 @@
-// useMatchStore.ts
-import { MatchDTO, MatchStatusType } from '@/types';
+import { MatchDTO } from '@/types';
 import { create } from 'zustand';
 import { immer } from 'zustand/middleware/immer';
 
-interface MatchState {
+type MatchState = {
   matchData: MatchDTO | null;
-  matchStatus: MatchStatusType;
-  updateMatchData: (data: MatchDTO | null) => void;
-  updateMatchStatus: (status: MatchStatusType) => void;
-}
+  updateMatchData: (data: Partial<MatchDTO>) => void;
+};
 
 export const useMatchStore = create(
   immer<MatchState>((set) => ({
     matchData: null,
-    matchStatus: 'not_requested',
     updateMatchData: (data) =>
       set((state) => {
-        state.matchData = data;
-        if (data) {
-          state.matchStatus = data.matchStatus;
-        }
-      }),
-    updateMatchStatus: (status) =>
-      set((state) => {
-        state.matchStatus = status;
         if (state.matchData) {
-          state.matchData.matchStatus = status;
+          // 기존 matchData에 전달받은 데이터만 병합합니다.
+          Object.assign(state.matchData, data);
+        } else {
+          // matchData가 없으면 새로 할당합니다.
+          state.matchData = data as MatchDTO;
         }
       }),
   }))

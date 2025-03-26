@@ -38,7 +38,6 @@ const ProfileView: React.FC<ProfileViewProps> = ({
   handleEditLanguages,
   handleEditInterests,
 }) => {
-  // 컴포넌트 내부에서 t를 선언
   const { t } = useTranslation(['mypage', 'countries', 'majors', 'languages', 'interests']);
 
   const renderSectionHeader = (title: string, onEdit?: () => void) => (

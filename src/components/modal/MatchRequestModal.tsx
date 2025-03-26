@@ -14,7 +14,7 @@ export function MatchRequestModal({ visible, onConfirm, onClose }: CommonModalPr
   const { t } = useTranslation('match');
 
   const title = t('match.requestModal.title');
-  const description = t('match.requestModal.description');
+  const description = t('match.requestModal.description', { point: 1 });
   const cancelText = t('match.requestModal.cancelText');
   const confirmText = t('match.requestModal.confirmText');
 

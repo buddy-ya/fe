@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Modal, View, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
 import { MyText } from '@/components';
 import { Check } from 'lucide-react-native';
@@ -17,9 +18,11 @@ export function PointModal({
   onClose,
   usedPoint,
   currentPoint,
-  autoHideDuration = 2000,
+  autoHideDuration = 2500,
   action,
 }: PointModalProps) {
+  const { t } = useTranslation('common');
+
   useEffect(() => {
     let timer: NodeJS.Timeout;
     if (visible) {
@@ -35,8 +38,8 @@ export function PointModal({
   const formattedPoint = Math.abs(usedPoint);
   const message =
     action === 'DECREASE'
-      ? `${formattedPoint}밋이 차감되었어요!`
-      : `${formattedPoint}밋을 받았어요!`;
+      ? t('modal.point.decrease', { point: formattedPoint })
+      : t('modal.point.increase', { point: formattedPoint });
 
   return (
     <Modal visible={visible} transparent animationType="fade" onRequestClose={onClose}>
@@ -53,9 +56,18 @@ export function PointModal({
             <MyText size="text-lg" color="text-black" className="mb-2 text-center font-semibold">
               {message}
             </MyText>
-            <MyText size="text-base" color="text-[#777777]" className="text-center">
-              보유 밋 {currentPoint}밋
-            </MyText>
+            <View className="flex-row items-center justify-center">
+              <MyText size="text-base" color="text-textDescription" className="text-center">
+                {t('modal.point.balance')}
+              </MyText>
+              <MyText
+                size="text-base"
+                color="text-textDescription"
+                className="ml-3 mt-1 text-center"
+              >
+                {currentPoint}
+              </MyText>
+            </View>
           </View>
         </TouchableWithoutFeedback>
       </TouchableOpacity>

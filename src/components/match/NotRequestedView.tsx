@@ -12,7 +12,7 @@ import QuestionMarkIcon from '@assets/icons/match/question.svg';
 import { Image as ExpoImage } from 'expo-image';
 import { Lock, Check } from 'lucide-react-native';
 import { CountryID, getCountryFlag, UNIVERSITY_ICONS, UniversityID } from '@/utils';
-import { MyText } from '../common';
+import { InnerLayout, MyText } from '../common';
 import { PlaneAnimation } from './PlaneAnimation';
 
 interface Option {
@@ -202,7 +202,7 @@ export default function NotRequestedView({
   };
 
   return (
-    <View className="flex-1">
+    <InnerLayout>
       <View className="mt-4 w-full flex-row items-center justify-between gap-4 px-4">
         <TouchableOpacity onPress={handleProfilePress}>
           <View className="flex-row items-center gap-3">
@@ -229,7 +229,10 @@ export default function NotRequestedView({
           <QuestionMarkIcon />
         </View>
       </View>
-      <ScrollView className="pb-20">
+      <ScrollView
+        contentContainerStyle={{ flexGrow: 1, paddingBottom: 100 }}
+        showsVerticalScrollIndicator={false}
+      >
         <View className="mt-6 rounded-xl bg-white pb-2">
           <MyText size="text-xl" className="px-5 pt-5 font-semibold">
             {t('match.not_requested.choose_conditions')}
@@ -264,18 +267,20 @@ export default function NotRequestedView({
             checkSize={30}
           />
         </View>
-        <TouchableOpacity
-          onPress={handlePressMatch}
-          disabled={!countryType || !universityType || !genderType}
-          className={`bottom-0 mt-10 h-12 w-full items-center justify-center rounded-xl ${
-            !countryType || !universityType || !genderType ? 'bg-[#CBCBCB]' : 'bg-primary'
-          }`}
-        >
-          <MyText size="text-lg" className="font-semibold text-white">
-            {t('match.not_requested.button')}
-          </MyText>
-        </TouchableOpacity>
+        <View className="mt-8 items-center">
+          <TouchableOpacity
+            onPress={handlePressMatch}
+            disabled={!countryType || !universityType || !genderType}
+            className={`w-[180px] flex-row items-center justify-center rounded-full py-3 ${
+              !countryType || !universityType || !genderType ? 'bg-[#CBCBCB]' : 'bg-primary'
+            }`}
+          >
+            <MyText size="text-lg" className="font-semibold text-white">
+              {t('match.not_requested.button')}
+            </MyText>
+          </TouchableOpacity>
+        </View>
       </ScrollView>
-    </View>
+    </InnerLayout>
   );
 }

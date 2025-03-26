@@ -35,7 +35,7 @@
     },
     "requestModal": {
       "title": "Shall we search for a buddy?",
-      "description": "It may take n days to complete the match,\nand 0 points will be used for matching.",
+      "description": "It may take one day to complete the match,\nand {{point}} points will be used for matching.",
       "cancelText": "Close",
       "confirmText": "Confirm"
     }

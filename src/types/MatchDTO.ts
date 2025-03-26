@@ -2,6 +2,7 @@ export type MatchStatusType = 'not_requested' | 'pending' | 'success';
 
 export interface MatchDTO {
   id: number | null;
+  chatRoomId: number | null;
   buddyId: number | null;
   name: string | null;
   country: string | null;

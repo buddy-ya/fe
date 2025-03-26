@@ -272,7 +272,8 @@ function MatchNavigator() {
           activeScreen = (route.params as { screen?: string })?.screen;
         }
       }
-      const visible = activeScreen !== 'MyProfile' && activeScreen !== 'Point';
+      const visible =
+        activeScreen !== 'MyProfile' && activeScreen !== 'Point' && activeScreen !== 'ChatRoom';
       navigation.setOptions({
         tabBarStyle: animateTabBar(visible),
       });

@@ -7,7 +7,7 @@ import { Image as ExpoImage } from 'expo-image';
 import { useMatchStore } from '@/store/useMatchStore';
 import MatchRepository from '@/api/MatchRepository';
 import { CountryID, getCountryFlag, logError } from '@/utils';
-import { MyText } from '../common';
+import { InnerLayout, MyText } from '../common';
 import { PlaneAnimation } from './PlaneAnimation';
 import { ThreeDotLoader } from './ThreeDotLoader';
 
@@ -21,7 +21,7 @@ export default function PendingView({ navigation }: PendingViewProps) {
   const userProfileImageUrl = useUserStore((state) => state.profileImageUrl);
   const userName = useUserStore((state) => state.name);
   const userCountry = useUserStore((state) => state.country);
-  const updateMatchStatus = useMatchStore((state) => state.updateMatchStatus);
+  const updateMatchData = useMatchStore((state) => state.updateMatchData);
   const userUpdate = useUserStore((state) => state.update);
   const handleModalOpen = useModalStore((state) => state.handleOpen);
 
@@ -34,7 +34,7 @@ export default function PendingView({ navigation }: PendingViewProps) {
         currentPoint: deleteMatchResponse.point,
         action: 'INCREASE',
       });
-      updateMatchStatus('not_requested');
+      updateMatchData({ matchStatus: 'not_requested' });
     } catch (error) {
       logError(error);
     }
@@ -45,7 +45,7 @@ export default function PendingView({ navigation }: PendingViewProps) {
   };
 
   return (
-    <View className="flex-1">
+    <InnerLayout>
       <View className="mt-8 w-full flex-row items-center justify-between gap-4 px-4">
         <TouchableOpacity onPress={handleProfilePress}>
           <View className="flex-row items-center gap-3">
@@ -86,14 +86,16 @@ export default function PendingView({ navigation }: PendingViewProps) {
           <ThreeDotLoader />
         </View>
       </View>
-      <TouchableOpacity
-        onPress={handlePressCancel}
-        className="mt-10 h-12 w-full items-center justify-center rounded-full bg-white"
-      >
-        <MyText size="text-base" className="font-semibold text-black">
-          {t('match.pending.button')}
-        </MyText>
-      </TouchableOpacity>
-    </View>
+      <View className="mt-12 items-center">
+        <TouchableOpacity
+          onPress={handlePressCancel}
+          className="w-[180px] flex-row items-center justify-center rounded-full bg-[#CBCBCB] py-3"
+        >
+          <MyText size="text-lg" className="font-semibold text-white">
+            {t('match.pending.button')}
+          </MyText>
+        </TouchableOpacity>
+      </View>
+    </InnerLayout>
   );
 }

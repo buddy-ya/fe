@@ -13,6 +13,12 @@ export default {
               FeedDetail: 'feeds/:feedId',
             },
           },
+          Match: {
+            initialRouteName: 'MatchHome',
+            screens: {
+              MatchHome: 'match',
+            },
+          },
           Chat: {
             initialRouteName: 'RoomList',
             screens: {
