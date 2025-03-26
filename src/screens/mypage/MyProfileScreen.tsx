@@ -102,7 +102,6 @@ export default function MyProfileScreen({ navigation, route }: any) {
     handleModalOpen('myProfile');
   };
 
-  // 내 프로필일 때만 편집 핸들러 전달
   const editHandlers = isMyProfile
     ? {
         handleEditName: () => {

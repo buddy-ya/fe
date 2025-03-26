@@ -56,15 +56,11 @@ export function PointModal({
             <MyText size="text-lg" color="text-black" className="mb-2 text-center font-semibold">
               {message}
             </MyText>
-            <View className="flex-row items-center justify-center">
+            <View className="mb-1 flex-row items-center justify-center">
               <MyText size="text-base" color="text-textDescription" className="text-center">
                 {t('modal.point.balance')}
               </MyText>
-              <MyText
-                size="text-base"
-                color="text-textDescription"
-                className="ml-3 mt-1 text-center"
-              >
+              <MyText size="text-base" color="text-textDescription" className="ml-3 text-center">
                 {currentPoint}
               </MyText>
             </View>

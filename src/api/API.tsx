@@ -27,7 +27,7 @@ const errorMapping: Record<number, { emoji: string; translationKey: string }> = 
   4006: { emoji: '🗑️', translationKey: 'feed:error.deletedComment' },
   5004: { emoji: '📩', translationKey: 'feed:error.alreadyExistChatRequest' },
   5005: { emoji: '💬', translationKey: 'feed:error.alreadyExistChatroom' },
-  10002: { emoji: '⚠️', translationKey: 'common:toast.error.point' },
+  10002: { emoji: '🪙', translationKey: 'common:toast.error.point' },
 };
 
 API.interceptors.response.use(

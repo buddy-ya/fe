@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { View, Text, FlatList } from 'react-native';
 import { InnerLayout, Layout, MyText } from '@/components';
+import { useUserStore } from '@/store';
 import { PointDTO, PointsResponseDTO } from '@/types/PointDTO';
 import PointIcon from '@assets/icons/bigPoint.svg';
 import PointRepository from '@/api/PointRepository';
@@ -13,11 +14,14 @@ export default function PointScreen({ navigation }: any) {
   const [pointsData, setPointsData] = useState<PointsResponseDTO | null>(null);
   const [loading, setLoading] = useState(true);
 
+  const updateUser = useUserStore((state) => state.update);
+
   useEffect(() => {
     const fetchPoints = async () => {
       try {
         const data = await PointRepository.get();
         setPointsData(data);
+        updateUser({ point: data.currentPoint });
       } catch (error) {
       } finally {
         setLoading(false);

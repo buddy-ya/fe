@@ -1,5 +1,5 @@
 import React from 'react';
-import { useModalStore } from '@/store';
+import { useModalStore, useUserStore } from '@/store';
 import {
   ChatOptionModal,
   CommentOptionModal,
