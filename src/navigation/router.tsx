@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import SplashScreen from '@/screens/SplashScreen';
 import { SuspendedRequestsScreen } from '@/screens/chat/ChatRequestsScreen';
 import { SuspendedRoomListScreen } from '@/screens/chat/ChatRoomListScreen';
 import { SuspendedChatRoomScreen } from '@/screens/chat/ChatRoomScreen';
@@ -9,10 +8,12 @@ import { SuspendedFeedDetailScreen } from '@/screens/home/FeedDetailScreen';
 import FeedSearchScreen from '@/screens/home/FeedSearchScreen';
 import FeedWriteScreen from '@/screens/home/FeedWriteScreen';
 import { HomeScreen } from '@/screens/home/HomeScreen';
+import MatchScreen from '@/screens/match/MatchScreen';
 import BookmarkScreen from '@/screens/mypage/BookmarkScreen';
 import EditProfileImageScreen from '@/screens/mypage/EditProfileImageScreen';
 import MyPostsScreen from '@/screens/mypage/MyPostsScreen';
 import MyProfileScreen from '@/screens/mypage/MyProfileScreen';
+import PointScreen from '@/screens/mypage/PointScreen';
 import SettingScreen from '@/screens/mypage/SettingScreen';
 import VerificationScreen from '@/screens/mypage/VerificationScreen';
 import CountrySelectScreen from '@/screens/onboarding/CountrySelectScreen';
@@ -42,7 +43,6 @@ import {
   useRoute,
 } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import MatchingScreen from '@screens/matching/MatchingScreen';
 import MyPageScreen from '@screens/mypage/MyPageScreen';
 import { useNotification } from '@/hooks/useNotification';
 import { GlobalModalContainer } from '@/components/common/GlobalModalContainer';
@@ -52,6 +52,7 @@ import { getTabScreenOptions, tabScreenOptions, useTabBarAnimation } from './Tab
 import {
   ChatStackParamList,
   FeedStackParamList,
+  MatchstackParamList,
   MyPageStackParamList,
   OnboardingStackParamList,
   RootStackParamList,
@@ -62,6 +63,7 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator();
 const OnboardingStack = createNativeStackNavigator<OnboardingStackParamList>();
 const FeedStack = createNativeStackNavigator<FeedStackParamList>();
+const MatchStack = createNativeStackNavigator<MatchstackParamList>();
 const VerificationStack = createNativeStackNavigator<VerificationStackParamList>();
 const ChatStack = createNativeStackNavigator<ChatStackParamList>();
 const MyPageStack = createNativeStackNavigator<MyPageStackParamList>();
@@ -90,14 +92,14 @@ function TabNavigator() {
           },
         })}
       />
-      {/* <Tab.Screen
-        name="Matching"
-        component={MatchingScreen}
+      <Tab.Screen
+        name="Match"
+        component={MatchNavigator}
         options={() => ({
-          ...getTabScreenOptions('Matching'),
-          tabBarLabel: t('tab.matching'),
+          ...getTabScreenOptions('Match'),
+          tabBarLabel: t('tab.match'),
         })}
-      /> */}
+      />
       <Tab.Screen
         name="Chat"
         component={ChatNavigator}
@@ -255,6 +257,41 @@ function VerificationNavigator() {
   );
 }
 
+function MatchNavigator() {
+  const navigation = useNavigation();
+  const { animateTabBar } = useTabBarAnimation();
+  const route = useRoute();
+
+  React.useEffect(() => {
+    const onStateChange = () => {
+      const state = navigation.getState();
+      const activeTab = state?.routes[state.index];
+      let activeScreen = activeTab?.state?.routes?.[activeTab.state.index as any]?.name;
+      if (!activeScreen) {
+        if (!activeScreen) {
+          activeScreen = (route.params as { screen?: string })?.screen;
+        }
+      }
+      const visible =
+        activeScreen !== 'MyProfile' && activeScreen !== 'Point' && activeScreen !== 'ChatRoom';
+      navigation.setOptions({
+        tabBarStyle: animateTabBar(visible),
+      });
+    };
+
+    const unsubscribe = navigation.addListener('state', onStateChange);
+    return unsubscribe;
+  }, []);
+
+  return (
+    <MatchStack.Navigator initialRouteName="MatchHome" screenOptions={{ headerShown: false }}>
+      <MatchStack.Screen name="MatchHome" component={MatchScreen} />
+      <MatchStack.Screen name="MyProfile" component={MyProfileScreen} />
+      <MatchStack.Screen name="Point" component={PointScreen} />
+    </MatchStack.Navigator>
+  );
+}
+
 function ChatNavigator() {
   const navigation = useNavigation();
   const { animateTabBar } = useTabBarAnimation();
@@ -270,7 +307,10 @@ function ChatNavigator() {
           activeScreen = (route.params as { screen?: string })?.screen;
         }
       }
-      const visible = activeScreen !== 'ChatRoom' && activeScreen !== 'Profile';
+      const visible =
+        activeScreen !== 'ChatRoom' &&
+        activeScreen !== 'Profile' &&
+        activeScreen !== 'ChatRequests';
       navigation.setOptions({
         tabBarStyle: animateTabBar(visible),
       });
@@ -329,13 +369,12 @@ function MyPageNavigator() {
       <MyPageStack.Screen name="MyPosts" component={MyPostsScreen} />
       <MyPageStack.Screen name="Settings" component={SettingScreen} />
       <MyPageStack.Screen name="FeedDetail" component={SuspendedFeedDetailScreen} />
+      <MyPageStack.Screen name="Point" component={PointScreen} />
     </MyPageStack.Navigator>
   );
 }
 
 export default function Router() {
-  const modalVisible = useModalStore((state) => state.visible.studentCertification);
-  const handleModalClose = useModalStore((state) => state.handleClose);
   const isAuthenticated = useUserStore((state) => state.isAuthenticated);
   const navigation = useNavigation<any>();
   const { t } = useTranslation('common');

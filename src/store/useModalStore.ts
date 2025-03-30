@@ -10,7 +10,9 @@ export type ModalType =
   | 'myProfile'
   | 'report'
   | 'block'
-  | 'exit';
+  | 'exit'
+  | 'matchRequest'
+  | 'point';
 
 interface ModalState {
   visible: Record<ModalType, boolean>;
@@ -34,6 +36,8 @@ export const useModalStore = create<ModalState & ModalAction>((set) => ({
     report: false,
     block: false,
     exit: false,
+    matchRequest: false,
+    point: false,
   },
   modalProps: {},
   handleOpen: (type, props = {}) =>

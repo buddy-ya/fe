@@ -8,7 +8,7 @@ export interface RoomDTO {
 export interface Room {
   id: number;
   name?: string;
-  buddyId?: number;
+  buddyId: number;
   buddyName?: number;
   country: string;
   lastMessage: string;

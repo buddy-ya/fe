@@ -2,7 +2,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Image, Text, View } from 'react-native';
 import { API, ChatRequestRepository } from '@/api';
-import { useToastStore } from '@/store';
+import { useModalStore, useToastStore, useUserStore } from '@/store';
 import { getCountryFlag, logError } from '@/utils';
 import MyText from '@/components/common/MyText';
 import { BottomModalWrapper } from './BottomModalWrapper';
@@ -27,15 +27,21 @@ export function ChatRequestModal({ visible, data, onClose }: CommonModalProps) {
   const cancelText = t('chatRequestModal.cancel');
 
   const { showToast } = useToastStore();
+  const handleModalOpen = useModalStore((state) => state.handleOpen);
+  const updateUser = useUserStore((state) => state.update);
 
   const onConfirm = async () => {
     const userId = data?.userId;
     try {
-      await ChatRequestRepository.create({ receiverId: userId });
+      const data = await ChatRequestRepository.create({ receiverId: userId });
+      updateUser({ point: data.point });
+      handleModalOpen('point', {
+        usedPoint: data.pointChange,
+        currentPoint: data.point,
+        action: 'DECREASE',
+      });
       showToast(<Text>💬</Text>, t('chatRequestModal.success'));
-    } catch (error: any) {
-      logError(error);
-    }
+    } catch (error: any) {}
   };
 
   return (

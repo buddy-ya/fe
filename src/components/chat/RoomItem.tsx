@@ -1,6 +1,9 @@
 import { useTranslation } from 'react-i18next';
 import { View, TouchableOpacity } from 'react-native';
+import { ChatStackParamList } from '@/navigation/navigationRef';
 import { Room } from '@/types';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { CountryID, getCountryFlag, getTimeAgo } from '@/utils';
 import { MyText } from '../common';
 import { ProfileImage } from './ProfileImage';
@@ -19,6 +22,7 @@ export default function RoomItem({ room, onPress }: RoomItemProps) {
     profileImageUrl,
     unreadCount,
     isBuddyExited,
+    buddyId,
     lastMessageDate,
   } = room;
   const { t } = useTranslation('chat');
@@ -26,6 +30,8 @@ export default function RoomItem({ room, onPress }: RoomItemProps) {
   const handleClick = () => {
     onPress?.(id);
   };
+
+  const navigation = useNavigation<NativeStackNavigationProp<ChatStackParamList>>();
 
   const isNewMessage = unreadCount > 0;
 
@@ -35,12 +41,15 @@ export default function RoomItem({ room, onPress }: RoomItemProps) {
     }
     return lastMessage === null ? t('room.startMessage') : lastMessage;
   };
+  const handleProfilePress = () => {
+    navigation.navigate('Profile', { id: buddyId });
+  };
 
   return (
     <TouchableOpacity onPress={handleClick} activeOpacity={0.7}>
       <View className="mb-2 w-full flex-row flex-wrap items-center justify-between py-2">
         <View className="h-full w-3/4 flex-row items-center">
-          <ProfileImage imageUrl={profileImageUrl} />
+          <ProfileImage imageUrl={profileImageUrl} onPress={handleProfilePress} />
           <View className="ml-3 flex h-[40px] w-4/5 justify-between">
             <View className="flex-row items-center">
               <MyText className="mr-1 font-medium" numberOfLines={1}>

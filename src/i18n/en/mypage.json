@@ -58,6 +58,9 @@
     "delete": "Delete Account"
   },
   "myPostsEmpty": "No posts yet",
+  "point": {
+    "point": "Point"
+  },
   "common": {
     "complete": "Done"
   },
