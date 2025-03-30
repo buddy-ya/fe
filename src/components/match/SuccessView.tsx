@@ -2,10 +2,12 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { View, TouchableOpacity, Text } from 'react-native';
 import { ScrollView } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useToastStore } from '@/store';
 import { User } from '@/types';
 import { useMatchStore } from '@/store/useMatchStore';
 import MatchRepository from '@/api/MatchRepository';
+import { isAndroid } from '@/utils';
 import { InnerLayout, MyText } from '../common';
 import ProfileView from '../my/ProfileView';
 
@@ -37,6 +39,10 @@ export default function SuccessView({ navigation }: any) {
       });
     } catch (error) {}
   };
+
+  const insets = useSafeAreaInsets();
+  const tabBarHeight = isAndroid ? 65 : 80;
+  const BottomButtonPosition = tabBarHeight - insets.bottom - 8;
 
   return (
     <View className="flex-1">
