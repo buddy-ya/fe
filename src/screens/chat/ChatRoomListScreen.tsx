@@ -75,12 +75,12 @@ export default function RoomListScreen({ navigation }: RoomListNavigationProps) 
         <View className="flex-1">
           <TouchableOpacity onPress={handleGoToFeed} activeOpacity={0.7}>
             <View className="mt-4 flex h-[77px] flex-row items-center justify-between rounded-xl bg-primary px-6 py-4">
-              <View className="flex h-full flex-1 flex-row items-center">
+              <View className="flex h-full w-full flex-1 flex-row items-center">
                 <MyText className="text-white" size="text-lg">
                   {t('roomList.banner.title')}
                 </MyText>
               </View>
-              <View className="mt-6 flex h-full flex-1 flex-row items-center justify-end">
+              <View className="mt-6 flex h-full flex-row items-center justify-end">
                 <MyText className="text-white" size="text-sm">
                   {t('roomList.banner.description')}
                 </MyText>

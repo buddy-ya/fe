@@ -44,11 +44,15 @@ const OptionButton = ({
 
   return (
     <TouchableOpacity onPress={onPress} disabled={option.locked} className="items-center">
-      <View className="relative mb-2" pointerEvents="none">
+      <View
+        style={{ width: iconSize, height: iconSize }}
+        className="relative mb-2 overflow-hidden"
+        pointerEvents="none"
+      >
         <IconComponent width={iconSize} height={iconSize} />
         {(isSelected || option.locked) && (
           <View
-            className={`absolute left-0 top-0 flex h-full w-full items-center justify-center ${option.category === 'gender' ? 'rounded-[17.5px]' : 'rounded-full'} bg-black/30`}
+            className={`absolute left-0 top-0 h-full w-full items-center justify-center bg-black/30 ${option.category === 'gender' ? 'rounded-[17.5px]' : 'rounded-full'}`}
           >
             {option.locked ? (
               <Lock width={overlaySize} height={overlaySize} color="white" />
@@ -255,7 +259,7 @@ export default function NotRequestedView({
             options={universityOptions}
             selected={universityType}
             onSelect={(value) => setUniversityType(value as 'SAME' | 'DIFFERENT')}
-            iconSize={52}
+            iconSize={50}
             overlaySize={12}
             checkSize={20}
             showBorder
