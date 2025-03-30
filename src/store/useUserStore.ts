@@ -1,3 +1,4 @@
+import { Role } from '@/types';
 import { create } from 'zustand';
 import { immer } from 'zustand/middleware/immer';
 
@@ -18,6 +19,9 @@ type UserState = {
   isDefaultProfileImage: boolean;
   isKorean: boolean;
   isAuthenticated: boolean;
+  isBanned?: boolean;
+  point: number;
+  role: Role;
   accessToken?: string;
   refreshToken?: string;
 };
@@ -41,6 +45,8 @@ const INITIAL_STATE: UserState = {
   isStudentIdCardRequested: false,
   isDefaultProfileImage: false,
   isKorean: false,
+  point: 0,
+  role: 'STUDENT',
   isAuthenticated: false,
 };
 

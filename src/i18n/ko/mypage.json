@@ -61,6 +61,22 @@
   "common": {
     "complete": "완료"
   },
+  "point": {
+    "point": "포인트",
+    "title": "포인트 내역",
+    "pointType": {
+      "signup": "회원가입 이벤트",
+      "university_auth": "학교 인증 이벤트",
+      "chat_request": "채팅 요청",
+      "match_request": "매칭 요청",
+      "cancel_match_request": "매칭 요청 취소"
+    },
+    "pointChangeType": {
+      "earn": "적립",
+      "deduct": "차감"
+    },
+    "currentPoint": "보유 포인트"
+  },
   "setting": "설정",
   "certification": "이미 인증이 완료되었습니다."
 }

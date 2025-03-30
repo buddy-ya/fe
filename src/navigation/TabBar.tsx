@@ -11,10 +11,10 @@ const TAB_CONFIG = {
     Icon: Home,
     translationKey: 'tab.home',
   },
-  // Matching: {
-  //   Icon: Users,
-  //   translationKey: 'tab.matching',
-  // },
+  Match: {
+    Icon: Users,
+    translationKey: 'tab.match',
+  },
   Chat: {
     Icon: Send,
     translationKey: 'tab.chat',

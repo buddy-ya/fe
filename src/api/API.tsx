@@ -27,6 +27,7 @@ const errorMapping: Record<number, { emoji: string; translationKey: string }> = 
   4006: { emoji: '🗑️', translationKey: 'feed:error.deletedComment' },
   5004: { emoji: '📩', translationKey: 'feed:error.alreadyExistChatRequest' },
   5005: { emoji: '💬', translationKey: 'feed:error.alreadyExistChatroom' },
+  10002: { emoji: '🪙', translationKey: 'common:toast.error.point' },
 };
 
 API.interceptors.response.use(
@@ -37,10 +38,7 @@ API.interceptors.response.use(
       return Promise.reject(error);
     }
     const errorCode = error.response?.data?.code;
-
-    if (errorCode === 9000) {
-      useToastStore.getState().showToast(<MyText>⚠️</MyText>, error.response.data.message, 2000);
-    } else if (error.response?.status === 401 && errorCode === 3002 && !error.config._retry) {
+    if (error.response?.status === 401 && errorCode === 3002 && !error.config._retry) {
       error.config._retry = true;
       try {
         const refreshToken = await SecureStore.getItemAsync(TOKEN_KEYS.REFRESH);

@@ -1,7 +1,7 @@
 {
   "tab": {
     "home": "Home",
-    "matching": "Matching",
+    "match": "Matching",
     "chat": "Chat",
     "my": "My"
   },
@@ -52,6 +52,11 @@
       "description": "If you leave, you cannot rejoin this chatroom. Are you sure?",
       "cancel": "No",
       "accept": "Yes"
+    },
+    "point": {
+      "decrease": "{{point}} points have been deducted!",
+      "increase": "{{point}} points received!",
+      "balance": "Current Points"
     }
   },
   "toast": {
@@ -60,7 +65,9 @@
     "exitSuccess": "You have left the chat.",
     "error": {
       "unknown": "An unknown error has occurred.",
-      "network": "Please check your internet connection."
+      "network": "Please check your internet connection.",
+      "point": "Not enough points",
+      "chatRoom": "Chat room not found."
     }
   }
 }

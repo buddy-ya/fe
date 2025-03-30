@@ -6,6 +6,7 @@ import { MyPageStackParamList } from '@/navigation/navigationRef';
 import { useUserStore } from '@/store';
 import CircleCheck from '@assets/icons/circleCheck.svg';
 import LogoIcon from '@assets/icons/logo.svg';
+import Point from '@assets/icons/point.svg';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { Bookmark, ChevronRight, NotebookPen, Settings, ShieldAlert } from 'lucide-react-native';
 import { useToastStore } from '@/store/useToastStore';
@@ -23,8 +24,13 @@ export default function MyPageScreen({ navigation }: MyPageScreenProps) {
   const name = useUserStore((state) => state.name);
   const country = useUserStore((state) => state.country);
   const university = useUserStore((store) => store.university);
+  const point = useUserStore((state) => state.point);
   const update = useUserStore((state) => state.update);
   const isCertificated = useUserStore((state) => state.isCertificated);
+
+  const handlePointPress = () => {
+    navigation.navigate('Point');
+  };
 
   const quickMenuItems = [
     {
@@ -107,7 +113,7 @@ export default function MyPageScreen({ navigation }: MyPageScreenProps) {
             <ChevronRight size={24} color="#636363" strokeWidth={1.3} />
           </View>
         </TouchableOpacity>
-        <View className="mt-4 flex-row justify-around rounded-[20px] bg-white py-5">
+        <View className="mt-3 flex-row justify-around rounded-xl bg-white py-5">
           {quickMenuItems.map(({ key, label, icon, onPress }) => (
             <TouchableOpacity key={key} className="items-center" onPress={onPress}>
               <View className="mb-1">{icon}</View>
@@ -115,6 +121,23 @@ export default function MyPageScreen({ navigation }: MyPageScreenProps) {
             </TouchableOpacity>
           ))}
         </View>
+        <TouchableOpacity
+          className="mt-3 flex-row items-center justify-between rounded-xl bg-white p-5"
+          onPress={handlePointPress}
+        >
+          <View>
+            <MyText className="font-medium">{t('point.point')}</MyText>
+          </View>
+          <View className="flex-row items-center">
+            <View className="mr-4 flex-row items-center gap-2">
+              <Point />
+              <MyText className="ml-1 font-medium">{point}</MyText>
+            </View>
+            <View>
+              <ChevronRight size={19} color="#636363" strokeWidth={1.3} />
+            </View>
+          </View>
+        </TouchableOpacity>
       </InnerLayout>
     </Layout>
   );

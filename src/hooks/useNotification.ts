@@ -3,6 +3,7 @@ import { NotificationRepository } from '@/api';
 import { useUserStore } from '@/store';
 import * as Linking from 'expo-linking';
 import * as Notifications from 'expo-notifications';
+import { useMatchStore } from '@/store/useMatchStore';
 import { registerForPushNotificationsAsync } from '@/utils';
 
 export async function getExpoToken() {
@@ -12,6 +13,7 @@ export async function getExpoToken() {
 
 export function useNotification() {
   const update = useUserStore((state) => state.update);
+  const updateMatchData = useMatchStore((state) => state.updateMatchData);
   const prefix = Linking.createURL('/');
 
   useEffect(() => {
@@ -24,6 +26,11 @@ export function useNotification() {
       }
       if (data?.type === 'FEED' && data?.feedId) {
         const deepLinkUrl = `${prefix}feeds/${data.feedId}`;
+        setTimeout(() => Linking.openURL(deepLinkUrl), 100);
+      }
+      if (data?.type === 'MATCH') {
+        const deepLinkUrl = `${prefix}match`;
+        updateMatchData({ matchStatus: 'not_requested' });
         setTimeout(() => Linking.openURL(deepLinkUrl), 100);
       }
       if (data?.type === 'CHAT_REQUEST') {

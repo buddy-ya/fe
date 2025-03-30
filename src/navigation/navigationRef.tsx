@@ -59,6 +59,12 @@ export type VerificationStackParamList = {
   StudentIdComplete: undefined;
 };
 
+export type MatchstackParamList = {
+  MatchHome: undefined;
+  MyProfile: undefined;
+  Point: undefined;
+};
+
 export type ChatStackParamList = {
   RoomList: undefined;
   ChatRoom: { id: number };
@@ -76,6 +82,7 @@ export type MyPageStackParamList = {
   Bookmark: undefined;
   MyPosts: undefined;
   Settings: undefined;
+  Point: undefined;
   FeedDetail: {
     feedId: number;
     feedCategory?: string;
