@@ -44,7 +44,7 @@ const OptionButton = ({
 
   return (
     <TouchableOpacity onPress={onPress} disabled={option.locked} className="items-center">
-      <View className="relative mb-2 overflow-hidden" pointerEvents="none">
+      <View className="relative mb-2" pointerEvents="none">
         <IconComponent width={iconSize} height={iconSize} />
         {(isSelected || option.locked) && (
           <View
@@ -255,7 +255,7 @@ export default function NotRequestedView({
             options={universityOptions}
             selected={universityType}
             onSelect={(value) => setUniversityType(value as 'SAME' | 'DIFFERENT')}
-            iconSize={50}
+            iconSize={52}
             overlaySize={12}
             checkSize={20}
             showBorder
