@@ -45,7 +45,7 @@ export default function SuccessView({ navigation }: any) {
   const BottomButtonPosition = tabBarHeight - insets.bottom - 8;
 
   return (
-    <View className="flex-1">
+    <View className="relative flex-1">
       <InnerLayout>
         <ScrollView
           contentContainerStyle={{ flexGrow: 1, paddingBottom: 140 }}
@@ -63,31 +63,28 @@ export default function SuccessView({ navigation }: any) {
                 </MyText>
               </View>
               <ProfileView user={matchData as User} isMyProfile={false} />
+              <View className={`my-5 flex-row items-center justify-between gap-8 bg-white px-4`}>
+                <TouchableOpacity
+                  onPress={handlePressCancel}
+                  className="flex-1 items-center justify-center rounded-xl bg-[#E8E9EB] py-[12px]"
+                >
+                  <MyText size="text-lg" color="text-white" className="font-semibold">
+                    {t('match.success.cancel')}
+                  </MyText>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={handlePressChat}
+                  className="flex-1 items-center justify-center rounded-xl bg-primary py-[12px]"
+                >
+                  <MyText size="text-lg" color="text-white" className="font-semibold">
+                    {t('match.success.button')}
+                  </MyText>
+                </TouchableOpacity>
+              </View>
             </View>
           )}
         </ScrollView>
       </InnerLayout>
-
-      <View
-        className={`absolute bottom-12 w-full flex-row items-center justify-between gap-8 border-t-[0.8px] border-[#DFDFDF] bg-white px-5 py-3`}
-      >
-        <TouchableOpacity
-          onPress={handlePressCancel}
-          className="flex-1 items-center justify-center rounded-xl bg-[#E8E9EB] py-[12px]"
-        >
-          <MyText size="text-lg" color="text-white" className="font-semibold">
-            {t('match.success.cancel')}
-          </MyText>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={handlePressChat}
-          className="flex-1 items-center justify-center rounded-xl bg-primary py-[12px]"
-        >
-          <MyText size="text-lg" color="text-white" className="font-semibold">
-            {t('match.success.button')}
-          </MyText>
-        </TouchableOpacity>
-      </View>
     </View>
   );
 }
