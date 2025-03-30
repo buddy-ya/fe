@@ -8,7 +8,7 @@ import { FeedStackParamList } from '@/navigation/navigationRef';
 import { useModalStore, useUserStore } from '@/store';
 import LogoIcon from '@assets/icons/logo.svg';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { Bell, Plus, Search } from 'lucide-react-native';
+import { Bell, Pencil, Plus, Search } from 'lucide-react-native';
 import { isAndroid, CATEGORIES } from '@/utils';
 
 type FeedHomeScreenProps = NativeStackScreenProps<FeedStackParamList, 'FeedHome'>;
@@ -43,7 +43,8 @@ export function HomeScreen({ navigation }: FeedHomeScreenProps) {
   };
 
   const insets = useSafeAreaInsets();
-  const writeButtonPosition = isAndroid ? insets.bottom + 80 : insets.bottom + 40;
+  const tabBarHeight = isAndroid ? 65 : 80;
+  const writeButtonPosition = isAndroid ? insets.bottom + 80 : insets.bottom + 50;
   useBackButton();
 
   return (
@@ -91,7 +92,8 @@ export function HomeScreen({ navigation }: FeedHomeScreenProps) {
             onPress={handleWriteButton}
             className="absolute right-0"
             containerStyle={{ bottom: writeButtonPosition }}
-            icon={Plus}
+            icon={Pencil}
+            iconSize={20}
           />
         </View>
       </InnerLayout>
