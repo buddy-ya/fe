@@ -3,7 +3,11 @@
     "culture": "문화 생활",
     "sports": "스포츠 및 액티비티",
     "arts": "예술 및 창작 활동",
-    "food": "음식 및 음료"
+    "food": "음식 및 음료",
+    "travel": "여행 및 모험",
+    "fashion": "패션 및 스타일",
+    "technology": "기술 및 IT",
+    "health": "건강 및 웰빙"
   },
   "interests": {
     "kpop": "K-POP",
@@ -12,7 +16,7 @@
     "movie": "영화",
     "oneday": "원데이클래스",
     "experience": "체험카페",
-    "cafe": "카페 투어",
+    "cafe": "카페",
     "game": "게임",
     "basketball": "농구",
     "hiking": "등산",
@@ -23,16 +27,27 @@
     "soccer": "축구",
     "tennis": "테니스",
     "fitness": "헬스",
+    "league_of_legends": "LOL",
     "singing": "노래",
     "dance": "춤",
     "crafts": "공예",
     "instrument": "악기 연주",
     "photo": "사진 촬영",
-    "acting": "연기",
     "restaurant": "맛집 투어",
     "beer": "맥주",
     "baking": "베이킹",
     "cooking": "요리",
-    "food_experience": "이색 음식 체험"
+    "backpacking": "여행",
+    "sightseeing": "관광",
+    "adventure": "모험",
+    "style": "스타일",
+    "shopping": "쇼핑",
+    "beauty": "뷰티",
+    "programming": "코딩",
+    "gadgets": "가젯",
+    "robotics": "로보틱스",
+    "meditation": "명상",
+    "nutrition": "영양",
+    "wellness": "웰니스"
   }
 }

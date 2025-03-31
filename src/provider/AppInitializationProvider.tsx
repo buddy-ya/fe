@@ -8,7 +8,7 @@ import * as Font from 'expo-font';
 import { Image as ExpoImage } from 'expo-image';
 import { jwtDecode } from 'jwt-decode';
 import { reissueToken } from '@/api/API';
-import { showErrorModal } from '@/utils';
+import { removeNullValues, showErrorModal } from '@/utils';
 
 const FONTS = {
   'Pretendard-Thin': require('@assets/fonts/Pretendard-Thin.otf'),
@@ -61,7 +61,7 @@ async function getUser(): Promise<'Tab' | 'Onboarding'> {
     const userId = tokenPayload.studentId;
     const user = await UserRepository.get({ id: userId });
     await ChatSocketRepository.initialize();
-    useUserStore.getState().update({ ...user });
+    useUserStore.getState().update(removeNullValues(user));
   }
   return 'Tab';
 }

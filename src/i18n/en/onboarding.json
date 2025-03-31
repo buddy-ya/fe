@@ -96,7 +96,8 @@
     "guideline3": "Please write all posts in either English or Korean.",
     "guideline4": "Buddyya is a community for real college students. Please respect one another and communicate respectfully.",
     "button": "Buddyya Start",
-    "terms": "By tapping 'Buddyya Start', you agree to our <termsLink>Terms of Service</termsLink>."
+    "terms": "By tapping 'Buddyya Start',\nyou agree to our <termsLink>Terms of Service</termsLink>.",
+    "checkboxText": "I agree to the guidelines."
   },
   "common": {
     "next": "Next",
