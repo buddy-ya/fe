@@ -42,4 +42,5 @@ export interface Feed {
   isBookmarked: boolean;
   isProfileImageUpload: boolean;
   createdDate: string;
+  isStudentDeleted: boolean;
 }

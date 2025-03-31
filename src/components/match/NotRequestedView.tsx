@@ -205,32 +205,32 @@ export default function NotRequestedView({
   };
 
   const handleProfilePress = () => {
-    navigation.navigate('MyProfile');
+    navigation.getParent()?.navigate('MyPage', {
+      screen: 'MyProfile',
+    });
   };
 
   return (
     <InnerLayout>
       <View className="mt-4 w-full flex-row items-center justify-between gap-4 px-4">
-        <TouchableOpacity onPress={handleProfilePress}>
-          <View className="flex-row items-center gap-3">
-            <ExpoImage
-              style={{ height: 48, width: 48, borderRadius: 12 }}
-              source={{ uri: userProfileImageUrl }}
-              contentFit="contain"
-            />
-            <View>
-              <MyText size="text-sm" color="text-black" className="font-semibold">
-                {t(`universities:universities.${userUniv}`)}
+        <View className="flex-row items-center gap-3">
+          <ExpoImage
+            style={{ height: 48, width: 48, borderRadius: 12 }}
+            source={{ uri: userProfileImageUrl }}
+            contentFit="contain"
+          />
+          <View>
+            <MyText size="text-sm" color="text-black" className="font-semibold">
+              {t(`universities:universities.${userUniv}`)}
+            </MyText>
+            <View className="flex-row items-center gap-1">
+              <MyText size="text-sm" color="text-black">
+                {userName}
               </MyText>
-              <View className="flex-row items-center gap-1">
-                <MyText size="text-sm" color="text-black">
-                  {userName}
-                </MyText>
-                <MyText>{getCountryFlag(userCountry as CountryID)}</MyText>
-              </View>
+              <MyText>{getCountryFlag(userCountry as CountryID)}</MyText>
             </View>
           </View>
-        </TouchableOpacity>
+        </View>
         <PlaneAnimation />
         <View className="h-[48px] w-[48px] flex-row items-center justify-center rounded-xl bg-white">
           <QuestionMarkIcon />

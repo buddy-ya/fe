@@ -72,8 +72,11 @@ export default function MatchScreen({ navigation }: MatchScreenProps) {
       setTimeout(() => {
         updateMatchData(matchResponse);
       }, 1000);
-    } catch (error) {
-      logError(error);
+    } catch (error: any) {
+      const errorCode = error.response?.data?.code;
+      // if (errorCode === 10002) {
+      //   navigation.navigate('Point');
+      // }
     }
   };
 
