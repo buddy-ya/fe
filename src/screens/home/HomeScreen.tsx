@@ -6,10 +6,10 @@ import { Button, CategoryPager, FeedList, InnerLayout, Layout } from '@/componen
 import { useBackButton, useFeedList } from '@/hooks';
 import { FeedStackParamList } from '@/navigation/navigationRef';
 import { useModalStore, useUserStore } from '@/store';
-import LogoIcon from '@assets/icons/logo.svg';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { Bell, Pencil, Plus, Search } from 'lucide-react-native';
+import { Pencil, Search } from 'lucide-react-native';
 import { isAndroid, CATEGORIES } from '@/utils';
+import { FeedHeaderTab } from '@/components/feed/FeedHeaderTab';
 
 type FeedHomeScreenProps = NativeStackScreenProps<FeedStackParamList, 'FeedHome'>;
 
@@ -18,6 +18,7 @@ export function HomeScreen({ navigation }: FeedHomeScreenProps) {
   const handleModalOpen = useModalStore((state) => state.handleOpen);
   const [activeCategory, setActiveCategory] = useState(CATEGORIES[0].id);
   const isCertificated = useUserStore((state) => state.isCertificated);
+  const [selectedFeedTab, setSelectedFeedTab] = useState<'myUni' | 'buddyya'>('myUni');
 
   const feedListData = useFeedList({
     queryKey: feedKeys.lists(activeCategory),
@@ -43,7 +44,6 @@ export function HomeScreen({ navigation }: FeedHomeScreenProps) {
   };
 
   const insets = useSafeAreaInsets();
-  const tabBarHeight = isAndroid ? 65 : 80;
   const writeButtonPosition = isAndroid ? insets.bottom + 80 : insets.bottom + 50;
   useBackButton();
 
@@ -51,15 +51,17 @@ export function HomeScreen({ navigation }: FeedHomeScreenProps) {
     <Layout
       hasTabBar
       showHeader
-      headerLeft={<LogoIcon />}
+      headerLeft={
+        <FeedHeaderTab
+          selectedTab={selectedFeedTab}
+          onSelectTab={(tab) => setSelectedFeedTab(tab)}
+        />
+      }
       headerRight={
         <View className="flex-row items-center">
           <TouchableOpacity onPress={() => navigation.navigate('FeedSearch')} className="mr-1">
             <Search strokeWidth={2} size={24} color="#797977" />
           </TouchableOpacity>
-          {/* <TouchableOpacity>
-            <Bell strokeWidth={2} size={24} color="#797977" />
-          </TouchableOpacity> */}
         </View>
       }
     >

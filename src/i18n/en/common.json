@@ -67,7 +67,8 @@
       "unknown": "An unknown error has occurred.",
       "network": "Please check your internet connection.",
       "point": "Not enough points",
-      "chatRoom": "Chat room not found."
+      "chatRoom": "Chat room not found.",
+      "sendSMS": "Verification code request limit exceeded."
     }
   }
 }

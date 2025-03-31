@@ -31,8 +31,6 @@ export default function PointScreen({ navigation }: any) {
     fetchPoints();
   }, []);
 
-  if (!pointsData) return;
-
   return (
     <Layout
       showHeader

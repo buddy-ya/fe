@@ -22,6 +22,7 @@ export const reissueToken = async (
 };
 
 const errorMapping: Record<number, { emoji: string; translationKey: string }> = {
+  1005: { emoji: '📩', translationKey: 'common:error.sendSMS' },
   2011: { emoji: '🚫', translationKey: 'feed:error.alreadyBlocked' },
   4000: { emoji: '🗑️', translationKey: 'feed:error.deletedFeed' },
   4006: { emoji: '🗑️', translationKey: 'feed:error.deletedComment' },

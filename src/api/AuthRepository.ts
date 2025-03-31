@@ -10,8 +10,9 @@ import { getFormDataHeaders } from '@/utils';
 import API from './API';
 
 class AuthRepository {
-  async sendCodeByPhone({ phoneNumber }: PhoneDTO): Promise<PhoneDTO> {
-    const { data } = await API.post('/phone-auth/send-code', { phoneNumber });
+  async sendCodeByPhone({ phoneNumber, udId }: PhoneDTO): Promise<PhoneDTO> {
+    const { data } = await API.post('/phone-auth/send-code', { phoneNumber, udId });
+
     return data;
   }
 
@@ -24,8 +25,8 @@ class AuthRepository {
     return data;
   }
 
-  async verifyCodeByPhone({ phoneNumber, code }: PhoneDTO): Promise<VerifyCodeResponse> {
-    const { data } = await API.post('/phone-auth/verify-code', { phoneNumber, code });
+  async verifyCodeByPhone({ phoneNumber, code, udId }: PhoneDTO): Promise<VerifyCodeResponse> {
+    const { data } = await API.post('/phone-auth/verify-code', { phoneNumber, code, udId });
     return data;
   }
 

@@ -1,4 +1,8 @@
 {
+  "header": {
+    "myUni": "My Uni",
+    "buddyya": "Buddyya"
+  },
   "category": {
     "popular": "Popular",
     "free": "Free",

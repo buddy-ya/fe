@@ -1,4 +1,8 @@
 {
+  "header": {
+    "myUni": "우리 학교",
+    "buddyya": "버디야"
+  },
   "category": {
     "popular": "인기",
     "free": "자유",

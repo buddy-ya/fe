@@ -1,5 +1,6 @@
 {
   "majors": {
+    "language_school": "어학당",
     "humanities": "인문",
     "social_sciences": "사회과학",
     "business": "경영",
@@ -7,10 +8,17 @@
     "natural_sciences": "자연과학",
     "it": "IT",
     "engineering": "공과",
-    "arts_sports": "예체능",
+    "arts": "예술",
+    "sports": "체육",
     "nursing": "간호",
     "pharmacy": "약학",
-    "veterinary": "수의",
-    "medicine": "의과"
+    "veterinary": "수의학",
+    "medicine": "의학",
+    "law": "법학",
+    "psychology": "심리학",
+    "architecture": "건축학",
+    "communication": "커뮤니케이션",
+    "music": "음악",
+    "design": "디자인"
   }
 }

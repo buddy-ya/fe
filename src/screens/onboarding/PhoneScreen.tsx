@@ -1,6 +1,6 @@
 import { useRef, useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { TextInput, View } from 'react-native';
+import { TextInput, View, Platform } from 'react-native';
 import { AuthRepository } from '@/api';
 import {
   ErrorMessage,
@@ -15,6 +15,7 @@ import {
 } from '@/components';
 import { OnboardingStackParamList } from '@/navigation/navigationRef';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import * as Application from 'expo-application';
 import { Lock } from 'lucide-react-native';
 import { formatPhone } from '@/utils';
 
@@ -92,10 +93,15 @@ export default function PhoneScreen({ navigation }: OnboardingPhoneScreenProps) 
 
   const handleVerificationRequest = async () => {
     if (isLoading) return;
-
     try {
       setIsLoading(true);
-      await AuthRepository.sendCodeByPhone({ phoneNumber });
+      let deviceId: string | null = null;
+      if (Platform.OS === 'android') {
+        deviceId = Application.getAndroidId();
+      } else {
+        deviceId = await Application.getIosIdForVendorAsync();
+      }
+      await AuthRepository.sendCodeByPhone({ phoneNumber, udId: deviceId });
       navigation.navigate('OnboardingPhoneVerification', {
         phone: formatPhone.addHyphen(phoneNumber),
       });
@@ -132,7 +138,6 @@ export default function PhoneScreen({ navigation }: OnboardingPhoneScreenProps) 
           <Heading>{t('phone.title')}</Heading>
           <HeadingDescription>{t('phone.titleDescription')}</HeadingDescription>
           <Label>{t('phone.label')}</Label>
-
           <View>
             <View className="mb-4 flex-row items-center">
               <CountryCodeBox />
