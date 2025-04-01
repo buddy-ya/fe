@@ -60,7 +60,7 @@ export function Toast({ visible, icon, text, duration = 1200, onClose }: ToastPr
       <MyText>{icon}</MyText>
       <View className="max-w-[90%]">
         <MyText size="text-[14px]" className="ml-4 font-bold text-white">
-          ㄹㄹㅁ젊젖ㅁ로ㅓㅓㄹㅈ멀저마ㅓㅘㄹㅈ머ㅏㅁㄹ저ㅘㅗ마ㅓㅈ로ㅓㅏㅈㄹ머ㅗㅗ머ㅏㅈ로ㅓㅏㄹㅁ저ㅏㅗㄹㅁ저ㅏㅓㅏㅗㅁㄹ조ㅓㅏㅁㄹ저ㅘㅓㅘ
+          {text}
         </MyText>
       </View>
     </Animated.View>

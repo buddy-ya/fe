@@ -19,9 +19,17 @@ export function useNotification() {
   useEffect(() => {
     const backgroundListener = Notifications.addNotificationResponseReceivedListener((response) => {
       const data = response.notification.request.content.data;
+
       if (data?.type === 'AUTHORIZATION') {
         if (data?.isCertificated) {
+          const failDeepLinkUrl = `${prefix}studentIdCard`;
+          const successDeepLinkUrl = `${prefix}home`;
           update({ isCertificated: data?.isCertificated });
+          if (data?.isCertificated == false) {
+            setTimeout(() => Linking.openURL(failDeepLinkUrl), 100);
+          } else {
+            setTimeout(() => Linking.openURL(successDeepLinkUrl), 100);
+          }
         }
       }
       if (data?.type === 'FEED' && data?.feedId) {
@@ -30,7 +38,7 @@ export function useNotification() {
       }
       if (data?.type === 'MATCH') {
         const deepLinkUrl = `${prefix}match`;
-        updateMatchData({ matchStatus: 'not_requested' });
+        updateMatchData({ matchStatus: 'success' });
         setTimeout(() => Linking.openURL(deepLinkUrl), 100);
       }
       if (data?.type === 'CHAT_REQUEST') {

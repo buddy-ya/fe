@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { View, TouchableOpacity, Image } from 'react-native';
+import { View, TouchableOpacity, Image, ScrollView } from 'react-native';
 import { AuthRepository } from '@/api';
 import { Button, Heading, HeadingDescription, InnerLayout, Layout, MyText } from '@/components';
 import { FeedStackParamList } from '@/navigation/navigationRef';
@@ -21,15 +21,19 @@ export default function StudentIdCardUploadScreen({ navigation }: EmailVerificat
   const { t } = useTranslation('certification');
   const [initialImage, setInitialImage] = useState<string | null>(null);
   const [selectedAsset, setSelectedAsset] = useState<ImagePicker.ImagePickerAsset | null>(null);
+  const [rejectionReason, setRejectionReason] = useState<string | null>(null);
   const isStudentIdCardRequested = useUserStore((state) => state.isStudentIdCardRequested);
   const update = useUserStore((state) => state.update);
 
   useEffect(() => {
     async function fetchStudentIdCard() {
       if (isStudentIdCardRequested) {
-        const { studentIdCardUrl } = await AuthRepository.getStudentIdCard();
+        const { studentIdCardUrl, rejectionReason } = await AuthRepository.getStudentIdCard();
         if (studentIdCardUrl) {
           setInitialImage(studentIdCardUrl);
+        }
+        if (rejectionReason) {
+          setRejectionReason(rejectionReason);
         }
       }
     }
@@ -45,7 +49,7 @@ export default function StudentIdCardUploadScreen({ navigation }: EmailVerificat
       }
       const result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ['images'],
-        quality: 1,
+        quality: 0.4,
       });
       if (!result.canceled) {
         setSelectedAsset(result.assets[0]);
@@ -57,7 +61,6 @@ export default function StudentIdCardUploadScreen({ navigation }: EmailVerificat
 
   const handleSubmit = async () => {
     try {
-      // submit 버튼은 사용자가 새 이미지를 선택한 경우에만 활성화됩니다.
       if (!selectedAsset) return;
       const formData = new FormData();
       formData.append('image', processImageForUpload(selectedAsset as ImageFile));
@@ -80,29 +83,44 @@ export default function StudentIdCardUploadScreen({ navigation }: EmailVerificat
   return (
     <Layout showHeader onBack={() => navigation.goBack()}>
       <InnerLayout>
-        <Heading>{t('studentId.title')}</Heading>
-        <HeadingDescription>{t('studentId.description')}</HeadingDescription>
-        <View className="mt-14 flex-1 items-center">
-          <TouchableOpacity
-            onPress={handleImagePick}
-            className={`h-[320px] w-full items-center justify-center bg-background`}
-          >
-            {imageUri ? (
-              <Image source={{ uri: imageUri }} className="h-full w-full" resizeMode="contain" />
-            ) : (
-              <ImageBox className="h-full w-full" />
-            )}
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={handleImagePick}
-            className="mt-8 flex flex-row items-center rounded-2xl bg-[#E8F8F4] px-16 py-[8px]"
-          >
-            <Upload size={18} color={'#00A176'} />
-            <MyText color="text-primary" className="ml-3 font-semibold">
-              {t('studentId.upload')}
-            </MyText>
-          </TouchableOpacity>
-        </View>
+        <ScrollView
+          className="flex-1"
+          contentContainerStyle={{ paddingBottom: 80 }}
+          showsVerticalScrollIndicator={false}
+        >
+          <Heading>{t('studentId.title')}</Heading>
+          <HeadingDescription>{t('studentId.description')}</HeadingDescription>
+          {rejectionReason && (
+            <View className="mt-6 w-full flex-row items-center rounded-xl bg-red-100 p-4">
+              <MyText className="mr-3">⚠️</MyText>
+              <MyText color="text-black" className="max-w-[90%] font-medium">
+                {rejectionReason}
+              </MyText>
+            </View>
+          )}
+          <View className="mt-5 items-center">
+            <TouchableOpacity
+              onPress={handleImagePick}
+              className="max-h-[450px] w-full items-center justify-center"
+            >
+              {imageUri ? (
+                <Image source={{ uri: imageUri }} className="h-full w-full" resizeMode="contain" />
+              ) : (
+                <ImageBox className="h-full w-full" />
+              )}
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={handleImagePick}
+              className="mt-6 flex flex-row items-center rounded-2xl bg-[#E8F8F4] px-16 py-[8px]"
+            >
+              <Upload size={18} color={'#00A176'} />
+              <MyText color="text-primary" className="ml-3 font-semibold">
+                {t('studentId.upload')}
+              </MyText>
+            </TouchableOpacity>
+          </View>
+        </ScrollView>
+
         <Button onPress={handleSubmit} disabled={isSubmitDisabled}>
           <MyText color="text-white">{t('studentId.submitButton')}</MyText>
         </Button>
