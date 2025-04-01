@@ -13,10 +13,8 @@ export const useMatchStore = create(
     updateMatchData: (data) =>
       set((state) => {
         if (state.matchData) {
-          // 기존 matchData에 전달받은 데이터만 병합합니다.
           Object.assign(state.matchData, data);
         } else {
-          // matchData가 없으면 새로 할당합니다.
           state.matchData = data as MatchDTO;
         }
       }),

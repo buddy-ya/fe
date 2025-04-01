@@ -19,7 +19,10 @@ import { useModalStore, useUserStore } from '@/store';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useQueryClient, useSuspenseQueries } from '@tanstack/react-query';
 import { MoreVertical, Send } from 'lucide-react-native';
+import { useTabStore } from '@/store/useTabStore';
 import FeedSkeleton from '@/components/feed/FeedSkeleton';
+
+// Zustand 탭 스토어
 
 type FeedDetailScreenProps = NativeStackScreenProps<FeedStackParamList, 'FeedDetail'>;
 
@@ -33,6 +36,11 @@ export default function FeedDetailScreen({ navigation, route }: FeedDetailScreen
   const [commentInput, setCommentInput] = useState('');
   const [parentCommentId, setParentCommentId] = useState<number | null>(null);
   const commentInputRef = useRef<TextInput | null>(null);
+
+  // 글로벌 탭 상태를 읽지만, Feed 데이터가 있는 경우 feed.university를 우선 사용합니다.
+  const { selectedTab } = useTabStore();
+  const userUniversity = useUserStore((state) => state.university);
+  const globalTab = selectedTab === 'myUni' ? userUniversity : 'all';
 
   const results = useSuspenseQueries({
     queries: [
@@ -74,12 +82,15 @@ export default function FeedDetailScreen({ navigation, route }: FeedDetailScreen
   };
 
   useEffect(() => {
-    FeedService.incrementViewCount(
-      queryClient,
-      feedKeys.lists(feed.university || 'all', feed.category || 'free'),
-      feedId
-    );
-  }, [feedId, queryClient]);
+    if (feed) {
+      const effectiveUniversity = feed.university || globalTab;
+      FeedService.incrementViewCount(
+        queryClient,
+        feedKeys.lists(effectiveUniversity, feed.category || 'free'),
+        feedId
+      );
+    }
+  }, [feed, feedId, queryClient, globalTab]);
 
   const handleCommentReply = (commentId: number) => {
     setParentCommentId(commentId);

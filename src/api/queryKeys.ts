@@ -1,6 +1,6 @@
 interface FeedKeys {
   all: string[];
-  lists: (category: string) => string[];
+  lists: (tab: string, category: string) => string[];
   detail: (id: number) => string[];
   bookmarks: () => string[];
   search: (keyword: string) => string[];
@@ -9,7 +9,7 @@ interface FeedKeys {
 
 export const feedKeys: FeedKeys = {
   all: ['feeds'],
-  lists: (category) => ['feeds', 'list', category],
+  lists: (tab, category) => ['feeds', 'list', tab, category],
   detail: (id) => ['feeds', 'detail', id.toString()],
   bookmarks: () => ['feeds', 'bookmarks'],
   search: (keyword) => ['feeds', 'search', keyword],

@@ -8,6 +8,7 @@ import { FeedStackParamList } from '@/navigation/navigationRef';
 import { useModalStore, useUserStore } from '@/store';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { Pencil, Search } from 'lucide-react-native';
+import { useTabStore } from '@/store/useTabStore';
 import { isAndroid, CATEGORIES } from '@/utils';
 import { FeedHeaderTab } from '@/components/feed/FeedHeaderTab';
 
@@ -18,16 +19,18 @@ export function HomeScreen({ navigation }: FeedHomeScreenProps) {
   const handleModalOpen = useModalStore((state) => state.handleOpen);
   const [activeCategory, setActiveCategory] = useState(CATEGORIES[0].id);
   const isCertificated = useUserStore((state) => state.isCertificated);
-  const [selectedFeedTab, setSelectedFeedTab] = useState<'myUni' | 'buddyya'>('myUni');
+
+  const { selectedTab, setSelectedTab } = useTabStore();
   const userUniversity = useUserStore((state) => state.university);
-  const universityFilter = selectedFeedTab === 'myUni' ? userUniversity : 'all';
+
+  const tab = selectedTab === 'myUni' ? userUniversity : 'all';
 
   const feedListData = useFeedList({
-    queryKey: feedKeys.lists(universityFilter, activeCategory),
+    queryKey: feedKeys.lists(tab, activeCategory),
     fetchFn: async (params) => {
       return FeedRepository.getAll({
         ...params,
-        university: universityFilter,
+        university: tab,
         category: activeCategory,
       });
     },
@@ -43,11 +46,7 @@ export function HomeScreen({ navigation }: FeedHomeScreenProps) {
   };
 
   const handleWriteButton = async () => {
-    isCertificated
-      ? navigation.navigate('FeedWrite', {
-          university: universityFilter,
-        })
-      : handleModalOpen('studentCertification');
+    isCertificated ? navigation.navigate('FeedWrite') : handleModalOpen('studentCertification');
   };
 
   const insets = useSafeAreaInsets();
@@ -60,10 +59,7 @@ export function HomeScreen({ navigation }: FeedHomeScreenProps) {
       hasTabBar
       showHeader
       headerLeft={
-        <FeedHeaderTab
-          selectedTab={selectedFeedTab}
-          onSelectTab={(tab) => setSelectedFeedTab(tab)}
-        />
+        <FeedHeaderTab selectedTab={selectedTab} onSelectTab={(tab) => setSelectedTab(tab)} />
       }
       headerRight={
         <View className="flex-row items-center">
