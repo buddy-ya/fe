@@ -13,8 +13,8 @@
       },
       "university": {
         "title": "University",
-        "same": "Same University",
-        "different": "Different University"
+        "same": "Same Univ",
+        "different": "Diff Univ"
       },
       "gender": {
         "title": "Gender",

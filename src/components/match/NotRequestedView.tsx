@@ -149,6 +149,7 @@ export default function NotRequestedView({
       label: t('match.not_requested.university.different'),
       icon: DiffUniIcon,
       category: 'university',
+      locked: true,
     },
   ];
 

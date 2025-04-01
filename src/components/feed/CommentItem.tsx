@@ -126,7 +126,7 @@ const CommentItem = ({
             </View>
           </View>
         </View>
-        {!comment.isDeleted && !comment.isBlocked && (
+        {!comment.isDeleted && !comment.isBlocked && !comment.isStudentDeleted && (
           <TouchableOpacity
             onPress={() => onOptions(comment)}
             hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}

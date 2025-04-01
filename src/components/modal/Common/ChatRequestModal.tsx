@@ -53,6 +53,8 @@ export function ChatRequestModal({ visible, data, onClose }: CommonModalProps) {
       cancelText={cancelText}
       confirmText={confirmText}
       onConfirm={onConfirm}
+      confirmType="point"
+      point="1"
     >
       <View className="mt-5 rounded-[12px] bg-mainBackground py-4">
         <View className="items-center">

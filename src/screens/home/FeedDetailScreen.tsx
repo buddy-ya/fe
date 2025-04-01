@@ -136,20 +136,22 @@ export default function FeedDetailScreen({ navigation, route }: FeedDetailScreen
         disableBottomSafeArea
         onBack={() => navigation.goBack()}
         headerRight={
-          <View className="flex-row">
-            {!feed.isFeedOwner && (
-              <TouchableOpacity onPress={handleChatRequest} hitSlop={{ bottom: 20, left: 10 }}>
-                <Send size={24} color="#797979" />
+          !feed.isStudentDeleted && (
+            <View className="flex-row">
+              {!feed.isFeedOwner && (
+                <TouchableOpacity onPress={handleChatRequest} hitSlop={{ bottom: 20, left: 10 }}>
+                  <Send size={24} color="#797979" />
+                </TouchableOpacity>
+              )}
+              <TouchableOpacity
+                onPress={openFeedOptionModal}
+                hitSlop={{ bottom: 20, left: 10 }}
+                className="ml-4"
+              >
+                <MoreVertical size={24} color="#797979" />
               </TouchableOpacity>
-            )}
-            <TouchableOpacity
-              onPress={openFeedOptionModal}
-              hitSlop={{ bottom: 20, left: 10 }}
-              className="ml-4"
-            >
-              <MoreVertical size={24} color="#797979" />
-            </TouchableOpacity>
-          </View>
+            </View>
+          )
         }
       >
         <KeyboardLayout
