@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { View } from 'react-native';
+import { Platform, View } from 'react-native';
 import { AuthRepository, ChatSocketRepository } from '@/api';
 import {
   ErrorMessage,
@@ -20,6 +20,7 @@ import { OnboardingStackParamList } from '@/navigation/navigationRef';
 import { TokenService } from '@/service';
 import { useOnboardingStore, useUserStore } from '@/store';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import * as Application from 'expo-application';
 import { Send } from 'lucide-react-native';
 import { formatPhone, logError } from '@/utils';
 
@@ -66,9 +67,21 @@ export default function PhoneVerificationScreen({
 
   const handleVerifyCode = async () => {
     try {
-      const data = await AuthRepository.verifyCodeByPhone({ phoneNumber, code: verificationCode });
+      let deviceId: string | null = null;
+      if (Platform.OS === 'android') {
+        deviceId = Application.getAndroidId();
+      } else {
+        deviceId = await Application.getIosIdForVendorAsync();
+      }
+
+      const data = await AuthRepository.verifyCodeByPhone({
+        phoneNumber,
+        code: verificationCode,
+        udId: deviceId,
+      });
       setShowError(false);
       updateOnboardingData({ phoneNumber });
+
       if (data.status === 'EXISTING_MEMBER') {
         await TokenService.save(data.accessToken, data.refreshToken);
         update({ ...data, isAuthenticated: true });
@@ -84,10 +97,12 @@ export default function PhoneVerificationScreen({
           },
         ],
       });
-    } catch (error) {
-      logError(error);
-      setShowError(true);
+    } catch (error: any) {
+      const errorCode = error.response?.data?.code;
       setVerificationCode('');
+      if (errorCode === 1000) {
+        setShowError(true);
+      }
     }
   };
 

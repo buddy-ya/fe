@@ -41,7 +41,7 @@ module.exports = {
     ],
     ios: {
       bundleIdentifier: 'com.buddyya.app',
-      supportsTablet: true,
+      supportsTablet: false,
       infoPlist: {
         UIBackgroundModes: ['remote-notification'],
         'aps-environment': 'production',

@@ -1,7 +1,23 @@
+import CatholicIcon from '@assets/icons/universities/catholic.svg';
+import ChungAngIcon from '@assets/icons/universities/chungang.svg';
+import DonggukIcon from '@assets/icons/universities/dongguk.svg';
+import EwhaIcon from '@assets/icons/universities/ewha.svg';
+import HankukUFSIcon from '@assets/icons/universities/hankukufs.svg';
+import HanyangIcon from '@assets/icons/universities/hanyang.svg';
+import HongikIcon from '@assets/icons/universities/hongik.svg';
+import KARTSIcon from '@assets/icons/universities/karts.svg';
 import KonkukIcon from '@assets/icons/universities/konkuk.svg';
+import KookminIcon from '@assets/icons/universities/kookmin.svg';
+import KoreaIcon from '@assets/icons/universities/korea.svg';
+import KyungHeeIcon from '@assets/icons/universities/kyunghee.svg';
 import SejongIcon from '@assets/icons/universities/sejong.svg';
-
-const PlaceholderIcon = () => null;
+import SeoulCityIcon from '@assets/icons/universities/seoulcity.svg';
+import SeoulNationalIcon from '@assets/icons/universities/seoulnational.svg';
+import SeoulTechIcon from '@assets/icons/universities/seoultech.svg';
+import SogangIcon from '@assets/icons/universities/sogang.svg';
+import SookmyungIcon from '@assets/icons/universities/sookmyung.svg';
+import SungkyunkwanIcon from '@assets/icons/universities/sungkyunkwan.svg';
+import YonseiIcon from '@assets/icons/universities/yonsei.svg';
 
 export const UNIVERSITY_IDS = [
   'sejong',
@@ -54,27 +70,26 @@ export const UNIVERSITY_EMAIL_DOMAINS: Record<UniversityID, string> = {
 export const UNIVERSITY_ICONS: Record<UniversityID, React.ComponentType> = {
   sejong: SejongIcon,
   konkuk: KonkukIcon,
-  seoulnational: PlaceholderIcon,
-  yonsei: PlaceholderIcon,
-  korea: PlaceholderIcon,
-  sogang: PlaceholderIcon,
-  hanyang: PlaceholderIcon,
-  chungang: PlaceholderIcon,
-  kookmin: PlaceholderIcon,
-  sungkyunkwan: PlaceholderIcon,
-  hankukufs: PlaceholderIcon,
-  catholic: PlaceholderIcon,
-  ewha: PlaceholderIcon,
-  seoulcity: PlaceholderIcon,
-  seoultech: PlaceholderIcon,
-  dongguk: PlaceholderIcon,
-  hongik: PlaceholderIcon,
-  karts: PlaceholderIcon,
-  kyunghee: PlaceholderIcon,
-  sookmyung: PlaceholderIcon,
+  seoulnational: SeoulNationalIcon,
+  yonsei: YonseiIcon,
+  korea: KoreaIcon,
+  sogang: SogangIcon,
+  hanyang: HanyangIcon,
+  chungang: ChungAngIcon,
+  kookmin: KookminIcon,
+  sungkyunkwan: SungkyunkwanIcon,
+  hankukufs: HankukUFSIcon,
+  catholic: CatholicIcon,
+  ewha: EwhaIcon,
+  seoulcity: SeoulCityIcon,
+  seoultech: SeoulTechIcon,
+  dongguk: DonggukIcon,
+  hongik: HongikIcon,
+  karts: KARTSIcon,
+  kyunghee: KyungHeeIcon,
+  sookmyung: SookmyungIcon,
 };
 
-// 최종적으로 각 대학의 id, emailDomain, icon을 포함한 배열 생성
 export const UNIVERSITIES = UNIVERSITY_IDS.map((id) => ({
   id,
   emailDomain: UNIVERSITY_EMAIL_DOMAINS[id],

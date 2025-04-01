@@ -20,9 +20,7 @@
     },
     "production": {
       "autoIncrement": true,
-      "android": {
-        "buildType": "app-bundle"
-      },
+      "android": {},
       "ios": {
         "buildConfiguration": "Release",
         "scheme": "buddyya"

@@ -1,11 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
-import { Linking, Text, View } from 'react-native';
+import { Linking, Text, View, TouchableOpacity } from 'react-native';
 import { Button, Heading, HeadingDescription, InnerLayout, Layout, MyText } from '@/components';
 import { useBackButton } from '@/hooks';
 import i18n from '@/i18n';
 import { OnboardingStackParamList } from '@/navigation/navigationRef';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { Check } from 'lucide-react-native';
 import { TERMS_URL } from '@/utils';
 
 type OnboardingUserGuideProps = NativeStackScreenProps<
@@ -15,12 +16,15 @@ type OnboardingUserGuideProps = NativeStackScreenProps<
 
 export default function UserGuideScreen({ navigation }: OnboardingUserGuideProps) {
   const { t } = useTranslation('onboarding');
+  const [isChecked, setIsChecked] = useState(false);
 
   const handleAgree = () => {
-    navigation.reset({
-      index: 0,
-      routes: [{ name: 'Tab' }],
-    });
+    if (isChecked) {
+      navigation.reset({
+        index: 0,
+        routes: [{ name: 'Tab' }],
+      });
+    }
   };
 
   const openTermsLink = () => {
@@ -43,14 +47,30 @@ export default function UserGuideScreen({ navigation }: OnboardingUserGuideProps
         <View className="flex-1">
           <Heading>{t('userGuide.title')}</Heading>
           <HeadingDescription>{t('userGuide.description')}</HeadingDescription>
-          <View className="mt-12">
+          <TouchableOpacity
+            className={`mt-7 flex-row items-center rounded-xl border px-4 py-3 ${isChecked ? 'border-[#A6CFC4] bg-[#F6FFFD]' : 'border-gray-300 bg-[#F6F6F6]'}`}
+            onPress={() => setIsChecked(!isChecked)}
+          >
+            <View
+              className={`mr-3 h-8 w-8 items-center justify-center rounded-full ${isChecked ? 'bg-primary' : 'bg-[#DFDFDF]'} `}
+            >
+              <Check size={20} color="white" />
+            </View>
+            <MyText size="text-lg" className="font-medium">
+              {t('userGuide.checkboxText')}
+            </MyText>
+          </TouchableOpacity>
+          <View className="mt-4">
             {guidelines.map((item) => (
-              <View
-                key={item.key}
-                className="mb-4 flex-row items-center rounded-xl border border-gray-300 bg-gray-100 p-4"
-              >
-                <Text className="mr-3 text-2xl">{item.emoji}</Text>
-                <MyText className="flex-1 font-medium">{t(`userGuide.${item.key}`)}</MyText>
+              <View key={item.key} className="mt-6 flex-row items-center justify-between px-4">
+                <View className="p-[1px]">
+                  <MyText size="text-xl" className="mr-3">
+                    {item.emoji}
+                  </MyText>
+                </View>
+                <View className="flex-1">
+                  <MyText className="font-medium">{t(`userGuide.${item.key}`)}</MyText>
+                </View>
               </View>
             ))}
           </View>
@@ -71,7 +91,12 @@ export default function UserGuideScreen({ navigation }: OnboardingUserGuideProps
           </MyText>
         </View>
 
-        <Button className="mt-8 w-full" type="box" onPress={handleAgree}>
+        <Button
+          className={`mt-8 w-full ${isChecked ? 'bg-primar' : 'bg-gray-300'}`}
+          type="box"
+          onPress={handleAgree}
+          disabled={!isChecked}
+        >
           <MyText className="font-semibold text-lg text-white">{t('userGuide.button')}</MyText>
         </Button>
       </InnerLayout>

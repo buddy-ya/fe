@@ -22,11 +22,13 @@ export const reissueToken = async (
 };
 
 const errorMapping: Record<number, { emoji: string; translationKey: string }> = {
+  1005: { emoji: '📩', translationKey: 'common:toast.error.sendSMS' },
   2011: { emoji: '🚫', translationKey: 'feed:error.alreadyBlocked' },
   4000: { emoji: '🗑️', translationKey: 'feed:error.deletedFeed' },
   4006: { emoji: '🗑️', translationKey: 'feed:error.deletedComment' },
   5004: { emoji: '📩', translationKey: 'feed:error.alreadyExistChatRequest' },
   5005: { emoji: '💬', translationKey: 'feed:error.alreadyExistChatroom' },
+  8001: { emoji: '🚫', translationKey: 'common:toast.error.alreadyReported' },
   10002: { emoji: '🪙', translationKey: 'common:toast.error.point' },
 };
 

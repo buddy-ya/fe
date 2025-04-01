@@ -1,6 +1,7 @@
 export interface PhoneDTO {
   phoneNumber: string;
   code?: string;
+  udId?: string | null;
 }
 
 export interface EmailDTO {

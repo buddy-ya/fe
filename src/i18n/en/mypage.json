@@ -1,5 +1,5 @@
 {
-  "title": "Settings",
+  "title": "My",
   "profile": {
     "edit": "edit",
     "profile": {
@@ -49,17 +49,32 @@
     "title": "Settings Layout",
     "bookmark": "Bookmarks",
     "myPosts": "My Posts",
-    "refresh": "학생 인증 초기화",
+    "refresh": "Student Verification Reset",
     "version": "App Version",
     "inquiry": "Inquiry",
     "terms": "Terms of Use",
     "privacy": "Privacy Policy",
     "logout": "Logout",
-    "delete": "Delete Account"
+    "delete": "Delete Account",
+    "notifications": "Notification Settings",
+    "language": "Language Settings"
   },
   "myPostsEmpty": "No posts yet",
   "point": {
-    "point": "Point"
+    "point": "Point",
+    "title": "Point History",
+    "pointType": {
+      "signup": "Sign Up Event",
+      "university_auth": "University Verification Event",
+      "chat_request": "Chat Request",
+      "match_request": "Match Request",
+      "cancel_match_request": "Match Request Cancelled"
+    },
+    "pointChangeType": {
+      "earn": "Earn",
+      "deduct": "Deduct"
+    },
+    "currentPoint": "Current Points"
   },
   "common": {
     "complete": "Done"

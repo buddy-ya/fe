@@ -1,4 +1,4 @@
-export const CATEGORY_IDS = ['free', 'recruitment', 'info'] as const;
+export const CATEGORY_IDS = ['free', 'info', 'recruitment'] as const;
 
 export type CategoryID = (typeof CATEGORY_IDS)[number];
 

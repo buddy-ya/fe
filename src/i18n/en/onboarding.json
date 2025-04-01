@@ -1,7 +1,7 @@
 {
   "intro": {
     "title": "with\nOur Buddies\nEn{{flower}}joy\nCam{{eye}}pus",
-    "privacy": "By tapping 'Start with Phone Number' you agree to the <privacyLink>Privacy Policy</privacyLink>.",
+    "privacy": "By tapping 'Start with Phone Number'\nyou agree to the <privacyLink>Privacy Policy</privacyLink>.",
     "button": "Start with phone number"
   },
   "phone": {
@@ -45,6 +45,7 @@
   },
   "gender": {
     "title": "Please select your gender.",
+    "description": "Gender information will be used to deliver more precise matches.",
     "male": "Male",
     "female": "Female",
     "label": "gender",
@@ -95,7 +96,8 @@
     "guideline3": "Please write all posts in either English or Korean.",
     "guideline4": "Buddyya is a community for real college students. Please respect one another and communicate respectfully.",
     "button": "Buddyya Start",
-    "terms": "By tapping 'Buddyya Start', you agree to our <termsLink>Terms of Service</termsLink>."
+    "terms": "By tapping 'Buddyya Start',\nyou agree to our <termsLink>Terms of Service</termsLink>.",
+    "checkboxText": "I agree to the guidelines."
   },
   "common": {
     "next": "Next",

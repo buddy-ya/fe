@@ -286,7 +286,6 @@ function MatchNavigator() {
   return (
     <MatchStack.Navigator initialRouteName="MatchHome" screenOptions={{ headerShown: false }}>
       <MatchStack.Screen name="MatchHome" component={MatchScreen} />
-      <MatchStack.Screen name="MyProfile" component={MyProfileScreen} />
       <MatchStack.Screen name="Point" component={PointScreen} />
     </MatchStack.Navigator>
   );

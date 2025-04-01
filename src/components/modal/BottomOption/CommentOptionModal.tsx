@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Text } from 'react-native';
 import { useFeedDetail } from '@/hooks';
 import { useModalStore, useToastStore, useUserStore } from '@/store';
-import { Comment } from '@/types';
+import { Comment, Feed } from '@/types';
 import { useNavigation } from '@react-navigation/native';
 import { useQueryClient } from '@tanstack/react-query';
 import i18next from 'i18next';
@@ -16,11 +16,22 @@ interface CommentOptionModalProps {
   onClose: () => void;
   feedId: number;
   comment: Comment;
+  feed: Feed;
 }
 
-export function CommentOptionModal({ visible, onClose, feedId, comment }: CommentOptionModalProps) {
+export function CommentOptionModal({
+  visible,
+  onClose,
+  feedId,
+  feed,
+  comment,
+}: CommentOptionModalProps) {
   const queryClient = useQueryClient();
-  const { handleCommentActions } = useFeedDetail({ feedId });
+  const { handleCommentActions } = useFeedDetail({
+    feedCategory: feed.category,
+    university: feed.universityTab,
+    feedId,
+  });
   const { t } = useTranslation();
   const handleModalOpen = useModalStore((state) => state.handleOpen);
   const { showToast } = useToastStore();

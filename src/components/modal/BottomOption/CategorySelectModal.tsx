@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Animated, Modal, TouchableOpacity, View } from 'react-native';
 import { Check } from 'lucide-react-native';
+import { useTabStore } from '@/store/useTabStore';
 import { CATEGORIES } from '@/utils';
 import MyText from '@/components/common/MyText';
 
@@ -9,7 +10,7 @@ interface CategorySelectModalProps {
   visible: boolean;
   onClose: () => void;
   selectedCategory: any;
-  onSelect: any;
+  onSelect: (category: any) => void;
 }
 
 export function CategorySelectModal({
@@ -19,7 +20,8 @@ export function CategorySelectModal({
   onSelect,
 }: CategorySelectModalProps) {
   const { t } = useTranslation('feed');
-  const categories = CATEGORIES;
+  const { selectedTab } = useTabStore();
+  const categories = selectedTab === 'buddyya' ? [CATEGORIES[0]] : CATEGORIES;
 
   const slideAnim = useRef(new Animated.Value(100)).current;
 
@@ -59,12 +61,14 @@ export function CategorySelectModal({
                   </View>
                   <MyText
                     size="text-lg"
-                    color={`${
-                      selectedCategory.id == category.id ? 'text-[#004835]' : 'text-textDescription'
-                    }`}
+                    color={
+                      selectedCategory.id === category.id
+                        ? 'text-[#004835]'
+                        : 'text-textDescription'
+                    }
                     className="font-semibold"
                   >
-                    {t(`category.${category.id}`)}
+                    {t(`category.${category.label}`)}
                   </MyText>
                 </View>
                 <MyText>

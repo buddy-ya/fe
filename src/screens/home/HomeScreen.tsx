@@ -6,24 +6,33 @@ import { Button, CategoryPager, FeedList, InnerLayout, Layout } from '@/componen
 import { useBackButton, useFeedList } from '@/hooks';
 import { FeedStackParamList } from '@/navigation/navigationRef';
 import { useModalStore, useUserStore } from '@/store';
-import LogoIcon from '@assets/icons/logo.svg';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { Bell, Plus, Search } from 'lucide-react-native';
+import { Pencil, Search } from 'lucide-react-native';
+import { useTabStore } from '@/store/useTabStore';
 import { isAndroid, CATEGORIES } from '@/utils';
+import { FeedHeaderTab } from '@/components/feed/FeedHeaderTab';
 
 type FeedHomeScreenProps = NativeStackScreenProps<FeedStackParamList, 'FeedHome'>;
 
 export function HomeScreen({ navigation }: FeedHomeScreenProps) {
   const STALE_TIME = 1000 * 60;
   const handleModalOpen = useModalStore((state) => state.handleOpen);
-  const [activeCategory, setActiveCategory] = useState(CATEGORIES[0].id);
+  const { selectedTab, setSelectedTab } = useTabStore();
+  const userUniversity = useUserStore((state) => state.university);
   const isCertificated = useUserStore((state) => state.isCertificated);
 
+  const tab = selectedTab === 'myUni' ? userUniversity : 'all';
+
+  const categoriesToShow = tab === 'all' ? [CATEGORIES[0]] : CATEGORIES;
+
+  const [activeCategory, setActiveCategory] = useState(categoriesToShow[0].id);
+
   const feedListData = useFeedList({
-    queryKey: feedKeys.lists(activeCategory),
+    queryKey: feedKeys.lists(tab, activeCategory),
     fetchFn: async (params) => {
       return FeedRepository.getAll({
         ...params,
+        university: tab,
         category: activeCategory,
       });
     },
@@ -31,7 +40,7 @@ export function HomeScreen({ navigation }: FeedHomeScreenProps) {
   });
 
   const handlePageChange = (index: number) => {
-    setActiveCategory(CATEGORIES[index].id);
+    setActiveCategory(categoriesToShow[index].id);
   };
 
   const handlePressFeed = (feedId: number) => {
@@ -43,29 +52,29 @@ export function HomeScreen({ navigation }: FeedHomeScreenProps) {
   };
 
   const insets = useSafeAreaInsets();
-  const writeButtonPosition = isAndroid ? insets.bottom + 80 : insets.bottom + 40;
+  const writeButtonPosition = isAndroid ? insets.bottom + 80 : insets.bottom + 50;
+
   useBackButton();
 
   return (
     <Layout
       hasTabBar
       showHeader
-      headerLeft={<LogoIcon />}
+      headerLeft={
+        <FeedHeaderTab selectedTab={selectedTab} onSelectTab={(tab) => setSelectedTab(tab)} />
+      }
       headerRight={
         <View className="flex-row items-center">
           <TouchableOpacity onPress={() => navigation.navigate('FeedSearch')} className="mr-1">
             <Search strokeWidth={2} size={24} color="#797977" />
           </TouchableOpacity>
-          {/* <TouchableOpacity>
-            <Bell strokeWidth={2} size={24} color="#797977" />
-          </TouchableOpacity> */}
         </View>
       }
     >
       <InnerLayout>
         <View className="flex-1" pointerEvents="box-none">
-          <CategoryPager categories={CATEGORIES} onPageChange={handlePageChange}>
-            {CATEGORIES.map((category) => (
+          <CategoryPager categories={categoriesToShow} onPageChange={handlePageChange}>
+            {categoriesToShow.map((category) => (
               <View key={category.id} className="flex-1">
                 {category.id === activeCategory && (
                   <FeedList
@@ -91,7 +100,8 @@ export function HomeScreen({ navigation }: FeedHomeScreenProps) {
             onPress={handleWriteButton}
             className="absolute right-0"
             containerStyle={{ bottom: writeButtonPosition }}
-            icon={Plus}
+            icon={Pencil}
+            iconSize={20}
           />
         </View>
       </InnerLayout>

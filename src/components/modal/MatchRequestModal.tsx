@@ -27,6 +27,8 @@ export function MatchRequestModal({ visible, onConfirm, onClose }: CommonModalPr
       cancelText={cancelText}
       confirmText={confirmText}
       onConfirm={onConfirm}
+      confirmType="point"
+      point="1"
     >
       <View className="mt-5 h-[140px] flex-row items-center justify-center rounded-[12px] bg-mainBackground">
         <SearchIcon width={60} height={60} />

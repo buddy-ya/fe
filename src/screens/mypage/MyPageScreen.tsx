@@ -78,7 +78,11 @@ export default function MyPageScreen({ navigation }: MyPageScreenProps) {
   return (
     <Layout
       showHeader
-      headerLeft={<LogoIcon />}
+      headerLeft={
+        <MyText size="text-2xl" color="text-primary" className="font-semibold">
+          {t('title')}
+        </MyText>
+      }
       headerRight={
         <View className="flex-row items-center">
           <TouchableOpacity onPress={handleNotification}>
@@ -113,16 +117,21 @@ export default function MyPageScreen({ navigation }: MyPageScreenProps) {
             <ChevronRight size={24} color="#636363" strokeWidth={1.3} />
           </View>
         </TouchableOpacity>
-        <View className="mt-3 flex-row justify-around rounded-xl bg-white py-5">
+        <View className="mt-3 flex-row justify-around rounded-t-xl bg-white py-5">
           {quickMenuItems.map(({ key, label, icon, onPress }) => (
-            <TouchableOpacity key={key} className="items-center" onPress={onPress}>
+            <TouchableOpacity
+              key={key}
+              className="items-center"
+              onPress={onPress}
+              hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+            >
               <View className="mb-1">{icon}</View>
               {label}
             </TouchableOpacity>
           ))}
         </View>
         <TouchableOpacity
-          className="mt-3 flex-row items-center justify-between rounded-xl bg-white p-5"
+          className="mt-0 flex-row items-center justify-between rounded-b-xl border-t border-[#f6f6f6] bg-white p-5"
           onPress={handlePointPress}
         >
           <View>

@@ -8,9 +8,10 @@ class FeedRepository {
     return data;
   }
 
-  async getAll({ category, page, size }: FeedDTO) {
+  async getAll({ university, category, page, size }: FeedDTO) {
     const { data } = await API.get('/feeds', {
       params: {
+        university,
         category,
         page,
         size,

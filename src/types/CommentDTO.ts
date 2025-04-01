@@ -21,5 +21,6 @@ export interface Comment {
   isCommentOwner: boolean;
   isProfileImageUpload: boolean;
   isBlocked: boolean;
+  isStudentDeleted: boolean;
   replies: Comment[];
 }

@@ -44,11 +44,15 @@ const OptionButton = ({
 
   return (
     <TouchableOpacity onPress={onPress} disabled={option.locked} className="items-center">
-      <View className="relative mb-2 overflow-hidden" pointerEvents="none">
+      <View
+        style={{ width: iconSize, height: iconSize }}
+        className="relative mb-2 overflow-hidden"
+        pointerEvents="none"
+      >
         <IconComponent width={iconSize} height={iconSize} />
         {(isSelected || option.locked) && (
           <View
-            className={`absolute left-0 top-0 flex h-full w-full items-center justify-center ${option.category === 'gender' ? 'rounded-[17.5px]' : 'rounded-full'} bg-black/30`}
+            className={`absolute left-0 top-0 h-full w-full items-center justify-center bg-black/30 ${option.category === 'gender' ? 'rounded-[17.5px]' : 'rounded-full'}`}
           >
             {option.locked ? (
               <Lock width={overlaySize} height={overlaySize} color="white" />
@@ -145,6 +149,7 @@ export default function NotRequestedView({
       label: t('match.not_requested.university.different'),
       icon: DiffUniIcon,
       category: 'university',
+      locked: true,
     },
   ];
 
@@ -201,32 +206,32 @@ export default function NotRequestedView({
   };
 
   const handleProfilePress = () => {
-    navigation.navigate('MyProfile');
+    navigation.getParent()?.navigate('MyPage', {
+      screen: 'MyProfile',
+    });
   };
 
   return (
     <InnerLayout>
       <View className="mt-4 w-full flex-row items-center justify-between gap-4 px-4">
-        <TouchableOpacity onPress={handleProfilePress}>
-          <View className="flex-row items-center gap-3">
-            <ExpoImage
-              style={{ height: 48, width: 48, borderRadius: 12 }}
-              source={{ uri: userProfileImageUrl }}
-              contentFit="contain"
-            />
-            <View>
-              <MyText size="text-sm" color="text-black" className="font-semibold">
-                {t(`universities:universities.${userUniv}`)}
+        <View className="flex-row items-center gap-3">
+          <ExpoImage
+            style={{ height: 48, width: 48, borderRadius: 12 }}
+            source={{ uri: userProfileImageUrl }}
+            contentFit="contain"
+          />
+          <View>
+            <MyText size="text-sm" color="text-black" className="font-semibold">
+              {t(`universities:universities.${userUniv}`)}
+            </MyText>
+            <View className="flex-row items-center gap-1">
+              <MyText size="text-sm" color="text-black">
+                {userName}
               </MyText>
-              <View className="flex-row items-center gap-1">
-                <MyText size="text-sm" color="text-black">
-                  {userName}
-                </MyText>
-                <MyText>{getCountryFlag(userCountry as CountryID)}</MyText>
-              </View>
+              <MyText>{getCountryFlag(userCountry as CountryID)}</MyText>
             </View>
           </View>
-        </TouchableOpacity>
+        </View>
         <PlaneAnimation />
         <View className="h-[48px] w-[48px] flex-row items-center justify-center rounded-xl bg-white">
           <QuestionMarkIcon />

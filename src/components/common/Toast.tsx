@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { Animated, Easing, Text } from 'react-native';
+import { Animated, Easing, Text, View } from 'react-native';
 import MyText from './MyText';
 
 interface ToastProps {
@@ -44,7 +44,7 @@ export function Toast({ visible, icon, text, duration = 1200, onClose }: ToastPr
 
   return (
     <Animated.View
-      className="absolute bottom-[100px] left-10 right-10 z-10 flex-row items-center rounded-[12px] bg-toastBackground px-5 py-4"
+      className="absolute bottom-[100px] left-10 right-10 z-10 max-w-[80%] flex-row items-center rounded-[12px] bg-toastBackground px-5 py-4"
       style={{
         opacity: fadeAnim,
         transform: [
@@ -58,9 +58,11 @@ export function Toast({ visible, icon, text, duration = 1200, onClose }: ToastPr
       }}
     >
       <MyText>{icon}</MyText>
-      <MyText size="text-[14px]" className="ml-4 font-bold text-white">
-        {text}
-      </MyText>
+      <View className="max-w-[90%]">
+        <MyText size="text-[14px]" className="ml-4 font-bold text-white">
+          {text}
+        </MyText>
+      </View>
     </Animated.View>
   );
 }

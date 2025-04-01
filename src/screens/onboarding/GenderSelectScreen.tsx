@@ -44,7 +44,7 @@ export default function GenderScreen({ navigation }: OnboardingGenderSelectScree
       <InnerLayout>
         <View className="flex-1">
           <Heading>{t('gender.title')}</Heading>
-          <HeadingDescription>{t('gender.title')}</HeadingDescription>
+          <HeadingDescription>{t('gender.description')}</HeadingDescription>
           <Label>{t('gender.label')}</Label>
           <View className="mt-2">
             {GENDER_OPTIONS.map((item) => (

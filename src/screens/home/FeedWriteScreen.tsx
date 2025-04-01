@@ -12,12 +12,13 @@ import {
   ImagePreview,
 } from '@/components';
 import { FeedStackParamList } from '@/navigation/navigationRef';
-import { useModalStore } from '@/store';
+import { useModalStore, useUserStore } from '@/store';
 import { ImageFile } from '@/types';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useQueryClient } from '@tanstack/react-query';
 import * as ImagePicker from 'expo-image-picker';
 import { Camera, ChevronDown, ImagePlus, X } from 'lucide-react-native';
+import { useTabStore } from '@/store/useTabStore';
 import { CATEGORIES, logError } from '@/utils';
 
 const FILTERED_CATEGORIES = CATEGORIES;
@@ -38,6 +39,10 @@ export default function FeedWriteScreen({ navigation, route }: FeedWriteScreenPr
   const modalVisible = useModalStore((state) => state.visible.category);
   const handleModalOpen = useModalStore((state) => state.handleOpen);
   const handleModalClose = useModalStore((state) => state.handleClose);
+
+  const { selectedTab } = useTabStore();
+  const userUniversity = useUserStore((state) => state.university);
+  const tab = selectedTab === 'myUni' ? userUniversity : 'all';
 
   const [selectedCategory, setSelectedCategory] = useState(
     feed
@@ -147,10 +152,11 @@ export default function FeedWriteScreen({ navigation, route }: FeedWriteScreenPr
           content: content.trim(),
           category: selectedCategory.id,
           images,
+          university: tab,
         });
         queryClient.invalidateQueries({ queryKey: feedKeys.detail(feed.id) });
         queryClient.invalidateQueries({
-          queryKey: feedKeys.lists(selectedCategory.id),
+          queryKey: feedKeys.lists(tab, selectedCategory.id),
         });
       } else {
         await FeedRepository.create({
@@ -158,9 +164,10 @@ export default function FeedWriteScreen({ navigation, route }: FeedWriteScreenPr
           content: content.trim(),
           category: selectedCategory.id,
           images,
+          university: tab,
         });
         queryClient.invalidateQueries({
-          queryKey: feedKeys.lists(selectedCategory.id),
+          queryKey: feedKeys.lists(tab, selectedCategory.id),
         });
       }
     } catch (error) {
@@ -183,7 +190,7 @@ export default function FeedWriteScreen({ navigation, route }: FeedWriteScreenPr
       }
       headerCenter={
         <TouchableOpacity onPress={handleOpenCategoryModal} className="flex-row items-center">
-          <MyText size="text-xl" className="mr-[2px] font-semibold">
+          <MyText size="text-xl" className="mr-[2px] font-semibold" numberOfLines={1}>
             {selectedCategory.icon} {t(`category.${selectedCategory.label}`)}
           </MyText>
           <ChevronDown size={24} color="#282828" />

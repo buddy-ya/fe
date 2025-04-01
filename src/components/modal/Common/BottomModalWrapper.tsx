@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { Modal, TouchableOpacity, View, Animated } from 'react-native';
+import Point from '@assets/icons/point.svg';
 import MyText from '@/components/common/MyText';
 
 interface BottomModalWrapperProps {
@@ -10,7 +11,9 @@ interface BottomModalWrapperProps {
   children?: React.ReactNode;
   cancelText: string;
   confirmText: string;
+  point?: string;
   onConfirm: () => void;
+  confirmType?: 'default' | 'point';
 }
 
 export function BottomModalWrapper({
@@ -21,7 +24,9 @@ export function BottomModalWrapper({
   children,
   cancelText,
   confirmText,
+  point,
   onConfirm,
+  confirmType = 'default',
 }: BottomModalWrapperProps) {
   // 초기값 300: 모달 콘텐츠가 화면 아래쪽에서 시작
   const slideAnim = useRef(new Animated.Value(300)).current;
@@ -68,15 +73,23 @@ export function BottomModalWrapper({
                   </MyText>
                 </TouchableOpacity>
                 <TouchableOpacity
-                  className="flex-1 justify-center rounded-[12px] bg-primary"
+                  className="flex-1 items-center justify-center rounded-[12px] bg-primary"
                   onPress={() => {
                     onConfirm();
                     onClose();
                   }}
                 >
-                  <MyText size="text-[16px]" className="text-center font-semibold text-white">
+                  <MyText size="text-[14px]" className="text-center font-semibold text-white">
                     {confirmText}
                   </MyText>
+                  {confirmType === 'point' && (
+                    <View className="flex-row items-center">
+                      <Point width={10} height={10} />
+                      <MyText size="text-sm" className="ml-[5px] font-semibold" color="text-white">
+                        {point}
+                      </MyText>
+                    </View>
+                  )}
                 </TouchableOpacity>
               </View>
             </View>

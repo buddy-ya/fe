@@ -4,6 +4,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 interface UseFeedDetailProps {
   feedId: number;
+  university?: string;
   feedCategory?: string;
   updateBookmarkCache?: boolean;
   updateMyPostsCache?: boolean;
@@ -35,6 +36,7 @@ function updateCaches(
 
 export const useFeedDetail = ({
   feedId,
+  university,
   feedCategory,
   updateBookmarkCache = false,
   updateMyPostsCache = false,
@@ -42,10 +44,12 @@ export const useFeedDetail = ({
   searchKeyword,
 }: UseFeedDetailProps) => {
   const queryClient = useQueryClient();
+  const effectiveUniversity = university ?? 'all';
 
   const collectKeys = (): string[][] => {
     const keys = [feedKeys.detail(feedId)];
-    if (!updateSearchCache && feedCategory) keys.push(feedKeys.lists(feedCategory));
+    if (!updateSearchCache && feedCategory)
+      keys.push(feedKeys.lists(effectiveUniversity, feedCategory ?? 'free'));
     if (updateBookmarkCache) keys.push(feedKeys.bookmarks());
     if (updateMyPostsCache) keys.push(feedKeys.myPosts());
     if (updateSearchCache && searchKeyword) keys.push(feedKeys.search(searchKeyword));
@@ -118,7 +122,7 @@ export const useFeedDetail = ({
       CommentRepository.create({ feedId, parentId, content }),
     onMutate: async ({ content, parentId }) => {
       const keysToUpdate = [feedKeys.detail(feedId)];
-      if (feedCategory) keysToUpdate.push(feedKeys.lists(feedCategory));
+      if (feedCategory) keysToUpdate.push(feedKeys.lists(effectiveUniversity, feedCategory));
       CommentService.updateCommentCount({ queryClient, keys: keysToUpdate, feedId, delta: +1 });
       return { keysToUpdate };
     },
@@ -148,7 +152,7 @@ export const useFeedDetail = ({
     mutationFn: (commentId: number) => CommentRepository.delete({ feedId, commentId }),
     onMutate: async (commentId: number) => {
       const keysToUpdate = [feedKeys.detail(feedId)];
-      if (feedCategory) keysToUpdate.push(feedKeys.lists(feedCategory));
+      if (feedCategory) keysToUpdate.push(feedKeys.lists(effectiveUniversity, feedCategory));
       CommentService.updateCommentCount({ queryClient, keys: keysToUpdate, feedId, delta: -1 });
       return { keysToUpdate };
     },
