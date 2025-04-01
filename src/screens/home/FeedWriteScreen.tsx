@@ -190,7 +190,7 @@ export default function FeedWriteScreen({ navigation, route }: FeedWriteScreenPr
       }
       headerCenter={
         <TouchableOpacity onPress={handleOpenCategoryModal} className="flex-row items-center">
-          <MyText size="text-xl" className="mr-[2px] font-semibold">
+          <MyText size="text-xl" className="mr-[2px] font-semibold" numberOfLines={1}>
             {selectedCategory.icon} {t(`category.${selectedCategory.label}`)}
           </MyText>
           <ChevronDown size={24} color="#282828" />

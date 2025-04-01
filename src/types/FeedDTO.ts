@@ -28,6 +28,7 @@ export interface FeedUpdateDTO {
 export interface Feed {
   id: number;
   userId: number;
+  universityTab: string;
   name: string;
   country?: string;
   title: string;

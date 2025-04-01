@@ -66,7 +66,6 @@ export const useFeedWrite = ({ initialData = {}, onSuccess }: UseFeedWriteProps 
           queryKey: feedKeys.lists(university, category),
         });
       }
-
       onSuccess?.();
     } catch (error) {
       Alert.alert('Error', `Feed ${initialData.feedId ? 'Edit' : 'Upload'} Failed`);

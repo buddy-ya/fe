@@ -67,7 +67,7 @@ export default function FeedDetailScreen({ navigation, route }: FeedDetailScreen
 
   const { handleFeedActions, handleCommentActions } = useFeedDetail({
     feedId,
-    university: feed.university,
+    university: feed.universityTab,
     feedCategory: effectiveFeedCategory,
     updateBookmarkCache,
     updateMyPostsCache,
@@ -83,7 +83,7 @@ export default function FeedDetailScreen({ navigation, route }: FeedDetailScreen
 
   useEffect(() => {
     if (feed) {
-      const effectiveUniversity = feed.university || globalTab;
+      const effectiveUniversity = feed.universityTab || globalTab;
       FeedService.incrementViewCount(
         queryClient,
         feedKeys.lists(effectiveUniversity, feed.category || 'free'),

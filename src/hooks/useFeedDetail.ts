@@ -49,7 +49,7 @@ export const useFeedDetail = ({
   const collectKeys = (): string[][] => {
     const keys = [feedKeys.detail(feedId)];
     if (!updateSearchCache && feedCategory)
-      keys.push(feedKeys.lists(effectiveUniversity, feedCategory));
+      keys.push(feedKeys.lists(effectiveUniversity, feedCategory ?? 'free'));
     if (updateBookmarkCache) keys.push(feedKeys.bookmarks());
     if (updateMyPostsCache) keys.push(feedKeys.myPosts());
     if (updateSearchCache && searchKeyword) keys.push(feedKeys.search(searchKeyword));

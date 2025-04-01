@@ -21,7 +21,7 @@ export default function CommentList({ feed, comments, onLike, onReply }: Comment
 
   const handleCommentOptions = (comment: Comment) => {
     setSelectedComment(comment);
-    handleModalOpen('comment', { feedId: feed.id, comment });
+    handleModalOpen('comment', { feedId: feed.id, feed, comment });
   };
 
   return (
