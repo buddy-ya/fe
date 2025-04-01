@@ -78,7 +78,11 @@ export default function MyPageScreen({ navigation }: MyPageScreenProps) {
   return (
     <Layout
       showHeader
-      headerLeft={<LogoIcon />}
+      headerLeft={
+        <MyText size="text-2xl" color="text-primary" className="font-semibold">
+          {t('title')}
+        </MyText>
+      }
       headerRight={
         <View className="flex-row items-center">
           <TouchableOpacity onPress={handleNotification}>

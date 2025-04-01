@@ -57,7 +57,11 @@ export default function RoomListScreen({ navigation }: RoomListNavigationProps) 
     <Layout
       showHeader
       isBackgroundWhite
-      headerLeft={<LogoIcon />}
+      headerLeft={
+        <MyText size="text-2xl" color="text-primary" className="font-semibold">
+          {t('roomList.title')}
+        </MyText>
+      }
       headerRight={
         <TouchableOpacity
           className="relative p-1"

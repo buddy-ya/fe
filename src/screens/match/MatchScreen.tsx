@@ -9,7 +9,6 @@ import { useFocusEffect } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useMatchStore } from '@/store/useMatchStore';
 import MatchRepository from '@/api/MatchRepository';
-import { logError } from '@/utils';
 import NotRequestedView from '@/components/match/NotRequestedView';
 import PendingView from '@/components/match/PendingView';
 import SuccessView from '@/components/match/SuccessView';
@@ -108,7 +107,7 @@ export default function MatchScreen({ navigation }: MatchScreenProps) {
       hasTabBar
       showHeader
       headerLeft={
-        <MyText size="text-2xl" color="text-black" className="font-semibold">
+        <MyText size="text-2xl" color="text-primary" className="font-semibold">
           {t('match.title')}
         </MyText>
       }

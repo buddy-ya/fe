@@ -59,6 +59,7 @@ export default function FeedDetailScreen({ navigation, route }: FeedDetailScreen
 
   const { handleFeedActions, handleCommentActions } = useFeedDetail({
     feedId,
+    university: feed.university,
     feedCategory: effectiveFeedCategory,
     updateBookmarkCache,
     updateMyPostsCache,
@@ -73,7 +74,11 @@ export default function FeedDetailScreen({ navigation, route }: FeedDetailScreen
   };
 
   useEffect(() => {
-    FeedService.incrementViewCount(queryClient, feedKeys.lists(feed.category || 'free'), feedId);
+    FeedService.incrementViewCount(
+      queryClient,
+      feedKeys.lists(feed.university || 'all', feed.category || 'free'),
+      feedId
+    );
   }, [feedId, queryClient]);
 
   const handleCommentReply = (commentId: number) => {

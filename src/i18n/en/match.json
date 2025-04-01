@@ -1,6 +1,6 @@
 {
   "match": {
-    "title": "Matching",
+    "title": "Match",
     "not_requested": {
       "title": "Select your matching conditions!",
       "description": "Once matched, you can start chatting right away!",

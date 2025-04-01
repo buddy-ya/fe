@@ -9,6 +9,7 @@ export interface UpdateDTO extends BaseDTO, FeedFormData {}
 export interface FeedDTO {
   feedId?: number;
   category?: string;
+  university?: string;
   keyword?: string;
   page?: number;
   size?: number;
@@ -19,6 +20,7 @@ export interface FeedUpdateDTO {
   title: string;
   content: string;
   category: string;
+  university: string;
   images?: ImageFile[];
 }
 

@@ -19,12 +19,15 @@ export function HomeScreen({ navigation }: FeedHomeScreenProps) {
   const [activeCategory, setActiveCategory] = useState(CATEGORIES[0].id);
   const isCertificated = useUserStore((state) => state.isCertificated);
   const [selectedFeedTab, setSelectedFeedTab] = useState<'myUni' | 'buddyya'>('myUni');
+  const userUniversity = useUserStore((state) => state.university);
+  const universityFilter = selectedFeedTab === 'myUni' ? userUniversity : 'all';
 
   const feedListData = useFeedList({
-    queryKey: feedKeys.lists(activeCategory),
+    queryKey: feedKeys.lists(universityFilter, activeCategory),
     fetchFn: async (params) => {
       return FeedRepository.getAll({
         ...params,
+        university: universityFilter,
         category: activeCategory,
       });
     },
@@ -40,11 +43,16 @@ export function HomeScreen({ navigation }: FeedHomeScreenProps) {
   };
 
   const handleWriteButton = async () => {
-    isCertificated ? navigation.navigate('FeedWrite') : handleModalOpen('studentCertification');
+    isCertificated
+      ? navigation.navigate('FeedWrite', {
+          university: universityFilter,
+        })
+      : handleModalOpen('studentCertification');
   };
 
   const insets = useSafeAreaInsets();
   const writeButtonPosition = isAndroid ? insets.bottom + 80 : insets.bottom + 50;
+
   useBackButton();
 
   return (

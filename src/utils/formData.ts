@@ -10,6 +10,7 @@ export interface ImageFile {
 export interface FeedFormData {
   title: string;
   content: string;
+  university: string;
   category: string;
   images?: ImageFile[];
 }
@@ -32,6 +33,7 @@ export const processImageForUpload = (image: ImageFile) => {
 export const createFeedFormData = ({
   title,
   content,
+  university,
   category,
   images = [],
 }: FeedFormData): FormData => {
@@ -39,7 +41,7 @@ export const createFeedFormData = ({
   formData.append('title', title.trim());
   formData.append('content', content.trim());
   formData.append('category', category);
-
+  formData.append('university', university);
   images.forEach((image) => {
     formData.append('images', processImageForUpload(image));
   });
