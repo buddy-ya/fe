@@ -62,9 +62,15 @@ export default function UserGuideScreen({ navigation }: OnboardingUserGuideProps
           </TouchableOpacity>
           <View className="mt-4">
             {guidelines.map((item) => (
-              <View key={item.key} className="mt-6 flex-row items-center px-4">
-                <Text className="mr-3 text-xl">{item.emoji}</Text>
-                <MyText className="flex-1 font-medium">{t(`userGuide.${item.key}`)}</MyText>
+              <View key={item.key} className="mt-6 flex-row items-center justify-between px-4">
+                <View className="p-[1px]">
+                  <MyText size="text-xl" className="mr-3">
+                    {item.emoji}
+                  </MyText>
+                </View>
+                <View className="flex-1">
+                  <MyText className="font-medium">{t(`userGuide.${item.key}`)}</MyText>
+                </View>
               </View>
             ))}
           </View>

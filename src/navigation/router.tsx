@@ -141,7 +141,7 @@ function TabNavigator() {
 function OnboardingNavigator() {
   return (
     <OnboardingStack.Navigator
-      initialRouteName="OnboardingUserGuide"
+      initialRouteName="OnboardingWelcome"
       screenOptions={{ headerShown: false }}
     >
       <OnboardingStack.Screen
