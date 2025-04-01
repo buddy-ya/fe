@@ -1,7 +1,7 @@
 {
   "tab": {
     "home": "Home",
-    "match": "Matching",
+    "match": "Match",
     "chat": "Chat",
     "my": "My"
   },
@@ -68,7 +68,8 @@
       "network": "Please check your internet connection.",
       "point": "Not enough points",
       "chatRoom": "Chat room not found.",
-      "sendSMS": "Verification code request limit exceeded."
+      "sendSMS": "Verification code request limit exceeded.",
+      "alreadyReported": "This content has already been reported."
     }
   }
 }

@@ -48,22 +48,21 @@ export default function UserGuideScreen({ navigation }: OnboardingUserGuideProps
           <Heading>{t('userGuide.title')}</Heading>
           <HeadingDescription>{t('userGuide.description')}</HeadingDescription>
           <TouchableOpacity
-            className="mt-7 flex-row items-center rounded-xl border border-gray-300 p-4"
+            className={`mt-7 flex-row items-center rounded-xl border px-4 py-3 ${isChecked ? 'border-[#A6CFC4] bg-[#F6FFFD]' : 'border-gray-300 bg-[#F6F6F6]'}`}
             onPress={() => setIsChecked(!isChecked)}
           >
             <View
-              className={`mr-3 h-7 w-7 items-center justify-center rounded-full border ${isChecked ? 'bg-primary' : 'bg-white'}`}
+              className={`mr-3 h-8 w-8 items-center justify-center rounded-full ${isChecked ? 'bg-primary' : 'bg-[#DFDFDF]'} `}
             >
-              {isChecked && <Check size={20} color="white" />}
+              <Check size={20} color="white" />
             </View>
-            <MyText className="font-medium">{t('userGuide.checkboxText')}</MyText>
+            <MyText size="text-lg" className="font-medium">
+              {t('userGuide.checkboxText')}
+            </MyText>
           </TouchableOpacity>
-          <View className="mt-5">
+          <View className="mt-4">
             {guidelines.map((item) => (
-              <View
-                key={item.key}
-                className="mb-4 flex-row items-center rounded-xl border border-gray-300 p-3"
-              >
+              <View key={item.key} className="mt-6 flex-row items-center px-4">
                 <Text className="mr-3 text-xl">{item.emoji}</Text>
                 <MyText className="flex-1 font-medium">{t(`userGuide.${item.key}`)}</MyText>
               </View>
