@@ -20,6 +20,8 @@ type UserState = {
   isKorean: boolean;
   isAuthenticated: boolean;
   isBanned?: boolean;
+  banExpiration?: string;
+  banReason?: string;
   point: number;
   role: Role;
   accessToken?: string;

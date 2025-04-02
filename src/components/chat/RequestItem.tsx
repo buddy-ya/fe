@@ -23,7 +23,7 @@ export default function RequestItem({
   const { t } = useTranslation(['chat', 'mypage']);
 
   const handleProfilePress = () => {
-    onProfilePress?.(senderId);
+    // onProfilePress?.(senderId);
   };
 
   const handleAccept = () => {

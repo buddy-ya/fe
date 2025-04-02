@@ -57,6 +57,11 @@
       "decrease": "{{point}} 포인트가 차감되었어요!",
       "increase": "{{point}} 포인트를 받았어요!",
       "balance": "보유 포인트"
+    },
+    "banned": {
+      "title": "앱 이용이 정지 되었습니다.",
+      "reason": "정지 사유",
+      "expiration": "정지 기간"
     }
   },
   "toast": {

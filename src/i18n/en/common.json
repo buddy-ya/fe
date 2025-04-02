@@ -57,6 +57,11 @@
       "decrease": "{{point}} points have been deducted!",
       "increase": "{{point}} points received!",
       "balance": "Current Points"
+    },
+    "banned": {
+      "title": "App access suspended.",
+      "reason": "Reason",
+      "expiration": "Period"
     }
   },
   "toast": {

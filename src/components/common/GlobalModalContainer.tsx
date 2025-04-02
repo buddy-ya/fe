@@ -8,6 +8,7 @@ import {
 import { StudentCertificationModal } from '@/components/modal/Common';
 import { ChatRequestModal } from '@/components/modal/Common/ChatRequestModal';
 import { BlockModal, ExitModal, ReportModal } from '../modal';
+import { BannedUserModal } from '../modal/BannedUserModal';
 import { MatchRequestModal } from '../modal/MatchRequestModal';
 import { PointModal } from '../modal/PointModal';
 
@@ -62,6 +63,7 @@ export function GlobalModalContainer() {
       {visible.point && (
         <PointModal {...modalProps.point} visible={true} onClose={() => handleClose('point')} />
       )}
+      {visible.banned && <BannedUserModal {...modalProps.banned} visible={true} />}
     </>
   );
 }

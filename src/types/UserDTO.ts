@@ -21,6 +21,8 @@ export interface User {
   isAuthenticated?: boolean;
   isKorean?: boolean;
   isBanned?: boolean;
+  banExpiration?: string;
+  banReason?: string;
   point?: number;
   role?: Role;
   accessToken?: string;

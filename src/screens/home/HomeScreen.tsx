@@ -18,6 +18,7 @@ export function HomeScreen({ navigation }: FeedHomeScreenProps) {
   const STALE_TIME = 1000 * 60;
   const handleModalOpen = useModalStore((state) => state.handleOpen);
   const { selectedTab, setSelectedTab } = useTabStore();
+  const userBan = useUserStore((state) => state.isBanned);
   const userUniversity = useUserStore((state) => state.university);
   const isCertificated = useUserStore((state) => state.isCertificated);
 

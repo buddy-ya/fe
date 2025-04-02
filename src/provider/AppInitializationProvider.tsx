@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { View, AppState, AppStateStatus, StyleSheet } from 'react-native';
 import { API, UserRepository, ChatSocketRepository } from '@/api';
 import { TokenService } from '@/service';
-import { useUserStore } from '@/store';
+import { useUserStore, useModalStore } from '@/store';
 import { useNavigation } from '@react-navigation/native';
 import * as Font from 'expo-font';
 import { Image as ExpoImage } from 'expo-image';
@@ -77,6 +77,9 @@ const AppInitializationProvider: React.FC<Props> = ({ children }) => {
   const appState = useRef<AppStateStatus>(AppState.currentState);
   const isInitialLoad = useRef(true);
   const navigation = useNavigation<any>();
+
+  const { visible, handleClose, handleOpen } = useModalStore();
+  const user = useUserStore((state) => state);
 
   const loadFonts = async () => {
     await Font.loadAsync(FONTS);
@@ -153,13 +156,26 @@ const AppInitializationProvider: React.FC<Props> = ({ children }) => {
     }
   }, [isInitialized, initialRoute]);
 
+  useEffect(() => {
+    if (user.isBanned) {
+      handleOpen('banned', {
+        banExpiration: user.banExpiration,
+        banReason: user.banReason,
+      });
+    } else {
+      if (visible.banned) {
+        handleClose('banned');
+      }
+    }
+  }, [user.isBanned, user.banExpiration, user.banReason, visible.banned, handleOpen, handleClose]);
+
   const splashImage = require('@assets/images/splash/android.png');
 
   return (
     <View style={{ flex: 1 }}>
       {children}
       {!isSplashHidden && (
-        <View className="absolute left-0 top-0 h-full w-full flex-1 bg-primary">
+        <View style={styles.splashContainer}>
           <ExpoImage
             source={splashImage}
             contentFit="contain"
@@ -170,5 +186,17 @@ const AppInitializationProvider: React.FC<Props> = ({ children }) => {
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  splashContainer: {
+    position: 'absolute',
+    left: 0,
+    top: 0,
+    height: '100%',
+    width: '100%',
+    flex: 1,
+    backgroundColor: '#primary',
+  },
+});
 
 export default AppInitializationProvider;
