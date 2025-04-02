@@ -167,7 +167,7 @@ const AppInitializationProvider: React.FC<Props> = ({ children }) => {
         handleClose('banned');
       }
     }
-  }, [user.isBanned, user.banExpiration, user.banReason, visible.banned, handleOpen, handleClose]);
+  }, [user]);
 
   const splashImage = require('@assets/images/splash/android.png');
 
@@ -175,7 +175,7 @@ const AppInitializationProvider: React.FC<Props> = ({ children }) => {
     <View style={{ flex: 1 }}>
       {children}
       {!isSplashHidden && (
-        <View style={styles.splashContainer}>
+        <View className="absolute left-0 top-0 h-full w-full flex-1 bg-primary">
           <ExpoImage
             source={splashImage}
             contentFit="contain"
@@ -186,17 +186,5 @@ const AppInitializationProvider: React.FC<Props> = ({ children }) => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  splashContainer: {
-    position: 'absolute',
-    left: 0,
-    top: 0,
-    height: '100%',
-    width: '100%',
-    flex: 1,
-    backgroundColor: '#primary',
-  },
-});
 
 export default AppInitializationProvider;

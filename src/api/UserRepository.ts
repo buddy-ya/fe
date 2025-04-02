@@ -1,10 +1,20 @@
-import { ReportDTO, User } from '@/types';
+import { InvitationCodeDTO, ReportDTO, User } from '@/types';
 import { getFormDataHeaders } from '@/utils';
 import API from './API';
 
 class UserRepository {
   async get({ id }: { id: number }): Promise<User> {
     const { data } = await API.get(`/users/${id}`);
+    return data;
+  }
+
+  async getInvitationCode(): Promise<InvitationCodeDTO> {
+    const { data } = await API.get(`/users/invitation-code`);
+    return data;
+  }
+
+  async submitInvitaionCode({ code }: { code: string }): Promise<InvitationCodeDTO> {
+    const { data } = await API.post(`/users/invitation-code`, { code });
     return data;
   }
 

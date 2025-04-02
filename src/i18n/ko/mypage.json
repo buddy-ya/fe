@@ -61,6 +61,25 @@
   "common": {
     "complete": "완료"
   },
+  "event": {
+    "invitation": {
+      "header": "친구 초대",
+      "title": "추천코드로 친구를 초대하고 포인트를 받아보세요!",
+      "subtitle": "친구와 나 모두 50 포인트를 받을 수 있어요.",
+      "inviteCodeLabel": "초대코드",
+      "inputLabel": "초대 코드 입력",
+      "inputPlaceholder": "초대 코드를 입력하세요.",
+      "submitButton": "입력",
+      "notice1": "초대 코드 입력은 최초 일 회만 포인트를 받을 수 있어요.",
+      "notice2": "최초 가입때만 포인트를 받을 수 있고, 재가입한 경우 받을 수 없어요.",
+      "notice3": "추천코드를 입력하면 친구와 나, 모두에게 포인트가 지급돼요.",
+      "toast": {
+        "copySuccess": "초대코드가 복사되었습니다.",
+        "alreadyJoined": "이미 참여한 이벤트 입니다.",
+        "notValidCode": "유효하지 않은 초대코드 입니다."
+      }
+    }
+  },
   "point": {
     "point": "포인트",
     "title": "포인트 내역",

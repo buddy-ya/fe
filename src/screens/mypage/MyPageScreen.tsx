@@ -32,6 +32,10 @@ export default function MyPageScreen({ navigation }: MyPageScreenProps) {
     navigation.navigate('Point');
   };
 
+  const handleInvitationEventPress = () => {
+    navigation.navigate('InvitationEvent');
+  };
+
   const quickMenuItems = [
     {
       key: 'bookmark',
@@ -145,6 +149,15 @@ export default function MyPageScreen({ navigation }: MyPageScreenProps) {
             <View>
               <ChevronRight size={19} color="#636363" strokeWidth={1.3} />
             </View>
+          </View>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          className="mt-0 flex-row items-center justify-between rounded-b-xl border-t border-[#f6f6f6] bg-white p-5"
+          onPress={handleInvitationEventPress}
+        >
+          <View>
+            <MyText className="font-medium">이벤트</MyText>
           </View>
         </TouchableOpacity>
       </InnerLayout>

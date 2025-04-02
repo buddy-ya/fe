@@ -79,6 +79,25 @@
   "common": {
     "complete": "Done"
   },
+  "event": {
+    "invitation": {
+      "header": "Friend Invitation",
+      "title": "Invite your friends with your referral code and earn points!",
+      "subtitle": "Both you and your friend will receive 50 points.",
+      "inviteCodeLabel": "Invitation Code",
+      "inputLabel": "Enter Invitation Code",
+      "inputPlaceholder": "Enter the invitation code.",
+      "submitButton": "Submit",
+      "notice1": "Invitation code input only rewards points once at first.",
+      "notice2": "Points are only rewarded at initial sign-up, not on re-registration.",
+      "notice3": "Entering the referral code grants points to both you and your friend.",
+      "toast": {
+        "copySuccess": "Invitation code has been copied.",
+        "alreadyJoined": "You have already joined this event.",
+        "notValidCode": "The invitation code is not valid."
+      }
+    }
+  },
   "setting": "Setting",
   "certification": "Verification is already complete."
 }

@@ -11,6 +11,7 @@ import { HomeScreen } from '@/screens/home/HomeScreen';
 import MatchScreen from '@/screens/match/MatchScreen';
 import BookmarkScreen from '@/screens/mypage/BookmarkScreen';
 import EditProfileImageScreen from '@/screens/mypage/EditProfileImageScreen';
+import InvitationScreen from '@/screens/mypage/InvitationScreen';
 import MyPostsScreen from '@/screens/mypage/MyPostsScreen';
 import MyProfileScreen from '@/screens/mypage/MyProfileScreen';
 import PointScreen from '@/screens/mypage/PointScreen';
@@ -369,6 +370,7 @@ function MyPageNavigator() {
       <MyPageStack.Screen name="Settings" component={SettingScreen} />
       <MyPageStack.Screen name="FeedDetail" component={SuspendedFeedDetailScreen} />
       <MyPageStack.Screen name="Point" component={PointScreen} />
+      <MyPageStack.Screen name="InvitationEvent" component={InvitationScreen} />
     </MyPageStack.Navigator>
   );
 }

@@ -30,7 +30,7 @@
     },
     "success": {
       "title": "매칭이 완료되었습니다!",
-      "description": "'채팅을 보내볼까요?'",
+      "description": "채팅을 보내볼까요?",
       "button": "채팅 보내기",
       "cancel": "닫기"
     },

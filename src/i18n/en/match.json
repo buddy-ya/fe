@@ -30,8 +30,9 @@
     },
     "success": {
       "title": "Match Successful",
-      "description": "You are matched with '{{buddyName}}'. Start chatting now!",
-      "button": "Send a Chat"
+      "description": "Shall we send a chat?",
+      "button": "Send a Chat",
+      "cancel": "Cancel"
     },
     "requestModal": {
       "title": "Shall we search for a buddy?",

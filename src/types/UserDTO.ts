@@ -35,3 +35,10 @@ export interface ReportDTO {
   reportedUserId: number | undefined;
   reason: string;
 }
+
+export interface InvitationCodeDTO {
+  code: string;
+  participated: boolean;
+  point?: number;
+  pointChange?: number;
+}

@@ -89,4 +89,5 @@ export type MyPageStackParamList = {
     searchKeyword?: string;
   };
   Onboarding: undefined;
+  InvitationEvent: undefined;
 };
