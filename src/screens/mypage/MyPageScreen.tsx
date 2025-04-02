@@ -83,7 +83,7 @@ export default function MyPageScreen({ navigation }: MyPageScreenProps) {
     <Layout
       showHeader
       headerLeft={
-        <MyText size="text-2xl" color="text-primary" className="font-semibold">
+        <MyText size="text-2xl" className="font-semibold">
           {t('title')}
         </MyText>
       }

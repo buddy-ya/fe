@@ -58,7 +58,7 @@ export default function RoomListScreen({ navigation }: RoomListNavigationProps) 
       showHeader
       isBackgroundWhite
       headerLeft={
-        <MyText size="text-2xl" color="text-primary" className="font-semibold">
+        <MyText size="text-2xl" className="font-semibold">
           {t('roomList.title')}
         </MyText>
       }

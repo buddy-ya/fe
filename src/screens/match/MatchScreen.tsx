@@ -107,7 +107,7 @@ export default function MatchScreen({ navigation }: MatchScreenProps) {
       hasTabBar
       showHeader
       headerLeft={
-        <MyText size="text-2xl" color="text-primary" className="font-semibold">
+        <MyText size="text-2xl" className="font-semibold">
           {t('match.title')}
         </MyText>
       }

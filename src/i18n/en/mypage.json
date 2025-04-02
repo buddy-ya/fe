@@ -68,7 +68,8 @@
       "university_auth": "University Verification Event",
       "chat_request": "Chat Request",
       "match_request": "Match Request",
-      "cancel_match_request": "Match Request Cancelled"
+      "cancel_match_request": "Match Request Cancelled",
+      "invitation_event": "Invitation Event"
     },
     "pointChangeType": {
       "earn": "Earn",
@@ -94,7 +95,8 @@
       "toast": {
         "copySuccess": "Invitation code has been copied.",
         "alreadyJoined": "You have already joined this event.",
-        "notValidCode": "The invitation code is not valid."
+        "notValidCode": "The invitation code is not valid.",
+        "notSelf": "You cannot enter your own invitation code."
       }
     }
   },
