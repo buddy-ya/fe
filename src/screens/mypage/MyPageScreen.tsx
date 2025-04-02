@@ -5,9 +5,12 @@ import { useBackButton } from '@/hooks';
 import { MyPageStackParamList } from '@/navigation/navigationRef';
 import { useUserStore } from '@/store';
 import CircleCheck from '@assets/icons/circleCheck.svg';
+import EventBannerEn from '@assets/icons/eventBannerEn.svg';
+import EventBannerKo from '@assets/icons/eventBannerKo.svg';
 import LogoIcon from '@assets/icons/logo.svg';
 import Point from '@assets/icons/point.svg';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import * as Localization from 'expo-localization';
 import { Bookmark, ChevronRight, NotebookPen, Settings, ShieldAlert } from 'lucide-react-native';
 import { useToastStore } from '@/store/useToastStore';
 import { CountryID, getCountryFlag } from '@/utils';
@@ -78,6 +81,8 @@ export default function MyPageScreen({ navigation }: MyPageScreenProps) {
   };
 
   useBackButton();
+
+  const locale = Localization.locale;
 
   return (
     <Layout
@@ -152,13 +157,8 @@ export default function MyPageScreen({ navigation }: MyPageScreenProps) {
           </View>
         </TouchableOpacity>
 
-        <TouchableOpacity
-          className="mt-0 flex-row items-center justify-between rounded-b-xl border-t border-[#f6f6f6] bg-white p-5"
-          onPress={handleInvitationEventPress}
-        >
-          <View>
-            <MyText className="font-medium">이벤트</MyText>
-          </View>
+        <TouchableOpacity className="mt-6" onPress={handleInvitationEventPress}>
+          {locale.startsWith('ko') ? <EventBannerKo /> : <EventBannerEn />}
         </TouchableOpacity>
       </InnerLayout>
     </Layout>
