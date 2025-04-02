@@ -73,7 +73,7 @@ export function BottomModalWrapper({
                   </MyText>
                 </TouchableOpacity>
                 <TouchableOpacity
-                  className="flex-1 items-center justify-center rounded-[12px] bg-primary"
+                  className="flex-1 flex-row items-center justify-center rounded-[12px] bg-primary"
                   onPress={() => {
                     onConfirm();
                     onClose();
@@ -83,8 +83,8 @@ export function BottomModalWrapper({
                     {confirmText}
                   </MyText>
                   {confirmType === 'point' && (
-                    <View className="flex-row items-center">
-                      <Point width={10} height={10} />
+                    <View className="ml-2 flex-row items-center">
+                      <Point width={14} height={14} />
                       <MyText size="text-sm" className="ml-[5px] font-semibold" color="text-white">
                         {point}
                       </MyText>

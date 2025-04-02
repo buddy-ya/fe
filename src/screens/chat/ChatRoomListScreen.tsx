@@ -2,6 +2,7 @@ import { Suspense, useEffect } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 import { useTranslation } from 'react-i18next';
 import { TouchableOpacity, View } from 'react-native';
+import { Linking } from 'react-native';
 import { ChatSocketRepository, RoomRepository } from '@/api';
 import { InnerLayout, Layout, MyText, RoomList } from '@/components';
 import { useBackButton } from '@/hooks';
@@ -29,8 +30,15 @@ export default function RoomListScreen({ navigation }: RoomListNavigationProps) 
 
   const { t } = useTranslation('chat');
 
-  const handleGoToFeed = () => {
-    navigation.navigate('FeedTab', { screen: 'FeedHome' } as any);
+  const openInstagramProfile = () => {
+    const url = 'instagram://user?username=buddyyakorea'; // 여기에 여러분의 인스타그램 아이디를 입력하세요.
+    Linking.canOpenURL(url).then((supported) => {
+      if (supported) {
+        Linking.openURL(url);
+      } else {
+        Linking.openURL('https://www.instagram.com/buddyyakorea');
+      }
+    });
   };
 
   const handleGoToRequests = () => {
@@ -77,7 +85,7 @@ export default function RoomListScreen({ navigation }: RoomListNavigationProps) 
     >
       <InnerLayout>
         <View className="flex-1">
-          <TouchableOpacity onPress={handleGoToFeed} activeOpacity={0.7}>
+          <TouchableOpacity onPress={openInstagramProfile} activeOpacity={0.7}>
             <View className="mt-4 flex h-[77px] flex-row items-center justify-between rounded-xl bg-primary px-6 py-4">
               <View className="flex h-full w-full flex-1 flex-row items-center">
                 <MyText className="text-white" size="text-lg">

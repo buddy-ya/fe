@@ -14,7 +14,7 @@ export function MatchRequestModal({ visible, onConfirm, onClose }: CommonModalPr
   const { t } = useTranslation('match');
 
   const title = t('match.requestModal.title');
-  const description = t('match.requestModal.description', { point: 1 });
+  const description = t('match.requestModal.description', { point: 35 });
   const cancelText = t('match.requestModal.cancelText');
   const confirmText = t('match.requestModal.confirmText');
 
@@ -28,7 +28,7 @@ export function MatchRequestModal({ visible, onConfirm, onClose }: CommonModalPr
       confirmText={confirmText}
       onConfirm={onConfirm}
       confirmType="point"
-      point="1"
+      point="35"
     >
       <View className="mt-5 h-[140px] flex-row items-center justify-center rounded-[12px] bg-mainBackground">
         <SearchIcon width={60} height={60} />
