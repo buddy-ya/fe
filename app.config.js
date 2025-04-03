@@ -60,6 +60,7 @@ module.exports = {
       package: 'com.buddyya.app',
       permissions: ['NOTIFICATIONS', 'VIBRATE', 'WAKE_LOCK'],
       googleServicesFile: './google-services.json',
+      buildType: 'apk',
     },
     extra: {
       BASE_URL: process.env.BASE_URL,
