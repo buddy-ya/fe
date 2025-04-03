@@ -11,10 +11,13 @@ export interface MatchDTO {
   matchStatus: MatchStatusType;
   point?: number;
   pointChange?: number;
+  introduction?: string;
+  buddyActivity?: string;
   isExited: boolean;
 }
 
 export interface MatchRequest {
+  nationalityType: 'KOREAN' | 'GLOBAL';
   universityType: 'SAME' | 'DIFFERENT';
   genderType: 'MALE' | 'FEMALE' | 'ALL';
 }

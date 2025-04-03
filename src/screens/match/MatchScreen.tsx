@@ -53,13 +53,15 @@ export default function MatchScreen({ navigation }: MatchScreenProps) {
   );
 
   const handleMatchRequest = async ({
+    nationalityType,
     universityType,
     genderType,
   }: {
+    nationalityType: 'KOREAN' | 'GLOBAL';
     universityType: 'SAME' | 'DIFFERENT';
     genderType: 'MALE' | 'FEMALE' | 'ALL';
   }) => {
-    const request = { universityType, genderType };
+    const request = { nationalityType, universityType, genderType };
     try {
       const matchResponse = await MatchRepository.createMatchRequest(request);
       userUpdate({ point: matchResponse.point });

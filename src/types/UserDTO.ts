@@ -5,7 +5,7 @@ export type Role = 'STUDENT' | 'ADMIN';
 export interface User {
   id?: number;
   name?: string;
-  country: string;
+  country?: string;
   university?: string;
   gender?: Gender;
   profileImageUrl?: string;
@@ -25,6 +25,9 @@ export interface User {
   banReason?: string;
   point?: number;
   role?: Role;
+  introduction?: string;
+  buddyActivity?: string;
+  isMatchingProfileCompleted?: boolean;
   accessToken?: string;
   refreshToken?: string;
 }

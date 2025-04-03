@@ -24,6 +24,9 @@ type UserState = {
   banReason?: string;
   point: number;
   role: Role;
+  introduction?: string;
+  buddyActivity?: string;
+  isMatchingProfileCompleted?: boolean;
   accessToken?: string;
   refreshToken?: string;
 };

@@ -20,11 +20,20 @@
       "gender": "성별",
       "languages": "구사 가능 언어",
       "majors": "전공",
-      "interests": "관심사"
+      "interests": "관심사",
+      "matchingProfile": "매칭 프로필"
     },
     "modal": {
       "image": "이미지",
       "default": "기본 프로필"
+    },
+    "save": "저장",
+    "matchingProfile": {
+      "questionIntroduction": "자기소개",
+      "questionBuddyActivity": "버디와 어떤 활동을 하고 싶나요?"
+    },
+    "error": {
+      "minLength": "최소 10자 이상 입력해 주세요."
     }
   },
   "quickMenu": {

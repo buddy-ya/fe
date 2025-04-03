@@ -38,7 +38,6 @@ export function useNotification() {
       }
       if (data?.type === 'MATCH') {
         const deepLinkUrl = `${prefix}match`;
-        updateMatchData({ matchStatus: 'success' });
         setTimeout(() => Linking.openURL(deepLinkUrl), 100);
       }
       if (data?.type === 'CHAT_REQUEST') {

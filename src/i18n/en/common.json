@@ -74,7 +74,8 @@
       "point": "Not enough points",
       "chatRoom": "Chat room not found.",
       "sendSMS": "Verification code request limit exceeded.",
-      "alreadyReported": "This content has already been reported."
+      "alreadyReported": "This content has already been reported.",
+      "matchProfile": "Your matching profile is not complete."
     }
   }
 }

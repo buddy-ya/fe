@@ -18,7 +18,6 @@ export const MAJOR_IDS = [
   'psychology',
   'architecture',
   'communication',
-  'environmental_sciences',
   'music',
   'design',
 ] as const;

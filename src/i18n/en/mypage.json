@@ -22,11 +22,20 @@
       "gender": "gender",
       "languages": "Languages",
       "majors": "Majors",
-      "interests": "Interests"
+      "interests": "Interests",
+      "matchingProfile": "Matching Profile"
     },
     "modal": {
       "image": "Image",
       "default": "Default Profile"
+    },
+    "save": "Save",
+    "matchingProfile": {
+      "questionIntroduction": "Self Intro",
+      "questionBuddyActivity": "Things to Do with My Buddy"
+    },
+    "error": {
+      "minLength": "Please enter at least 10 characters."
     }
   },
   "quickMenu": {

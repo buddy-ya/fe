@@ -88,7 +88,7 @@ export default function InvitationScreen({ navigation }: NativeStackScreenProps<
               </MyText>
               <TouchableOpacity
                 onPress={handleCopyCode}
-                className="mt-7 w-80 flex-row items-center justify-between rounded-[30px] border border-gray-300 px-9 py-[16px]"
+                className="mt-7 w-80 flex-row items-center justify-between rounded-[30px] border border-gray-300 bg-white px-9 py-[16px]"
               >
                 <View className="flex-row items-center">
                   <MyText color="text-textDescription">
@@ -105,7 +105,7 @@ export default function InvitationScreen({ navigation }: NativeStackScreenProps<
                 <MyText size="text-base" className="mb-4 font-medium">
                   {t('event.invitation.inputLabel')}
                 </MyText>
-                <View className="flex-row items-center rounded-xl border border-gray-300 px-4">
+                <View className="flex-row items-center rounded-xl border border-gray-300 bg-white px-4">
                   <TextInput
                     value={inputCode}
                     onChangeText={setInputCode}

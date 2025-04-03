@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
-import { View, TouchableOpacity, Image } from 'react-native';
-import { InnerLayout, Layout, MyText } from '@/components';
+import { View, TouchableOpacity, Image, KeyboardAvoidingView } from 'react-native';
+import { InnerLayout, KeyboardLayout, Layout, MyText } from '@/components';
 import { useBackButton } from '@/hooks';
 import { MyPageStackParamList } from '@/navigation/navigationRef';
 import { useUserStore } from '@/store';

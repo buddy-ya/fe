@@ -86,6 +86,7 @@ export default function UniversitySelectScreen({
           onSelect={handleSelect}
           multiple={false}
           nameSpace="universities:universities"
+          className="mt-8"
         />
         <Button onPress={handleNavigateButton} disabled={!selectedOption}>
           <MyText size="text-lg" color="text-white" className="font-semibold">

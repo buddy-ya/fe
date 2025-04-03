@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { View, ScrollView } from 'react-native';
 import { UserRepository } from '@/api';
-import { InnerLayout, Layout } from '@/components';
+import { InnerLayout, KeyboardLayout, Layout } from '@/components';
 import { ChatStackParamList, MyPageStackParamList } from '@/navigation/navigationRef';
 import { useModalStore, useUserStore } from '@/store';
 import { Gender, User } from '@/types';
@@ -20,11 +20,9 @@ type MyProfileScreenProps =
 export default function MyProfileScreen({ navigation, route }: any) {
   const { t } = useTranslation(['mypage', 'interests', 'countries', 'languages', 'majors']);
   const [selectedAsset, setSelectedAsset] = useState<ImagePicker.ImagePickerAsset | null>(null);
-
   const modalVisible = useModalStore((state) => state.visible);
   const handleModalOpen = useModalStore((state) => state.handleOpen);
   const handleModalClose = useModalStore((state) => state.handleClose);
-
   const name = useUserStore((state) => state.name);
   const id = useUserStore((state) => state.id);
   const languages = useUserStore((state) => state.languages);
@@ -35,18 +33,16 @@ export default function MyProfileScreen({ navigation, route }: any) {
   const country = useUserStore((state) => state.country);
   const gender = useUserStore((state) => state.gender);
   const isDefaultProfileImage = useUserStore((state) => state.isDefaultProfileImage);
+  const introductionFromStore = useUserStore((state) => state.introduction);
+  const buddyActivityFromStore = useUserStore((state) => state.buddyActivity);
   const isMyProfile = route.params?.id == null || route.params.id === id;
-
   const update = useUserStore((state) => state.update);
-
   const userId = !isMyProfile ? route.params?.id : id;
-
   const { data } = useQuery({
     queryKey: ['users', userId],
     queryFn: () => UserRepository.get({ id: userId }),
     enabled: !isMyProfile,
   });
-
   const user: User = {
     name: data?.name ?? name,
     id: data?.id ?? id,
@@ -57,8 +53,9 @@ export default function MyProfileScreen({ navigation, route }: any) {
     university: data?.university ?? university,
     country: data?.country ?? country,
     gender: (data?.gender ?? gender) as Gender,
+    introduction: data?.introduction ?? introductionFromStore,
+    buddyActivity: data?.buddyActivity ?? buddyActivityFromStore,
   };
-
   const handleProfileImageDefault = async () => {
     try {
       const data = await UserRepository.updateProfileImage({
@@ -70,13 +67,10 @@ export default function MyProfileScreen({ navigation, route }: any) {
       logError(error);
     }
   };
-
   const handleProfileImageUpload = async () => {
     try {
       const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-      if (status !== 'granted') {
-        return;
-      }
+      if (status !== 'granted') return;
       const result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ['images'],
         quality: 0.5,
@@ -97,49 +91,55 @@ export default function MyProfileScreen({ navigation, route }: any) {
       logError(error);
     }
   };
-
   const handleModal = () => {
     handleModalOpen('myProfile');
+  };
+  const handleMatchingProfileSave = async (key: string, values: string[]) => {
+    const data = await UserRepository.update({ key, values });
+    update(removeNullValues(data));
   };
 
   const editHandlers = isMyProfile
     ? {
         handleEditName: () => {
-          navigation.navigate('EditName', {
-            isEditMode: true,
-            initialName: name,
-          });
+          navigation.navigate('EditName', { isEditMode: true, initialName: name });
         },
         handleEditLanguages: () => {
-          navigation.navigate('EditLanguage', {
-            isEditMode: true,
-            initialLanguages: languages,
-          });
+          navigation.navigate('EditLanguage', { isEditMode: true, initialLanguages: languages });
         },
         handleEditInterests: () => {
-          navigation.navigate('EditInterest', {
-            isEditMode: true,
-            initialInterests: interests,
-          });
+          navigation.navigate('EditInterest', { isEditMode: true, initialInterests: interests });
         },
         handleProfileImageUpload,
         handleModalOpen: handleModal,
       }
     : {};
+  const showMatchingProfile =
+    isMyProfile ||
+    (route.params?.showMatchingProfile !== undefined ? route.params.showMatchingProfile : false);
 
   return (
     <>
       <Layout showHeader onBack={() => navigation.goBack()} className="bg-gray-600">
-        <InnerLayout>
-          <ScrollView showsVerticalScrollIndicator={false}>
-            <ProfileView
-              user={user}
-              isMyProfile={isMyProfile}
-              isDefaultProfileImage={isDefaultProfileImage}
-              {...editHandlers}
-            />
-          </ScrollView>
-        </InnerLayout>
+        <KeyboardLayout>
+          <InnerLayout>
+            <ScrollView
+              showsVerticalScrollIndicator={false}
+              contentContainerStyle={{ paddingBottom: 80 }}
+            >
+              <ProfileView
+                user={user}
+                isMyProfile={isMyProfile}
+                isDefaultProfileImage={isDefaultProfileImage}
+                showMatchingProfile={showMatchingProfile}
+                introduction={user.introduction}
+                buddyActivity={user.buddyActivity}
+                handleMatchingProfileSave={handleMatchingProfileSave}
+                {...editHandlers}
+              />
+            </ScrollView>
+          </InnerLayout>
+        </KeyboardLayout>
       </Layout>
       <MyProfileImageOptionModal
         visible={modalVisible.myProfile}
