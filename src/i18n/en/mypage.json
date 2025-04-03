@@ -82,9 +82,10 @@
       "match_request": "Match Request",
       "cancel_match_request": "Match Request Cancelled",
       "invitation_event": "Invitation Event",
-      "chatroom_no_response_refund": "Matching Point Refund",
+      "chatroom_no_response_refund": "Refund Matching",
       "event_reward": "Event Reward",
-      "visit_reward": "Login Reward"
+      "visit_reward": "Login Reward",
+      "rejected_chat_request": "Refund Chat Request"
     },
     "pointChangeType": {
       "earn": "Earn",
