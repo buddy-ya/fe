@@ -2,6 +2,8 @@
   "title": "My",
   "profile": {
     "edit": "edit",
+    "incompleteProfileTitle": "Match profile is incomplete.",
+    "incompleteProfileDescription": "Complete your profile to meet a buddy!",
     "profile": {
       "photo": {
         "title": "Select Profile Photo",
@@ -35,7 +37,8 @@
       "questionBuddyActivity": "Things to Do with My Buddy"
     },
     "error": {
-      "minLength": "Please enter at least 10 characters."
+      "minLength": "Please enter at least 10 characters.",
+      "incompleteProfile": "Complete your match profile to match."
     }
   },
   "quickMenu": {

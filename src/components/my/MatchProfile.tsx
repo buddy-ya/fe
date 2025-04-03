@@ -12,7 +12,6 @@ interface MatchProfileProps {
   onChange: (text: string) => void;
   onSave: () => void;
   questionText: string;
-  placeholderText?: string;
 }
 
 const MatchProfile: React.FC<MatchProfileProps> = ({
@@ -23,7 +22,6 @@ const MatchProfile: React.FC<MatchProfileProps> = ({
   onChange,
   onSave,
   questionText,
-  placeholderText,
 }) => {
   const { t } = useTranslation('mypage');
   return isEditing ? (
@@ -39,7 +37,6 @@ const MatchProfile: React.FC<MatchProfileProps> = ({
             className="flex-1 font-medium text-[14px] text-black"
             value={value}
             onChangeText={onChange}
-            placeholder={placeholderText}
           />
           <TouchableOpacity onPress={onSave} className="p-1">
             <MyText className="text-primary">{t('profile.save')}</MyText>

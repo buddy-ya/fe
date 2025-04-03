@@ -2,7 +2,14 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { View, ScrollView } from 'react-native';
 import { UserRepository } from '@/api';
-import { InnerLayout, KeyboardLayout, Layout } from '@/components';
+import {
+  Heading,
+  HeadingDescription,
+  InnerLayout,
+  KeyboardLayout,
+  Layout,
+  MyText,
+} from '@/components';
 import { ChatStackParamList, MyPageStackParamList } from '@/navigation/navigationRef';
 import { useModalStore, useUserStore } from '@/store';
 import { Gender, User } from '@/types';
@@ -37,7 +44,10 @@ export default function MyProfileScreen({ navigation, route }: any) {
   const buddyActivityFromStore = useUserStore((state) => state.buddyActivity);
   const isMyProfile = route.params?.id == null || route.params.id === id;
   const update = useUserStore((state) => state.update);
+
   const userId = !isMyProfile ? route.params?.id : id;
+  const incompleteProfile = isMyProfile ? (route.params?.incompleteProfile ?? false) : false;
+
   const { data } = useQuery({
     queryKey: ['users', userId],
     queryFn: () => UserRepository.get({ id: userId }),
@@ -118,11 +128,25 @@ export default function MyProfileScreen({ navigation, route }: any) {
     isMyProfile ||
     (route.params?.showMatchingProfile !== undefined ? route.params.showMatchingProfile : false);
 
+
   return (
     <>
       <Layout showHeader onBack={() => navigation.goBack()} className="bg-gray-600">
         <KeyboardLayout>
           <InnerLayout>
+            {incompleteProfile && (
+              <View className="mb-10 rounded-xl">
+                <MyText
+                  size="text-[20px]"
+                  className="mt-4 font-semibold leading-[1.4] tracking-wide"
+                >
+                  {t('mypage:profile.incompleteProfileTitle')}
+                </MyText>
+                <HeadingDescription>
+                  {t('mypage:profile.incompleteProfileDescription')}
+                </HeadingDescription>
+              </View>
+            )}
             <ScrollView
               showsVerticalScrollIndicator={false}
               contentContainerStyle={{ paddingBottom: 80 }}
@@ -133,6 +157,7 @@ export default function MyProfileScreen({ navigation, route }: any) {
                 isDefaultProfileImage={isDefaultProfileImage}
                 showMatchingProfile={showMatchingProfile}
                 introduction={user.introduction}
+                incompleteProfile={incompleteProfile}
                 buddyActivity={user.buddyActivity}
                 handleMatchingProfileSave={handleMatchingProfileSave}
                 {...editHandlers}

@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { TouchableOpacity, AppState, AppStateStatus, ScrollView } from 'react-native';
 import { InnerLayout, Layout, MyText } from '@/components';
 import { MatchstackParamList } from '@/navigation/navigationRef';
+import { navigationRef } from '@/navigation/router';
 import { useModalStore, useUserStore } from '@/store';
 import Point from '@assets/icons/point.svg';
 import { useFocusEffect } from '@react-navigation/native';
@@ -75,6 +76,9 @@ export default function MatchScreen({ navigation }: MatchScreenProps) {
       }, 1000);
     } catch (error: any) {
       const errorCode = error.response?.data?.code;
+      if (errorCode === 6004) {
+        navigation.navigate('MyProfile', { incompleteProfile: true });
+      }
       // if (errorCode === 10002) {
       //   navigation.navigate('Point');
       // }

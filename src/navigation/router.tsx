@@ -273,10 +273,9 @@ function MatchNavigator() {
           activeScreen = (route.params as { screen?: string })?.screen;
         }
       }
-      const visible =
-        activeScreen !== 'MyProfile' && activeScreen !== 'Point' && activeScreen !== 'ChatRoom';
+      const visible = activeScreen === 'MatchHome' || activeScreen === undefined;
       navigation.setOptions({
-        tabBarStyle: animateTabBar(visible),
+        tabBarStyle: animateTabBar(!!visible),
       });
     };
 
@@ -288,6 +287,11 @@ function MatchNavigator() {
     <MatchStack.Navigator initialRouteName="MatchHome" screenOptions={{ headerShown: false }}>
       <MatchStack.Screen name="MatchHome" component={MatchScreen} />
       <MatchStack.Screen name="Point" component={PointScreen} />
+      <MatchStack.Screen name="MyProfile" component={MyProfileScreen} />
+      <MatchStack.Screen name="EditProfileImage" component={EditProfileImageScreen} />
+      <MatchStack.Screen name="EditName" component={NameScreen} />
+      <MatchStack.Screen name="EditLanguage" component={LanguageSelectScreen} />
+      <MatchStack.Screen name="EditInterest" component={InterestSelectScreen} />
     </MatchStack.Navigator>
   );
 }

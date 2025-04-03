@@ -1,6 +1,8 @@
 {
   "title": "마이",
   "profile": {
+    "incompleteProfileTitle": "매칭 프로필이 완성되지 않았습니다.",
+    "incompleteProfileDescription": "프로필을 완성하고 버디를 만나보세요!",
     "edit": "편집",
     "university": {
       "sju": "세종대학교"
@@ -33,7 +35,8 @@
       "questionBuddyActivity": "버디와 어떤 활동을 하고 싶나요?"
     },
     "error": {
-      "minLength": "최소 10자 이상 입력해 주세요."
+      "minLength": "최소 10자 이상 입력해 주세요.",
+      "incompleteProfile": "매칭 프로필을 등록해야 매칭을 할 수있습니다."
     }
   },
   "quickMenu": {

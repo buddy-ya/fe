@@ -19,6 +19,7 @@ export interface ProfileViewProps {
   handleEditLanguages?: () => void;
   handleEditInterests?: () => void;
   showMatchingProfile?: boolean;
+  incompleteProfile?: boolean;
   introduction?: string;
   buddyActivity?: string;
   handleMatchingProfileSave?: (key: string, values: string[]) => void;
@@ -34,6 +35,7 @@ const ProfileView: React.FC<ProfileViewProps> = ({
   handleEditLanguages,
   handleEditInterests,
   showMatchingProfile,
+  incompleteProfile,
   introduction,
   buddyActivity,
   handleMatchingProfileSave,
@@ -96,6 +98,7 @@ const ProfileView: React.FC<ProfileViewProps> = ({
   useEffect(() => {
     setLocalIntroduction(introduction || '');
   }, [introduction]);
+
   useEffect(() => {
     setLocalBuddyActivity(buddyActivity || '');
   }, [buddyActivity]);
@@ -117,7 +120,7 @@ const ProfileView: React.FC<ProfileViewProps> = ({
       }
       setErrorBuddyActivity('');
       if (handleMatchingProfileSave) {
-        handleMatchingProfileSave('buddyActivity', [localBuddyActivity]);
+        handleMatchingProfileSave('activity', [localBuddyActivity]);
       }
     }
     setEditingField(null);
@@ -127,7 +130,7 @@ const ProfileView: React.FC<ProfileViewProps> = ({
     <View style={{ flex: 1 }}>
       <ScrollView
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingBottom: 80 }}
+        contentContainerStyle={isMyProfile ? { paddingBottom: 70 } : { paddingBottom: 20 }}
       >
         <View className="mt-3 rounded-[12px]">
           <View className="items-center">
@@ -135,7 +138,9 @@ const ProfileView: React.FC<ProfileViewProps> = ({
               <Image source={{ uri: user.profileImageUrl }} className="mb-4 h-full w-full" />
               {isMyProfile && (
                 <TouchableOpacity
-                  className={`absolute left-0 top-0 flex h-full w-full ${isDefaultProfileImage ? 'items-center justify-center bg-text opacity-[0.5]' : ''}`}
+                  className={`absolute left-0 top-0 flex h-full w-full ${
+                    isDefaultProfileImage ? 'items-center justify-center bg-text opacity-[0.5]' : ''
+                  }`}
                   onPress={isDefaultProfileImage ? handleProfileImageUpload : handleModalOpen}
                 >
                   {isDefaultProfileImage && <Camera size={36} strokeWidth={1.5} stroke="#FCFCFC" />}
@@ -203,6 +208,11 @@ const ProfileView: React.FC<ProfileViewProps> = ({
               <MyText size="text-[12px]" color="text-textDescription">
                 {t('mypage:profile.sections.matchingProfile')}
               </MyText>
+              {incompleteProfile && (
+                <MyText className="mt-2 text-xs text-red-500">
+                  {t('mypage:profile.error.incompleteProfile')}
+                </MyText>
+              )}
               <View className="mt-4">
                 <MatchProfile
                   isEditing={editingField === 'introduction'}
@@ -212,7 +222,6 @@ const ProfileView: React.FC<ProfileViewProps> = ({
                   onChange={setLocalIntroduction}
                   onSave={handleSave}
                   questionText={t('mypage:profile.matchingProfile.questionIntroduction')}
-                  placeholderText={t('mypage:profile.placeholderIntroduction')}
                 />
                 <MatchProfile
                   isEditing={editingField === 'buddyActivity'}
@@ -222,7 +231,6 @@ const ProfileView: React.FC<ProfileViewProps> = ({
                   onChange={setLocalBuddyActivity}
                   onSave={handleSave}
                   questionText={t('mypage:profile.matchingProfile.questionBuddyActivity')}
-                  placeholderText={t('mypage:profile.placeholderBuddyActivity')}
                 />
               </View>
             </View>

@@ -62,6 +62,11 @@ export type VerificationStackParamList = {
 export type MatchstackParamList = {
   MatchHome: undefined;
   Point: undefined;
+  MyProfile: { id?: string; incompleteProfile?: boolean } | undefined;
+  EditProfileImage: undefined;
+  EditName: { isEditMode: boolean; initialName: string };
+  EditLanguage: { isEditMode: boolean; initialLanguages: string[] };
+  EditInterest: { isEditMode: boolean; initialInterests: string[] };
 };
 
 export type ChatStackParamList = {
@@ -73,7 +78,7 @@ export type ChatStackParamList = {
 
 export type MyPageStackParamList = {
   MyPageHome: undefined;
-  MyProfile: undefined;
+  MyProfile: { id?: string; incompleteProfile?: boolean } | undefined;
   EditProfileImage: undefined;
   EditName: { isEditMode: boolean; initialName: string };
   EditLanguage: { isEditMode: boolean; initialLanguages: string[] };
