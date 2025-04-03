@@ -102,7 +102,10 @@
       "chat_request": "채팅 요청",
       "match_request": "매칭 요청",
       "cancel_match_request": "매칭 요청 취소",
-      "invitation_event": "친구초대 이벤트"
+      "invitation_event": "친구초대 이벤트",
+      "chatroom_no_response_refund": "매칭 포인트 환급",
+      "event_reward": "이벤트 보상",
+      "visit_reward": "접속 보상"
     },
     "pointChangeType": {
       "earn": "적립",
