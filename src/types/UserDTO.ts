@@ -28,12 +28,13 @@ export interface User {
   introduction?: string;
   buddyActivity?: string;
   isMatchingProfileCompleted?: boolean;
+  totalUnreadCount?: number;
   accessToken?: string;
   refreshToken?: string;
 }
 
 export interface ReportDTO {
-  type: 'FEED' | 'COMMENT' | 'CHATROOM';
+  type: 'FEED' | 'COMMENT' | 'CHATROOM' | 'CHATROOM_NO_RESPONSE';
   reportedId: number;
   reportedUserId: number | undefined;
   reason: string;

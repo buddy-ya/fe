@@ -10,6 +10,7 @@ import { ChatRequestModal } from '@/components/modal/Common/ChatRequestModal';
 import { BlockModal, ExitModal, ReportModal } from '../modal';
 import { BannedUserModal } from '../modal/BannedUserModal';
 import { MatchRequestModal } from '../modal/MatchRequestModal';
+import { NoResponseModal } from '../modal/NoResponseModal';
 import { PointModal } from '../modal/PointModal';
 
 export function GlobalModalContainer() {
@@ -64,6 +65,13 @@ export function GlobalModalContainer() {
         <PointModal {...modalProps.point} visible={true} onClose={() => handleClose('point')} />
       )}
       {visible.banned && <BannedUserModal {...modalProps.banned} visible={true} />}
+      {visible.noResponse && (
+        <NoResponseModal
+          {...modalProps.noResponse}
+          visible={true}
+          onClose={() => handleClose('noResponse')}
+        />
+      )}
     </>
   );
 }

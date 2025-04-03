@@ -20,8 +20,6 @@ export interface ProfileViewProps {
   handleEditInterests?: () => void;
   showMatchingProfile?: boolean;
   incompleteProfile?: boolean;
-  introduction?: string;
-  buddyActivity?: string;
   handleMatchingProfileSave?: (key: string, values: string[]) => void;
 }
 
@@ -36,8 +34,6 @@ const ProfileView: React.FC<ProfileViewProps> = ({
   handleEditInterests,
   showMatchingProfile,
   incompleteProfile,
-  introduction,
-  buddyActivity,
   handleMatchingProfileSave,
 }) => {
   const { t } = useTranslation(['mypage', 'countries', 'majors', 'languages', 'interests']);
@@ -89,19 +85,19 @@ const ProfileView: React.FC<ProfileViewProps> = ({
     },
   ];
 
-  const [localIntroduction, setLocalIntroduction] = useState<string>(introduction || '');
-  const [localBuddyActivity, setLocalBuddyActivity] = useState<string>(buddyActivity || '');
+  const [localIntroduction, setLocalIntroduction] = useState<string>(user.introduction || '');
+  const [localBuddyActivity, setLocalBuddyActivity] = useState<string>(user.buddyActivity || '');
   const [editingField, setEditingField] = useState<'introduction' | 'buddyActivity' | null>(null);
   const [errorIntroduction, setErrorIntroduction] = useState<string>('');
   const [errorBuddyActivity, setErrorBuddyActivity] = useState<string>('');
 
   useEffect(() => {
-    setLocalIntroduction(introduction || '');
-  }, [introduction]);
+    setLocalIntroduction(user.introduction || '');
+  }, [user.introduction]);
 
   useEffect(() => {
-    setLocalBuddyActivity(buddyActivity || '');
-  }, [buddyActivity]);
+    setLocalBuddyActivity(user.buddyActivity || '');
+  }, [user.buddyActivity]);
 
   const handleSave = () => {
     if (editingField === 'introduction') {
@@ -130,7 +126,7 @@ const ProfileView: React.FC<ProfileViewProps> = ({
     <View style={{ flex: 1 }}>
       <ScrollView
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={isMyProfile ? { paddingBottom: 70 } : { paddingBottom: 20 }}
+        contentContainerStyle={isMyProfile ? { paddingBottom: 70 } : { paddingBottom: 0 }}
       >
         <View className="mt-3 rounded-[12px]">
           <View className="items-center">

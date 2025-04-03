@@ -128,7 +128,6 @@ export default function MyProfileScreen({ navigation, route }: any) {
     isMyProfile ||
     (route.params?.showMatchingProfile !== undefined ? route.params.showMatchingProfile : false);
 
-
   return (
     <>
       <Layout showHeader onBack={() => navigation.goBack()} className="bg-gray-600">
@@ -156,9 +155,7 @@ export default function MyProfileScreen({ navigation, route }: any) {
                 isMyProfile={isMyProfile}
                 isDefaultProfileImage={isDefaultProfileImage}
                 showMatchingProfile={showMatchingProfile}
-                introduction={user.introduction}
                 incompleteProfile={incompleteProfile}
-                buddyActivity={user.buddyActivity}
                 handleMatchingProfileSave={handleMatchingProfileSave}
                 {...editHandlers}
               />

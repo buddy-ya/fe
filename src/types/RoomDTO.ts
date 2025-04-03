@@ -17,6 +17,7 @@ export interface Room {
   profileImageUrl?: string;
   isNew?: boolean;
   isBuddyExited?: true;
+  type?: string;
 }
 
 export interface RoomListResponse {

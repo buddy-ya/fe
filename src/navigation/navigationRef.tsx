@@ -73,7 +73,7 @@ export type ChatStackParamList = {
   RoomList: undefined;
   ChatRoom: { id: number };
   ChatRequests: undefined;
-  Profile: { id: number };
+  Profile: { id: number; showMatchingProfile: boolean };
 };
 
 export type MyPageStackParamList = {

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useModalStore } from '@/store';
-import { Ban, LogOut, Siren } from 'lucide-react-native';
+import { Ban, LogOut, Siren, UserRoundX } from 'lucide-react-native';
 import { ActionSheetWrapper, OptionItem } from '../Common';
 
 interface ChatOptionModalProps {
@@ -9,6 +9,7 @@ interface ChatOptionModalProps {
   onClose: () => void;
   roomId: number;
   buddyId: number;
+  roomType: 'CHAT_REQUEST' | 'MATCHING';
   onExit: () => void;
 }
 
@@ -17,6 +18,7 @@ export function ChatOptionModal({
   onClose,
   roomId,
   buddyId,
+  roomType = 'MATCHING',
   onExit,
 }: ChatOptionModalProps) {
   const { t } = useTranslation('feed');
@@ -27,6 +29,17 @@ export function ChatOptionModal({
     setTimeout(() => {
       handleModalOpen('report', {
         type: 'CHATROOM',
+        reportedId: roomId,
+        reportedUserId: buddyId,
+        onReportSuccess: onExit,
+      });
+    }, 200);
+  };
+
+  const handleNoResponseOption = () => {
+    onClose();
+    setTimeout(() => {
+      handleModalOpen('noResponse', {
         reportedId: roomId,
         reportedUserId: buddyId,
         onReportSuccess: onExit,
@@ -64,12 +77,22 @@ export function ChatOptionModal({
     },
     {
       id: 2,
-      label: t('modal.block') || 'Block',
+      label: t('modal.block'),
       icon: <Ban size={16} color="#282828" />,
       onPress: handleBlockOption,
     },
+    ...(roomType === 'MATCHING'
+      ? [
+          {
+            id: 3,
+            label: t('modal.noResponse', '응답없음'),
+            icon: <UserRoundX size={16} color="#282828" />,
+            onPress: handleNoResponseOption,
+          },
+        ]
+      : []),
     {
-      id: 3,
+      id: 4,
       label: t('modal.exit'),
       icon: <LogOut size={16} color="#282828" />,
       onPress: handleExitOption,

@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { View, AppState, AppStateStatus, StyleSheet } from 'react-native';
 import { API, UserRepository, ChatSocketRepository } from '@/api';
 import { TokenService } from '@/service';
-import { useUserStore, useModalStore } from '@/store';
+import { useUserStore, useModalStore, useChatRoomStore } from '@/store';
 import { useNavigation } from '@react-navigation/native';
 import * as Font from 'expo-font';
 import { Image as ExpoImage } from 'expo-image';
@@ -62,6 +62,7 @@ async function getUser(): Promise<'Tab' | 'Onboarding'> {
     const user = await UserRepository.get({ id: userId });
     await ChatSocketRepository.initialize();
     useUserStore.getState().update(removeNullValues(user));
+    useChatRoomStore.getState().setTotalUnreadCount(user.totalUnreadCount || 0);
   }
   return 'Tab';
 }
@@ -80,6 +81,7 @@ const AppInitializationProvider: React.FC<Props> = ({ children }) => {
 
   const { visible, handleClose, handleOpen } = useModalStore();
   const user = useUserStore((state) => state);
+  const setTotalUnreadCount = useChatRoomStore((state) => state.setTotalUnreadCount);
 
   const loadFonts = async () => {
     await Font.loadAsync(FONTS);

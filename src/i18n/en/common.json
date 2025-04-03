@@ -62,6 +62,12 @@
       "title": "App access suspended.",
       "reason": "Reason",
       "expiration": "Period"
+    },
+    "noResponse": {
+      "title": "No Response",
+      "description": "Did the other person ignore your Buddy request with no response?\nThe administrator will review and refund your points.\nYou will be automatically exited from the chat room afterward.",
+      "cancel": "Cancel",
+      "confirm": "Report"
     }
   },
   "toast": {
