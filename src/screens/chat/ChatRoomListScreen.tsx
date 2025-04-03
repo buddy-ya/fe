@@ -35,12 +35,12 @@ export default function RoomListScreen({ navigation }: RoomListNavigationProps) 
   const { t } = useTranslation('chat');
 
   const openInstagramProfile = () => {
-    const url = 'instagram://user?username=apple';
+    const url = 'instagram://user?username=buddyya_connect';
     Linking.canOpenURL(url).then((supported) => {
       if (supported) {
         Linking.openURL(url);
       } else {
-        Linking.openURL('https://www.instagram.com/apple');
+        Linking.openURL('https://www.instagram.com/buddyya_connect');
       }
     });
   };
