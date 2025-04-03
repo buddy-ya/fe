@@ -9,9 +9,13 @@ import { useBackButton } from '@/hooks';
 import { ChatStackParamList, FeedStackParamList } from '@/navigation/navigationRef';
 import { useChatRoomStore } from '@/store';
 import { Room, RoomListResponse } from '@/types/RoomDTO';
+import InqueryEn from '@assets/icons/inqueryEn.svg';
+import InqueryKo from '@assets/icons/inqueryKo.svg';
 import LogoIcon from '@assets/icons/logo.svg';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useSuspenseQuery } from '@tanstack/react-query';
+import { locale } from 'expo-localization';
+import * as Localization from 'expo-localization';
 import { UserRoundPlus } from 'lucide-react-native';
 import Skeleton from '../Skeleton';
 
@@ -31,15 +35,17 @@ export default function RoomListScreen({ navigation }: RoomListNavigationProps) 
   const { t } = useTranslation('chat');
 
   const openInstagramProfile = () => {
-    const url = 'instagram://user?username=buddyyakorea'; // 여기에 여러분의 인스타그램 아이디를 입력하세요.
+    const url = 'instagram://user?username=apple';
     Linking.canOpenURL(url).then((supported) => {
       if (supported) {
         Linking.openURL(url);
       } else {
-        Linking.openURL('https://www.instagram.com/buddyyakorea');
+        Linking.openURL('https://www.instagram.com/apple');
       }
     });
   };
+
+  const locale = Localization.locale;
 
   const handleGoToRequests = () => {
     navigation.navigate('ChatRequests');
@@ -85,19 +91,12 @@ export default function RoomListScreen({ navigation }: RoomListNavigationProps) 
     >
       <InnerLayout>
         <View className="flex-1">
-          <TouchableOpacity onPress={openInstagramProfile} activeOpacity={0.7}>
-            <View className="mt-4 flex h-[77px] flex-row items-center justify-between rounded-xl bg-primary px-6 py-4">
-              <View className="flex h-full w-full flex-1 flex-row items-center">
-                <MyText className="text-white" size="text-lg">
-                  {t('roomList.banner.title')}
-                </MyText>
-              </View>
-              <View className="mt-6 flex h-full flex-row items-center justify-end">
-                <MyText className="text-white" size="text-sm">
-                  {t('roomList.banner.description')}
-                </MyText>
-              </View>
-            </View>
+          <TouchableOpacity
+            onPress={openInstagramProfile}
+            activeOpacity={0.7}
+            className="my-1 items-center"
+          >
+            {locale.startsWith('ko') ? <InqueryKo /> : <InqueryEn />}
           </TouchableOpacity>
           <RoomList
             rooms={rooms}

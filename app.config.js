@@ -49,6 +49,7 @@ module.exports = {
           NSAllowsArbitraryLoads: true,
         },
         ITSAppUsesNonExemptEncryption: false,
+        LSApplicationQueriesSchemes: ['instagram'],
         NSCameraUsageDescription:
           'Buddyya requires camera access to capture photos for content creation.',
         NSPhotoLibraryUsageDescription:
