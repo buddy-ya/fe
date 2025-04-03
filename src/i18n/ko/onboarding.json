@@ -6,15 +6,15 @@
   },
   "phone": {
     "title": "전화번호를 입력해 주세요",
-    "titleDescription": "버디야는 사람인지를 확인하기 위해서만 전화번호를 사용합니다.",
+    "titleDescription": "전화번호는 본인확인 용도로만 사용됩니다.",
     "label": "전화번호",
     "placeholder": "010-1234-5678",
-    "warning": "전화번호는 010으로 시작해야 합니다",
-    "footer": "저희는 이 정보를 공유하거나,\n회원님의 프로필에 표시하지 않습니다."
+    "warning": "전화번호는 010으로 시작해야 합니다.",
+    "footer": "입력하신 정보는 공유되지 않으며,\n회원님의 프로필에 표시되지 않습니다."
   },
   "verification": {
-    "title": "방금 인증코드를 보내드렸어요!",
-    "titleDescription": "{{phoneNumber}}으로 전송된 코드를 입력하세요.",
+    "title": "방금 인증코드를 보내드렸어요.",
+    "titleDescription": "{{phoneNumber}}으로 전송된 코드를 입력해주세요.",
     "label": "인증코드",
     "notReceived": "제한 시간 안에 인증코드를 입력해주세요.",
     "expired": "인증 시간이 만료되었습니다",
@@ -22,8 +22,8 @@
     "resend": "인증코드 재발송"
   },
   "notification": {
-    "title": "새로운 친구와 빠르게 얘기하도록\n버디야가 알려드릴까요?",
-    "description": "알림을 허용하면 버디야 사용을 더 편리하게 도와드릴게요!",
+    "title": "새로운 친구와 대화할 수 있도록\n버디야가 도와드릴까요?",
+    "description": "알림을 허용하면 매칭 소식과 다양한 정보를 빠르게 받아볼 수 있어요.",
     "allow": "알림 허용하기"
   },
   "studentInfo": {
@@ -32,7 +32,7 @@
   },
   "universitySelect": {
     "title": "재학 중인 학교를 선택해주세요",
-    "description": "선택한 대학교 정보를 버디야 프로필에서 볼 수 있어요",
+    "description": "선택한 학교는 프로필에 표시되며,\n같은 학교 버디들과 소통할 수 있어요.",
     "universities": {
       "sejong": "세종대학교"
     },
@@ -45,7 +45,7 @@
   },
   "gender": {
     "title": "성별을 선택해 주세요.",
-    "description": "성별은 이후 더 정확한 매칭을 위해 활용됩니다.",
+    "description": "",
     "male": "남성",
     "female": "여성",
     "preferNotToSay": "밝히고 싶지 않음",
@@ -53,22 +53,21 @@
   },
   "name": {
     "title": "이름을 입력해 주세요.",
-    "description": "버디야에서는 영어 이름을 사용해주세요.",
+    "description": "원활한 소통을 위해 영어 이름을 사용해주세요.",
     "label": "닉네임",
-    "placeholder": "",
-    "footer": "회원님의 프로필에 표시될 이름이에요.",
-    "warning": "영어 이름을 작성해주세요",
+    "placeholder": "-",
+    "footer": "입력하신 이름으로 버디들과 소통하게 되며,\n이름은 프로필에 표시됩니다.",
+    "warning": "영어로 입력해주세요.",
     "warningLength": "닉네임 형식에 맞지 않습니다. ({{min}}~{{max}}자)"
   },
   "country": {
     "title": "국가를 선택해 주세요.",
-    "description": "회원님의 프로필에 표시될 국가를 선택해 주세요.",
+    "description": "선택한 국가는 버디야 프로필에서 볼 수 있어요.",
     "searchPlaceholder": "국가 검색"
   },
-
   "language": {
-    "title": "어떤 언어를 구사하세요?",
-    "description": "회원님의 프로필에 표시하고 같은 언어를 구사하는 멋진 짝을 찾아드릴게요.",
+    "title": "어떤 언어를 사용하시나요?",
+    "description": "사용 가능한 언어를 프로필에 표시하고 같은 언어를 사용하는 버디를 찾아볼 수 있어요.",
     "maxSelect": "최대 {{count}}개까지 선택할 수 있어요",
     "searchPlaceholder": "언어 검색"
   },
@@ -79,7 +78,7 @@
   },
   "interest": {
     "title": "관심사를 선택해 주세요.",
-    "description": "관심사를 선택하고 취미가 비슷한 멋진 친구들을 만나보세요!",
+    "description": "관심사를 선택하고 취미가 비슷한 버디를 찾아볼 수 있어요.",
     "maxSelect": "최대 {{count}}개까지 선택할 수 있어요",
     "submit": "선택됨",
     "categories": {
@@ -91,13 +90,13 @@
   },
   "userGuide": {
     "title": "버디야 이용 가이드",
-    "description": "우리 커뮤니티는 서로 존중하는 공간입니다.\n아래 가이드라인을 확인해 주세요.",
-    "guideline1": "불건전 컨텐츠 업로드는 금지됩니다.",
-    "guideline2": "인종차별적 발언은 허용되지 않습니다.",
-    "guideline3": "모든 게시글은 모두가 이해할 수 있는 영어로 작성해 주세요.",
-    "guideline4": "버디야는 실제 대학생들이 모인 공간입니다.\n모두 서로를 존중하며 소통해 주세요.",
+    "description": "우리 커뮤니티는 서로 존중하는 공간이에요.\n아래 가이드라인을 꼭 확인해주세요.",
+    "guideline1": "즐거운 커뮤니티를 위해 불건전한 컨텐츠 업로드는 자제해 주세요",
+    "guideline2": "서로를 존중하는 공간이에요.\n차별적인 발언은 허용되지 않아요.",
+    "guideline3": "더 많은 버디가 소통할 수 있도록 게시글은 영어로 작성해주세요.",
+    "guideline4": "버디야는 실제 대학생들이 모인 공간이에요.\n배려하는 마음으로 소통해주세요.",
     "button": "버디야 시작하기",
-    "terms": "'버디야 시작하기’를 누르면\n<termsLink>이용약관</termsLink>에 동의하게 됩니다.",
+    "terms": "'버디야 시작하기'를 누르면\n<termsLink>이용약관</termsLink>에 동의하게 됩니다.",
     "checkboxText": "아래 내용을 확인했습니다."
   },
   "common": {

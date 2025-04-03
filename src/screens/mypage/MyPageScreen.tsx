@@ -157,7 +157,7 @@ export default function MyPageScreen({ navigation }: MyPageScreenProps) {
           </View>
         </TouchableOpacity>
 
-        <TouchableOpacity className="mt-6" onPress={handleInvitationEventPress}>
+        <TouchableOpacity className="mt-6 items-center" onPress={handleInvitationEventPress}>
           {locale.startsWith('ko') ? <EventBannerKo /> : <EventBannerEn />}
         </TouchableOpacity>
       </InnerLayout>

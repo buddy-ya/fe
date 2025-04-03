@@ -290,6 +290,7 @@ export const ChatRoomScreen: React.FC<ChatRoomScreenProps> = ({ route }) => {
             handleModalOpen('chat', {
               roomId: roomId,
               buddyId: roomData.buddyId,
+              roomType: roomData.type,
               onExit: handleExit,
             })
           }

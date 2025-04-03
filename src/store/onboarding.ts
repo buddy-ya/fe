@@ -13,7 +13,7 @@ interface OnboardingStore {
   majors: string[];
   languages: string[];
   interests: string[];
-  expoToken: string | null; // 알림 토큰
+  expoToken: string | null;
   updateOnboardingData: (data: Partial<Omit<OnboardingStore, 'updateOnboardingData'>>) => void;
 }
 

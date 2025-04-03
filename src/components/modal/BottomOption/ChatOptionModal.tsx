@@ -18,9 +18,10 @@ export function ChatOptionModal({
   onClose,
   roomId,
   buddyId,
-  roomType = 'MATCHING',
+  roomType,
   onExit,
 }: ChatOptionModalProps) {
+  console.log(roomType);
   const { t } = useTranslation('feed');
   const handleModalOpen = useModalStore((state) => state.handleOpen);
 
@@ -85,7 +86,7 @@ export function ChatOptionModal({
       ? [
           {
             id: 3,
-            label: t('modal.noResponse', '응답없음'),
+            label: t('modal.noResponse'),
             icon: <UserRoundX size={16} color="#282828" />,
             onPress: handleNoResponseOption,
           },

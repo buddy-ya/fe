@@ -32,6 +32,7 @@ const errorMapping: Record<number, { emoji: string; translationKey: string }> = 
   5004: { emoji: '📩', translationKey: 'feed:error.alreadyExistChatRequest' },
   5005: { emoji: '💬', translationKey: 'feed:error.alreadyExistChatroom' },
   6004: { emoji: '🙅‍♂️', translationKey: 'common:toast.error.matchProfile' },
+  6006: { emoji: '🌝', translationKey: 'common:toast.error.matchDelay' },
   8001: { emoji: '🚫', translationKey: 'common:toast.error.alreadyReported' },
   10002: { emoji: '🪙', translationKey: 'common:toast.error.point' },
 };

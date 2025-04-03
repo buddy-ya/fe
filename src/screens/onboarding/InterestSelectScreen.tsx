@@ -131,7 +131,7 @@ function InterestSelectScreen({ navigation, route }: InterestSelectProps) {
         >
           <View>
             <MyText size="text-base" color="text-white" className="font-semibold">
-              {t('onboarding:interest.submit')}
+              {t('onboarding:common.selected')}
             </MyText>
           </View>
           <View className="ml-1">
