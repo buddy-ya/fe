@@ -24,33 +24,38 @@ const MatchProfile: React.FC<MatchProfileProps> = ({
   questionText,
 }) => {
   const { t } = useTranslation('mypage');
+
+  const handleBlur = () => {
+    onSave();
+  };
+
   return isEditing ? (
-    <>
-      <View className="mb-4 rounded-xl bg-gray-100 p-4">
-        <View>
-          <MyText className="font-semibold text-gray-500">{questionText}</MyText>
-        </View>
-        <View className="mt-[8px] flex-row items-center">
-          <TextInput
-            autoFocus
-            multiline
-            className="flex-1 font-medium text-[14px] text-black"
-            value={value}
-            onChangeText={onChange}
-          />
-          <TouchableOpacity onPress={onSave} className="p-1">
-            <MyText className="text-primary">{t('profile.save')}</MyText>
-          </TouchableOpacity>
-        </View>
-        {errorMessage && <MyText className="mt-3 text-xs text-red-500">{errorMessage}</MyText>}
+    <View className="mb-4 rounded-xl bg-gray-100 p-4">
+      <View>
+        <MyText className="font-semibold text-gray-500">{questionText}</MyText>
       </View>
-    </>
+      <View className="mt-[8px] flex-row items-center">
+        <TextInput
+          autoFocus
+          multiline
+          className="flex-1 font-medium text-[14px] text-black"
+          value={value}
+          onChangeText={onChange}
+          onBlur={handleBlur}
+        />
+        <TouchableOpacity onPress={onSave} className="p-1">
+          <MyText className="text-primary">{t('profile.save')}</MyText>
+        </TouchableOpacity>
+      </View>
+      {errorMessage && <MyText className="mt-2 text-xs text-red-500">{errorMessage}</MyText>}
+    </View>
   ) : (
     <TouchableOpacity activeOpacity={0.8}>
       <View className="mb-4 flex-row items-center justify-between rounded-xl bg-gray-100 p-4">
         <View className="max-w-[90%]">
           <MyText className="font-semibold text-gray-500">{questionText}</MyText>
           <MyText className="mt-[8px] font-medium text-[14px] text-black">{value}</MyText>
+          {errorMessage && <MyText className="mt-2 text-xs text-red-500">{errorMessage}</MyText>}
         </View>
         {onEdit && (
           <TouchableOpacity onPress={onEdit} hitSlop={{ top: 10, left: 10, bottom: 10, right: 10 }}>

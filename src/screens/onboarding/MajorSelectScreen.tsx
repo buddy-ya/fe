@@ -44,10 +44,8 @@ export default function MajorSelectScreen({ navigation }: OnboardingMajorSelectS
     <Layout showHeader onBack={() => navigation.goBack()}>
       <InnerLayout>
         <Heading>{t('onboarding:major.title')}</Heading>
-        {/* <HeadingDescription /> */}
-        {/* <Text className="text-textDescription mt-2"></Text> */}
         <MyText size="text-base" color="text-textDescription" className="mt-3">
-          {t('language.maxSelect', { count: MAX_SELECT })}
+          {t('majors.maxSelect', { count: MAX_SELECT })}
         </MyText>
         <MultiSelectItem
           options={MAJORS}

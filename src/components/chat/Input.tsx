@@ -30,6 +30,8 @@ export const Input = forwardRef<TextInput, CommentInputProps>(
       setIsFocused(false);
     };
 
+    const isButtonEnabled = !disabled && (value.trim().length > 0 || isLoading);
+
     return (
       <View
         className={`w-full flex-row items-center justify-between border-t border-borderBottom bg-white px-4 py-[10px] ${
@@ -64,10 +66,13 @@ export const Input = forwardRef<TextInput, CommentInputProps>(
         </View>
         <TouchableOpacity
           onPress={onSubmit}
+          className="items-center justify-center"
           disabled={disabled || value.length < 0 || isLoading} // disabled 적용
           hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
         >
-          <Send strokeWidth={1.3} color={`#CBCBCB`} />
+          <View>
+            <Send strokeWidth={1.3} color={isButtonEnabled ? '#00A176' : '#CBCBCB'} />
+          </View>
         </TouchableOpacity>
       </View>
     );

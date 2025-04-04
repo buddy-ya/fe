@@ -73,6 +73,7 @@
   },
   "major": {
     "title": "What are you studying in university?",
+    "maxSelect": "You can choose up to {{count}} majors",
     "placeholder": "Select",
     "bottomSheetTitle": "Select Major"
   },

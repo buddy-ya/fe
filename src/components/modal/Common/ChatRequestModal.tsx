@@ -34,12 +34,6 @@ export function ChatRequestModal({ visible, data, onClose }: CommonModalProps) {
     const userId = data?.userId;
     try {
       const data = await ChatRequestRepository.create({ receiverId: userId });
-      updateUser({ point: data.point });
-      handleModalOpen('point', {
-        usedPoint: data.pointChange,
-        currentPoint: data.point,
-        action: 'DECREASE',
-      });
       showToast(<Text>💬</Text>, t('chatRequestModal.success'));
     } catch (error: any) {}
   };
@@ -53,8 +47,7 @@ export function ChatRequestModal({ visible, data, onClose }: CommonModalProps) {
       cancelText={cancelText}
       confirmText={confirmText}
       onConfirm={onConfirm}
-      confirmType="point"
-      point="15"
+      point="0"
     >
       <View className="mt-5 rounded-[12px] bg-mainBackground py-4">
         <View className="items-center">
