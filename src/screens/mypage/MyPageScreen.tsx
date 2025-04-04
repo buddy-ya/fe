@@ -126,7 +126,7 @@ export default function MyPageScreen({ navigation }: MyPageScreenProps) {
             <ChevronRight size={24} color="#636363" strokeWidth={1.3} />
           </View>
         </TouchableOpacity>
-        <View className="mt-3 flex-row justify-around rounded-t-xl bg-white py-5">
+        <View className="mt-3 flex-row justify-around rounded-t-xl bg-white pb-5 pt-5">
           {quickMenuItems.map(({ key, label, icon, onPress }) => (
             <TouchableOpacity
               key={key}
@@ -140,7 +140,7 @@ export default function MyPageScreen({ navigation }: MyPageScreenProps) {
           ))}
         </View>
         <TouchableOpacity
-          className="mt-0 flex-row items-center justify-between rounded-b-xl border-t border-[#f6f6f6] bg-white p-5"
+          className="flex-row items-center justify-between rounded-b-xl border-t border-[#f6f6f6] bg-white p-5"
           onPress={handlePointPress}
         >
           <View>
@@ -157,7 +157,7 @@ export default function MyPageScreen({ navigation }: MyPageScreenProps) {
           </View>
         </TouchableOpacity>
 
-        <TouchableOpacity className="mt-6 items-center" onPress={handleInvitationEventPress}>
+        <TouchableOpacity className="mt-7 items-center" onPress={handleInvitationEventPress}>
           {locale.startsWith('ko') ? <EventBannerKo /> : <EventBannerEn />}
         </TouchableOpacity>
       </InnerLayout>
