@@ -73,6 +73,7 @@
   },
   "major": {
     "title": "대학에서 어떤 공부를 하고 있나요?",
+    "maxSelect": "최대 {{count}}개까지 선택할 수 있어요",
     "placeholder": "선택",
     "bottomSheetTitle": "전공 선택"
   },

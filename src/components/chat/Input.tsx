@@ -11,7 +11,7 @@ interface CommentInputProps {
   onChange: (text: string) => void;
   onSubmit: () => void;
   isLoading?: boolean;
-  disabled?: boolean; // 추가: disabled 속성
+  disabled?: boolean;
 }
 
 export const Input = forwardRef<TextInput, CommentInputProps>(
@@ -67,7 +67,7 @@ export const Input = forwardRef<TextInput, CommentInputProps>(
         <TouchableOpacity
           onPress={onSubmit}
           className="items-center justify-center"
-          disabled={disabled || value.length < 0 || isLoading} // disabled 적용
+          disabled={disabled || value.length < 0 || isLoading}
           hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
         >
           <View>

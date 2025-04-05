@@ -45,7 +45,7 @@ export default function MajorSelectScreen({ navigation }: OnboardingMajorSelectS
       <InnerLayout>
         <Heading>{t('onboarding:major.title')}</Heading>
         <MyText size="text-base" color="text-textDescription" className="mt-3">
-          {t('majors.maxSelect', { count: MAX_SELECT })}
+          {t('onboarding:major.maxSelect', { count: MAX_SELECT })}
         </MyText>
         <MultiSelectItem
           options={MAJORS}
