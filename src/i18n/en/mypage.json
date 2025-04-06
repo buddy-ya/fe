@@ -67,7 +67,15 @@
     "terms": "Terms of Use",
     "privacy": "Privacy Policy",
     "logout": "Logout",
-    "delete": "Delete Account",
+    "delete": {
+      "label": "Delete Account",
+      "alert": {
+        "confirmTitle": "Are you sure you want to delete your account?",
+        "confirmMessage": "Deleting your account will permanently remove all your data, including your points, and refunds or recovery will be difficult. Do you wish to continue?",
+        "cancel": "Cancel",
+        "confirm": "Confirm"
+      }
+    },
     "notifications": "Notification Settings",
     "language": "Language Settings"
   },
