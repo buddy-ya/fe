@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { TouchableOpacity, AppState, AppStateStatus, ScrollView } from 'react-native';
 import { InnerLayout, Layout, MyText } from '@/components';
+import { useBackButton } from '@/hooks';
 import { MatchstackParamList } from '@/navigation/navigationRef';
 import { navigationRef } from '@/navigation/router';
 import { useModalStore, useUserStore } from '@/store';
@@ -88,6 +89,8 @@ export default function MatchScreen({ navigation }: MatchScreenProps) {
   const handlePointPress = () => {
     navigation.navigate('Point');
   };
+
+  useBackButton();
 
   useEffect(() => {
     const subscription = AppState.addEventListener('change', handleAppStateChange);

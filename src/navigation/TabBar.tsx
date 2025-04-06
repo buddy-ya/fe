@@ -87,7 +87,8 @@ export const getTabScreenOptions = (routeName: keyof typeof TAB_CONFIG) => {
               strokeWidth={1}
               size={24}
               color={color}
-              fill={focused ? '#282828' : 'transparent'}
+              stroke={'#FFFFFF'}
+              fill={focused ? '#282828' : '#CBCBCB'}
             />
             {totalUnreadCount > 0 && (
               <View className="absolute -right-2 -top-1 h-[16px] min-w-[16px] items-center justify-center rounded-full bg-primary px-1">

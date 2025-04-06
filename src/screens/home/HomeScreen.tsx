@@ -55,13 +55,7 @@ export function HomeScreen({ navigation }: FeedHomeScreenProps) {
 
   const insets = useSafeAreaInsets();
   const isTablet = Device.deviceType === Device.DeviceType.TABLET;
-  const writeButtonPosition = isTablet
-    ? isAndroid
-      ? 100
-      : 100
-    : isAndroid
-      ? insets.bottom + 80
-      : insets.bottom + 50;
+  const writeButtonPosition = insets.bottom + 80;
 
   useBackButton();
 
