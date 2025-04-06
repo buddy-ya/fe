@@ -67,8 +67,8 @@ export default function InvitationScreen({ navigation }: NativeStackScreenProps<
       onBack={() => navigation.goBack()}
       headerCenter={
         <View className="flex-row items-center">
-          <MyText size="text-lg" className="font-semibold">
-            {t('event.invitation.header')}
+          <MyText size="text-lg" className="font-semibold" numberOfLines={1}>
+            Event
           </MyText>
         </View>
       }
