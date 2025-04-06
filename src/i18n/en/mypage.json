@@ -44,7 +44,7 @@
   "quickMenu": {
     "bookmark": "Bookmarks",
     "myPosts": "My Posts",
-    "verification": "verification"
+    "verification": "Verification"
   },
   "verification": {
     "description": "Please select a verification method.",
