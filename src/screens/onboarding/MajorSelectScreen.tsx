@@ -1,7 +1,15 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
-import { Button, Heading, InnerLayout, Layout, MultiSelectItem, MyText } from '@/components';
+import {
+  Button,
+  Heading,
+  HeadingDescription,
+  InnerLayout,
+  Layout,
+  MultiSelectItem,
+  MyText,
+} from '@/components';
 import { OnboardingStackParamList } from '@/navigation/navigationRef';
 import { useOnboardingStore } from '@/store';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
@@ -44,6 +52,7 @@ export default function MajorSelectScreen({ navigation }: OnboardingMajorSelectS
     <Layout showHeader onBack={() => navigation.goBack()}>
       <InnerLayout>
         <Heading>{t('onboarding:major.title')}</Heading>
+        <HeadingDescription>{t('onboarding:major.description')}</HeadingDescription>
         <MyText size="text-base" color="text-textDescription" className="mt-3">
           {t('onboarding:major.maxSelect', { count: MAX_SELECT })}
         </MyText>

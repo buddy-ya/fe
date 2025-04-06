@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
-import { Linking, Text, View, TouchableOpacity } from 'react-native';
+import { Linking, Text, View, TouchableOpacity, ScrollView } from 'react-native';
 import { Button, Heading, HeadingDescription, InnerLayout, Layout, MyText } from '@/components';
 import { useBackButton } from '@/hooks';
 import i18n from '@/i18n';
@@ -35,46 +35,51 @@ export default function UserGuideScreen({ navigation }: OnboardingUserGuideProps
   useBackButton();
 
   const guidelines = [
-    { key: 'guideline1', emoji: '🚫' },
-    { key: 'guideline2', emoji: '⚠️' },
-    { key: 'guideline3', emoji: '💬' },
-    { key: 'guideline4', emoji: '🎓' },
+    { key: 'guideline1', emoji: '💬' },
+    { key: 'guideline2', emoji: '🚨' },
+    { key: 'guideline3', emoji: '🎓' },
+    { key: 'guideline4', emoji: '⚠️' },
   ];
 
   return (
     <Layout preserveHeader>
       <InnerLayout>
-        <View className="flex-1">
-          <Heading>{t('userGuide.title')}</Heading>
-          <HeadingDescription>{t('userGuide.description')}</HeadingDescription>
-          <TouchableOpacity
-            className={`mt-7 flex-row items-center rounded-xl border px-4 py-3 ${isChecked ? 'border-[#A6CFC4] bg-[#F6FFFD]' : 'border-gray-300 bg-[#F6F6F6]'}`}
-            onPress={() => setIsChecked(!isChecked)}
-          >
-            <View
-              className={`mr-3 h-8 w-8 items-center justify-center rounded-full ${isChecked ? 'bg-primary' : 'bg-[#DFDFDF]'} `}
+        <ScrollView
+          contentContainerStyle={{ paddingBottom: 80 }}
+          showsVerticalScrollIndicator={false}
+        >
+          <View className="flex-1">
+            <Heading>{t('userGuide.title')}</Heading>
+            <HeadingDescription>{t('userGuide.description')}</HeadingDescription>
+            <TouchableOpacity
+              className={`mt-7 flex-row items-center rounded-xl border px-4 py-3 ${isChecked ? 'border-[#A6CFC4] bg-[#F6FFFD]' : 'border-gray-300 bg-[#F6F6F6]'}`}
+              onPress={() => setIsChecked(!isChecked)}
             >
-              <Check size={20} color="white" />
-            </View>
-            <MyText size="text-lg" className="font-medium">
-              {t('userGuide.checkboxText')}
-            </MyText>
-          </TouchableOpacity>
-          <View className="mt-4">
-            {guidelines.map((item) => (
-              <View key={item.key} className="mt-6 flex-row items-center justify-between px-4">
-                <View className="p-[1px]">
-                  <MyText size="text-xl" className="mr-3">
-                    {item.emoji}
-                  </MyText>
-                </View>
-                <View className="flex-1">
-                  <MyText className="font-medium">{t(`userGuide.${item.key}`)}</MyText>
-                </View>
+              <View
+                className={`mr-3 h-8 w-8 items-center justify-center rounded-full ${isChecked ? 'bg-primary' : 'bg-[#DFDFDF]'} `}
+              >
+                <Check size={20} color="white" />
               </View>
-            ))}
+              <MyText size="text-base" className="font-medium">
+                {t('userGuide.checkboxText')}
+              </MyText>
+            </TouchableOpacity>
+            <View className="mt-1">
+              {guidelines.map((item) => (
+                <View key={item.key} className="mt-6 flex-row items-center justify-between px-4">
+                  <View className="p-[1px]">
+                    <MyText size="text-xl" className="mr-3">
+                      {item.emoji}
+                    </MyText>
+                  </View>
+                  <View className="flex-1">
+                    <MyText className="font-medium">{t(`userGuide.${item.key}`)}</MyText>
+                  </View>
+                </View>
+              ))}
+            </View>
           </View>
-        </View>
+        </ScrollView>
 
         <View className="mb-2 items-center">
           <MyText size="text-sm" color="text-[#636363]" className="text-center">

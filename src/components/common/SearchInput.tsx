@@ -41,7 +41,7 @@ export default function SearchInput({
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View
-        className={`mt-7 flex-row items-center justify-between rounded-xl border border-border px-4 ${className}`}
+        className={`mt-5 flex-row items-center justify-between rounded-xl border border-border px-4 ${className}`}
       >
         <Search size={20} color="gray" />
         <TextInput

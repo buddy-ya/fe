@@ -21,6 +21,7 @@ export const INTEREST_IDS = [
   'experience',
   'cafe',
   'museum', // 박물관 추가
+  'hanriver',
   // sports
   'game',
   'basketball',
@@ -75,6 +76,7 @@ export const INTEREST_ICONS: Record<string, string> = {
   experience: '🎯',
   cafe: '☕️',
   museum: '🏛️', // 박물관 아이콘 추가
+  hanriver: '🏝️',
   // sports
   game: '🎮',
   basketball: '🏀',
@@ -118,7 +120,17 @@ export const INTEREST_ICONS: Record<string, string> = {
 };
 
 export const CATEGORY_INTERESTS: Record<InterestCategoryID, InterestID[]> = {
-  culture: ['kpop', 'performance', 'reading', 'movie', 'oneday', 'experience', 'cafe', 'museum'],
+  culture: [
+    'kpop',
+    'performance',
+    'reading',
+    'movie',
+    'oneday',
+    'experience',
+    'cafe',
+    'museum',
+    'hanriver',
+  ],
   sports: [
     'game',
     'basketball',

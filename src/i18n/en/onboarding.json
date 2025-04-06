@@ -22,7 +22,7 @@
     "resend": "Resend code"
   },
   "notification": {
-    "title": "Can Buddyya help you chat with your new friends?",
+    "title": "Don't miss anything\nwhen meeting new buddies",
     "description": "Allow notifications to be notified of new matches, messages, and other news",
     "allow": "Allow Notification"
   },
@@ -32,11 +32,11 @@
   },
   "universitySelect": {
     "title": "What university are you enrolled in?",
-    "description": "Your university will be shown on your Buddyya profile.",
+    "description": "Choose your university and meet your campus buddies!",
     "universities": {
       "sejong": "Sejong University"
     },
-    "label": "Select University"
+    "label": "University"
   },
   "studentType": {
     "title": "Which of these apply to you?",
@@ -54,32 +54,33 @@
   "name": {
     "title": "What is your name?",
     "description": "For easier communication, Please enter your name in English",
-    "placeholder": "-",
     "label": "Nickname",
+    "placeholder": "-",
     "footer": "This will be displayed on your profile.",
     "warning": "Please enter your name in English",
     "warningLength": "Nicknames should be {{min}}-{{max}} characters"
   },
   "country": {
     "title": "Where are you from?",
-    "description": "This will be shown on your profile",
+    "description": "Choose your nationality and meet buddies from around the world.",
     "searchPlaceholder": "Search countries"
   },
   "language": {
     "title": "Which languages can you speak?",
-    "description": "This will be shown on your profile to help you find great match with people who can speak the same languages.",
+    "description": "Choose available languages and find buddies who speak your preferred language.",
     "maxSelect": "You can choose up to {{count}} languages",
     "searchPlaceholder": "Search languages"
   },
   "major": {
     "title": "What are you studying in university?",
+    "description": "Choose your major and meet buddies from your major.",
     "maxSelect": "You can choose up to {{count}} majors",
     "placeholder": "Select",
     "bottomSheetTitle": "Select Major"
   },
   "interest": {
     "title": "What are your interests?",
-    "description": "Choose your interest and match with people with same interests",
+    "description": "Choose your interest and match with buddies with same interests",
     "maxSelect": "You can choose up to {{count}}",
     "submit": "Next",
     "categories": {
@@ -92,10 +93,10 @@
   "userGuide": {
     "title": "Community Guidelines",
     "description": "Our community is a space where we respect each other. Please review the following guidelines.",
-    "guideline1": "Refrain from posting inappropriate content",
-    "guideline2": "Racist or discriminatory remarks are not tolerated",
-    "guideline3": "All posts should be in English so everyone can understand.",
-    "guideline4": "Buddyya is a community for real university students. Please treat each other with respect.",
+    "guideline1": "All posts should be in English so everyone can understand.",
+    "guideline2": "When you're matched, not responding based on someone's gender or nationality, it can deeply hurt them. Buddyya enforces strict penalties for such behavior.",
+    "guideline3": "Buddyya is a community for real university students. Please treat each other with respect.",
+    "guideline4": "Racist or discriminatory remarks are not tolerated",
     "button": "Start Buddyya",
     "terms": "By tapping “Start Buddyya,”\nYou agree to our <termsLink>Terms of service.</termsLink>",
     "checkboxText": "I agree to the community guidelines"

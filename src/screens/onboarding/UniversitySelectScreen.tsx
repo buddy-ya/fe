@@ -80,13 +80,15 @@ export default function UniversitySelectScreen({
       <InnerLayout>
         <Heading>{t('universitySelect.title')}</Heading>
         <HeadingDescription>{t('universitySelect.description')}</HeadingDescription>
+        <MyText size="text-base" className="mt-8 font-semibold">
+          {t('universitySelect.label')}
+        </MyText>
         <MultiSelectItem
           options={options}
           selectedValues={selectedOption ? [selectedOption] : []}
           onSelect={handleSelect}
           multiple={false}
           nameSpace="universities:universities"
-          className="mt-8"
         />
         <Button onPress={handleNavigateButton} disabled={!selectedOption}>
           <MyText size="text-lg" color="text-white" className="font-semibold">

@@ -3,7 +3,15 @@ import { memo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ScrollView, View } from 'react-native';
 import { API, ChatSocketRepository, NotificationRepository, UserRepository } from '@/api';
-import { Button, Chip, Heading, InnerLayout, Layout, MyText } from '@/components';
+import {
+  Button,
+  Chip,
+  Heading,
+  HeadingDescription,
+  InnerLayout,
+  Layout,
+  MyText,
+} from '@/components';
 import { MyPageStackParamList, OnboardingStackParamList } from '@/navigation/navigationRef';
 import { TokenService } from '@/service';
 import { useOnboardingStore, useUserStore } from '@/store';
@@ -98,6 +106,7 @@ function InterestSelectScreen({ navigation, route }: InterestSelectProps) {
           contentContainerStyle={{ paddingBottom: 50 }}
         >
           <Heading>{t('onboarding:interest.title')}</Heading>
+          <HeadingDescription>{t('onboarding:interest.description')}</HeadingDescription>
           <MyText size="text-base" color="text-textDescription" className="mt-3">
             {t('onboarding:interest.maxSelect', { count: MAX_SELECT })}
           </MyText>
