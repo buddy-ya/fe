@@ -12,11 +12,11 @@
       }
     },
     "university": {
-      "sju": "Sejong"
+      "sju": "Sejong University"
     },
     "gender": {
-      "male": "Male",
-      "female": "Female"
+      "male": "Man",
+      "female": "Woman"
     },
     "editProfile": "Edit Profile",
     "sections": {
@@ -50,11 +50,11 @@
     "description": "Please select a verification method.",
     "email": {
       "title": "Email Verification",
-      "description": "Verify using a school domain email."
+      "description": "Verify using a school email."
     },
     "students": {
       "title": "Student Verification",
-      "description": "Verify using any proof of student status, such as a physical student ID, digital student ID, enrollment certificate, or admission letter."
+      "description": "You can verify using any proof of student status, such as digital or physical student ID, certificate of enrollment, library card, school's webstie login status, tuition bill, etc."
     }
   },
   "menuItems": {
@@ -73,7 +73,7 @@
   },
   "myPostsEmpty": "No posts yet",
   "point": {
-    "point": "Point",
+    "point": "Points",
     "title": "Point History",
     "pointType": {
       "signup": "Sign Up Event",
@@ -88,8 +88,8 @@
       "rejected_chat_request": "Refund Chat Request"
     },
     "pointChangeType": {
-      "earn": "Earn",
-      "deduct": "Deduct"
+      "earn": "Earned",
+      "deduct": "Used"
     },
     "currentPoint": "Current Points"
   },

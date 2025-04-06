@@ -79,7 +79,10 @@ export function BottomModalWrapper({
                     onClose();
                   }}
                 >
-                  <MyText size="text-[14px]" className="text-center font-semibold text-white">
+                  <MyText
+                    size={`${confirmType === 'point' ? 'text-[14px]' : 'text-[16px]'}`}
+                    className="text-center font-semibold text-white"
+                  >
                     {confirmText}
                   </MyText>
                   {confirmType === 'point' && (

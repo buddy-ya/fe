@@ -1,58 +1,58 @@
 {
   "banner": {
     "default": {
-      "title": "Complete your student verification.",
-      "description": "Once you complete student verification, you can enjoy various features of Buddyya.",
+      "title": "To enjoy Buddyya, student verification is required!",
+      "description": "Complete the student verification and enjoy more features of Buddyya.",
       "confirm": "Verify",
       "cancel": "Do it later"
     },
     "pending": {
-      "title": "Your student verification is under review.",
-      "description": "It typically takes about 1 day for the review to be completed, and your personal information will not be used for any purpose other than verification.",
+      "title": "Your student verification is under review",
+      "description": "Verification may take up to one day to complete. Your personal information will not be used for any purpose other than verification.",
       "confirm": "Confirm",
-      "cancel": "Close"
+      "cancel": "Cancel"
     }
   },
   "studentId": {
-    "title": "Please upload a photo that proves your student status.",
-    "description": "The photo must clearly show information that verifies your student status at your school, and it will be deleted immediately after review.",
-    "uploadDescription": "Please\nupload your image",
-    "uploadButton": "Select student ID image",
-    "submitButton": "Submit verification request",
+    "title": "Please upload a photo to prove that you are a student",
+    "description": "The photo must clearly show that you are a student at the school. The photo will be discarded immediately after review.",
+    "uploadDescription": "Please upload photo",
+    "uploadButton": "Choose student ID image",
+    "submitButton": "Request verification",
     "upload": "Upload",
     "permission": {
       "gallery": "Gallery access is required to select an image."
     }
   },
   "email": {
-    "title": "Please enter your school email address for verification.",
-    "description": "We have sent a verification code to your email!",
-    "label": "School Email",
+    "title": "Please enter your student email.",
+    "description": "A verification code has been sent to your email",
+    "label": "School email",
     "placeholder": "Enter email",
-    "footer": "Your email will be used only for verification.",
+    "footer": "Your information will not be shared nor shown on your profile.",
     "warning": "Please enter a valid email address."
   },
   "verification": {
     "title": "Please enter the verification code.",
     "titleDescription": "A verification code has been sent to {{email}}.",
-    "label": "Verification Code",
-    "checkSpam": "Please also check your spam folder.",
+    "label": "Verification code",
+    "checkSpam": "Please check your spam folder.",
     "resend": "Resend verification code",
     "warning": "Invalid verification code."
   },
   "error": {
-    "invalidCode": "Invalid verification code",
+    "invalidCode": "Invalid verification code.",
     "registered": "Email address already registered",
     "sendFail": "Failed to send email"
   },
   "verificationComplete": {
-    "title": "Student verification is complete.",
+    "title": "Student verification is complete!",
     "description": "Your personal information will not be used for any purpose other than verification.\nStart enjoying campus life with Buddyya.",
     "start": "Start Buddyya"
   },
   "studentIdComplete": {
     "title": "Student verification request completed.",
-    "description": "It typically takes about 1 day to complete the review, and your personal information will not be used for any purpose other than verification.",
+    "description": "It typically takes about 3 hours to complete the review, and your personal information will not be used for any purpose other than verification.",
     "complete": "Confirm"
   }
 }
