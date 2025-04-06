@@ -67,7 +67,15 @@
     "terms": "이용약관",
     "privacy": "개인정보처리방침",
     "logout": "로그아웃",
-    "delete": "회원탈퇴"
+    "delete": {
+      "label": "회원탈퇴",
+      "alert": {
+        "confirmTitle": "정말 탈퇴하시겠습니까?",
+        "confirmMessage": "회원탈퇴를 진행하면 모든 포인트를 포함한 데이터가 삭제되며 환급 및 복구가 어렵습니다. 계속 진행하시겠습니까?",
+        "cancel": "취소",
+        "confirm": "확인"
+      }
+    }
   },
   "myPostsEmpty": "아직 글이 없어요",
   "common": {

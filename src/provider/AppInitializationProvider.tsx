@@ -160,10 +160,12 @@ const AppInitializationProvider: React.FC<Props> = ({ children }) => {
 
   useEffect(() => {
     if (user.isBanned) {
-      handleOpen('banned', {
-        banExpiration: user.banExpiration,
-        banReason: user.banReason,
-      });
+      setTimeout(() => {
+        handleOpen('banned', {
+          banExpiration: user.banExpiration,
+          banReason: user.banReason,
+        });
+      }, 2000);
     } else {
       if (visible.banned) {
         handleClose('banned');

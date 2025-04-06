@@ -125,6 +125,13 @@ class ChatSocketRepository {
       );
     });
   }
+
+  disconnectSocket(): void {
+    if (this.socket) {
+      this.socket.disconnect();
+      this.socket = null;
+    }
+  }
 }
 
 export default new ChatSocketRepository();
