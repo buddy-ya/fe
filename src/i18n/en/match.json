@@ -1,11 +1,11 @@
 {
   "match": {
-    "title": "Match",
+    "title": "Matching",
     "not_requested": {
-      "title": "Select your matching conditions!",
-      "description": "Once matched, you can start chatting right away!",
-      "choose_conditions": "Please select matching conditions!",
-      "button": "Match",
+      "title": "Let’s find the buddy for you!",
+      "description": "You can chat with your match straight away!",
+      "choose_conditions": "Please select your matching preferences",
+      "button": "Find Buddy",
       "country": {
         "title": "Nationality",
         "global": "Global",
@@ -13,19 +13,19 @@
       },
       "university": {
         "title": "University",
-        "same": "Same Univ",
-        "different": "Diff Univ"
+        "same": "My Uni",
+        "different": "Others"
       },
       "gender": {
         "title": "Gender",
         "all": "All",
-        "male": "Male",
-        "female": "Female"
+        "male": "Man",
+        "female": "Woman"
       }
     },
     "pending": {
       "title": "Finding your buddy..",
-      "description": "We will notify you once the match is complete!",
+      "description": "We will notify you once the match is complete! \nyour points will be refunded if you cancel",
       "button": "Cancel"
     },
     "success": {
@@ -36,7 +36,7 @@
     },
     "requestModal": {
       "title": "Shall we search for a buddy?",
-      "description": "It may take one day to complete the match,\nand {{point}} points will be used for matching.",
+      "description": "It may take up to one day to complete the match,\nand {{point}} points will be used for matching.",
       "cancelText": "Close",
       "confirmText": "Confirm"
     }

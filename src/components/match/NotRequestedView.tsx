@@ -244,7 +244,7 @@ export default function NotRequestedView({
       >
         <View className="mt-6 rounded-xl bg-white pb-2">
           <MyText size="text-xl" className="px-5 pt-5 font-semibold">
-            {t('match.not_requested.choose_conditions')}
+            {t('match.not_requested.title')}
           </MyText>
           <OptionSection
             title={t('match.not_requested.country.title')}

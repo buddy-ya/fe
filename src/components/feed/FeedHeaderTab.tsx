@@ -15,7 +15,7 @@ export function FeedHeaderTab({ selectedTab, onSelectTab }: FeedHeaderTabProps) 
       <TouchableOpacity onPress={() => onSelectTab('myUni')}>
         <MyText
           size="text-2xl"
-          className={`font-semibold ${selectedTab === 'myUni' ? 'text-primary' : 'text-textLight'}`}
+          className={`font-semibold ${selectedTab === 'myUni' ? '' : 'text-textLight'}`}
         >
           {t('header.myUni')}
         </MyText>
@@ -23,9 +23,7 @@ export function FeedHeaderTab({ selectedTab, onSelectTab }: FeedHeaderTabProps) 
       <TouchableOpacity onPress={() => onSelectTab('buddyya')}>
         <MyText
           size="text-2xl"
-          className={`ml-4 font-semibold ${
-            selectedTab === 'buddyya' ? 'text-primary' : 'text-textLight'
-          }`}
+          className={`ml-4 font-semibold ${selectedTab === 'buddyya' ? '' : 'text-textLight'}`}
         >
           {t('header.buddyya')}
         </MyText>

@@ -7,24 +7,24 @@
   },
   "emptyState": {
     "feed": {
-      "title": "피드가 없습니다.",
+      "title": "피드가 없습니다",
       "description": "첫 피드를 작성하고\n다양한 글로벌 버디와 소통해 보세요!"
     },
     "bookmark": {
-      "title": "북마크한 피드가 없습니다.",
-      "description": "마음에 드는 피드를 북마크 해보세요."
+      "title": "북마크한 피드가 없습니다",
+      "description": "마음에 드는 피드를 북마크로 저장해보세요!"
     },
     "search": {
-      "title": "검색 결과가 없습니다.",
+      "title": "검색 결과가 없습니다",
       "description": "일치하는 내용을 찾을 수 없습니다.\n다른 키워드로 다시 시도해보세요!"
     },
     "chat": {
-      "title": "채팅이 없습니다.",
+      "title": "채팅이 없습니다",
       "description": "지금 바로 채팅을 시작하고 다양한 글로벌 버디와 친구가 되어보세요!"
     },
     "request": {
-      "title": "요청이 없습니다.",
-      "description": "피드를 올리고 댓글을 달면서\n다양한 글로벌 버디와 소통해 보세요!"
+      "title": "채팅 요청이 없습니다",
+      "description": "피드를 올리고 댓글을 남기며\n다양한 글로벌 버디와 소통해 보세요!"
     }
   },
   "modal": {
@@ -32,24 +32,24 @@
     "report": {
       "title": "신고하기",
       "chat": {
-        "description": "신고를 완료하시면 해당 채팅방에서 자동으로 나가집니다."
+        "description": "신고가 완료되면 해당 상대방과의 채팅에서 자동으로 나가져요."
       },
       "description": "신고 사유를 입력해 주세요.",
       "cancel": "아니오",
       "accept": "신고",
       "placeholder": "신고 사유를 입력해 주세요.",
       "errorTitle": "오류",
-      "errorMessage": "유효한 신고 사유를 입력해 주세요."
+      "errorMessage": "올바른 신고사유를 입력해 주세요."
     },
     "block": {
       "title": "사용자 차단",
-      "description": "이 작업은 되돌릴 수 없습니다. 계속 진행하시겠습니까?",
+      "description": "한번 차단하면 다시 되돌릴 수 없어요.\n정말 차단하시겠어요?",
       "cancel": "아니오",
       "confirm": "예"
     },
     "exit": {
       "title": "채팅방 나가기",
-      "description": "나가면 다시 이 채팅방에 돌아올 수 없습니다. 정말 계속하시겠습니까?",
+      "description": "채팅방을 나가면 다시 돌아올 수 없어요.\n정말 나가시겠어요?",
       "cancel": "아니오",
       "accept": "예"
     },

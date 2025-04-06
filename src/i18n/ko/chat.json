@@ -9,7 +9,7 @@
   "requests": {
     "title": "받은 요청",
     "banner": {
-      "description": "요청은 24시간이 지나면 사라집니다."
+      "description": "요청은 24시간이 지나면 자동으로 사라져요"
     },
     "accept": "수락",
     "decline": "거절"

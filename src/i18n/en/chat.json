@@ -20,10 +20,10 @@
   "room": {
     "systemExit": "{{name}} has left the room.",
     "startMessage": "Start a conversation with Buddy!",
-    "buddyExitedMessage": "The other buddy has left the chat room."
+    "buddyExitedMessage": "The buddy has left the chat room"
   },
   "toast": {
-    "sendFailed": "Message sending failed",
+    "sendFailed": "Message failed to send",
     "copySuccess": "Message copied."
   }
 }

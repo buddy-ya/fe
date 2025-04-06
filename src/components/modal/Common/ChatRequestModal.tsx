@@ -21,7 +21,7 @@ export function ChatRequestModal({ visible, data, onClose }: CommonModalProps) {
   const isProfileImageUpload = data?.isProfileImageUpload;
   const profileImageUrl = data?.profileImageUrl;
 
-  const title = t('chatRequestModal.title');
+  const title = t('chatRequestModal.title', { name });
   const description = t('chatRequestModal.description');
   const confirmText = t('chatRequestModal.confirm');
   const cancelText = t('chatRequestModal.cancel');
