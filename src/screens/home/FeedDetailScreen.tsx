@@ -197,8 +197,33 @@ export default function FeedDetailScreen({ navigation, route }: FeedDetailScreen
   );
 }
 
+interface FeedErrorFallbackProps {
+  error: any;
+  resetErrorBoundary: () => void;
+  navigation: NativeStackScreenProps<FeedStackParamList, 'FeedDetail'>['navigation'];
+}
+
+const FeedErrorFallback = ({ error, resetErrorBoundary, navigation }: FeedErrorFallbackProps) => {
+  useEffect(() => {
+    if (error?.response?.status === 404) {
+      Alert.alert('The post has been deleted.', '', [
+        {
+          text: 'Confirm',
+          onPress: () => navigation.goBack(),
+        },
+      ]);
+    }
+  }, [error, navigation]);
+
+  return null;
+};
+
 export const SuspendedFeedDetailScreen = (props: FeedDetailScreenProps) => (
-  <ErrorBoundary fallback={<></>}>
+  <ErrorBoundary
+    FallbackComponent={(errorProps) => (
+      <FeedErrorFallback {...errorProps} navigation={props.navigation} />
+    )}
+  >
     <Suspense
       fallback={
         <Layout showHeader disableBottomSafeArea onBack={() => props.navigation.goBack()}>

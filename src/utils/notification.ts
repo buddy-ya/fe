@@ -9,6 +9,13 @@ Notifications.setNotificationHandler({
   }),
 });
 
+Notifications.setNotificationChannelAsync('default', {
+  name: 'default',
+  importance: Notifications.AndroidImportance.HIGH,
+  vibrationPattern: [0, 250, 250, 250],
+  lightColor: '#FF231F7C',
+});
+
 export async function registerForPushNotificationsAsync() {
   let token: string | null = null;
 
