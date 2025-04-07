@@ -205,7 +205,8 @@ interface FeedErrorFallbackProps {
 
 const FeedErrorFallback = ({ error, resetErrorBoundary, navigation }: FeedErrorFallbackProps) => {
   useEffect(() => {
-    if (error?.response?.status === 404) {
+    const errorCode = error.response?.data?.code;
+    if (errorCode === 4000) {
       Alert.alert('The post has been deleted.', '', [
         {
           text: 'Confirm',
