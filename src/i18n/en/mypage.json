@@ -120,7 +120,8 @@
         "copySuccess": "Invitation code has been copied.",
         "alreadyJoined": "You have already joined this event.",
         "notValidCode": "The invitation code is not valid.",
-        "notSelf": "You cannot enter your own invitation code."
+        "notSelf": "You cannot enter your own invitation code.",
+        "deleted": "This invitation code belongs to a user who has withdrawn."
       }
     }
   },

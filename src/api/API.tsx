@@ -27,6 +27,7 @@ const errorMapping: Record<number, { emoji: string; translationKey: string }> = 
   2013: { emoji: '🚫', translationKey: 'mypage:event.invitation.toast.notValidCode' },
   2014: { emoji: '🚫', translationKey: 'mypage:event.invitation.toast.alreadyJoined' },
   2015: { emoji: '🚫', translationKey: 'mypage:event.invitation.toast.notSelf' },
+  2016: { emoji: '🚫', translationKey: 'mypage:event.invitation.toast.deleted' },
   4000: { emoji: '🗑️', translationKey: 'feed:error.deletedFeed' },
   4006: { emoji: '🗑️', translationKey: 'feed:error.deletedComment' },
   5004: { emoji: '📩', translationKey: 'feed:error.alreadyExistChatRequest' },
