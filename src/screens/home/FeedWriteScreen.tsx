@@ -252,7 +252,7 @@ export default function FeedWriteScreen({ navigation, route }: FeedWriteScreenPr
                 className="mt-4 font-medium text-[18px]"
                 placeholder={t('write.contentPlaceholder')}
                 placeholderTextColor="#CBCBCB"
-                maxLength={2000}
+                maxLength={4000}
                 value={content}
                 onChangeText={setContent}
                 multiline

@@ -42,6 +42,7 @@ const MatchProfile: React.FC<MatchProfileProps> = ({
           value={value}
           onChangeText={onChange}
           onBlur={handleBlur}
+          maxLength={2000}
         />
         <TouchableOpacity onPress={onSave} className="p-1">
           <MyText className="text-primary">{t('profile.save')}</MyText>

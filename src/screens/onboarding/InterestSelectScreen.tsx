@@ -53,6 +53,8 @@ function InterestSelectScreen({ navigation, route }: InterestSelectProps) {
     }))
   );
 
+  const [loading, setLoading] = useState(false);
+
   const handleToggleSelect = (interest: Interest) => {
     setSelectedInterests((prev) => {
       if (prev.some((i) => i.id === interest.id)) {
@@ -65,6 +67,7 @@ function InterestSelectScreen({ navigation, route }: InterestSelectProps) {
 
   const handleNavigateButton = async () => {
     try {
+      setLoading(true);
       const interests = selectedInterests.map((interest) => interest.id);
       if (isEditMode) {
         const data = await UserRepository.update({ key: 'interests', values: interests });
@@ -95,6 +98,8 @@ function InterestSelectScreen({ navigation, route }: InterestSelectProps) {
       }
     } catch (error) {
       logError(error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -135,7 +140,8 @@ function InterestSelectScreen({ navigation, route }: InterestSelectProps) {
         <Button
           type="box"
           onPress={handleNavigateButton}
-          disabled={selectedInterests.length === 0}
+          disabled={selectedInterests.length === 0 || loading}
+          loading={loading}
           className="flex-row items-center justify-center"
         >
           <View>
