@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-type Gender = 'male' | 'female' | null;
+type Gender = 'male' | 'female' | 'unknown' | null;
 
 interface OnboardingStore {
   name: string;

@@ -182,14 +182,14 @@ export default function NotRequestedView({
       label: t('match.not_requested.gender.female'),
       icon: FemaleGenderIcon,
       category: 'gender',
-      locked: userGender === 'male',
+      locked: userGender === 'male' || userGender == 'unknown',
     },
     {
       value: 'MALE',
       label: t('match.not_requested.gender.male'),
       icon: MaleGenderIcon,
       category: 'gender',
-      locked: userGender === 'female',
+      locked: userGender === 'female' || userGender == 'unknown',
     },
   ];
 

@@ -46,6 +46,7 @@
   "gender": {
     "title": "What is your gender?",
     "description": "Your gender will be shown on your profile and will be used in the matching process.",
+    "genderDescription": "If you don't specify a gender, you can only be matched with buddies who have selected 'All' as their gender in Match. Gender cannot be edited afterward.",
     "male": "Man",
     "female": "Woman",
     "preferNotToSay": "Prefer not to say",

@@ -1,4 +1,4 @@
-import { memo } from 'react';
+import React, { memo, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FlatList, RefreshControl, RefreshControlProps } from 'react-native';
 import { Feed } from '@/types/FeedDTO';
@@ -43,28 +43,26 @@ function FeedList({
     );
   }
 
+  const renderFeedItem = useCallback(
+    ({ item }) => (
+      <FeedItem feed={item} onLike={onLike} onBookmark={onBookmark} onPress={onPress} />
+    ),
+    [onLike, onBookmark, onPress]
+  );
+
   return (
     <FlatList
       data={feeds}
-      renderItem={({ item }) => (
-        <FeedItem
-          key={item.id}
-          feed={item}
-          onLike={onLike}
-          onBookmark={onBookmark}
-          onPress={onPress}
-        />
-      )}
+      renderItem={renderFeedItem}
       className={`mt-1 pt-3 ${className}`}
       contentContainerStyle={{ paddingBottom: 60 }}
       keyExtractor={(item) => `feed-${item.id}`}
       onEndReached={hasMore ? onLoadMore : undefined}
-      onEndReachedThreshold={0.8}
+      onEndReachedThreshold={0.6}
       showsVerticalScrollIndicator={false}
       initialNumToRender={5}
-      maxToRenderPerBatch={5}
-      windowSize={5}
-      removeClippedSubviews={true}
+      maxToRenderPerBatch={7}
+      scrollEventThrottle={16}
       refreshControl={refreshControl ? <RefreshControl {...refreshControl} /> : undefined}
     />
   );
