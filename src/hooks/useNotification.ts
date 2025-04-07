@@ -1,14 +1,12 @@
 import { useEffect } from 'react';
-import { NotificationRepository } from '@/api';
 import { useUserStore } from '@/store';
 import * as Linking from 'expo-linking';
 import * as Notifications from 'expo-notifications';
 import { useMatchStore } from '@/store/useMatchStore';
 import { registerForPushNotificationsAsync } from '@/utils';
 
-export async function getExpoToken() {
-  const token = await registerForPushNotificationsAsync();
-  return token;
+export function getExpoToken() {
+  return registerForPushNotificationsAsync();
 }
 
 export function useNotification() {
@@ -21,15 +19,10 @@ export function useNotification() {
       const data = response.notification.request.content.data;
 
       if (data?.type === 'AUTHORIZATION') {
-        if (data?.isCertificated) {
-          const failDeepLinkUrl = `${prefix}studentIdCard`;
-          const successDeepLinkUrl = `${prefix}home`;
-          update({ isCertificated: data?.isCertificated });
-          if (data?.isCertificated == false) {
-            setTimeout(() => Linking.openURL(failDeepLinkUrl), 100);
-          } else {
-            setTimeout(() => Linking.openURL(successDeepLinkUrl), 100);
-          }
+        const failDeepLinkUrl = `${prefix}verification/studentIdCard`;
+        update({ isCertificated: data?.isCertificated });
+        if (data?.isCertificated == false) {
+          setTimeout(() => Linking.openURL(failDeepLinkUrl), 100);
         }
       }
       if (data?.type === 'FEED' && data?.feedId) {
@@ -50,6 +43,10 @@ export function useNotification() {
       }
       if (data?.type === 'CHAT' && data?.chatroomId) {
         const deepLinkUrl = `${prefix}chats/${data.chatroomId}`;
+        setTimeout(() => Linking.openURL(deepLinkUrl), 100);
+      }
+      if (data?.type === 'POINT') {
+        const deepLinkUrl = `${prefix}point`;
         setTimeout(() => Linking.openURL(deepLinkUrl), 100);
       }
     });
