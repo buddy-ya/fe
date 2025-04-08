@@ -25,6 +25,7 @@ module.exports = {
         {
           icon: './assets/images/icon/128.png',
           color: '#00A176',
+          defaultChannel: 'default',
           androidMode: 'default',
           androidImportance: 'high',
           androidShowWhen: true,
