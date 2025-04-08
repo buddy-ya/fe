@@ -21,14 +21,14 @@ Notifications.setNotificationHandler({
     shouldShowAlert: true,
     shouldPlaySound: true,
     shouldSetBadge: true,
-    priority: Notifications.AndroidNotificationPriority.MAX,
+    priority: Notifications.AndroidNotificationPriority.HIGH,
   }),
 });
 
 Notifications.setNotificationChannelAsync('default', {
   name: 'default',
   description: 'notification',
-  importance: Notifications.AndroidImportance.MAX,
+  importance: Notifications.AndroidImportance.HIGH,
   vibrationPattern: [0, 250, 250, 250],
   lightColor: '#FF231F7C',
   enableVibrate: true,
