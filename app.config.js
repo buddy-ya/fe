@@ -13,6 +13,7 @@ module.exports = {
     orientation: 'portrait',
     userInterfaceStyle: 'light',
     newArchEnabled: false,
+    assetBundlePatterns: ['./assets/fonts/*'],
     icon: './assets/images/icon/icon.png',
     splash: {
       image: './assets/images/icon/icon.png',
