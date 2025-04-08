@@ -5,11 +5,11 @@ require('dotenv').config({ path: path.resolve(__dirname, '.env') });
 module.exports = {
   expo: {
     scheme: 'buddyya',
-    name: 'buddyya',
+    name: 'Buddyya',
     owner: 'buddyya-personal',
     description: 'A friendly app for buddy management.',
     slug: 'buddyya',
-    version: '1.0.6',
+    version: '1.0.7',
     orientation: 'portrait',
     userInterfaceStyle: 'light',
     newArchEnabled: false,
