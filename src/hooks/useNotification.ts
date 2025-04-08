@@ -11,41 +11,39 @@ export function getExpoToken() {
 
 export function useNotification() {
   const update = useUserStore((state) => state.update);
-  const updateMatchData = useMatchStore((state) => state.updateMatchData);
   const prefix = Linking.createURL('/');
 
-  useEffect(() => {
-    const handleNotificationData = (data: any) => {
-      if (!data) return;
+  const handleNotificationData = (data: any) => {
+    if (!data) return;
 
-      if (data?.type === 'AUTHORIZATION') {
-        const failDeepLinkUrl = `${prefix}verification/studentIdCard`;
-        update({ isCertificated: data?.isCertificated });
-        if (data?.isCertificated == false) {
-          setTimeout(() => Linking.openURL(failDeepLinkUrl), 100);
-        }
-      } else if (data?.type === 'FEED' && data?.feedId) {
-        const deepLinkUrl = `${prefix}feeds/${data.feedId}`;
-        setTimeout(() => Linking.openURL(deepLinkUrl), 100);
-      } else if (data?.type === 'MATCH') {
-        const deepLinkUrl = `${prefix}match`;
-        updateMatchData({ matchStatus: 'success' });
-        setTimeout(() => Linking.openURL(deepLinkUrl), 100);
-      } else if (data?.type === 'CHAT_REQUEST') {
-        const deepLinkUrl = `${prefix}chatRequests`;
-        setTimeout(() => Linking.openURL(deepLinkUrl), 100);
-      } else if (data?.type === 'CHAT_ACCEPT' && data?.roomId) {
-        const deepLinkUrl = `${prefix}chats/${data.roomId}`;
-        setTimeout(() => Linking.openURL(deepLinkUrl), 100);
-      } else if (data?.type === 'CHAT' && data?.chatroomId) {
-        const deepLinkUrl = `${prefix}chats/${data.chatroomId}`;
-        setTimeout(() => Linking.openURL(deepLinkUrl), 100);
-      } else if (data?.type === 'POINT') {
-        const deepLinkUrl = `${prefix}point`;
-        setTimeout(() => Linking.openURL(deepLinkUrl), 100);
+    if (data?.type === 'AUTHORIZATION') {
+      const failDeepLinkUrl = `${prefix}verification/studentIdCard`;
+      update({ isCertificated: data?.isCertificated });
+      if (data?.isCertificated == false) {
+        setTimeout(() => Linking.openURL(failDeepLinkUrl), 100);
       }
-    };
+    } else if (data?.type === 'FEED' && data?.feedId) {
+      const deepLinkUrl = `${prefix}feeds/${data.feedId}`;
+      setTimeout(() => Linking.openURL(deepLinkUrl), 100);
+    } else if (data?.type === 'MATCH') {
+      const deepLinkUrl = `${prefix}match`;
+      setTimeout(() => Linking.openURL(deepLinkUrl), 100);
+    } else if (data?.type === 'CHAT_REQUEST') {
+      const deepLinkUrl = `${prefix}chatRequests`;
+      setTimeout(() => Linking.openURL(deepLinkUrl), 100);
+    } else if (data?.type === 'CHAT_ACCEPT' && data?.roomId) {
+      const deepLinkUrl = `${prefix}chats/${data.roomId}`;
+      setTimeout(() => Linking.openURL(deepLinkUrl), 100);
+    } else if (data?.type === 'CHAT' && data?.chatroomId) {
+      const deepLinkUrl = `${prefix}chats/${data.chatroomId}`;
+      setTimeout(() => Linking.openURL(deepLinkUrl), 100);
+    } else if (data?.type === 'POINT') {
+      const deepLinkUrl = `${prefix}point`;
+      setTimeout(() => Linking.openURL(deepLinkUrl), 100);
+    }
+  };
 
+  useEffect(() => {
     const checkInitialNotification = async () => {
       const lastResponse = await Notifications.getLastNotificationResponseAsync();
       if (lastResponse) {
