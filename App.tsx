@@ -17,16 +17,16 @@ import { Toast } from '@/components/common/Toast';
 
 export const navigationRef = createNavigationContainerRef();
 
-if (Platform.OS === 'android') {
-  Notifications.setNotificationHandler({
-    handleNotification: async () => ({
-      shouldShowAlert: true,
-      shouldPlaySound: true,
-      shouldSetBadge: true,
-      priority: Notifications.AndroidNotificationPriority.HIGH,
-    }),
-  });
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: true,
+    shouldSetBadge: true,
+    priority: Notifications.AndroidNotificationPriority.HIGH,
+  }),
+});
 
+if (Platform.OS === 'android') {
   Notifications.setNotificationChannelAsync('default', {
     name: 'default',
     description: 'notification',

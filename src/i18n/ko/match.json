@@ -36,9 +36,9 @@
     },
     "requestModal": {
       "title": "버디를 찾아볼까요?",
-      "description": "매칭이 완료되기까지 최대 1이 걸릴 수 있으며,\n매칭에 {{point}} 포인트가 사용됩니다.",
+      "description": "매칭이 완료되기까지 최대 하루가 걸릴 수 있으며,\n매칭에 {{point}}포인트가 사용됩니다.",
       "cancelText": "닫기",
-      "confirmText": "확인하기"
+      "confirmText": "찾아보기"
     }
   }
 }

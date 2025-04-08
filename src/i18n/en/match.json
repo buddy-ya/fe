@@ -25,7 +25,7 @@
     },
     "pending": {
       "title": "Finding your buddy..",
-      "description": "We will notify you once the match is complete! \nyour points will be refunded if you cancel",
+      "description": "We will notify you once the match is complete!\nyour points will be refunded if you cancel",
       "button": "Cancel"
     },
     "success": {
@@ -36,7 +36,7 @@
     },
     "requestModal": {
       "title": "Shall we search for a buddy?",
-      "description": "It may take up to one day to complete the match,\nand {{point}} points will be used for matching.",
+      "description": "It may take up to one day to complete the match,\nand {{point}}points will be used for matching.",
       "cancelText": "Close",
       "confirmText": "Confirm"
     }
