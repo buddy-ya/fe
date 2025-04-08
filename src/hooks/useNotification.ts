@@ -20,26 +20,26 @@ export function useNotification() {
       const failDeepLinkUrl = `${prefix}verification/studentIdCard`;
       update({ isCertificated: data?.isCertificated });
       if (data?.isCertificated == false) {
-        setTimeout(() => Linking.openURL(failDeepLinkUrl), 100);
+        setTimeout(() => Linking.openURL(failDeepLinkUrl), 2000);
       }
     } else if (data?.type === 'FEED' && data?.feedId) {
       const deepLinkUrl = `${prefix}feeds/${data.feedId}`;
-      setTimeout(() => Linking.openURL(deepLinkUrl), 100);
+      setTimeout(() => Linking.openURL(deepLinkUrl), 2000);
     } else if (data?.type === 'MATCH') {
       const deepLinkUrl = `${prefix}match`;
-      setTimeout(() => Linking.openURL(deepLinkUrl), 100);
+      setTimeout(() => Linking.openURL(deepLinkUrl), 2000);
     } else if (data?.type === 'CHAT_REQUEST') {
       const deepLinkUrl = `${prefix}chatRequests`;
-      setTimeout(() => Linking.openURL(deepLinkUrl), 100);
+      setTimeout(() => Linking.openURL(deepLinkUrl), 2000);
     } else if (data?.type === 'CHAT_ACCEPT' && data?.roomId) {
       const deepLinkUrl = `${prefix}chats/${data.roomId}`;
-      setTimeout(() => Linking.openURL(deepLinkUrl), 100);
+      setTimeout(() => Linking.openURL(deepLinkUrl), 2000);
     } else if (data?.type === 'CHAT' && data?.chatroomId) {
       const deepLinkUrl = `${prefix}chats/${data.chatroomId}`;
-      setTimeout(() => Linking.openURL(deepLinkUrl), 100);
+      setTimeout(() => Linking.openURL(deepLinkUrl), 2000);
     } else if (data?.type === 'POINT') {
       const deepLinkUrl = `${prefix}point`;
-      setTimeout(() => Linking.openURL(deepLinkUrl), 100);
+      setTimeout(() => Linking.openURL(deepLinkUrl), 2000);
     }
   };
 
