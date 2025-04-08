@@ -6,7 +6,7 @@ module.exports = {
   expo: {
     scheme: 'buddyya',
     name: 'Buddyya',
-    owner: 'buddyya-personal',
+    owner: 'buddyya',
     description: 'A friendly app for buddy management.',
     slug: 'buddyya',
     version: '1.0.7',
@@ -89,7 +89,7 @@ module.exports = {
       BASE_URL: process.env.BASE_URL,
       BASE_DOMAIN: process.env.BASE_DOMAIN,
       eas: {
-        projectId: 'ac2fa962-0fb3-4186-9c25-840a607c0c90',
+        projectId: 'ae3e9ea5-3d73-4892-894d-2308ea11ed5c',
       },
     },
   },
