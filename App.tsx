@@ -1,6 +1,7 @@
 import React, { Suspense, useEffect } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 import { I18nextProvider } from 'react-i18next';
+import { Platform } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import i18n from '@/i18n';
 import linking from '@/navigation/Linking';
@@ -16,26 +17,28 @@ import { Toast } from '@/components/common/Toast';
 
 export const navigationRef = createNavigationContainerRef();
 
-Notifications.setNotificationHandler({
-  handleNotification: async () => ({
-    shouldShowAlert: true,
-    shouldPlaySound: true,
-    shouldSetBadge: true,
-    priority: Notifications.AndroidNotificationPriority.HIGH,
-  }),
-});
+if (Platform.OS === 'android') {
+  Notifications.setNotificationHandler({
+    handleNotification: async () => ({
+      shouldShowAlert: true,
+      shouldPlaySound: true,
+      shouldSetBadge: true,
+      priority: Notifications.AndroidNotificationPriority.HIGH,
+    }),
+  });
 
-Notifications.setNotificationChannelAsync('default', {
-  name: 'default',
-  description: 'notification',
-  importance: Notifications.AndroidImportance.HIGH,
-  vibrationPattern: [0, 250, 250, 250],
-  lightColor: '#FF231F7C',
-  enableVibrate: true,
-  enableLights: true,
-  showBadge: true,
-  lockscreenVisibility: Notifications.AndroidNotificationVisibility.PUBLIC,
-});
+  Notifications.setNotificationChannelAsync('default', {
+    name: 'default',
+    description: 'notification',
+    importance: Notifications.AndroidImportance.HIGH,
+    vibrationPattern: [0, 250, 250, 250],
+    lightColor: '#FF231F7C',
+    enableVibrate: true,
+    enableLights: true,
+    showBadge: true,
+    lockscreenVisibility: Notifications.AndroidNotificationVisibility.PUBLIC,
+  });
+}
 
 export default function App() {
   const queryClient = new QueryClient();
