@@ -25,6 +25,9 @@ module.exports = {
         {
           icon: './assets/images/icon/128.png',
           color: '#00A176',
+          androidMode: 'default',
+          androidImportance: 'max',
+          androidShowWhen: true,
         },
       ],
       'expo-dev-client',
@@ -60,6 +63,30 @@ module.exports = {
       package: 'com.buddyya.app',
       permissions: ['NOTIFICATIONS', 'VIBRATE', 'WAKE_LOCK'],
       googleServicesFile: './google-services.json',
+      useNextNotificationsApi: true,
+      notification: {
+        icon: './assets/images/icon/128.png',
+        color: '#00A176',
+        androidMode: 'default',
+        androidImportance: 'max',
+        androidShowWhen: true,
+        priority: 'max',
+        vibrate: true,
+        headless: true,
+      },
+      intentFilters: [
+        {
+          action: 'android.intent.action.VIEW',
+          category: ['android.intent.category.DEFAULT', 'android.intent.category.BROWSABLE'],
+          data: {
+            scheme: 'buddyya',
+          },
+        },
+        {
+          action: 'NOTIFICATION_CLICK',
+          category: ['android.intent.category.DEFAULT'],
+        },
+      ],
     },
     extra: {
       BASE_URL: process.env.BASE_URL,

@@ -393,8 +393,6 @@ export default function Router() {
     }
   }, [isAuthenticated]);
 
-  useNotification();
-
   return (
     <>
       <Stack.Navigator screenOptions={{ headerShown: false, gestureEnabled: false }}>
