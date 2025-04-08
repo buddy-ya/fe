@@ -48,7 +48,7 @@ export default function PointScreen({ navigation }: any) {
           </View>
           <View className="mt-4 flex-row items-center justify-center rounded-full p-3">
             <MyText size="text-lg" color="text-black" className="font-semibold">
-              보유 포인트
+              {t('point.currentPoint')}
             </MyText>
             <MyText size="text-[18px]" color="text-primary" className="ml-3 font-semibold">
               {pointsData?.currentPoint}

@@ -12,7 +12,9 @@ export type ModalType =
   | 'block'
   | 'exit'
   | 'matchRequest'
-  | 'point';
+  | 'point'
+  | 'banned'
+  | 'noResponse';
 
 interface ModalState {
   visible: Record<ModalType, boolean>;
@@ -38,6 +40,8 @@ export const useModalStore = create<ModalState & ModalAction>((set) => ({
     exit: false,
     matchRequest: false,
     point: false,
+    banned: false,
+    noResponse: false,
   },
   modalProps: {},
   handleOpen: (type, props = {}) =>

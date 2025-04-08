@@ -16,7 +16,6 @@ import { Toast } from '@/components/common/Toast';
 export const navigationRef = createNavigationContainerRef();
 
 export default function App() {
-  registerNNPushToken(28286, 'M9D40bb7v4Dd9FWfqb6g0Z');
   const queryClient = new QueryClient();
   const { visible, icon, text, duration, hideToast } = useToastStore();
   return (

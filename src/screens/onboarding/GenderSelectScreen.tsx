@@ -13,9 +13,8 @@ import {
 } from '@/components';
 import { OnboardingStackParamList } from '@/navigation/navigationRef';
 import { useOnboardingStore } from '@/store';
+import { Gender } from '@/types';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-
-type Gender = 'male' | 'female' | null;
 
 export type OnboardingGenderSelectScreenProps = NativeStackScreenProps<
   OnboardingStackParamList,
@@ -37,6 +36,7 @@ export default function GenderScreen({ navigation }: OnboardingGenderSelectScree
   const GENDER_OPTIONS = [
     { id: 'male', label: 'gender.male' },
     { id: 'female', label: 'gender.female' },
+    { id: 'unknown', label: 'gender.preferNotToSay' },
   ] as const;
 
   return (
@@ -45,7 +45,11 @@ export default function GenderScreen({ navigation }: OnboardingGenderSelectScree
         <View className="flex-1">
           <Heading>{t('gender.title')}</Heading>
           <HeadingDescription>{t('gender.description')}</HeadingDescription>
-          <Label>{t('gender.label')}</Label>
+          <HeadingDescription className="text-sm">
+            {t('gender.genderDescription')}
+          </HeadingDescription>
+
+          <Label className="mt-6">{t('gender.label')}</Label>
           <View className="mt-2">
             {GENDER_OPTIONS.map((item) => (
               <SelectItem

@@ -114,6 +114,7 @@ const OptionSection = ({
 
 interface NotRequestedViewProps {
   handleMatchRequest: (options: {
+    nationalityType: 'KOREAN' | 'GLOBAL';
     universityType: 'SAME' | 'DIFFERENT';
     genderType: 'MALE' | 'FEMALE' | 'ALL';
   }) => void;
@@ -125,7 +126,7 @@ export default function NotRequestedView({
   navigation,
 }: NotRequestedViewProps) {
   const { t } = useTranslation('match');
-  const [countryType, setCountryType] = useState<'GLOBAL' | 'KOREA' | null>(null);
+  const [countryType, setCountryType] = useState<'GLOBAL' | 'KOREAN' | null>(null);
   const [universityType, setUniversityType] = useState<'SAME' | 'DIFFERENT' | null>(null);
   const [genderType, setGenderType] = useState<'MALE' | 'FEMALE' | 'ALL' | null>(null);
 
@@ -159,10 +160,9 @@ export default function NotRequestedView({
       label: t('match.not_requested.country.global'),
       icon: GlobalIcon,
       category: 'country',
-      locked: userCountry !== 'ko',
     },
     {
-      value: 'KOREA',
+      value: 'KOREAN',
       label: t('match.not_requested.country.korea'),
       icon: KoreaIcon,
       category: 'country',
@@ -182,14 +182,14 @@ export default function NotRequestedView({
       label: t('match.not_requested.gender.female'),
       icon: FemaleGenderIcon,
       category: 'gender',
-      locked: userGender === 'male',
+      locked: userGender === 'male' || userGender == 'unknown',
     },
     {
       value: 'MALE',
       label: t('match.not_requested.gender.male'),
       icon: MaleGenderIcon,
       category: 'gender',
-      locked: userGender === 'female',
+      locked: userGender === 'female' || userGender == 'unknown',
     },
   ];
 
@@ -198,6 +198,7 @@ export default function NotRequestedView({
       ? handleModalOpen('matchRequest', {
           onConfirm: () =>
             handleMatchRequest({
+              nationalityType: countryType || 'GLOBAL',
               universityType: universityType || 'SAME',
               genderType: genderType || 'ALL',
             }),
@@ -243,13 +244,13 @@ export default function NotRequestedView({
       >
         <View className="mt-6 rounded-xl bg-white pb-2">
           <MyText size="text-xl" className="px-5 pt-5 font-semibold">
-            {t('match.not_requested.choose_conditions')}
+            {t('match.not_requested.title')}
           </MyText>
           <OptionSection
             title={t('match.not_requested.country.title')}
             options={countryOption}
             selected={countryType}
-            onSelect={(value) => setCountryType(value as 'GLOBAL' | 'KOREA')}
+            onSelect={(value) => setCountryType(value as 'GLOBAL' | 'KOREAN')}
             iconSize={50}
             overlaySize={12}
             checkSize={20}

@@ -3,7 +3,15 @@ import { memo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ScrollView, View } from 'react-native';
 import { API, ChatSocketRepository, NotificationRepository, UserRepository } from '@/api';
-import { Button, Chip, Heading, InnerLayout, Layout, MyText } from '@/components';
+import {
+  Button,
+  Chip,
+  Heading,
+  HeadingDescription,
+  InnerLayout,
+  Layout,
+  MyText,
+} from '@/components';
 import { MyPageStackParamList, OnboardingStackParamList } from '@/navigation/navigationRef';
 import { TokenService } from '@/service';
 import { useOnboardingStore, useUserStore } from '@/store';
@@ -45,6 +53,8 @@ function InterestSelectScreen({ navigation, route }: InterestSelectProps) {
     }))
   );
 
+  const [loading, setLoading] = useState(false);
+
   const handleToggleSelect = (interest: Interest) => {
     setSelectedInterests((prev) => {
       if (prev.some((i) => i.id === interest.id)) {
@@ -57,6 +67,7 @@ function InterestSelectScreen({ navigation, route }: InterestSelectProps) {
 
   const handleNavigateButton = async () => {
     try {
+      setLoading(true);
       const interests = selectedInterests.map((interest) => interest.id);
       if (isEditMode) {
         const data = await UserRepository.update({ key: 'interests', values: interests });
@@ -87,6 +98,8 @@ function InterestSelectScreen({ navigation, route }: InterestSelectProps) {
       }
     } catch (error) {
       logError(error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -98,6 +111,7 @@ function InterestSelectScreen({ navigation, route }: InterestSelectProps) {
           contentContainerStyle={{ paddingBottom: 50 }}
         >
           <Heading>{t('onboarding:interest.title')}</Heading>
+          <HeadingDescription>{t('onboarding:interest.description')}</HeadingDescription>
           <MyText size="text-base" color="text-textDescription" className="mt-3">
             {t('onboarding:interest.maxSelect', { count: MAX_SELECT })}
           </MyText>
@@ -126,12 +140,13 @@ function InterestSelectScreen({ navigation, route }: InterestSelectProps) {
         <Button
           type="box"
           onPress={handleNavigateButton}
-          disabled={selectedInterests.length === 0}
+          disabled={selectedInterests.length === 0 || loading}
+          loading={loading}
           className="flex-row items-center justify-center"
         >
           <View>
             <MyText size="text-base" color="text-white" className="font-semibold">
-              {t('onboarding:interest.submit')}
+              {t('onboarding:common.selected')}
             </MyText>
           </View>
           <View className="ml-1">

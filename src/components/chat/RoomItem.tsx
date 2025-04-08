@@ -42,7 +42,7 @@ export default function RoomItem({ room, onPress }: RoomItemProps) {
     return lastMessage === null ? t('room.startMessage') : lastMessage;
   };
   const handleProfilePress = () => {
-    navigation.navigate('Profile', { id: buddyId });
+    navigation.navigate('Profile', { id: buddyId, showMatchingProfile: room.type === 'MATCHING' });
   };
 
   return (

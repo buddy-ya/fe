@@ -150,7 +150,10 @@ export const ChatRoomScreen: React.FC<ChatRoomScreenProps> = ({ route }) => {
 
   const handleProfilePress = useCallback(
     (senderId: string) => {
-      navigation.navigate('Profile', { id: Number(senderId) });
+      navigation.navigate('Profile', {
+        id: Number(senderId),
+        showMatchingProfile: roomData.type === 'MATCHING',
+      });
     },
     [navigation]
   );
@@ -287,6 +290,7 @@ export const ChatRoomScreen: React.FC<ChatRoomScreenProps> = ({ route }) => {
             handleModalOpen('chat', {
               roomId: roomId,
               buddyId: roomData.buddyId,
+              roomType: roomData.type,
               onExit: handleExit,
             })
           }

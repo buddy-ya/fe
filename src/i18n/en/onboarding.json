@@ -1,103 +1,106 @@
 {
   "intro": {
-    "title": "with\nOur Buddies\nEn{{flower}}joy\nCam{{eye}}pus",
-    "privacy": "By tapping 'Start with Phone Number'\nyou agree to the <privacyLink>Privacy Policy</privacyLink>.",
+    "title": "Enjoy\nCam{{flower}}pus Life\nWith Global\nBud{{eye}}dy",
+    "privacy": "Once you tap ‘Start with phone number’\nYou agree to our <privacyLink>privacy policy</privacyLink>",
     "button": "Start with phone number"
   },
   "phone": {
-    "title": "Please enter your phone number",
-    "titleDescription": "We use your phone number only to verify all users in Buddy.",
-    "label": "phone number",
+    "title": "What is your phone number",
+    "titleDescription": "Your phone number is only used for verification",
+    "label": "Phone Number",
     "placeholder": "010-1234-5678",
-    "warning": "The phone number must start with 010",
-    "footer": "We do not share this information or display it on your profile."
+    "warning": "Your phone number must start with 010",
+    "footer": "This information will not be shared nor displayed on your profile"
   },
   "verification": {
-    "title": "We've just sent a verification code!",
-    "titleDescription": "Enter the code sent to {{phoneNumber}}.",
+    "title": "We have sent a verification code",
+    "titleDescription": "Enter the code sent to {{phoneNumber}}",
     "label": "Verification code",
     "notReceived": "Please enter the code within the time limit.",
     "expired": "Verification time expired",
-    "warning": "Invalid verification code. Please try again.",
+    "warning": "Incorrect verification code",
     "resend": "Resend code"
   },
   "notification": {
-    "title": "Would you like Buddya to notify you for quick chats with new friends?",
-    "description": "Allow notifications to help you use Buddya more conveniently!",
+    "title": "Don't miss anything\nwhen meeting new buddies",
+    "description": "Allow notifications to be notified of new matches, messages, and other news",
     "allow": "Allow Notification"
   },
   "studentInfo": {
-    "title": "Let's create your unique Buddya student ID",
-    "description": "The personal information on your student ID must be accurate\nas it will be used to verify each other on Buddya!"
+    "title": "Let's create your Buddya student ID",
+    "description": "The personal information on your student ID must be accurate as it will be used to match with others on Budyya!"
   },
   "universitySelect": {
-    "title": "Please select the university you're currently attending.",
-    "description": "You can view your selected university information on your Buddyya profile.",
+    "title": "What university are you enrolled in?",
+    "description": "Choose your university and meet your campus buddies",
     "universities": {
       "sejong": "Sejong University"
     },
-    "label": "University Select"
+    "label": "University"
   },
   "studentType": {
-    "title": "Please select your student type.",
+    "title": "Which of these apply to you?",
     "korean": "Korean Student",
     "foreign": "International Student"
   },
   "gender": {
-    "title": "Please select your gender.",
-    "description": "Gender information will be used to deliver more precise matches.",
-    "male": "Male",
-    "female": "Female",
-    "label": "gender",
-    "preferNotToSay": "Prefer not to say"
+    "title": "What is your gender?",
+    "description": "Your gender will be shown on your profile and will be used in the matching process.",
+    "genderDescription": "If you don't specify a gender, you can only be matched with buddies who have selected 'All' as their gender in Match. Gender cannot be edited afterward.",
+    "male": "Man",
+    "female": "Woman",
+    "preferNotToSay": "Prefer not to say",
+    "label": "Gender"
   },
   "name": {
-    "title": "Please enter your name.",
-    "description": "English names are used in Buddyya.",
-    "placeholder": "",
-    "label": "name",
-    "footer": "Your name will be displayed on your profile.",
-    "warning": "Please Enter your name in English ",
-    "warningLength": "Name should be {{min}}-{{max}} characters long"
+    "title": "What is your name?",
+    "description": "For easier communication, Please enter your name in English",
+    "label": "Nickname",
+    "placeholder": "-",
+    "footer": "This will be displayed on your profile.",
+    "warning": "Please enter your name in English",
+    "warningLength": "Nicknames should be {{min}}-{{max}} characters"
   },
   "country": {
-    "title": "Select your country",
-    "description": "Please select the country that will be displayed on your profile.",
+    "title": "Where are you from?",
+    "description": "Choose your nationality and meet buddies from around the world.",
     "searchPlaceholder": "Search countries"
   },
   "language": {
-    "title": "What languages do you speak?",
-    "description": "We'll display it on your profile and help you find great matches who speak the same languages",
-    "maxSelect": "You can select up to {{count}} languages",
+    "title": "Which languages can you speak?",
+    "description": "Choose available languages and find buddies who speak your preferred language.",
+    "maxSelect": "You can choose up to {{count}} languages",
     "searchPlaceholder": "Search languages"
   },
   "major": {
-    "title": "What are you studying at university?",
+    "title": "What are you studying in university?",
+    "description": "Choose your major and meet buddies from your major.",
+    "maxSelect": "You can choose up to {{count}} majors",
     "placeholder": "Select",
     "bottomSheetTitle": "Select Major"
   },
   "interest": {
-    "title": "Select your interests",
-    "description": "Choose your interests and meet awesome friends with similar hobbies!",
-    "maxSelect": "You can select up to {{count}}",
+    "title": "What are your interests?",
+    "description": "Choose your interest and match with buddies with same interests",
+    "maxSelect": "You can choose up to {{count}}",
     "submit": "Next",
     "categories": {
-      "culture": "Cultural Life",
+      "culture": "Hobbies",
       "sports": "Sports & Activities",
-      "arts": "Arts & Creation",
+      "arts": "Arts & Creativity",
       "food": "Food & Beverage"
     }
   },
   "userGuide": {
-    "title": "Buddyya Guidelines",
-    "description": "Our community is built on respect.\nPlease review the guidelines below.",
-    "guideline1": "Posting inappropriate content is prohibited.",
-    "guideline2": "Racist or discriminatory remarks are not allowed.",
-    "guideline3": "Please write all posts in either English or Korean.",
-    "guideline4": "Buddyya is a community for real college students. Please respect one another and communicate respectfully.",
-    "button": "Buddyya Start",
-    "terms": "By tapping 'Buddyya Start',\nyou agree to our <termsLink>Terms of Service</termsLink>.",
-    "checkboxText": "I agree to the guidelines."
+    "title": "Community Guidelines",
+    "description": "Our community is a space where we respect each other. Please review the following guidelines.",
+    "guideline1": "All posts should be in English so everyone can understand.",
+    "guideline2": "When you're matched, not responding based on someone's gender or nationality, it can deeply hurt them. Buddyya enforces strict penalties for such behavior.",
+    "guideline3": "Buddyya is a community for real university students. Please treat each other with respect.",
+    "guideline4": "Racist or discriminatory remarks are not tolerated",
+    "button": "Start Buddyya",
+    "terms": "By tapping “Start Buddyya,”\nYou agree to our <termsLink>Terms of service.</termsLink>",
+    "checkboxText": "I agree to the community guidelines"
   },
   "common": {
     "next": "Next",

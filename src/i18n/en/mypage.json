@@ -2,6 +2,8 @@
   "title": "My",
   "profile": {
     "edit": "edit",
+    "incompleteProfileTitle": "Match profile is incomplete.",
+    "incompleteProfileDescription": "Complete your profile to meet a buddy!",
     "profile": {
       "photo": {
         "title": "Select Profile Photo",
@@ -10,11 +12,11 @@
       }
     },
     "university": {
-      "sju": "Sejong"
+      "sju": "Sejong University"
     },
     "gender": {
-      "male": "Male",
-      "female": "Female"
+      "male": "Man",
+      "female": "Woman"
     },
     "editProfile": "Edit Profile",
     "sections": {
@@ -22,27 +24,37 @@
       "gender": "gender",
       "languages": "Languages",
       "majors": "Majors",
-      "interests": "Interests"
+      "interests": "Interests",
+      "matchingProfile": "Matching Profile"
     },
     "modal": {
       "image": "Image",
       "default": "Default Profile"
+    },
+    "save": "Save",
+    "matchingProfile": {
+      "questionIntroduction": "Self Intro",
+      "questionBuddyActivity": "Things to Do with My Buddy"
+    },
+    "error": {
+      "minLength": "Please enter at least 10 characters.",
+      "incompleteProfile": "Complete your match profile to match."
     }
   },
   "quickMenu": {
     "bookmark": "Bookmarks",
     "myPosts": "My Posts",
-    "verification": "verification"
+    "verification": "Verification"
   },
   "verification": {
     "description": "Please select a verification method.",
     "email": {
       "title": "Email Verification",
-      "description": "Verify using a school domain email."
+      "description": "Verify using a school email."
     },
     "students": {
       "title": "Student Verification",
-      "description": "Verify using any proof of student status, such as a physical student ID, digital student ID, enrollment certificate, or admission letter."
+      "description": "You can verify using any proof of student status, such as digital or physical student ID, certificate of enrollment, library card, school's webstie login status, tuition bill, etc."
     }
   },
   "menuItems": {
@@ -55,29 +67,63 @@
     "terms": "Terms of Use",
     "privacy": "Privacy Policy",
     "logout": "Logout",
-    "delete": "Delete Account",
+    "delete": {
+      "label": "Delete Account",
+      "alert": {
+        "confirmTitle": "Are you sure you want to delete your account?",
+        "confirmMessage": "Deleting your account will permanently remove all your data, including your points, and refunds or recovery will be difficult. Do you wish to continue?",
+        "cancel": "Cancel",
+        "confirm": "Confirm"
+      }
+    },
     "notifications": "Notification Settings",
     "language": "Language Settings"
   },
   "myPostsEmpty": "No posts yet",
   "point": {
-    "point": "Point",
+    "point": "Points",
     "title": "Point History",
     "pointType": {
       "signup": "Sign Up Event",
       "university_auth": "University Verification Event",
       "chat_request": "Chat Request",
       "match_request": "Match Request",
-      "cancel_match_request": "Match Request Cancelled"
+      "cancel_match_request": "Match Request Cancelled",
+      "invitation_event": "Invitation Event",
+      "chatroom_no_response_refund": "Refund Matching",
+      "event_reward": "Event Reward",
+      "visit_reward": "Login Reward",
+      "rejected_chat_request": "Refund Chat Request"
     },
     "pointChangeType": {
-      "earn": "Earn",
-      "deduct": "Deduct"
+      "earn": "Earned",
+      "deduct": "Used"
     },
     "currentPoint": "Current Points"
   },
   "common": {
     "complete": "Done"
+  },
+  "event": {
+    "invitation": {
+      "header": "Friend Invitation",
+      "title": "Invite your friends with your referral code and earn points!",
+      "subtitle": "Both you and your friend will receive 50 points.",
+      "inviteCodeLabel": "Invitation Code",
+      "inputLabel": "Enter Invitation Code",
+      "inputPlaceholder": "Enter the invitation code.",
+      "submitButton": "Submit",
+      "notice1": "Invitation code input only rewards points once at first.",
+      "notice2": "Points are only rewarded at initial sign-up, not on re-registration.",
+      "notice3": "Entering the referral code grants points to both you and your friend.",
+      "toast": {
+        "copySuccess": "Invitation code has been copied.",
+        "alreadyJoined": "You have already joined this event.",
+        "notValidCode": "The invitation code is not valid.",
+        "notSelf": "You cannot enter your own invitation code.",
+        "deleted": "This invitation code belongs to a user who has withdrawn."
+      }
+    }
   },
   "setting": "Setting",
   "certification": "Verification is already complete."

@@ -1,6 +1,8 @@
 {
   "title": "마이",
   "profile": {
+    "incompleteProfileTitle": "매칭 프로필이 완성되지 않았습니다.",
+    "incompleteProfileDescription": "프로필을 완성하고 버디를 만나보세요!",
     "edit": "편집",
     "university": {
       "sju": "세종대학교"
@@ -20,11 +22,21 @@
       "gender": "성별",
       "languages": "구사 가능 언어",
       "majors": "전공",
-      "interests": "관심사"
+      "interests": "관심사",
+      "matchingProfile": "매칭 프로필"
     },
     "modal": {
       "image": "이미지",
       "default": "기본 프로필"
+    },
+    "save": "저장",
+    "matchingProfile": {
+      "questionIntroduction": "자기소개",
+      "questionBuddyActivity": "버디와 어떤 활동을 하고 싶나요?"
+    },
+    "error": {
+      "minLength": "최소 10자 이상 입력해 주세요.",
+      "incompleteProfile": "매칭 프로필을 등록해야 매칭을 할 수있습니다."
     }
   },
   "quickMenu": {
@@ -55,11 +67,40 @@
     "terms": "이용약관",
     "privacy": "개인정보처리방침",
     "logout": "로그아웃",
-    "delete": "회원탈퇴"
+    "delete": {
+      "label": "회원탈퇴",
+      "alert": {
+        "confirmTitle": "정말 탈퇴하시겠습니까?",
+        "confirmMessage": "회원탈퇴를 진행하면 모든 포인트를 포함한 데이터가 삭제되며 환급 및 복구가 어렵습니다. 계속 진행하시겠습니까?",
+        "cancel": "취소",
+        "confirm": "확인"
+      }
+    }
   },
   "myPostsEmpty": "아직 글이 없어요",
   "common": {
     "complete": "완료"
+  },
+  "event": {
+    "invitation": {
+      "header": "친구 초대",
+      "title": "추천코드로 친구를 초대하고 포인트를 받아보세요!",
+      "subtitle": "친구와 나 모두 50 포인트를 받을 수 있어요.",
+      "inviteCodeLabel": "초대코드",
+      "inputLabel": "초대 코드 입력",
+      "inputPlaceholder": "초대 코드를 입력하세요.",
+      "submitButton": "입력",
+      "notice1": "초대 코드 입력은 최초 일 회만 포인트를 받을 수 있어요.",
+      "notice2": "최초 가입때만 포인트를 받을 수 있고, 재가입한 경우 받을 수 없어요.",
+      "notice3": "추천코드를 입력하면 친구와 나, 모두에게 포인트가 지급돼요.",
+      "toast": {
+        "copySuccess": "초대코드가 복사되었습니다.",
+        "alreadyJoined": "이미 참여한 이벤트 입니다.",
+        "notValidCode": "유효하지 않은 초대코드 입니다.",
+        "notSelf": "본인의 초대 코드는 입력할 수 없습니다.",
+        "deleted": "탈퇴한 유저의 초대 코드입니다."
+      }
+    }
   },
   "point": {
     "point": "포인트",
@@ -69,7 +110,12 @@
       "university_auth": "학교 인증 이벤트",
       "chat_request": "채팅 요청",
       "match_request": "매칭 요청",
-      "cancel_match_request": "매칭 요청 취소"
+      "cancel_match_request": "매칭 요청 취소",
+      "invitation_event": "친구초대 이벤트",
+      "chatroom_no_response_refund": "매칭 환급",
+      "event_reward": "이벤트 보상",
+      "visit_reward": "접속 보상",
+      "rejected_chat_request": "채팅 요청 환급"
     },
     "pointChangeType": {
       "earn": "적립",

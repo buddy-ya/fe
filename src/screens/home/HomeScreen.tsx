@@ -7,6 +7,7 @@ import { useBackButton, useFeedList } from '@/hooks';
 import { FeedStackParamList } from '@/navigation/navigationRef';
 import { useModalStore, useUserStore } from '@/store';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import * as Device from 'expo-device';
 import { Pencil, Search } from 'lucide-react-native';
 import { useTabStore } from '@/store/useTabStore';
 import { isAndroid, CATEGORIES } from '@/utils';
@@ -18,6 +19,7 @@ export function HomeScreen({ navigation }: FeedHomeScreenProps) {
   const STALE_TIME = 1000 * 60;
   const handleModalOpen = useModalStore((state) => state.handleOpen);
   const { selectedTab, setSelectedTab } = useTabStore();
+  const userBan = useUserStore((state) => state.isBanned);
   const userUniversity = useUserStore((state) => state.university);
   const isCertificated = useUserStore((state) => state.isCertificated);
 
@@ -52,7 +54,8 @@ export function HomeScreen({ navigation }: FeedHomeScreenProps) {
   };
 
   const insets = useSafeAreaInsets();
-  const writeButtonPosition = isAndroid ? insets.bottom + 80 : insets.bottom + 50;
+  const isTablet = Device.deviceType === Device.DeviceType.TABLET;
+  const writeButtonPosition = insets.bottom + 80;
 
   useBackButton();
 

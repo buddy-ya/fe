@@ -17,7 +17,7 @@ import { useOnboardingStore, useUserStore } from '@/store';
 import { NativeStackNavigationProp, NativeStackScreenProps } from '@react-navigation/native-stack';
 import { LANGUAGES, removeNullValues } from '@/utils';
 
-const MAX_SELECT = 4;
+const MAX_SELECT = 5;
 
 interface Language {
   id: string;
@@ -87,7 +87,10 @@ export default function LanguageSelectScreen({ navigation, route }: LanguageSele
       <Layout showHeader onBack={() => navigation.goBack()}>
         <InnerLayout>
           <Heading>{t('language.title')}</Heading>
-          <HeadingDescription>{t('language.maxSelect', { count: MAX_SELECT })}</HeadingDescription>
+          <HeadingDescription>{t('language.description')}</HeadingDescription>
+          <MyText size="text-base" color="text-textDescription" className="mt-3">
+            {t('onboarding:language.maxSelect', { count: MAX_SELECT })}
+          </MyText>
           <SearchInput
             value={searchQuery}
             onChangeText={setSearchQuery}

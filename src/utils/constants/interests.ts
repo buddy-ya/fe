@@ -20,6 +20,8 @@ export const INTEREST_IDS = [
   'oneday',
   'experience',
   'cafe',
+  'museum', // 박물관 추가
+  'hanriver',
   // sports
   'game',
   'basketball',
@@ -31,7 +33,8 @@ export const INTEREST_IDS = [
   'soccer',
   'tennis',
   'fitness',
-  'league_of_legends', // 구체화: 리그 오브 레전드
+  'league_of_legends', // 리그 오브 레전드
+  'volleyball', // 발리볼 추가
   // arts
   'singing',
   'dance',
@@ -72,6 +75,8 @@ export const INTEREST_ICONS: Record<string, string> = {
   oneday: '🎨',
   experience: '🎯',
   cafe: '☕️',
+  museum: '🏛️', // 박물관 아이콘 추가
+  hanriver: '🏝️',
   // sports
   game: '🎮',
   basketball: '🏀',
@@ -84,6 +89,7 @@ export const INTEREST_ICONS: Record<string, string> = {
   tennis: '🎾',
   fitness: '💪',
   league_of_legends: '⚔️',
+  volleyball: '🏐', // 발리볼 아이콘 추가
   // arts
   singing: '🎤',
   dance: '💃',
@@ -114,7 +120,17 @@ export const INTEREST_ICONS: Record<string, string> = {
 };
 
 export const CATEGORY_INTERESTS: Record<InterestCategoryID, InterestID[]> = {
-  culture: ['kpop', 'performance', 'reading', 'movie', 'oneday', 'experience', 'cafe'],
+  culture: [
+    'kpop',
+    'performance',
+    'reading',
+    'movie',
+    'oneday',
+    'experience',
+    'cafe',
+    'museum',
+    'hanriver',
+  ],
   sports: [
     'game',
     'basketball',
@@ -127,6 +143,7 @@ export const CATEGORY_INTERESTS: Record<InterestCategoryID, InterestID[]> = {
     'tennis',
     'fitness',
     'league_of_legends',
+    'volleyball',
   ],
   arts: ['singing', 'dance', 'crafts', 'instrument', 'photo'],
   food: ['restaurant', 'beer', 'baking', 'cooking'],

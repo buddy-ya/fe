@@ -1,13 +1,16 @@
 import { useTranslation } from 'react-i18next';
-import { View, TouchableOpacity, Image } from 'react-native';
-import { InnerLayout, Layout, MyText } from '@/components';
+import { View, TouchableOpacity, Image, KeyboardAvoidingView } from 'react-native';
+import { InnerLayout, KeyboardLayout, Layout, MyText } from '@/components';
 import { useBackButton } from '@/hooks';
 import { MyPageStackParamList } from '@/navigation/navigationRef';
 import { useUserStore } from '@/store';
 import CircleCheck from '@assets/icons/circleCheck.svg';
+import EventBannerEn from '@assets/icons/eventBannerEn.svg';
+import EventBannerKo from '@assets/icons/eventBannerKo.svg';
 import LogoIcon from '@assets/icons/logo.svg';
 import Point from '@assets/icons/point.svg';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import * as Localization from 'expo-localization';
 import { Bookmark, ChevronRight, NotebookPen, Settings, ShieldAlert } from 'lucide-react-native';
 import { useToastStore } from '@/store/useToastStore';
 import { CountryID, getCountryFlag } from '@/utils';
@@ -30,6 +33,10 @@ export default function MyPageScreen({ navigation }: MyPageScreenProps) {
 
   const handlePointPress = () => {
     navigation.navigate('Point');
+  };
+
+  const handleInvitationEventPress = () => {
+    navigation.navigate('InvitationEvent');
   };
 
   const quickMenuItems = [
@@ -75,11 +82,13 @@ export default function MyPageScreen({ navigation }: MyPageScreenProps) {
 
   useBackButton();
 
+  const locale = Localization.locale;
+
   return (
     <Layout
       showHeader
       headerLeft={
-        <MyText size="text-2xl" color="text-primary" className="font-semibold">
+        <MyText size="text-2xl" className="font-semibold">
           {t('title')}
         </MyText>
       }
@@ -117,7 +126,7 @@ export default function MyPageScreen({ navigation }: MyPageScreenProps) {
             <ChevronRight size={24} color="#636363" strokeWidth={1.3} />
           </View>
         </TouchableOpacity>
-        <View className="mt-3 flex-row justify-around rounded-t-xl bg-white py-5">
+        <View className="mt-3 flex-row justify-around rounded-t-xl bg-white pb-5 pt-5">
           {quickMenuItems.map(({ key, label, icon, onPress }) => (
             <TouchableOpacity
               key={key}
@@ -131,7 +140,7 @@ export default function MyPageScreen({ navigation }: MyPageScreenProps) {
           ))}
         </View>
         <TouchableOpacity
-          className="mt-0 flex-row items-center justify-between rounded-b-xl border-t border-[#f6f6f6] bg-white p-5"
+          className="flex-row items-center justify-between rounded-b-xl border-t border-[#f6f6f6] bg-white p-5"
           onPress={handlePointPress}
         >
           <View>
@@ -146,6 +155,10 @@ export default function MyPageScreen({ navigation }: MyPageScreenProps) {
               <ChevronRight size={19} color="#636363" strokeWidth={1.3} />
             </View>
           </View>
+        </TouchableOpacity>
+
+        <TouchableOpacity className="mt-7 items-center" onPress={handleInvitationEventPress}>
+          {locale.startsWith('ko') ? <EventBannerKo /> : <EventBannerEn />}
         </TouchableOpacity>
       </InnerLayout>
     </Layout>

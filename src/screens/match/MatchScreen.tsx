@@ -2,7 +2,9 @@ import React, { useCallback, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { TouchableOpacity, AppState, AppStateStatus, ScrollView } from 'react-native';
 import { InnerLayout, Layout, MyText } from '@/components';
+import { useBackButton } from '@/hooks';
 import { MatchstackParamList } from '@/navigation/navigationRef';
+import { navigationRef } from '@/navigation/router';
 import { useModalStore, useUserStore } from '@/store';
 import Point from '@assets/icons/point.svg';
 import { useFocusEffect } from '@react-navigation/native';
@@ -53,13 +55,15 @@ export default function MatchScreen({ navigation }: MatchScreenProps) {
   );
 
   const handleMatchRequest = async ({
+    nationalityType,
     universityType,
     genderType,
   }: {
+    nationalityType: 'KOREAN' | 'GLOBAL';
     universityType: 'SAME' | 'DIFFERENT';
     genderType: 'MALE' | 'FEMALE' | 'ALL';
   }) => {
-    const request = { universityType, genderType };
+    const request = { nationalityType, universityType, genderType };
     try {
       const matchResponse = await MatchRepository.createMatchRequest(request);
       userUpdate({ point: matchResponse.point });
@@ -73,6 +77,9 @@ export default function MatchScreen({ navigation }: MatchScreenProps) {
       }, 1000);
     } catch (error: any) {
       const errorCode = error.response?.data?.code;
+      if (errorCode === 6004) {
+        navigation.navigate('MyProfile', { incompleteProfile: true });
+      }
       // if (errorCode === 10002) {
       //   navigation.navigate('Point');
       // }
@@ -82,6 +89,8 @@ export default function MatchScreen({ navigation }: MatchScreenProps) {
   const handlePointPress = () => {
     navigation.navigate('Point');
   };
+
+  useBackButton();
 
   useEffect(() => {
     const subscription = AppState.addEventListener('change', handleAppStateChange);
@@ -107,7 +116,7 @@ export default function MatchScreen({ navigation }: MatchScreenProps) {
       hasTabBar
       showHeader
       headerLeft={
-        <MyText size="text-2xl" color="text-primary" className="font-semibold">
+        <MyText size="text-2xl" className="font-semibold">
           {t('match.title')}
         </MyText>
       }

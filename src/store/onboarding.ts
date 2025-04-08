@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-type Gender = 'male' | 'female' | null;
+type Gender = 'male' | 'female' | 'unknown' | null;
 
 interface OnboardingStore {
   name: string;
@@ -13,7 +13,7 @@ interface OnboardingStore {
   majors: string[];
   languages: string[];
   interests: string[];
-  expoToken: string | null; // 알림 토큰
+  expoToken: string | null;
   updateOnboardingData: (data: Partial<Omit<OnboardingStore, 'updateOnboardingData'>>) => void;
 }
 

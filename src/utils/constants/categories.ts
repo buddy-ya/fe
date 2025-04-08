@@ -1,18 +1,18 @@
-export const CATEGORY_IDS = ['free', 'info', 'recruitment'] as const;
+export const CATEGORY_IDS = ['free', 'info'] as const;
 
 export type CategoryID = (typeof CATEGORY_IDS)[number];
 
 export const CATEGORY_ICONS: Record<CategoryID, string> = {
   free: '☁️',
   // popular: "🔥",
-  recruitment: '🙌',
+  // recruitment: '🙌',
   info: '💡',
 };
 
 export const CATEGORY_LABELS: Record<CategoryID, string> = {
   free: 'free',
   // popular: "인기",
-  recruitment: 'recruitment',
+  // recruitment: 'recruitment',
   info: 'info',
 };
 

@@ -9,7 +9,7 @@ interface HeadingDescriptionProps {
 export default function HeadingDescription({ children, className = '' }: HeadingDescriptionProps) {
   return (
     <MyText
-      size="text-[14px]"
+      size="text-base"
       color="text-textDescription"
       className={`mt-[9px] ${className} leading-[1.4]`}
     >

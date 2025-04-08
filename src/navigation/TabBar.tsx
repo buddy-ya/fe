@@ -2,25 +2,34 @@ import React from 'react';
 import { View, Text } from 'react-native';
 import { Animated, StyleSheet } from 'react-native';
 import { useChatRoomStore } from '@/store';
+import ChatIcon from '@assets/icons/tabs/chatIcon.svg';
+import HomeIcon from '@assets/icons/tabs/home.svg';
+import HomeActiveIcon from '@assets/icons/tabs/homeActive.svg';
+import MatchingIcon from '@assets/icons/tabs/matching.svg';
+import MatchingActiveIcon from '@assets/icons/tabs/matchingActive.svg';
 import { BottomTabNavigationOptions } from '@react-navigation/bottom-tabs';
-import { Home, User, Users, Send } from 'lucide-react-native';
+import { Send, UserRound } from 'lucide-react-native';
 import { isAndroid } from '@/utils';
 
 const TAB_CONFIG = {
   Home: {
-    Icon: Home,
+    Icon: HomeIcon,
+    ActiveIcon: HomeActiveIcon,
     translationKey: 'tab.home',
   },
   Match: {
-    Icon: Users,
+    Icon: MatchingIcon,
+    ActiveIcon: MatchingActiveIcon,
     translationKey: 'tab.match',
   },
   Chat: {
     Icon: Send,
+    ActiveIcon: null,
     translationKey: 'tab.chat',
   },
   MyPage: {
-    Icon: User,
+    Icon: UserRound,
+    ActiveIcon: null,
     translationKey: 'tab.my',
   },
 };
@@ -30,14 +39,14 @@ export const tabBarStyle = StyleSheet.create({
     position: 'absolute',
     bottom: 0,
     paddingHorizontal: 10,
-    height: isAndroid ? 65 : 80,
+    height: isAndroid ? 65 : 75,
     backgroundColor: 'white',
     borderTopColor: '#E8E9EB',
     zIndex: 1,
   },
   label: {
-    fontSize: 12,
-    fontFamily: 'Pretendard-Medium',
+    fontSize: 11,
+    fontFamily: 'Pretendard-Bold',
     marginTop: 5,
   },
   iconContainer: {
@@ -56,25 +65,30 @@ export const tabScreenOptions: BottomTabNavigationOptions = {
   headerShown: false,
   tabBarStyle: tabBarStyle.tabBar,
   tabBarActiveTintColor: '#282828',
-  tabBarInactiveTintColor: '#797977',
+  tabBarInactiveTintColor: '#CBCBCB',
   tabBarLabelStyle: tabBarStyle.label,
   tabBarIconStyle: tabBarStyle.iconContainer,
   lazy: true,
 };
 
 export const getTabScreenOptions = (routeName: keyof typeof TAB_CONFIG) => {
-  const { Icon, translationKey } = TAB_CONFIG[routeName];
+  const { Icon, ActiveIcon, translationKey } = TAB_CONFIG[routeName];
   return {
     tabBarIcon: ({ focused, color }: { focused: boolean; color: string }) => {
+      // active 상태이고 ActiveIcon이 있을 경우 ActiveIcon 사용, 아니면 기본 Icon 사용
+      const SelectedIcon = focused && ActiveIcon ? ActiveIcon : Icon;
+
+      // Chat 탭은 unread count 배지가 있음
       if (routeName === 'Chat') {
         const totalUnreadCount = useChatRoomStore((state) => state.totalUnreadCount);
         return (
           <View className="relative">
-            <Icon
+            <SelectedIcon
               strokeWidth={1}
               size={24}
               color={color}
-              fill={focused ? '#282828' : 'transparent'}
+              stroke={'#FFFFFF'}
+              fill={focused ? '#282828' : '#CBCBCB'}
             />
             {totalUnreadCount > 0 && (
               <View className="absolute -right-2 -top-1 h-[16px] min-w-[16px] items-center justify-center rounded-full bg-primary px-1">
@@ -84,8 +98,14 @@ export const getTabScreenOptions = (routeName: keyof typeof TAB_CONFIG) => {
           </View>
         );
       }
+
       return (
-        <Icon strokeWidth={1} size={24} color={color} fill={focused ? '#282828' : 'transparent'} />
+        <SelectedIcon
+          strokeWidth={1}
+          size={24}
+          color={color}
+          fill={focused ? '#282828' : '#CBCBCB'}
+        />
       );
     },
     tabBarLabel: translationKey,

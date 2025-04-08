@@ -122,7 +122,9 @@ export default function StudentIdCardUploadScreen({ navigation }: EmailVerificat
         </ScrollView>
 
         <Button onPress={handleSubmit} disabled={isSubmitDisabled}>
-          <MyText color="text-white">{t('studentId.submitButton')}</MyText>
+          <MyText size="text-lg" className="font-semibold" color="text-white">
+            {t('studentId.submitButton')}
+          </MyText>
         </Button>
       </InnerLayout>
     </Layout>

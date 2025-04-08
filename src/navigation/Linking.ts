@@ -5,9 +5,15 @@ export default {
   config: {
     screens: {
       Verification: {
+        path: 'verification',
         initialRouteName: 'VerificationSelect',
         screens: {
+          VerificationSelect: '',
+          EmailVerification: 'email',
+          EmailVerificationCode: 'email-code',
+          EmailComplete: 'email-complete',
           StudentIdVerification: 'studentIdCard',
+          StudentIdComplete: 'studentIdCardComplete',
         },
       },
       Tab: {
@@ -31,6 +37,13 @@ export default {
             screens: {
               ChatRequests: 'chatRequests',
               ChatRoom: 'chats/:id',
+            },
+          },
+          MyPage: {
+            initialRouteName: 'MyPageHome',
+            screens: {
+              MyPageHome: 'my',
+              Point: 'point',
             },
           },
         },

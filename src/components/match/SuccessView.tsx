@@ -62,8 +62,12 @@ export default function SuccessView({ navigation }: any) {
                   {t('match.success.description')}
                 </MyText>
               </View>
-              <ProfileView user={matchData as User} isMyProfile={false} />
-              <View className={`my-5 flex-row items-center justify-between gap-8 bg-white px-4`}>
+              <ProfileView
+                user={matchData as User}
+                isMyProfile={false}
+                showMatchingProfile={true}
+              />
+              <View className={`mb-8 flex-row items-center justify-between gap-8 bg-white px-4`}>
                 <TouchableOpacity
                   onPress={handlePressCancel}
                   className="flex-1 items-center justify-center rounded-xl bg-[#E8E9EB] py-[12px]"

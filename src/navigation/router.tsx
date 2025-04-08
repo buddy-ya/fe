@@ -11,6 +11,7 @@ import { HomeScreen } from '@/screens/home/HomeScreen';
 import MatchScreen from '@/screens/match/MatchScreen';
 import BookmarkScreen from '@/screens/mypage/BookmarkScreen';
 import EditProfileImageScreen from '@/screens/mypage/EditProfileImageScreen';
+import InvitationScreen from '@/screens/mypage/InvitationScreen';
 import MyPostsScreen from '@/screens/mypage/MyPostsScreen';
 import MyProfileScreen from '@/screens/mypage/MyProfileScreen';
 import PointScreen from '@/screens/mypage/PointScreen';
@@ -272,10 +273,9 @@ function MatchNavigator() {
           activeScreen = (route.params as { screen?: string })?.screen;
         }
       }
-      const visible =
-        activeScreen !== 'MyProfile' && activeScreen !== 'Point' && activeScreen !== 'ChatRoom';
+      const visible = activeScreen === 'MatchHome' || activeScreen === undefined;
       navigation.setOptions({
-        tabBarStyle: animateTabBar(visible),
+        tabBarStyle: animateTabBar(!!visible),
       });
     };
 
@@ -287,6 +287,11 @@ function MatchNavigator() {
     <MatchStack.Navigator initialRouteName="MatchHome" screenOptions={{ headerShown: false }}>
       <MatchStack.Screen name="MatchHome" component={MatchScreen} />
       <MatchStack.Screen name="Point" component={PointScreen} />
+      <MatchStack.Screen name="MyProfile" component={MyProfileScreen} />
+      <MatchStack.Screen name="EditProfileImage" component={EditProfileImageScreen} />
+      <MatchStack.Screen name="EditName" component={NameScreen} />
+      <MatchStack.Screen name="EditLanguage" component={LanguageSelectScreen} />
+      <MatchStack.Screen name="EditInterest" component={InterestSelectScreen} />
     </MatchStack.Navigator>
   );
 }
@@ -369,6 +374,7 @@ function MyPageNavigator() {
       <MyPageStack.Screen name="Settings" component={SettingScreen} />
       <MyPageStack.Screen name="FeedDetail" component={SuspendedFeedDetailScreen} />
       <MyPageStack.Screen name="Point" component={PointScreen} />
+      <MyPageStack.Screen name="InvitationEvent" component={InvitationScreen} />
     </MyPageStack.Navigator>
   );
 }

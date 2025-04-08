@@ -4,10 +4,6 @@ import { TOKEN_KEYS } from '../utils/constants';
 
 export const TokenService = {
   async getAccessToken(): Promise<string | null> {
-    const token = API.defaults.headers.common['Authorization'];
-    if (typeof token === 'string') {
-      return token.replace('Bearer ', '');
-    }
     return SecureStore.getItemAsync(TOKEN_KEYS.ACCESS);
   },
 

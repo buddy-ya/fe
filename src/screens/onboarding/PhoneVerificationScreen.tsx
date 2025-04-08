@@ -44,6 +44,7 @@ export default function PhoneVerificationScreen({
 
   const [verificationCode, setVerificationCode] = useState('');
   const [showError, setShowError] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const { timeLeft, isExpired, restart } = useTimer({
     seconds: VERIFICATION_EXPIRE_SECONDS,
@@ -67,6 +68,7 @@ export default function PhoneVerificationScreen({
 
   const handleVerifyCode = async () => {
     try {
+      setLoading(true);
       let deviceId: string | null = null;
       if (Platform.OS === 'android') {
         deviceId = Application.getAndroidId();
@@ -103,6 +105,8 @@ export default function PhoneVerificationScreen({
       if (errorCode === 1000) {
         setShowError(true);
       }
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -138,7 +142,8 @@ export default function PhoneVerificationScreen({
             icon={<Send strokeWidth={1} size={23} color="#797979" />}
             content={<View className="mx-3">{renderTimer()}</View>}
             onPress={handleVerifyCode}
-            disabled={verificationCode.length !== 6 || isExpired}
+            disabled={verificationCode.length !== 6 || isExpired || loading}
+            loading={loading}
           />
         }
       >

@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { View, AppState, AppStateStatus, StyleSheet } from 'react-native';
 import { API, UserRepository, ChatSocketRepository } from '@/api';
 import { TokenService } from '@/service';
-import { useUserStore } from '@/store';
+import { useUserStore, useModalStore, useChatRoomStore } from '@/store';
 import { useNavigation } from '@react-navigation/native';
 import * as Font from 'expo-font';
 import { Image as ExpoImage } from 'expo-image';
@@ -62,6 +62,7 @@ async function getUser(): Promise<'Tab' | 'Onboarding'> {
     const user = await UserRepository.get({ id: userId });
     await ChatSocketRepository.initialize();
     useUserStore.getState().update(removeNullValues(user));
+    useChatRoomStore.getState().setTotalUnreadCount(user.totalUnreadCount || 0);
   }
   return 'Tab';
 }
@@ -77,6 +78,10 @@ const AppInitializationProvider: React.FC<Props> = ({ children }) => {
   const appState = useRef<AppStateStatus>(AppState.currentState);
   const isInitialLoad = useRef(true);
   const navigation = useNavigation<any>();
+
+  const { visible, handleClose, handleOpen } = useModalStore();
+  const user = useUserStore((state) => state);
+  const setTotalUnreadCount = useChatRoomStore((state) => state.setTotalUnreadCount);
 
   const loadFonts = async () => {
     await Font.loadAsync(FONTS);
@@ -152,6 +157,21 @@ const AppInitializationProvider: React.FC<Props> = ({ children }) => {
       return () => clearTimeout(timer);
     }
   }, [isInitialized, initialRoute]);
+
+  useEffect(() => {
+    if (user.isBanned) {
+      setTimeout(() => {
+        handleOpen('banned', {
+          banExpiration: user.banExpiration,
+          banReason: user.banReason,
+        });
+      }, 2000);
+    } else {
+      if (visible.banned) {
+        handleClose('banned');
+      }
+    }
+  }, [user]);
 
   const splashImage = require('@assets/images/splash/android.png');
 

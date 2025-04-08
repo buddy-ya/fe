@@ -62,9 +62,11 @@ export const useFeedWrite = ({ initialData = {}, onSuccess }: UseFeedWriteProps 
           category,
           images,
         });
+        console.log('피드 생성!!!');
         queryClient.invalidateQueries({
           queryKey: feedKeys.lists(university, category),
         });
+        console.log(university, category);
       }
       onSuccess?.();
     } catch (error) {

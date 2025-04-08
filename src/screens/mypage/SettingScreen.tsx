@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import { useTranslation } from 'react-i18next';
-import { View, TouchableOpacity, Linking } from 'react-native';
-import { AuthRepository, UserRepository } from '@/api';
+import { View, TouchableOpacity, Linking, Alert } from 'react-native';
+import { AuthRepository, ChatSocketRepository, UserRepository } from '@/api';
 import { Layout, InnerLayout, MyText } from '@/components';
 import i18n from '@/i18n';
 import { MyPageStackParamList } from '@/navigation/navigationRef';
@@ -9,6 +9,7 @@ import { TokenService } from '@/service';
 import { useUserStore } from '@/store';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { ChevronRight } from 'lucide-react-native';
+import ChatSocketRepostiory from '@/api/ChatSocketRepostiory';
 import { PRIVACY_POLICY_URL, TERMS_URL } from '@/utils';
 
 interface SettingItemProps {
@@ -79,6 +80,7 @@ export default function SettingScreen({ navigation }: SettingScreenProps) {
       emoji: '🚪',
       label: t('menuItems.logout'),
       onPress: async () => {
+        ChatSocketRepostiory.disconnectSocket();
         await UserRepository.logout();
         await TokenService.remove();
         update({ isAuthenticated: false });
@@ -91,15 +93,32 @@ export default function SettingScreen({ navigation }: SettingScreenProps) {
     {
       key: 'delete',
       emoji: '👋',
-      label: t('menuItems.delete'),
-      onPress: async () => {
-        await UserRepository.delete();
-        await TokenService.remove();
-        update({ isAuthenticated: false });
-        navigation.reset({
-          index: 0,
-          routes: [{ name: 'Onboarding' }],
-        });
+      label: t('menuItems.delete.label'),
+      onPress: () => {
+        Alert.alert(
+          t('menuItems.delete.alert.confirmTitle'),
+          t('menuItems.delete.alert.confirmMessage'),
+          [
+            {
+              text: t('menuItems.delete.alert.cancel'),
+              style: 'cancel',
+            },
+            {
+              text: t('menuItems.delete.alert.confirm'),
+              onPress: async () => {
+                ChatSocketRepository.disconnectSocket();
+                await UserRepository.delete();
+                await TokenService.remove();
+                update({ isAuthenticated: false });
+                navigation.reset({
+                  index: 0,
+                  routes: [{ name: 'Onboarding' }],
+                });
+              },
+            },
+          ],
+          { cancelable: false }
+        );
       },
     },
     // {
