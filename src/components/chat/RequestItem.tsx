@@ -7,7 +7,7 @@ import { ProfileImage } from './ProfileImage';
 
 interface RequestItemProps {
   request: ChatRequest;
-  onProfilePress?: (id: number) => void;
+  onProfilePress?: (id: number, showMatchingProfile: boolean) => void;
   onAccept?: (receiverId: number, chatRequestId: number) => void;
   onDecline?: (chatRequestId: number) => void;
 }
@@ -23,7 +23,7 @@ export default function RequestItem({
   const { t } = useTranslation(['chat', 'mypage']);
 
   const handleProfilePress = () => {
-    // onProfilePress?.(senderId);
+    onProfilePress?.(senderId, false);
   };
 
   const handleAccept = () => {
@@ -47,17 +47,17 @@ export default function RequestItem({
           </MyText>
         </View>
       </View>
-      <View className="ml-4 h-[38px] w-[110px] flex-row items-center justify-between">
+      <View className="ml-4 h-[40px] flex-row items-center justify-between">
         <TouchableOpacity
           activeOpacity={0.7}
-          className="flex h-[30px] w-[52px] items-center justify-center rounded-lg bg-[#DFDFDF]"
+          className="flex items-center justify-center rounded-lg bg-[#DFDFDF] p-1"
           onPress={handleDecline}
         >
           <MyText className="font-semibold text-white">{t('requests.decline')}</MyText>
         </TouchableOpacity>
         <TouchableOpacity
           activeOpacity={0.7}
-          className="ml-2 flex h-[30px] w-[52px] items-center justify-center rounded-lg bg-[#00A176]"
+          className="ml-2 flex items-center justify-center rounded-lg bg-[#00A176] p-1"
           onPress={handleAccept}
         >
           <MyText className="font-semibold text-white">{t('requests.accept')}</MyText>

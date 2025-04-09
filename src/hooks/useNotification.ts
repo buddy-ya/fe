@@ -13,7 +13,7 @@ export function useNotification() {
   const update = useUserStore((state) => state.update);
   const prefix = Linking.createURL('/');
 
-  const terminateDelay = Platform.OS === 'android' ? 1400 : 600;
+  const terminateDelay = Platform.OS === 'android' ? 1400 : 700;
   const backgroundDelay = 400;
   const foregroundDelay = 200;
 

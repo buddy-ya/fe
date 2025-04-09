@@ -1,6 +1,6 @@
 import { useRef, useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { TextInput, View, Platform } from 'react-native';
+import { TextInput, View, Platform, ScrollView, TouchableWithoutFeedback } from 'react-native';
 import { AuthRepository } from '@/api';
 import {
   ErrorMessage,
@@ -16,7 +16,7 @@ import {
 import { OnboardingStackParamList } from '@/navigation/navigationRef';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import * as Application from 'expo-application';
-import { Lock } from 'lucide-react-native';
+import { Lock, Scroll } from 'lucide-react-native';
 import { formatPhone } from '@/utils';
 
 const COUNTRY_CODE = '+82';
@@ -135,19 +135,23 @@ export default function PhoneScreen({ navigation }: OnboardingPhoneScreenProps) 
     <Layout showHeader onBack={handleBack}>
       <KeyboardLayout footer={footer}>
         <InnerLayout>
-          <Heading>{t('phone.title')}</Heading>
-          <HeadingDescription>{t('phone.titleDescription')}</HeadingDescription>
-          <Label>{t('phone.label')}</Label>
-          <View>
-            <View className="mb-4 flex-row items-center">
-              <CountryCodeBox />
-              <PhoneInput
-                value={phoneNumber}
-                onChange={handlePhoneNumberInput}
-                inputRef={inputRef}
-              />
-            </View>
-            {isPrefixError && <ErrorMessage>{t('phone.warning')}</ErrorMessage>}
+          <View className="flex-1">
+            <ScrollView showsVerticalScrollIndicator={false}>
+              <Heading>{t('phone.title')}</Heading>
+              <HeadingDescription>{t('phone.titleDescription')}</HeadingDescription>
+              <Label>{t('phone.label')}</Label>
+              <View>
+                <View className="mb-4 flex-row items-center">
+                  <CountryCodeBox />
+                  <PhoneInput
+                    value={phoneNumber}
+                    onChange={handlePhoneNumberInput}
+                    inputRef={inputRef}
+                  />
+                </View>
+                {isPrefixError && <ErrorMessage>{t('phone.warning')}</ErrorMessage>}
+              </View>
+            </ScrollView>
           </View>
         </InnerLayout>
       </KeyboardLayout>

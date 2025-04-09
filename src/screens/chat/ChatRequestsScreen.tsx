@@ -20,7 +20,7 @@ export function ChatRequestsScreen({ navigation }: ChatRequestsNavigationProps) 
   const queryClient = useQueryClient();
 
   const handleProfilePress = (senderId: number) => {
-    navigation.navigate('Profile', { id: senderId });
+    navigation.navigate('Profile', { id: senderId, showMatchingProfile: false });
   };
 
   const handleAccept = async (senderId: number, chatRequestId: number) => {

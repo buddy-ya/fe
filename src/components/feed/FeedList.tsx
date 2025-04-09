@@ -60,8 +60,8 @@ function FeedList({
       onEndReached={hasMore ? onLoadMore : undefined}
       onEndReachedThreshold={0.6}
       showsVerticalScrollIndicator={false}
-      initialNumToRender={5}
-      maxToRenderPerBatch={7}
+      initialNumToRender={6}
+      maxToRenderPerBatch={9}
       scrollEventThrottle={16}
       refreshControl={refreshControl ? <RefreshControl {...refreshControl} /> : undefined}
     />

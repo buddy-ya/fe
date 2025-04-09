@@ -12,7 +12,7 @@ interface RequestListProps {
   hasMore?: boolean;
   className?: string;
   onLoadMore?: () => void;
-  onProfilePress?: (id: number) => void;
+  onProfilePress?: (id: number, showMatchingProfile: boolean) => void;
   onDecline?: (chatRequestId: number) => void;
   onAccept?: (senderId: number, chatRequestId: number) => void;
   refreshControl?: RefreshControlProps | null;
