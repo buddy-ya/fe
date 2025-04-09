@@ -50,17 +50,21 @@ export default function RequestItem({
       <View className="ml-4 h-[40px] flex-row items-center justify-between">
         <TouchableOpacity
           activeOpacity={0.7}
-          className="flex items-center justify-center rounded-lg bg-[#DFDFDF] p-1"
+          className="flex min-w-[56px] items-center justify-center rounded-lg bg-[#DFDFDF] p-2"
           onPress={handleDecline}
         >
-          <MyText className="font-semibold text-white">{t('requests.decline')}</MyText>
+          <MyText className="font-semibold text-white" numberOfLines={1}>
+            {t('requests.decline')}
+          </MyText>
         </TouchableOpacity>
         <TouchableOpacity
           activeOpacity={0.7}
-          className="ml-2 flex items-center justify-center rounded-lg bg-[#00A176] p-1"
+          className="ml-2 flex min-w-[56px] items-center justify-center rounded-lg bg-[#00A176] p-2"
           onPress={handleAccept}
         >
-          <MyText className="font-semibold text-white">{t('requests.accept')}</MyText>
+          <MyText className="font-semibold text-white" numberOfLines={1}>
+            {t('requests.accept')}
+          </MyText>
         </TouchableOpacity>
       </View>
     </View>
