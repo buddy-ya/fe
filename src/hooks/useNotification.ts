@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
+import { Platform } from 'react-native';
 import { useUserStore } from '@/store';
 import * as Linking from 'expo-linking';
 import * as Notifications from 'expo-notifications';
-import { useMatchStore } from '@/store/useMatchStore';
 import { registerForPushNotificationsAsync } from '@/utils';
 
 export function getExpoToken() {
@@ -11,89 +11,64 @@ export function getExpoToken() {
 
 export function useNotification() {
   const update = useUserStore((state) => state.update);
-  const updateMatchData = useMatchStore((state) => state.updateMatchData);
   const prefix = Linking.createURL('/');
+
+  const terminateDelay = Platform.OS === 'android' ? 1400 : 1000;
+  const backgroundDelay = 400;
+  const foregroundDelay = 200;
+
+  const handleNotificationData = (data: any, delay: number) => {
+    if (!data) return;
+
+    if (data?.type === 'AUTHORIZATION') {
+      const failDeepLinkUrl = `${prefix}verification/studentIdCard`;
+      update({ isCertificated: data?.isCertificated });
+      if (data?.isCertificated === false) {
+        setTimeout(() => Linking.openURL(failDeepLinkUrl), delay);
+      }
+    } else if (data?.type === 'FEED' && data?.feedId) {
+      const deepLinkUrl = `${prefix}feeds/${data.feedId}`;
+      setTimeout(() => Linking.openURL(deepLinkUrl), delay);
+    } else if (data?.type === 'MATCH') {
+      const deepLinkUrl = `${prefix}match`;
+      setTimeout(() => Linking.openURL(deepLinkUrl), delay);
+    } else if (data?.type === 'CHAT_REQUEST') {
+      const deepLinkUrl = `${prefix}chatRequests`;
+      setTimeout(() => Linking.openURL(deepLinkUrl), delay);
+    } else if (data?.type === 'CHAT_ACCEPT' && data?.roomId) {
+      const deepLinkUrl = `${prefix}chats/${data.roomId}`;
+      setTimeout(() => Linking.openURL(deepLinkUrl), delay);
+    } else if (data?.type === 'CHAT' && data?.chatroomId) {
+      const deepLinkUrl = `${prefix}chats/${data.chatroomId}`;
+      setTimeout(() => Linking.openURL(deepLinkUrl), delay);
+    } else if (data?.type === 'POINT') {
+      const deepLinkUrl = `${prefix}point`;
+      setTimeout(() => Linking.openURL(deepLinkUrl), delay);
+    }
+  };
 
   useEffect(() => {
     const checkInitialNotification = async () => {
       const lastResponse = await Notifications.getLastNotificationResponseAsync();
+
       if (lastResponse) {
-        const data = lastResponse.notification.request.content.data;
-        if (data?.type === 'AUTHORIZATION') {
-          const failDeepLinkUrl = `${prefix}verification/studentIdCard`;
-          update({ isCertificated: data?.isCertificated });
-          if (data?.isCertificated == false) {
-            setTimeout(() => Linking.openURL(failDeepLinkUrl), 100);
-          }
-        }
-        if (data?.type === 'FEED' && data?.feedId) {
-          const deepLinkUrl = `${prefix}feeds/${data.feedId}`;
-          setTimeout(() => Linking.openURL(deepLinkUrl), 100);
-        }
-        if (data?.type === 'MATCH') {
-          const deepLinkUrl = `${prefix}match`;
-          setTimeout(() => Linking.openURL(deepLinkUrl), 100);
-        }
-        if (data?.type === 'CHAT_REQUEST') {
-          const deepLinkUrl = `${prefix}chatRequests`;
-          setTimeout(() => Linking.openURL(deepLinkUrl), 100);
-        }
-        if (data?.type === 'CHAT_ACCEPT' && data?.roomId) {
-          const deepLinkUrl = `${prefix}chats/${data.roomId}`;
-          setTimeout(() => Linking.openURL(deepLinkUrl), 100);
-        }
-        if (data?.type === 'CHAT' && data?.chatroomId) {
-          const deepLinkUrl = `${prefix}chats/${data.chatroomId}`;
-          setTimeout(() => Linking.openURL(deepLinkUrl), 100);
-        }
-        if (data?.type === 'POINT') {
-          const deepLinkUrl = `${prefix}point`;
-          setTimeout(() => Linking.openURL(deepLinkUrl), 100);
-        }
+        handleNotificationData(lastResponse.notification.request.content.data, terminateDelay);
       }
     };
 
     checkInitialNotification();
 
-    // 앱이 포그라운드 또는 백그라운드일 때의 알림 클릭 처리
     const backgroundListener = Notifications.addNotificationResponseReceivedListener((response) => {
-      const data = response.notification.request.content.data;
+      handleNotificationData(response.notification.request.content.data, backgroundDelay);
+    });
 
-      if (data?.type === 'AUTHORIZATION') {
-        const failDeepLinkUrl = `${prefix}verification/studentIdCard`;
-        update({ isCertificated: data?.isCertificated });
-        if (data?.isCertificated == false) {
-          setTimeout(() => Linking.openURL(failDeepLinkUrl), 100);
-        }
-      }
-      if (data?.type === 'FEED' && data?.feedId) {
-        const deepLinkUrl = `${prefix}feeds/${data.feedId}`;
-        setTimeout(() => Linking.openURL(deepLinkUrl), 100);
-      }
-      if (data?.type === 'MATCH') {
-        const deepLinkUrl = `${prefix}match`;
-        setTimeout(() => Linking.openURL(deepLinkUrl), 100);
-      }
-      if (data?.type === 'CHAT_REQUEST') {
-        const deepLinkUrl = `${prefix}chatRequests`;
-        setTimeout(() => Linking.openURL(deepLinkUrl), 100);
-      }
-      if (data?.type === 'CHAT_ACCEPT' && data?.roomId) {
-        const deepLinkUrl = `${prefix}chats/${data.roomId}`;
-        setTimeout(() => Linking.openURL(deepLinkUrl), 100);
-      }
-      if (data?.type === 'CHAT' && data?.chatroomId) {
-        const deepLinkUrl = `${prefix}chats/${data.chatroomId}`;
-        setTimeout(() => Linking.openURL(deepLinkUrl), 100);
-      }
-      if (data?.type === 'POINT') {
-        const deepLinkUrl = `${prefix}point`;
-        setTimeout(() => Linking.openURL(deepLinkUrl), 100);
-      }
+    const foregroundListener = Notifications.addNotificationResponseReceivedListener((response) => {
+      handleNotificationData(response.notification.request.content.data, foregroundDelay);
     });
 
     return () => {
       Notifications.removeNotificationSubscription(backgroundListener);
+      Notifications.removeNotificationSubscription(foregroundListener);
     };
   }, [update, prefix]);
 }

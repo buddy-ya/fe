@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Platform, View } from 'react-native';
+import { Platform, ScrollView, View } from 'react-native';
 import { AuthRepository, ChatSocketRepository } from '@/api';
 import {
   ErrorMessage,
@@ -148,13 +148,19 @@ export default function PhoneVerificationScreen({
         }
       >
         <InnerLayout>
-          <Heading>{t('verification.title')}</Heading>
-          <HeadingDescription>
-            {t('verification.titleDescription', { phoneNumber: formattedPhone })}
-          </HeadingDescription>
-          <Label>{t('verification.label')}</Label>
-          <OTPInput value={verificationCode} onChange={setVerificationCode} length={6} />
-          {showError && <ErrorMessage className="mt-2">{t('verification.warning')}</ErrorMessage>}
+          <View className="flex-1">
+            <ScrollView showsVerticalScrollIndicator={false}>
+              <Heading>{t('verification.title')}</Heading>
+              <HeadingDescription>
+                {t('verification.titleDescription', { phoneNumber: formattedPhone })}
+              </HeadingDescription>
+              <Label>{t('verification.label')}</Label>
+              <OTPInput value={verificationCode} onChange={setVerificationCode} length={6} />
+              {showError && (
+                <ErrorMessage className="mt-2">{t('verification.warning')}</ErrorMessage>
+              )}
+            </ScrollView>
+          </View>
         </InnerLayout>
       </KeyboardLayout>
     </Layout>

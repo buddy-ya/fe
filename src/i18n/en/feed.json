@@ -36,7 +36,7 @@
       "create": "Failed to create post.",
       "edit": "Failed to edit post."
     },
-    "loading": "Processing...",
+    "loading": "Processing",
     "postButton": "Post",
     "imagesCount": "{count}/5",
     "camera": "Camera",

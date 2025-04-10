@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { View, TouchableOpacity } from 'react-native';
+import { View, TouchableOpacity, ScrollView } from 'react-native';
 import { useModalStore, useUserStore } from '@/store';
 import PendingIcon from '@assets/icons/match/pending.svg';
 import QuestionMarkIcon from '@assets/icons/match/question.svg';
@@ -72,30 +72,35 @@ export default function PendingView({ navigation }: PendingViewProps) {
           <QuestionMarkIcon />
         </View>
       </View>
-      <View className="mt-8 items-center rounded-xl bg-white p-5">
-        <MyText size="text-xl" className="mb-4 font-semibold">
-          {t('match.pending.title')}
-        </MyText>
-        <MyText size="text-lg" color="text-textDescription" className="mb-4">
-          {t('match.pending.description')}
-        </MyText>
-        <View className="mt-8 items-center justify-center">
-          <PendingIcon />
-        </View>
-        <View className="mt-6 w-full pb-6">
-          <ThreeDotLoader />
-        </View>
-      </View>
-      <View className="mt-12 items-center">
-        <TouchableOpacity
-          onPress={handlePressCancel}
-          className="w-[180px] flex-row items-center justify-center rounded-full bg-[#CBCBCB] py-3"
-        >
-          <MyText size="text-lg" className="font-semibold text-white">
-            {t('match.pending.button')}
+      <ScrollView
+        contentContainerStyle={{ flexGrow: 1, paddingBottom: 100 }}
+        showsVerticalScrollIndicator={false}
+      >
+        <View className="mt-8 items-center rounded-xl bg-white p-5">
+          <MyText size="text-xl" className="mb-4 font-semibold">
+            {t('match.pending.title')}
           </MyText>
-        </TouchableOpacity>
-      </View>
+          <MyText size="text-lg" color="text-textDescription" className="mb-4">
+            {t('match.pending.description')}
+          </MyText>
+          <View className="mt-8 items-center justify-center">
+            <PendingIcon />
+          </View>
+          <View className="mt-6 w-full pb-6">
+            <ThreeDotLoader />
+          </View>
+        </View>
+        <View className="mt-12 items-center">
+          <TouchableOpacity
+            onPress={handlePressCancel}
+            className="w-[180px] flex-row items-center justify-center rounded-full bg-[#CBCBCB] py-3"
+          >
+            <MyText size="text-lg" className="font-semibold text-white">
+              {t('match.pending.button')}
+            </MyText>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
     </InnerLayout>
   );
 }

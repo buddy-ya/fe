@@ -9,7 +9,7 @@
   "requests": {
     "title": "Requests",
     "banner": {
-      "description": "Requests will disappear after 24 hours."
+      "description": "Requests will disappear after 48 hours."
     },
     "accept": "Accept",
     "decline": "Decline"

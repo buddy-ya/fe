@@ -69,7 +69,7 @@ export default function WelcomeScreen({ navigation }: OnboardingWelcomeScreenPro
             </View>
           </View>
           <Button onPress={handleNavigateButton}>
-            <MyText size="text-lg" color="text-white" className="font-semibold">
+            <MyText size="text-lg" color="text-white" className="text-center font-semibold">
               {t('intro.button')}
             </MyText>
           </Button>

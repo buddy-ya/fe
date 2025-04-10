@@ -5,14 +5,15 @@ require('dotenv').config({ path: path.resolve(__dirname, '.env') });
 module.exports = {
   expo: {
     scheme: 'buddyya',
-    name: 'buddyya',
-    owner: 'buddyya-personal',
+    name: 'Buddyya',
+    owner: 'buddyya',
     description: 'A friendly app for buddy management.',
     slug: 'buddyya',
-    version: '1.0.6',
+    version: '1.0.7',
     orientation: 'portrait',
     userInterfaceStyle: 'light',
     newArchEnabled: false,
+    assetBundlePatterns: ['./assets/fonts/*'],
     icon: './assets/images/icon/icon.png',
     splash: {
       image: './assets/images/icon/icon.png',
@@ -25,6 +26,10 @@ module.exports = {
         {
           icon: './assets/images/icon/128.png',
           color: '#00A176',
+          defaultChannel: 'default',
+          androidMode: 'default',
+          androidImportance: 'high',
+          androidShowWhen: true,
         },
       ],
       'expo-dev-client',
@@ -60,12 +65,32 @@ module.exports = {
       package: 'com.buddyya.app',
       permissions: ['NOTIFICATIONS', 'VIBRATE', 'WAKE_LOCK'],
       googleServicesFile: './google-services.json',
+      useNextNotificationsApi: true,
+      notification: {
+        icon: './assets/images/icon/128.png',
+        color: '#00A176',
+        androidMode: 'default',
+        androidImportance: 'high',
+        androidShowWhen: true,
+        priority: 'high',
+        vibrate: true,
+        headless: true,
+      },
+      intentFilters: [
+        {
+          action: 'android.intent.action.VIEW',
+          category: ['android.intent.category.DEFAULT', 'android.intent.category.BROWSABLE'],
+          data: {
+            scheme: 'buddyya',
+          },
+        },
+      ],
     },
     extra: {
       BASE_URL: process.env.BASE_URL,
       BASE_DOMAIN: process.env.BASE_DOMAIN,
       eas: {
-        projectId: 'ac2fa962-0fb3-4186-9c25-840a607c0c90',
+        projectId: 'ae3e9ea5-3d73-4892-894d-2308ea11ed5c',
       },
     },
   },

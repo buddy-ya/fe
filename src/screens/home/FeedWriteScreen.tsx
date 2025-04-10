@@ -198,7 +198,7 @@ export default function FeedWriteScreen({ navigation, route }: FeedWriteScreenPr
       }
       headerRight={
         <TouchableOpacity
-          className={`rounded-full px-3.5 py-1.5 ${isValid ? 'bg-primary' : 'bg-gray-400'}`}
+          className={`items-center justify-center rounded-full px-3.5 py-1.5 ${isValid ? 'bg-primary' : 'bg-gray-400'}`}
           onPress={handleUpload}
           disabled={isLoading}
         >
