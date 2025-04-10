@@ -37,6 +37,7 @@ export const INTEREST_IDS = [
   'volleyball', // 발리볼 추가
   // arts
   'singing',
+  'hiphop',
   'dance',
   'crafts',
   'instrument',
@@ -92,6 +93,7 @@ export const INTEREST_ICONS: Record<string, string> = {
   volleyball: '🏐', // 발리볼 아이콘 추가
   // arts
   singing: '🎤',
+  hiphop: '🎧',
   dance: '💃',
   crafts: '🎨',
   instrument: '🎸',
@@ -145,7 +147,7 @@ export const CATEGORY_INTERESTS: Record<InterestCategoryID, InterestID[]> = {
     'league_of_legends',
     'volleyball',
   ],
-  arts: ['singing', 'dance', 'crafts', 'instrument', 'photo'],
+  arts: ['singing', 'hiphop', 'dance', 'crafts', 'instrument', 'photo'],
   food: ['restaurant', 'beer', 'baking', 'cooking'],
   travel: ['backpacking', 'sightseeing', 'adventure'],
   fashion: ['style', 'shopping', 'beauty'],

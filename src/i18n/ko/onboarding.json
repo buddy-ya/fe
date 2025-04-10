@@ -62,7 +62,7 @@
     "warningLength": "닉네임 형식에 맞지 않습니다. ({{min}}~{{max}}자)"
   },
   "country": {
-    "title": "국적을 선택해 주세요",
+    "title": "본인 국적을 선택해 주세요",
     "description": "국적을 선택하고 다양한 국가의 버디들을 만나보세요",
     "searchPlaceholder": "국가 검색"
   },
