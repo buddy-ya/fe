@@ -48,25 +48,25 @@ export default function WelcomeScreen({ navigation }: OnboardingWelcomeScreenPro
             <View className="mt-6">
               <Charactrers />
             </View>
-            <View className="mt-16">
-              <MyText size="text-sm" color="text-[#636363]" className="text-center">
-                <Trans
-                  i18nKey="onboarding:intro.privacy"
-                  parent={Text}
-                  components={{
-                    privacyLink: (
-                      <Text
-                        style={{
-                          textDecorationLine: 'underline',
-                          textDecorationColor: 'rgba(0, 0, 0, 0.3)',
-                        }}
-                        onPress={handlePrivacyPolicyPress}
-                      />
-                    ),
-                  }}
-                />
-              </MyText>
-            </View>
+          </View>
+          <View className="mb-12">
+            <MyText size="text-sm" color="text-[#636363]" className="text-center">
+              <Trans
+                i18nKey="onboarding:intro.privacy"
+                parent={Text}
+                components={{
+                  privacyLink: (
+                    <Text
+                      style={{
+                        textDecorationLine: 'underline',
+                        textDecorationColor: 'rgba(0, 0, 0, 0.3)',
+                      }}
+                      onPress={handlePrivacyPolicyPress}
+                    />
+                  ),
+                }}
+              />
+            </MyText>
           </View>
           <Button onPress={handleNavigateButton}>
             <MyText size="text-lg" color="text-white" className="text-center font-semibold">
