@@ -7,6 +7,7 @@ import { useFeedList } from '@/hooks';
 import { FeedStackParamList } from '@/navigation/navigationRef';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { X } from 'lucide-react-native';
+import { isAndroid } from '@/utils';
 
 const SearchInput = ({ value, onChangeText, onSubmit, onClear, onFocusChange }: any) => {
   const { t } = useTranslation('feed');
@@ -72,6 +73,7 @@ export default function SearchScreen({ navigation, route }: SearchScreenProps) {
   return (
     <Layout
       showHeader
+      className={isAndroid ? 'pt-5' : 'pt-3'}
       isSearchLayout
       isBackgroundWhite={false}
       onBack={() => navigation.goBack()}
