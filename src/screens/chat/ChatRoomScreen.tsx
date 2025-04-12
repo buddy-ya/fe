@@ -267,12 +267,7 @@ export const ChatRoomScreen: React.FC<ChatRoomScreenProps> = ({ route }) => {
       disableBottomSafeArea
       headerLeft={
         <TouchableOpacity
-          onPress={() =>
-            navigation.reset({
-              index: 0,
-              routes: [{ name: 'RoomList' }],
-            })
-          }
+          onPress={() => navigation.goBack()}
           className="flex-row items-center"
           hitSlop={{ right: 20 }}
         >

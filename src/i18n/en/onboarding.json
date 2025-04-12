@@ -46,7 +46,7 @@
   "gender": {
     "title": "What is your gender?",
     "description": "Your gender will be shown on your profile and will be used in the matching process.",
-    "genderDescription": "If you don't specify a gender, you can only be matched with buddies who have selected 'All' as their gender in Match. Gender cannot be edited afterward.",
+    "genderDescription": "You don’t have to share your gender.\nBut in that case, you’ll only be matched with buddies open to all genders.",
     "male": "Man",
     "female": "Woman",
     "preferNotToSay": "Prefer not to say",
@@ -54,7 +54,7 @@
   },
   "name": {
     "title": "What is your name?",
-    "description": "For easier communication, Please enter your name in English",
+    "description": "To make it easier for buddies to remember,\nwe recommend using an English name.",
     "label": "Nickname",
     "placeholder": "-",
     "footer": "This will be displayed on your profile.",
@@ -94,9 +94,9 @@
   "userGuide": {
     "title": "Community Guidelines",
     "description": "Our community is a space where we respect each other. Please review the following guidelines.",
-    "guideline1": "All posts should be in English so everyone can understand.",
-    "guideline2": "When you're matched, not responding based on someone's gender or nationality, it can deeply hurt them. Buddyya enforces strict penalties for such behavior.",
-    "guideline3": "Buddyya is a community for real university students. Please treat each other with respect.",
+    "guideline1": "Please use English so more buddies can connect and understand each other easily.",
+    "guideline2": "Avoiding someone just because of gender or nationality can hurt them. Let’s build a respectful and welcoming space together.",
+    "guideline3": "Buddyya is a space for students from your own campus. The buddy you meet might be in the class right next to yours. Let’s connect with care and respect.",
     "guideline4": "Racist or discriminatory remarks are not tolerated",
     "button": "Start Buddyya",
     "terms": "By tapping “Start Buddyya,”\nYou agree to our <termsLink>Terms of service.</termsLink>",
