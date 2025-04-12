@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { SwitchComponent } from 'react-native';
 import { SuspendedRequestsScreen } from '@/screens/chat/ChatRequestsScreen';
 import { SuspendedRoomListScreen } from '@/screens/chat/ChatRoomListScreen';
 import { SuspendedChatRoomScreen } from '@/screens/chat/ChatRoomScreen';
@@ -221,7 +222,13 @@ function FeedNavigator() {
       />
       <FeedStack.Screen name="FeedSearch" component={FeedSearchScreen} />
       <FeedStack.Screen name="FeedWrite" component={FeedWriteScreen} />
-      <FeedStack.Screen name="FeedDetail" component={SuspendedFeedDetailScreen} />
+      <FeedStack.Screen
+        name="FeedDetail"
+        component={SuspendedFeedDetailScreen}
+        options={{
+          fullScreenGestureEnabled: true,
+        }}
+      />
       <FeedStack.Screen name="CommentEdit" component={CommentEditScreen} />
     </FeedStack.Navigator>
   );
@@ -331,7 +338,13 @@ function ChatNavigator() {
         component={SuspendedRoomListScreen}
         options={{ gestureEnabled: false }}
       />
-      <ChatStack.Screen name="ChatRoom" component={SuspendedChatRoomScreen} />
+      <ChatStack.Screen
+        name="ChatRoom"
+        component={SuspendedChatRoomScreen}
+        options={{
+          fullScreenGestureEnabled: true,
+        }}
+      />
       <ChatStack.Screen name="ChatRequests" component={SuspendedRequestsScreen} />
       <ChatStack.Screen name="Profile" component={MyProfileScreen} />
     </ChatStack.Navigator>
