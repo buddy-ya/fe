@@ -1,8 +1,9 @@
-import React, { useMemo, useState } from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { View, TouchableOpacity, ActivityIndicator, ScrollView } from 'react-native';
+import { View, TouchableOpacity, ScrollView } from 'react-native';
 import { Feed } from '@/types/FeedDTO';
 import ThumbsUpActive from '@assets/icons/feed/like-active.svg';
+import { useNavigation } from '@react-navigation/native';
 import { Image as ExpoImage } from 'expo-image';
 import { Bookmark, MessageSquare, ThumbsUp, Eye } from 'lucide-react-native';
 import { getCountryFlag, getTimeAgo } from '@/utils';
@@ -14,6 +15,7 @@ interface FeedItemProps {
   onLike?: (id: number) => void;
   onBookmark?: (id: number) => void;
   onPress?: (id: number) => void;
+  navigation: any;
   showAllContent?: boolean;
 }
 
@@ -22,6 +24,7 @@ export default function FeedItem({
   onLike,
   onBookmark,
   onPress,
+  navigation,
   showAllContent = false,
 }: FeedItemProps) {
   const { t } = useTranslation(['feed', 'universities']);
@@ -37,20 +40,42 @@ export default function FeedItem({
     likeCount,
     commentCount,
     viewCount,
-    isFeedOwner,
     isLiked,
     isBookmarked,
-    isProfileImageUpload,
     createdDate,
   } = feed;
-
-  const [previewImageUri, setPreviewImageUri] = useState<string>('');
 
   const [fullScreenImages, setFullScreenImages] = useState<{
     visible: boolean;
     imageUrls: string[];
     initialIndex: number;
   } | null>(null);
+
+  // 좋아요와 북마크 연타 방지를 위한 상태 추가
+  const [isLikeDisabled, setLikeDisabled] = useState(false);
+  const [isBookmarkDisabled, setBookmarkDisabled] = useState(false);
+
+  const handleLike = () => {
+    if (isLikeDisabled) return;
+    setLikeDisabled(true);
+    onLike?.(id);
+    setTimeout(() => {
+      setLikeDisabled(false);
+    }, 300);
+  };
+
+  const handleBookmark = () => {
+    if (isBookmarkDisabled) return;
+    setBookmarkDisabled(true);
+    onBookmark?.(id);
+    setTimeout(() => {
+      setBookmarkDisabled(false);
+    }, 300);
+  };
+
+  const handleComment = (commentId: number) => {
+    onPress?.(commentId);
+  };
 
   const feedActions = [
     {
@@ -59,7 +84,7 @@ export default function FeedItem({
       label: t('action.like'),
       count: likeCount,
       isActive: isLiked,
-      onPress: () => onLike?.(id),
+      onPress: handleLike,
     },
     {
       icon: MessageSquare,
@@ -74,40 +99,51 @@ export default function FeedItem({
     {
       icon: Bookmark,
       isActive: isBookmarked,
-      onPress: () => onBookmark?.(id),
+      onPress: handleBookmark,
     },
   ];
 
-  const handleComment = (commentId: number) => {
-    onPress?.(commentId);
+  const handleProfilePress = () => {
+    navigation.navigate('Profile', { id: feed.userId, showMatchingProfile: false });
   };
 
   const renderContent = () => {
     const hasImage = imageUrls.length > 0;
     return (
       <View
-        className={`mb-4 mt-[4px] rounded-[20px] border-[0.3px] border-b-[0px] border-borderFeed bg-white p-4 pb-5 ${showAllContent && 'rounded-none'}`}
+        className={`mb-4 mt-[4px] rounded-[20px] border-[0.3px] border-b-[0px] border-borderFeed bg-white p-4 pb-5 ${
+          showAllContent && 'rounded-none'
+        }`}
       >
         <View className="flex-row justify-between">
           <View className="flex-row items-center">
-            <View className="mr-3">
+            <TouchableOpacity
+              className="flex-row items-center"
+              onPress={() => {
+                if (showAllContent) {
+                  handleProfilePress();
+                } else {
+                  onPress?.(id);
+                }
+              }}
+            >
               <ExpoImage
                 style={{ height: 44, width: 44, borderRadius: 12 }}
                 source={{ uri: profileImageUrl }}
                 contentFit="contain"
               />
-            </View>
-            <View>
-              <MyText size="text-sm" className="font-semibold" color="text-textProfile">
-                {t(`universities:universities.${university}`)}
-              </MyText>
-              <View className="flex-row items-center">
-                <MyText size="text-sm" color="text-textProfile font-medium">
-                  {name}
+              <View className="ml-3">
+                <MyText size="text-sm" className="font-semibold" color="text-textProfile">
+                  {t(`universities:universities.${university}`)}
                 </MyText>
-                <MyText className="ml-[3px]">{getCountryFlag(country as any)}</MyText>
+                <View className="flex-row items-center">
+                  <MyText size="text-sm" color="text-textProfile font-medium">
+                    {name}
+                  </MyText>
+                  <MyText className="ml-[3px]">{getCountryFlag(country as any)}</MyText>
+                </View>
               </View>
-            </View>
+            </TouchableOpacity>
           </View>
           <MyText color="text-textDescription" size="text-sm" className="mr-1 tracking-tighter">
             {getTimeAgo(createdDate)}

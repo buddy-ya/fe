@@ -43,6 +43,7 @@ export type FeedStackParamList = {
     searchKeyword?: string;
   };
   CommentEdit: { feedId: number; commentId: number; initialContent: string };
+  Profile: { id: number; showMatchingProfile: boolean };
   EmailVerification: undefined;
   EmailVerificationCode: { email: string };
   EmailComplete: undefined;

@@ -230,6 +230,7 @@ function FeedNavigator() {
         }}
       />
       <FeedStack.Screen name="CommentEdit" component={CommentEditScreen} />
+      <FeedStack.Screen name="Profile" component={MyProfileScreen} />
     </FeedStack.Navigator>
   );
 }
