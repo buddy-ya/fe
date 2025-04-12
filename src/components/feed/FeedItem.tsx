@@ -46,6 +46,12 @@ export default function FeedItem({
 
   const [previewImageUri, setPreviewImageUri] = useState<string>('');
 
+  const [fullScreenImages, setFullScreenImages] = useState<{
+    visible: boolean;
+    imageUrls: string[];
+    initialIndex: number;
+  } | null>(null);
+
   const feedActions = [
     {
       icon: ThumbsUp,
@@ -143,13 +149,16 @@ export default function FeedItem({
               </View>
             )}
           </View>
+
           {hasImage && showAllContent && (
             <View className="mt-5">
               <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                 {imageUrls.map((url, index) => (
                   <TouchableOpacity
                     key={index}
-                    onPress={() => setPreviewImageUri(url)}
+                    onPress={() =>
+                      setFullScreenImages({ visible: true, imageUrls, initialIndex: index })
+                    }
                     activeOpacity={0.8}
                     className="mr-2 h-[255px] w-[255px]"
                   >
@@ -209,15 +218,18 @@ export default function FeedItem({
             onPress?.(id);
           }
         }}
-        activeOpacity={0.8}
+        activeOpacity={showAllContent ? 1 : 0.8}
       >
         {renderContent()}
       </TouchableOpacity>
-      <FullScreenImage
-        visible={!!previewImageUri}
-        imageUri={previewImageUri}
-        onClose={() => setPreviewImageUri('')}
-      />
+      {fullScreenImages?.visible && (
+        <FullScreenImage
+          visible={fullScreenImages.visible}
+          imageUrls={fullScreenImages.imageUrls}
+          initialIndex={fullScreenImages.initialIndex}
+          onClose={() => setFullScreenImages(null)}
+        />
+      )}
     </>
   );
 }
