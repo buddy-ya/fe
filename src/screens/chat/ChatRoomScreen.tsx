@@ -275,9 +275,11 @@ export const ChatRoomScreen: React.FC<ChatRoomScreenProps> = ({ route }) => {
         </TouchableOpacity>
       }
       headerCenter={
-        <MyText size="text-lg" className="font-semibold">
-          {roomData.name}
-        </MyText>
+        <TouchableOpacity onPress={() => handleProfilePress(String(roomData.buddyId))}>
+          <MyText size="text-lg" className="font-semibold">
+            {roomData.name}
+          </MyText>
+        </TouchableOpacity>
       }
       headerRight={
         <TouchableOpacity

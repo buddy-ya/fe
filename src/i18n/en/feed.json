@@ -89,5 +89,13 @@
     "alreadyBlocked": "User is already blocked.",
     "alreadyExistChatroom": "A chatroom already exists.",
     "alreadyExistChatRequest": "A chat request has already been sent."
+  },
+  "toast": {
+    "feed": {
+      "copySuccess": "Post content has been copied."
+    },
+    "comment": {
+      "copySuccess": "The comment has been copied."
+    }
   }
 }

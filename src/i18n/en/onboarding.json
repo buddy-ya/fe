@@ -55,7 +55,7 @@
   "name": {
     "title": "What is your name?",
     "description": "To make it easier for buddies to remember,\nwe recommend using an English name.",
-    "label": "Nickname",
+    "label": "Name",
     "placeholder": "-",
     "footer": "This will be displayed on your profile.",
     "warning": "Please enter your name in English",

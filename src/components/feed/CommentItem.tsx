@@ -97,7 +97,7 @@ const CommentItem = ({
               </MyText>
             </View>
             <View className="flex-row items-center">
-              <MyText size="text-sm" color="text-[#474747]">
+              <MyText size="text-sm" color="text-[#474747] font-medium">
                 {comment.name}
               </MyText>
               <MyText className="ml-[3px]">{getCountryFlag(comment.country as any)}</MyText>

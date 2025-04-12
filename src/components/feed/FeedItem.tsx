@@ -96,7 +96,7 @@ export default function FeedItem({
                 {t(`universities:universities.${university}`)}
               </MyText>
               <View className="flex-row items-center">
-                <MyText size="text-sm" color="text-textProfile">
+                <MyText size="text-sm" color="text-textProfile font-medium">
                   {name}
                 </MyText>
                 <MyText className="ml-[3px]">{getCountryFlag(country as any)}</MyText>

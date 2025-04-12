@@ -8,7 +8,7 @@ import { FeedStackParamList } from '@/navigation/navigationRef';
 import { useModalStore, useUserStore } from '@/store';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import * as Device from 'expo-device';
-import { Pencil, Search } from 'lucide-react-native';
+import { Pencil, Plus, Search } from 'lucide-react-native';
 import { useTabStore } from '@/store/useTabStore';
 import { isAndroid, CATEGORIES } from '@/utils';
 import { FeedHeaderTab } from '@/components/feed/FeedHeaderTab';
@@ -103,8 +103,8 @@ export function HomeScreen({ navigation }: FeedHomeScreenProps) {
             onPress={handleWriteButton}
             className="absolute right-0"
             containerStyle={{ bottom: writeButtonPosition }}
-            icon={Pencil}
-            iconSize={20}
+            icon={Plus}
+            iconSize={28}
           />
         </View>
       </InnerLayout>
