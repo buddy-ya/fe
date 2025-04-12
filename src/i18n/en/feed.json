@@ -69,7 +69,7 @@
     "chat": "Chat",
     "block": "Block",
     "exit": "Exit",
-    "noResponse": "No FeedBack"
+    "noResponse": "No Response"
   },
   "chatRequestModal": {
     "title": "Do you want to send {{name}} a chat request?",

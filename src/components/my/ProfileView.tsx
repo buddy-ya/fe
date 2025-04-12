@@ -205,7 +205,7 @@ const ProfileView: React.FC<ProfileViewProps> = ({
                 {t('mypage:profile.sections.matchingProfile')}
               </MyText>
               {incompleteProfile && (
-                <MyText className="mt-2 text-xs text-red-500">
+                <MyText size="text-sm" className="mt-2 text-red-500">
                   {t('mypage:profile.error.incompleteProfile')}
                 </MyText>
               )}

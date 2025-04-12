@@ -249,7 +249,7 @@ export default function FeedWriteScreen({ navigation, route }: FeedWriteScreenPr
                 }}
               />
               <TextInput
-                className="mt-4 font-medium text-[18px]"
+                className="mt-6 font-medium text-[18px]"
                 placeholder={t('write.contentPlaceholder')}
                 placeholderTextColor="#CBCBCB"
                 maxLength={4000}
@@ -258,7 +258,7 @@ export default function FeedWriteScreen({ navigation, route }: FeedWriteScreenPr
                 multiline
                 textAlignVertical="top"
                 style={{
-                  minHeight: 150,
+                  minHeight: 180,
                   textAlignVertical: 'top',
                   paddingTop: Platform.OS === 'android' ? 0 : undefined,
                 }}

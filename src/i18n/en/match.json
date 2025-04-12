@@ -29,14 +29,14 @@
       "button": "Cancel"
     },
     "success": {
-      "title": "Match Successful",
+      "title": "You’ve just met your new buddy!",
       "description": "Shall we send a chat?",
       "button": "Send a Chat",
       "cancel": "Cancel"
     },
     "requestModal": {
       "title": "Shall we search for a buddy?",
-      "description": "It may take up to one day to complete the match,\nand {{point}}points will be used for matching.\nNot replying to a buddy due to gender or nationality is reportable.",
+      "description": "Matching is available once a day and {{point}} points will be used for matching.\nNow’s your chance to become a good buddy for each other.",
       "cancelText": "Close",
       "confirmText": "Confirm"
     }

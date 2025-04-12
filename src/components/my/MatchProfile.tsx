@@ -48,7 +48,11 @@ const MatchProfile: React.FC<MatchProfileProps> = ({
           <MyText className="text-primary">{t('profile.save')}</MyText>
         </TouchableOpacity>
       </View>
-      {errorMessage && <MyText className="mt-2 text-xs text-red-500">{errorMessage}</MyText>}
+      {errorMessage && (
+        <MyText size="text-xs" className="mt-2 text-red-500">
+          {errorMessage}
+        </MyText>
+      )}
     </View>
   ) : (
     <TouchableOpacity activeOpacity={0.8}>
@@ -56,7 +60,11 @@ const MatchProfile: React.FC<MatchProfileProps> = ({
         <View className="max-w-[90%]">
           <MyText className="font-semibold text-gray-500">{questionText}</MyText>
           <MyText className="mt-[8px] font-medium text-[14px] text-black">{value}</MyText>
-          {errorMessage && <MyText className="mt-2 text-xs text-red-500">{errorMessage}</MyText>}
+          {errorMessage && (
+            <MyText size="text-xs" className="mt-2 text-red-500">
+              {errorMessage}
+            </MyText>
+          )}
         </View>
         {onEdit && (
           <TouchableOpacity onPress={onEdit} hitSlop={{ top: 10, left: 10, bottom: 10, right: 10 }}>

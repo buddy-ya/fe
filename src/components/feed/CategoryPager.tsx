@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ScrollView, View } from 'react-native';
 import PagerView from 'react-native-pager-view';
@@ -12,15 +12,27 @@ export interface Category {
 
 interface CategoryPagerProps {
   categories: Category[];
+  currentTab: string;
   onPageChange?: (page: number) => void;
   children: React.ReactNode;
 }
 
-export default function CategoryPager({ categories, onPageChange, children }: CategoryPagerProps) {
+export default function CategoryPager({
+  categories,
+  currentTab,
+  onPageChange,
+  children,
+}: CategoryPagerProps) {
   const { t } = useTranslation('feed');
   const [activeIndex, setActiveIndex] = useState(0);
   const pagerRef = useRef<PagerView>(null);
   const scrollViewRef = useRef<ScrollView>(null);
+
+  useEffect(() => {
+    setActiveIndex(0);
+    pagerRef.current?.setPage(0);
+    scrollViewRef.current?.scrollTo({ x: 0, animated: true });
+  }, [currentTab]);
 
   const handlePageSelected = (page: number) => {
     setActiveIndex(page);

@@ -76,7 +76,11 @@ export function HomeScreen({ navigation }: FeedHomeScreenProps) {
     >
       <InnerLayout>
         <View className="flex-1" pointerEvents="box-none">
-          <CategoryPager categories={categoriesToShow} onPageChange={handlePageChange}>
+          <CategoryPager
+            categories={categoriesToShow}
+            onPageChange={handlePageChange}
+            currentTab={tab}
+          >
             {categoriesToShow.map((category) => (
               <View key={category.id} className="flex-1">
                 {category.id === activeCategory && (
