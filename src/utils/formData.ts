@@ -12,6 +12,7 @@ export interface FeedFormData {
   content: string;
   university: string;
   category: string;
+  isProfileVisible: boolean;
   images?: ImageFile[];
 }
 
@@ -35,6 +36,7 @@ export const createFeedFormData = ({
   content,
   university,
   category,
+  isProfileVisible = false,
   images = [],
 }: FeedFormData): FormData => {
   const formData = new FormData();
@@ -42,6 +44,7 @@ export const createFeedFormData = ({
   formData.append('content', content.trim());
   formData.append('category', category);
   formData.append('university', university);
+  formData.append('isProfileVisible', isProfileVisible.toString());
   images.forEach((image) => {
     formData.append('images', processImageForUpload(image));
   });

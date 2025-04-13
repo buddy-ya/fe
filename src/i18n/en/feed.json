@@ -40,7 +40,8 @@
     "postButton": "Post",
     "imagesCount": "{count}/5",
     "camera": "Camera",
-    "gallery": "Gallery"
+    "gallery": "Gallery",
+    "profileVisible": "Show Profile"
   },
   "delete": {
     "title": "Delete Post",
@@ -92,7 +93,8 @@
   },
   "toast": {
     "feed": {
-      "copySuccess": "Post content has been copied."
+      "copySuccess": "Post content has been copied.",
+      "privateProfile": "This post was posted by a private profile."
     },
     "comment": {
       "copySuccess": "The comment has been copied."

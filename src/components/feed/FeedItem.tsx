@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { View, TouchableOpacity, ScrollView } from 'react-native';
+import { useToastStore } from '@/store';
 import { Feed } from '@/types/FeedDTO';
 import ThumbsUpActive from '@assets/icons/feed/like-active.svg';
 import { useNavigation } from '@react-navigation/native';
@@ -37,6 +38,7 @@ export default function FeedItem({
     content,
     imageUrls,
     profileImageUrl,
+    isProfileVisible,
     likeCount,
     commentCount,
     viewCount,
@@ -53,6 +55,7 @@ export default function FeedItem({
 
   const [likeDisabled, setLikeDisabled] = useState(false);
   const [bookmarkDisabled, setBookmarkDisabled] = useState(false);
+  const showToast = useToastStore((state) => state.showToast);
 
   const handleLike = () => {
     if (likeDisabled) return;
@@ -103,7 +106,11 @@ export default function FeedItem({
   ];
 
   const handleProfilePress = () => {
-    navigation.navigate('Profile', { id: feed.userId, showMatchingProfile: false });
+    navigation.navigate('Profile', {
+      id: feed.userId,
+      showMatchingProfile: false,
+      forceNotMyProfile: true,
+    });
   };
 
   const renderContent = () => {
@@ -119,9 +126,11 @@ export default function FeedItem({
             <TouchableOpacity
               className="flex-row items-center"
               onPress={() => {
-                if (showAllContent) {
+                if (showAllContent && isProfileVisible) {
                   handleProfilePress();
-                } else {
+                } else if (showAllContent && !isProfileVisible) {
+                  showToast(<MyText>👀</MyText>, t('toast.feed.privateProfile'), 1500);
+                } else if (!showAllContent) {
                   onPress?.(id);
                 }
               }}

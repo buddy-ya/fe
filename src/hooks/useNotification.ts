@@ -1,9 +1,12 @@
 import { useEffect } from 'react';
 import { Platform } from 'react-native';
 import { useUserStore } from '@/store';
+import { MatchDTO } from '@/types';
 import * as Linking from 'expo-linking';
 import * as Notifications from 'expo-notifications';
 import { useMatchStore } from '@/store/useMatchStore';
+import MatchRepository from '@/api/MatchRepository';
+import { queryClient } from '@/api/queryClient';
 import { registerForPushNotificationsAsync } from '@/utils';
 
 export function getExpoToken() {
@@ -49,14 +52,17 @@ export function useNotification() {
     }
   };
 
-  const handleForegroundStateChange = (data: any, delay: number) => {
+  const handleForegroundStateChange = async (data: any, delay: number) => {
     if (!data) return;
 
     if (data?.type === 'AUTHORIZATION') {
       update({ isCertificated: data?.isCertificated });
     } else if (data?.type === 'MATCH') {
-      updateMatchData({ matchStatus: 'success' });
+      updateMatchData(data as MatchDTO);
+    } else if (data?.type === 'CHAT') {
+      await queryClient.invalidateQueries({ queryKey: ['roomList'] });
     } else if (data?.type === 'POINT') {
+      update({ point: data?.point });
     }
   };
 

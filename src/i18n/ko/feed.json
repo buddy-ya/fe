@@ -40,7 +40,8 @@
     "postButton": "게시",
     "imagesCount": "{count}/5",
     "camera": "카메라",
-    "gallery": "갤러리"
+    "gallery": "갤러리",
+    "profileVisible": "프로필 공개"
   },
   "delete": {
     "title": "게시물 삭제",
@@ -92,7 +93,8 @@
   },
   "toast": {
     "feed": {
-      "copySuccess": "피드 내용이 복사되었습니다."
+      "copySuccess": "피드 내용이 복사되었습니다.",
+      "privateProfile": "비공개 프로필로 작성된 피드입니다."
     },
     "comment": {
       "copySuccess": "댓글 내용이 복사되었습니다."
