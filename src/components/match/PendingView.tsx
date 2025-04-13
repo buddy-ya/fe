@@ -41,15 +41,13 @@ export default function PendingView({ navigation }: PendingViewProps) {
   };
 
   const handleProfilePress = () => {
-    navigation.getParent()?.navigate('MyPage', {
-      screen: 'MyProfile',
-    });
+    navigation.navigate('MyProfile');
   };
 
   return (
     <InnerLayout>
       <View className="mt-8 w-full flex-row items-center justify-between gap-4 px-4">
-        <View className="flex-row items-center gap-3">
+        <TouchableOpacity className="flex-row items-center gap-3" onPress={handleProfilePress}>
           <ExpoImage
             style={{ height: 48, width: 48, borderRadius: 12 }}
             source={{ uri: userProfileImageUrl }}
@@ -66,7 +64,7 @@ export default function PendingView({ navigation }: PendingViewProps) {
               <MyText>{getCountryFlag(userCountry as CountryID)}</MyText>
             </View>
           </View>
-        </View>
+        </TouchableOpacity>
         <PlaneAnimation />
         <View className="h-[48px] w-[48px] flex-row items-center justify-center rounded-xl bg-white">
           <QuestionMarkIcon />

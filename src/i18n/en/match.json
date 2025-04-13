@@ -36,7 +36,7 @@
     },
     "requestModal": {
       "title": "Shall we search for a buddy?",
-      "description": "Matching is available once a day and {{point}} points will be used for matching.\nNow’s your chance to become a good buddy for each other.",
+      "description": "Matching is available once a day and {{point}} points will be used for matching.\nLet’s build a culture where respect connects us.",
       "cancelText": "Close",
       "confirmText": "Confirm"
     }
