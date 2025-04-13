@@ -74,7 +74,7 @@ export default function InvitationScreen({ navigation }: NativeStackScreenProps<
       }
     >
       <KeyboardLayout>
-        <ScrollView contentContainerStyle={{ flexGrow: 1, paddingBottom: 120 }}>
+        <ScrollView contentContainerStyle={{ flexGrow: 1, paddingBottom: 120 }} showsVerticalScrollIndicator={false}>
           <InnerLayout>
             <View className="flex-1 items-center">
               <View className="mt-14">

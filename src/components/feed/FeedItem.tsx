@@ -15,7 +15,7 @@ interface FeedItemProps {
   onLike?: (id: number) => void;
   onBookmark?: (id: number) => void;
   onPress?: (id: number) => void;
-  navigation: any;
+  navigation?: any;
   showAllContent?: boolean;
 }
 
@@ -51,26 +51,25 @@ export default function FeedItem({
     initialIndex: number;
   } | null>(null);
 
-  // 좋아요와 북마크 연타 방지를 위한 상태 추가
-  const [isLikeDisabled, setLikeDisabled] = useState(false);
-  const [isBookmarkDisabled, setBookmarkDisabled] = useState(false);
+  const [likeDisabled, setLikeDisabled] = useState(false);
+  const [bookmarkDisabled, setBookmarkDisabled] = useState(false);
 
   const handleLike = () => {
-    if (isLikeDisabled) return;
+    if (likeDisabled) return;
     setLikeDisabled(true);
     onLike?.(id);
     setTimeout(() => {
       setLikeDisabled(false);
-    }, 300);
+    }, 200);
   };
 
   const handleBookmark = () => {
-    if (isBookmarkDisabled) return;
+    if (bookmarkDisabled) return;
     setBookmarkDisabled(true);
     onBookmark?.(id);
     setTimeout(() => {
       setBookmarkDisabled(false);
-    }, 300);
+    }, 200);
   };
 
   const handleComment = (commentId: number) => {
