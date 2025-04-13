@@ -143,12 +143,12 @@ const ProfileView: React.FC<ProfileViewProps> = ({
                 </TouchableOpacity>
               )}
             </View>
-            <View className="mt-2 flex-row items-center">
-              <MyText size="text-3xl" className="font-bold">
+            <View className="mt-4 flex-row items-center">
+              <MyText size="text-2xl" className="font-bold">
                 {user.name}
               </MyText>
               {isMyProfile && handleEditName && (
-                <TouchableOpacity className="ml-3" onPress={handleEditName}>
+                <TouchableOpacity className="ml-2" onPress={handleEditName}>
                   <Pencil size={18} color="#797979" />
                 </TouchableOpacity>
               )}

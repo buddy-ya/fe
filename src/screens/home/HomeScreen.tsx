@@ -104,10 +104,10 @@ export function HomeScreen({ navigation }: FeedHomeScreenProps) {
           <Button
             type="circle"
             onPress={handleWriteButton}
-            className="absolute right-0"
+            className="absolute right-0 h-[48px] w-[48px]"
             containerStyle={{ bottom: writeButtonPosition }}
-            icon={Plus}
-            iconSize={28}
+            icon={Pencil}
+            iconSize={22}
           />
         </View>
       </InnerLayout>

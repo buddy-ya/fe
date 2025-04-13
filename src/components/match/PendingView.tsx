@@ -58,7 +58,7 @@ export default function PendingView({ navigation }: PendingViewProps) {
               {t(`universities:universities.${userUniv}`)}
             </MyText>
             <View className="flex-row items-center gap-1">
-              <MyText size="text-sm" color="text-black">
+              <MyText size="text-sm" color="text-black" className="font-medium">
                 {userName}
               </MyText>
               <MyText>{getCountryFlag(userCountry as CountryID)}</MyText>
