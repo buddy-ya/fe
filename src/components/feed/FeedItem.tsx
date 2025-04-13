@@ -5,9 +5,10 @@ import { useToastStore } from '@/store';
 import { Feed } from '@/types/FeedDTO';
 import ThumbsUpActive from '@assets/icons/feed/like-active.svg';
 import { useNavigation } from '@react-navigation/native';
+import * as Clipboard from 'expo-clipboard';
 import { Image as ExpoImage } from 'expo-image';
-import { Bookmark, MessageSquare, ThumbsUp, Eye } from 'lucide-react-native';
-import { getCountryFlag, getTimeAgo } from '@/utils';
+import { Bookmark, MessageSquare, ThumbsUp, Eye, Copy } from 'lucide-react-native';
+import { getCountryFlag, getTimeAgo, isAndroid } from '@/utils';
 import { MyText } from '../common';
 import { FullScreenImage } from '../common/FullImage';
 
@@ -113,6 +114,13 @@ export default function FeedItem({
     });
   };
 
+  const handleLongPressContent = async () => {
+    if (!isAndroid) {
+      showToast(<MyText>📋</MyText>, t('toast.feed.copySuccess'), 1500);
+    }
+    await Clipboard.setStringAsync(content);
+  };
+
   const renderContent = () => {
     const hasImage = imageUrls.length > 0;
     return (
@@ -153,9 +161,20 @@ export default function FeedItem({
               </View>
             </TouchableOpacity>
           </View>
-          <MyText color="text-textDescription" size="text-sm" className="mr-1 tracking-tighter">
-            {getTimeAgo(createdDate)}
-          </MyText>
+          <View className={`flex-col`}>
+            <MyText color="text-textDescription" size="text-sm" className="mr-1 tracking-tighter">
+              {getTimeAgo(createdDate)}
+            </MyText>
+            {showAllContent && (
+              <TouchableOpacity
+                onPress={handleLongPressContent}
+                className="mt-1 items-center justify-center self-end rounded-lg p-1.5"
+                hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+              >
+                <Copy size={16} color="#797979" />
+              </TouchableOpacity>
+            )}
+          </View>
         </View>
 
         <View className="mt-4">
@@ -166,7 +185,9 @@ export default function FeedItem({
           >
             {title}
           </MyText>
-          <View className="mt-3 flex flex-row justify-between">
+          <View
+            className={`mt-3 flex ${showAllContent ? 'flex-col' : 'flex-row justify-between'} `}
+          >
             <MyText
               size="text-[15px]"
               color="text-textDescription"
@@ -175,6 +196,7 @@ export default function FeedItem({
             >
               {content}
             </MyText>
+
             {hasImage && !showAllContent && (
               <View className="relative ml-4 h-[90px] w-[90px]">
                 <ExpoImage

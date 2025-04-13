@@ -293,7 +293,11 @@ function MatchNavigator() {
       initialRouteName="MatchHome"
       screenOptions={{ headerShown: false, fullScreenGestureEnabled: true }}
     >
-      <MatchStack.Screen name="MatchHome" component={MatchScreen} />
+      <MatchStack.Screen
+        name="MatchHome"
+        component={MatchScreen}
+        options={{ gestureEnabled: false }}
+      />
       <MatchStack.Screen name="Point" component={PointScreen} />
       <MatchStack.Screen name="MyProfile" component={MyProfileScreen} />
       <MatchStack.Screen name="EditProfileImage" component={EditProfileImageScreen} />
@@ -369,11 +373,14 @@ function MyPageNavigator() {
   }, []);
 
   return (
-    <MyPageStack.Navigator initialRouteName="MyPageHome" screenOptions={{ headerShown: false }}>
+    <MyPageStack.Navigator
+      initialRouteName="MyPageHome"
+      screenOptions={{ headerShown: false, fullScreenGestureEnabled: true }}
+    >
       <MyPageStack.Screen
         name="MyPageHome"
         component={MyPageScreen}
-        options={{ gestureEnabled: false, fullScreenGestureEnabled: true }}
+        options={{ gestureEnabled: false }}
       />
       <MyPageStack.Screen name="MyProfile" component={MyProfileScreen} />
       <MyPageStack.Screen name="EditProfileImage" component={EditProfileImageScreen} />

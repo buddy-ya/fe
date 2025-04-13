@@ -8,6 +8,7 @@ interface MyTextProps {
   color?: string;
   numberOfLines?: number;
   className?: string;
+  selectable?: boolean;
   onLongPress?: () => void;
 }
 
@@ -41,6 +42,7 @@ const MyText = ({
   color = 'text-[#282828]',
   numberOfLines,
   className = '',
+  selectable = false,
   onLongPress,
 }: MyTextProps) => {
   const baseSize = getFontSize(size);
@@ -54,6 +56,7 @@ const MyText = ({
       ellipsizeMode="tail"
       style={textStyle}
       className={`leading-[1.4] ${size} ${color} ${className}`}
+      selectable={selectable}
     >
       {children}
     </Text>

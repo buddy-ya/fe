@@ -1,8 +1,10 @@
 import { useTranslation } from 'react-i18next';
 import { Image, Text, TouchableOpacity, View } from 'react-native';
+import { useToastStore } from '@/store';
 import { Comment } from '@/types';
-import { ThumbsUp, MessageSquare, MoreVertical } from 'lucide-react-native';
-import { getCountryFlag, getTimeAgo } from '@/utils';
+import * as Clipboard from 'expo-clipboard';
+import { ThumbsUp, MessageSquare, MoreVertical, Copy } from 'lucide-react-native';
+import { getCountryFlag, getTimeAgo, isAndroid } from '@/utils';
 import { MyText } from '../common';
 
 interface CommentItemProps {
@@ -49,6 +51,13 @@ const CommentItem = ({
   onOptions,
 }: CommentItemProps) => {
   const { t } = useTranslation('feed');
+  const showToast = useToastStore((state) => state.showToast);
+  const handleCopy = async () => {
+    if (!isAndroid) {
+      showToast(<MyText>📋</MyText>, t('toast.feed.copySuccess'), 1200);
+    }
+    await Clipboard.setStringAsync(comment.content);
+  };
   const commentActions = (comment: Comment) => [
     {
       icon: ThumbsUp,
@@ -59,6 +68,10 @@ const CommentItem = ({
     {
       icon: MessageSquare,
       onPress: () => onReply(comment.id),
+    },
+    {
+      icon: Copy,
+      onPress: () => handleCopy(),
     },
   ];
 
