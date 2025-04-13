@@ -78,7 +78,7 @@ export default function PendingView({ navigation }: PendingViewProps) {
           <MyText size="text-xl" className="mb-4 font-semibold">
             {t('match.pending.title')}
           </MyText>
-          <MyText size="text-lg" color="text-textDescription" className="mb-4">
+          <MyText size="text-base" color="text-textDescription" className="mb-4 text-center">
             {t('match.pending.description')}
           </MyText>
           <View className="mt-8 items-center justify-center">
