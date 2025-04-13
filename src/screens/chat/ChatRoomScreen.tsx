@@ -185,20 +185,20 @@ export const ChatRoomScreen: React.FC<ChatRoomScreenProps> = ({ route }) => {
 
   const { handleUpload } = useImageUpload({ options: IMAGE_PICKER_OPTIONS });
 
-  const onAddImage = async () => {
-    if (buddyExited) return;
-    try {
-      const selectedImages = await handleUpload();
-      if (!selectedImages || selectedImages.length === 0) {
-        return;
-      }
-      const file = selectedImages[0];
-      showToast(<Text>⚠️</Text>, file.fileName);
-      await sendImageMessage(roomId, file);
-    } catch (error: any) {
-      showToast(<Text>⚠️</Text>, t('toast.sendFailed'));
-    }
-  };
+  // const onAddImage = async () => {
+  //   if (buddyExited) return;
+  //   try {
+  //     const selectedImages = await handleUpload();
+  //     if (!selectedImages || selectedImages.length === 0) {
+  //       return;
+  //     }
+  //     const file = selectedImages[0];
+  //     showToast(<Text>⚠️</Text>, file.fileName);
+  //     await sendImageMessage(roomId, file);
+  //   } catch (error: any) {
+  //     showToast(<Text>⚠️</Text>, t('toast.sendFailed'));
+  //   }
+  // };
 
   const renderMessageItem = useCallback(
     ({ item, index }: { item: Message; index: number }) => {

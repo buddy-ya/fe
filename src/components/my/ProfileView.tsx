@@ -148,12 +148,12 @@ const ProfileView: React.FC<ProfileViewProps> = ({
                 {user.name}
               </MyText>
               {isMyProfile && handleEditName && (
-                <TouchableOpacity className="ml-2" onPress={handleEditName}>
+                <TouchableOpacity className="ml-3" onPress={handleEditName}>
                   <Pencil size={18} color="#797979" />
                 </TouchableOpacity>
               )}
             </View>
-            <MyText size="text-[13px]" color="text-textProfile" className="mt-2">
+            <MyText size="text-[14px]" color="text-textProfile" className="mt-3">
               {t(`universities:universities.${user.university}`)}
             </MyText>
           </View>

@@ -74,7 +74,10 @@ export default function InvitationScreen({ navigation }: NativeStackScreenProps<
       }
     >
       <KeyboardLayout>
-        <ScrollView contentContainerStyle={{ flexGrow: 1, paddingBottom: 120 }} showsVerticalScrollIndicator={false}>
+        <ScrollView
+          contentContainerStyle={{ flexGrow: 1, paddingBottom: 120 }}
+          showsVerticalScrollIndicator={false}
+        >
           <InnerLayout>
             <View className="flex-1 items-center">
               <View className="mt-14">
@@ -102,7 +105,7 @@ export default function InvitationScreen({ navigation }: NativeStackScreenProps<
               </TouchableOpacity>
 
               <View className="mt-12 w-full px-4">
-                <MyText size="text-base" className="mb-4 font-medium">
+                <MyText size="text-base" className="mb-3 font-medium">
                   {t('event.invitation.inputLabel')}
                 </MyText>
                 <View className="flex-row items-center rounded-xl border border-gray-300 bg-white px-4">

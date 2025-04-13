@@ -64,11 +64,19 @@ const CommentItem = ({
 
   const renderCommentText = (comment: Comment) => {
     if (comment.isDeleted) {
-      return <MyText color={'text-[#797979]'}>{t('comment.deleted')}</MyText>;
+      return (
+        <MyText size="text-[14px]" color={'text-[#797979]'}>
+          {t('comment.deleted')}
+        </MyText>
+      );
     } else if (comment.isBlocked) {
-      return <MyText color={'text-[#797979]'}>{t('comment.blocked')}</MyText>;
+      return (
+        <MyText size="text-[14px]" color={'text-[#797979]'}>
+          {t('comment.blocked')}
+        </MyText>
+      );
     }
-    return <MyText>{comment.content}</MyText>;
+    return <MyText size="text-[14px]">{comment.content}</MyText>;
   };
   return (
     <View className={`bg-white px-4 py-3 ${isReply ? 'py-2 pl-[60px]' : ''}`}>
