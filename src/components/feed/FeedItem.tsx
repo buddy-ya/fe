@@ -111,6 +111,7 @@ export default function FeedItem({
       id: feed.userId,
       showMatchingProfile: false,
       forceNotMyProfile: true,
+      characterImageUrl: profileImageUrl,
     });
   };
 

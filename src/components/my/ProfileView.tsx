@@ -20,6 +20,7 @@ export interface ProfileViewProps {
   handleEditInterests?: () => void;
   showMatchingProfile?: boolean;
   incompleteProfile?: boolean;
+  characterImageUrl?: string;
   handleMatchingProfileSave?: (key: string, values: string[]) => void;
 }
 
@@ -34,6 +35,7 @@ const ProfileView: React.FC<ProfileViewProps> = ({
   handleEditInterests,
   showMatchingProfile,
   incompleteProfile,
+  characterImageUrl,
   handleMatchingProfileSave,
 }) => {
   const { t } = useTranslation(['mypage', 'countries', 'majors', 'languages', 'interests']);
@@ -131,7 +133,12 @@ const ProfileView: React.FC<ProfileViewProps> = ({
         <View className="mt-3 rounded-[12px]">
           <View className="items-center">
             <View className="relative h-[110px] w-[110px] overflow-hidden rounded-[25px]">
-              <Image source={{ uri: user.profileImageUrl }} className="mb-4 h-full w-full" />
+              <Image
+                source={
+                  characterImageUrl ? { uri: characterImageUrl } : { uri: user.profileImageUrl }
+                }
+                className="mb-4 h-full w-full"
+              />
               {isMyProfile && (
                 <TouchableOpacity
                   className={`absolute left-0 top-0 flex h-full w-full ${

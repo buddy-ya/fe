@@ -43,7 +43,12 @@ export type FeedStackParamList = {
     searchKeyword?: string;
   };
   CommentEdit: { feedId: number; commentId: number; initialContent: string };
-  Profile: { id: number; showMatchingProfile: boolean; forceNotMyProfile?: boolean };
+  Profile: {
+    id: number;
+    showMatchingProfile: boolean;
+    forceNotMyProfile?: boolean;
+    characterImageUrl?: string;
+  };
   EmailVerification: undefined;
   EmailVerificationCode: { email: string };
   EmailComplete: undefined;

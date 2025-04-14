@@ -59,7 +59,6 @@ function FeedList({
       keyExtractor={(item) => `feed-${item.id}`}
       onEndReached={hasMore ? onLoadMore : undefined}
       onEndReachedThreshold={0.6}
-      decelerationRate={0.89}
       showsVerticalScrollIndicator={false}
       initialNumToRender={6}
       maxToRenderPerBatch={10}
