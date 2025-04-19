@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { SwitchComponent } from 'react-native';
 import { SuspendedRequestsScreen } from '@/screens/chat/ChatRequestsScreen';
 import { SuspendedRoomListScreen } from '@/screens/chat/ChatRoomListScreen';
 import { SuspendedChatRoomScreen } from '@/screens/chat/ChatRoomScreen';
@@ -143,7 +144,7 @@ function OnboardingNavigator() {
   return (
     <OnboardingStack.Navigator
       initialRouteName="OnboardingWelcome"
-      screenOptions={{ headerShown: false }}
+      screenOptions={{ headerShown: false, fullScreenGestureEnabled: true }}
     >
       <OnboardingStack.Screen
         name="OnboardingWelcome"
@@ -213,7 +214,10 @@ function FeedNavigator() {
   }, []);
 
   return (
-    <FeedStack.Navigator initialRouteName="FeedHome" screenOptions={{ headerShown: false }}>
+    <FeedStack.Navigator
+      initialRouteName="FeedHome"
+      screenOptions={{ headerShown: false, fullScreenGestureEnabled: true }}
+    >
       <FeedStack.Screen
         name="FeedHome"
         component={HomeScreen}
@@ -223,6 +227,7 @@ function FeedNavigator() {
       <FeedStack.Screen name="FeedWrite" component={FeedWriteScreen} />
       <FeedStack.Screen name="FeedDetail" component={SuspendedFeedDetailScreen} />
       <FeedStack.Screen name="CommentEdit" component={CommentEditScreen} />
+      <FeedStack.Screen name="Profile" component={MyProfileScreen} />
     </FeedStack.Navigator>
   );
 }
@@ -231,7 +236,7 @@ function VerificationNavigator() {
   return (
     <VerificationStack.Navigator
       initialRouteName="VerificationSelect"
-      screenOptions={{ headerShown: false }}
+      screenOptions={{ headerShown: false, fullScreenGestureEnabled: true }}
     >
       <VerificationStack.Screen name="VerificationSelect" component={VerificationScreen} />
       <VerificationStack.Screen name="EmailVerification" component={EmailScreen} />
@@ -284,8 +289,15 @@ function MatchNavigator() {
   }, []);
 
   return (
-    <MatchStack.Navigator initialRouteName="MatchHome" screenOptions={{ headerShown: false }}>
-      <MatchStack.Screen name="MatchHome" component={MatchScreen} />
+    <MatchStack.Navigator
+      initialRouteName="MatchHome"
+      screenOptions={{ headerShown: false, fullScreenGestureEnabled: true }}
+    >
+      <MatchStack.Screen
+        name="MatchHome"
+        component={MatchScreen}
+        options={{ gestureEnabled: false }}
+      />
       <MatchStack.Screen name="Point" component={PointScreen} />
       <MatchStack.Screen name="MyProfile" component={MyProfileScreen} />
       <MatchStack.Screen name="EditProfileImage" component={EditProfileImageScreen} />
@@ -325,7 +337,10 @@ function ChatNavigator() {
   }, []);
 
   return (
-    <ChatStack.Navigator initialRouteName="RoomList" screenOptions={{ headerShown: false }}>
+    <ChatStack.Navigator
+      initialRouteName="RoomList"
+      screenOptions={{ headerShown: false, fullScreenGestureEnabled: true }}
+    >
       <ChatStack.Screen
         name="RoomList"
         component={SuspendedRoomListScreen}
@@ -358,7 +373,10 @@ function MyPageNavigator() {
   }, []);
 
   return (
-    <MyPageStack.Navigator initialRouteName="MyPageHome" screenOptions={{ headerShown: false }}>
+    <MyPageStack.Navigator
+      initialRouteName="MyPageHome"
+      screenOptions={{ headerShown: false, fullScreenGestureEnabled: true }}
+    >
       <MyPageStack.Screen
         name="MyPageHome"
         component={MyPageScreen}

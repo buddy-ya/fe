@@ -20,6 +20,7 @@ export interface ProfileViewProps {
   handleEditInterests?: () => void;
   showMatchingProfile?: boolean;
   incompleteProfile?: boolean;
+  characterImageUrl?: string;
   handleMatchingProfileSave?: (key: string, values: string[]) => void;
 }
 
@@ -34,6 +35,7 @@ const ProfileView: React.FC<ProfileViewProps> = ({
   handleEditInterests,
   showMatchingProfile,
   incompleteProfile,
+  characterImageUrl,
   handleMatchingProfileSave,
 }) => {
   const { t } = useTranslation(['mypage', 'countries', 'majors', 'languages', 'interests']);
@@ -131,7 +133,12 @@ const ProfileView: React.FC<ProfileViewProps> = ({
         <View className="mt-3 rounded-[12px]">
           <View className="items-center">
             <View className="relative h-[110px] w-[110px] overflow-hidden rounded-[25px]">
-              <Image source={{ uri: user.profileImageUrl }} className="mb-4 h-full w-full" />
+              <Image
+                source={
+                  characterImageUrl ? { uri: characterImageUrl } : { uri: user.profileImageUrl }
+                }
+                className="mb-4 h-full w-full"
+              />
               {isMyProfile && (
                 <TouchableOpacity
                   className={`absolute left-0 top-0 flex h-full w-full ${
@@ -143,8 +150,8 @@ const ProfileView: React.FC<ProfileViewProps> = ({
                 </TouchableOpacity>
               )}
             </View>
-            <View className="mt-2 flex-row items-center">
-              <MyText size="text-3xl" className="font-bold">
+            <View className="mt-4 flex-row items-center">
+              <MyText size="text-2xl" className="font-bold">
                 {user.name}
               </MyText>
               {isMyProfile && handleEditName && (
@@ -153,7 +160,7 @@ const ProfileView: React.FC<ProfileViewProps> = ({
                 </TouchableOpacity>
               )}
             </View>
-            <MyText size="text-[13px]" color="text-textProfile" className="mt-2">
+            <MyText size="text-[14px]" color="text-textProfile" className="mt-3">
               {t(`universities:universities.${user.university}`)}
             </MyText>
           </View>
@@ -205,7 +212,7 @@ const ProfileView: React.FC<ProfileViewProps> = ({
                 {t('mypage:profile.sections.matchingProfile')}
               </MyText>
               {incompleteProfile && (
-                <MyText className="mt-2 text-xs text-red-500">
+                <MyText size="text-sm" className="mt-2 text-red-500">
                   {t('mypage:profile.error.incompleteProfile')}
                 </MyText>
               )}

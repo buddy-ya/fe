@@ -36,7 +36,7 @@ export default function UserGuideScreen({ navigation }: OnboardingUserGuideProps
 
   const guidelines = [
     { key: 'guideline1', emoji: '💬' },
-    { key: 'guideline2', emoji: '🚨' },
+    { key: 'guideline2', emoji: '🤝' },
     { key: 'guideline3', emoji: '🎓' },
     { key: 'guideline4', emoji: '⚠️' },
   ];

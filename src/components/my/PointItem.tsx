@@ -25,8 +25,10 @@ export function PointItem({ point }: PointItemProps) {
   return (
     <View className="justify-between border-b border-[#E8E9EB] bg-white p-4">
       <View className="flex-row items-center justify-between">
-        <MyText className="mb-1 font-semibold">{typeLabel}</MyText>
-        <MyText size="text-lg" className={`mb-1 font-semibold ${textColor}`}>
+        <MyText size="text-base" className="mb-1 font-semibold">
+          {typeLabel}
+        </MyText>
+        <MyText size="text-base" className={`mb-1 font-semibold ${textColor}`}>
           {sign}
           {Math.abs(pointChange)}
         </MyText>

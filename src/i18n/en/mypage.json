@@ -108,7 +108,7 @@
     "invitation": {
       "header": "Friend Invitation",
       "title": "Invite your friends with your referral code and earn points!",
-      "subtitle": "Both you and your friend will receive 50 points.",
+      "subtitle": "Both you and your friend will receive 100 points.",
       "inviteCodeLabel": "Invitation Code",
       "inputLabel": "Enter Invitation Code",
       "inputPlaceholder": "Enter the invitation code.",

@@ -42,11 +42,13 @@ export default function MyProfileScreen({ navigation, route }: any) {
   const isDefaultProfileImage = useUserStore((state) => state.isDefaultProfileImage);
   const introductionFromStore = useUserStore((state) => state.introduction);
   const buddyActivityFromStore = useUserStore((state) => state.buddyActivity);
-  const isMyProfile = route.params?.id == null || route.params.id === id;
   const update = useUserStore((state) => state.update);
 
+  const forced = route.params?.forceNotMyProfile ?? false;
+  const isMyProfile = !forced && (route.params?.id == null || route.params.id === id);
   const userId = !isMyProfile ? route.params?.id : id;
   const incompleteProfile = isMyProfile ? (route.params?.incompleteProfile ?? false) : false;
+  const characterImageUrl = route.params?.characterImageUrl;
 
   const { data } = useQuery({
     queryKey: ['users', userId],
@@ -154,6 +156,7 @@ export default function MyProfileScreen({ navigation, route }: any) {
                 user={user}
                 isMyProfile={isMyProfile}
                 isDefaultProfileImage={isDefaultProfileImage}
+                characterImageUrl={characterImageUrl}
                 showMatchingProfile={showMatchingProfile}
                 incompleteProfile={incompleteProfile}
                 handleMatchingProfileSave={handleMatchingProfileSave}

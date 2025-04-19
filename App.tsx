@@ -12,6 +12,7 @@ import { useToastStore } from '@/store';
 import { NavigationContainer, createNavigationContainerRef } from '@react-navigation/native';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import * as Notifications from 'expo-notifications';
+import { queryClient } from '@/api/queryClient';
 import { useNotification } from '@/hooks/useNotification';
 import { Toast } from '@/components/common/Toast';
 
@@ -41,11 +42,8 @@ if (Platform.OS === 'android') {
 }
 
 export default function App() {
-  const queryClient = new QueryClient();
   const { visible, icon, text, duration, hideToast } = useToastStore();
-
   useNotification();
-
   return (
     <QueryClientProvider client={queryClient}>
       <I18nextProvider i18n={i18n}>

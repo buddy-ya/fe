@@ -5,7 +5,6 @@ import { Room } from '@/types';
 import { Image as ExpoImage } from 'expo-image';
 import { CountryID, getCountryFlag } from '@/utils';
 import { MyText } from '../common';
-import { FullScreenImage } from '../common/FullImage';
 
 interface MessageProps {
   message: Message;
@@ -143,7 +142,9 @@ const MessageItem: React.FC<MessageProps> = ({
           </TouchableOpacity>
           {(message.type === 'TALK' || message.type === 'IMAGE') && (
             <View className="flex-row items-center">
-              <MyText className="mx-[5px] self-end text-xs text-gray-500">{formattedTime}</MyText>
+              <MyText size="text-xs" className="mx-[5px] self-end text-gray-500">
+                {formattedTime}
+              </MyText>
               {isCurrentUser && message.status && message.status !== 'sent' && (
                 <>
                   {message.status === 'pending' ? (
@@ -161,12 +162,6 @@ const MessageItem: React.FC<MessageProps> = ({
           )}
         </View>
       </View>
-
-      <FullScreenImage
-        visible={isFullScreen}
-        imageUri={message.content}
-        onClose={() => setIsFullScreen(false)}
-      />
     </>
   );
 };

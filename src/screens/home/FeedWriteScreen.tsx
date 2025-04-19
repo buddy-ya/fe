@@ -1,6 +1,14 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { View, TouchableOpacity, TextInput, ScrollView, Alert, Platform } from 'react-native';
+import {
+  View,
+  TouchableOpacity,
+  TextInput,
+  ScrollView,
+  Alert,
+  Platform,
+  Switch,
+} from 'react-native';
 import { feedKeys, FeedRepository } from '@/api';
 import {
   Layout,
@@ -19,7 +27,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import * as ImagePicker from 'expo-image-picker';
 import { Camera, ChevronDown, ImagePlus, X } from 'lucide-react-native';
 import { useTabStore } from '@/store/useTabStore';
-import { CATEGORIES, logError } from '@/utils';
+import { CATEGORIES, isAndroid, logError } from '@/utils';
 
 const FILTERED_CATEGORIES = CATEGORIES;
 
@@ -51,6 +59,7 @@ export default function FeedWriteScreen({ navigation, route }: FeedWriteScreenPr
   );
   const [title, setTitle] = useState(feed?.title || '');
   const [content, setContent] = useState(feed?.content || '');
+  const [isProfileVisible, setIsProfileVisible] = useState(feed?.isProfileVisible || false);
   const isValid = title.trim().length > 0 && content.trim().length > 0;
   const [images, setImages] = useState<ImageFile[]>(
     feed?.imageUrls?.map((uri) => ({
@@ -140,6 +149,38 @@ export default function FeedWriteScreen({ navigation, route }: FeedWriteScreenPr
     setImages((prev) => prev.filter((_, i) => i !== index));
   };
 
+  const footerContent = (
+    <View className="">
+      <ImagePreview images={images} onRemove={removeImage} />
+      <View className={`flex-row items-center justify-between border-gray-200 px-4 py-3`}>
+        <View className="ml-1 flex-row items-center">
+          <TouchableOpacity onPress={takePhoto} className="mr-3">
+            <Camera size={24} color="#797979" />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={pickImage}>
+            <ImagePlus size={24} color="#797979" />
+          </TouchableOpacity>
+        </View>
+        <View className="flex-row items-center">
+          <MyText color="text-textDescription" className="font-semibold">
+            {images.length > 0 && `${images.length}/5`}
+          </MyText>
+        </View>
+        <View className="flex-row items-center">
+          <MyText size="text-[15px]" color="text-textDescription" className="mr-2 font-semibold">
+            {t('write.profileVisible')}
+          </MyText>
+          <Switch
+            value={isProfileVisible}
+            onValueChange={setIsProfileVisible}
+            style={isAndroid ? undefined : { transform: [{ scaleX: 0.8 }, { scaleY: 0.8 }] }}
+            trackColor={{ false: '#767577', true: '#00A176' }}
+          />
+        </View>
+      </View>
+    </View>
+  );
+
   const handleUpload = async () => {
     if (!isValid) return;
 
@@ -151,11 +192,12 @@ export default function FeedWriteScreen({ navigation, route }: FeedWriteScreenPr
           title: title.trim(),
           content: content.trim(),
           category: selectedCategory.id,
+          isProfileVisible,
           images,
           university: tab,
         });
-        queryClient.invalidateQueries({ queryKey: feedKeys.detail(feed.id) });
-        queryClient.invalidateQueries({
+        queryClient.refetchQueries({ queryKey: feedKeys.detail(feed.id) });
+        queryClient.refetchQueries({
           queryKey: feedKeys.lists(tab, selectedCategory.id),
         });
       } else {
@@ -165,8 +207,9 @@ export default function FeedWriteScreen({ navigation, route }: FeedWriteScreenPr
           category: selectedCategory.id,
           images,
           university: tab,
+          isProfileVisible,
         });
-        queryClient.invalidateQueries({
+        queryClient.refetchQueries({
           queryKey: feedKeys.lists(tab, selectedCategory.id),
         });
       }
@@ -190,7 +233,7 @@ export default function FeedWriteScreen({ navigation, route }: FeedWriteScreenPr
       }
       headerCenter={
         <TouchableOpacity onPress={handleOpenCategoryModal} className="flex-row items-center">
-          <MyText size="text-xl" className="mr-[2px] font-semibold" numberOfLines={1}>
+          <MyText size="text-lg" className="mr-[2px] font-semibold" numberOfLines={1}>
             {selectedCategory.icon} {t(`category.${selectedCategory.label}`)}
           </MyText>
           <ChevronDown size={24} color="#282828" />
@@ -211,28 +254,7 @@ export default function FeedWriteScreen({ navigation, route }: FeedWriteScreenPr
       {isLoading ? (
         <Loading />
       ) : (
-        <KeyboardLayout
-          footer={
-            <View>
-              <ImagePreview images={images} onRemove={removeImage} />
-              <View className="flex-row items-center justify-between border-gray-200 px-4 py-3">
-                <View className="ml-1 flex-row items-center">
-                  <TouchableOpacity onPress={takePhoto} className="mr-3">
-                    <Camera size={24} color="#797979" />
-                  </TouchableOpacity>
-                  <TouchableOpacity onPress={pickImage}>
-                    <ImagePlus size={24} color="#797979" />
-                  </TouchableOpacity>
-                </View>
-                <View className="flex-row items-center">
-                  <MyText color="text-textDescription" className="font-semibold">
-                    {images.length > 0 && `${images.length}/5`}
-                  </MyText>
-                </View>
-              </View>
-            </View>
-          }
-        >
+        <KeyboardLayout footer={footerContent}>
           <InnerLayout>
             <ScrollView className="mt-8 flex-1 pb-[50px]">
               <TextInput
@@ -249,7 +271,7 @@ export default function FeedWriteScreen({ navigation, route }: FeedWriteScreenPr
                 }}
               />
               <TextInput
-                className="mt-4 font-medium text-[18px]"
+                className="mt-6 font-medium text-[18px]"
                 placeholder={t('write.contentPlaceholder')}
                 placeholderTextColor="#CBCBCB"
                 maxLength={4000}
@@ -258,7 +280,7 @@ export default function FeedWriteScreen({ navigation, route }: FeedWriteScreenPr
                 multiline
                 textAlignVertical="top"
                 style={{
-                  minHeight: 150,
+                  minHeight: 180,
                   textAlignVertical: 'top',
                   paddingTop: Platform.OS === 'android' ? 0 : undefined,
                 }}

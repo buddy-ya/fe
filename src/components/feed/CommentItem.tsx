@@ -1,8 +1,10 @@
 import { useTranslation } from 'react-i18next';
 import { Image, Text, TouchableOpacity, View } from 'react-native';
+import { useToastStore } from '@/store';
 import { Comment } from '@/types';
-import { ThumbsUp, MessageSquare, MoreVertical } from 'lucide-react-native';
-import { getCountryFlag, getTimeAgo } from '@/utils';
+import * as Clipboard from 'expo-clipboard';
+import { ThumbsUp, MessageSquare, MoreVertical, Copy } from 'lucide-react-native';
+import { getCountryFlag, getTimeAgo, isAndroid } from '@/utils';
 import { MyText } from '../common';
 
 interface CommentItemProps {
@@ -49,6 +51,13 @@ const CommentItem = ({
   onOptions,
 }: CommentItemProps) => {
   const { t } = useTranslation('feed');
+  const showToast = useToastStore((state) => state.showToast);
+  const handleCopy = async () => {
+    if (!isAndroid) {
+      showToast(<MyText>📋</MyText>, t('toast.comment.copySuccess'), 1200);
+    }
+    await Clipboard.setStringAsync(comment.content);
+  };
   const commentActions = (comment: Comment) => [
     {
       icon: ThumbsUp,
@@ -60,15 +69,27 @@ const CommentItem = ({
       icon: MessageSquare,
       onPress: () => onReply(comment.id),
     },
+    {
+      icon: Copy,
+      onPress: () => handleCopy(),
+    },
   ];
 
   const renderCommentText = (comment: Comment) => {
     if (comment.isDeleted) {
-      return <MyText color={'text-[#797979]'}>{t('comment.deleted')}</MyText>;
+      return (
+        <MyText size="text-[14px]" color={'text-[#797979]'}>
+          {t('comment.deleted')}
+        </MyText>
+      );
     } else if (comment.isBlocked) {
-      return <MyText color={'text-[#797979]'}>{t('comment.blocked')}</MyText>;
+      return (
+        <MyText size="text-[14px]" color={'text-[#797979]'}>
+          {t('comment.blocked')}
+        </MyText>
+      );
     }
-    return <MyText>{comment.content}</MyText>;
+    return <MyText size="text-[14px]">{comment.content}</MyText>;
   };
   return (
     <View className={`bg-white px-4 py-3 ${isReply ? 'py-2 pl-[60px]' : ''}`}>
@@ -97,7 +118,7 @@ const CommentItem = ({
               </MyText>
             </View>
             <View className="flex-row items-center">
-              <MyText size="text-sm" color="text-[#474747]">
+              <MyText size="text-sm" color="text-[#474747] font-medium">
                 {comment.name}
               </MyText>
               <MyText className="ml-[3px]">{getCountryFlag(comment.country as any)}</MyText>

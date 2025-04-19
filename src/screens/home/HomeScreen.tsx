@@ -8,7 +8,7 @@ import { FeedStackParamList } from '@/navigation/navigationRef';
 import { useModalStore, useUserStore } from '@/store';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import * as Device from 'expo-device';
-import { Pencil, Search } from 'lucide-react-native';
+import { Pencil, Plus, Search } from 'lucide-react-native';
 import { useTabStore } from '@/store/useTabStore';
 import { isAndroid, CATEGORIES } from '@/utils';
 import { FeedHeaderTab } from '@/components/feed/FeedHeaderTab';
@@ -54,8 +54,7 @@ export function HomeScreen({ navigation }: FeedHomeScreenProps) {
   };
 
   const insets = useSafeAreaInsets();
-  const isTablet = Device.deviceType === Device.DeviceType.TABLET;
-  const writeButtonPosition = isAndroid ? insets.bottom + 100 : insets.bottom + 80;
+  const writeButtonPosition = isAndroid ? insets.bottom + 100 : insets.bottom + 75;
 
   useBackButton();
 
@@ -76,7 +75,11 @@ export function HomeScreen({ navigation }: FeedHomeScreenProps) {
     >
       <InnerLayout>
         <View className="flex-1" pointerEvents="box-none">
-          <CategoryPager categories={categoriesToShow} onPageChange={handlePageChange}>
+          <CategoryPager
+            categories={categoriesToShow}
+            onPageChange={handlePageChange}
+            currentTab={tab}
+          >
             {categoriesToShow.map((category) => (
               <View key={category.id} className="flex-1">
                 {category.id === activeCategory && (
@@ -101,10 +104,10 @@ export function HomeScreen({ navigation }: FeedHomeScreenProps) {
           <Button
             type="circle"
             onPress={handleWriteButton}
-            className="absolute right-0"
+            className="absolute right-0 h-[48px] w-[48px]"
             containerStyle={{ bottom: writeButtonPosition }}
             icon={Pencil}
-            iconSize={20}
+            iconSize={22}
           />
         </View>
       </InnerLayout>

@@ -185,20 +185,20 @@ export const ChatRoomScreen: React.FC<ChatRoomScreenProps> = ({ route }) => {
 
   const { handleUpload } = useImageUpload({ options: IMAGE_PICKER_OPTIONS });
 
-  const onAddImage = async () => {
-    if (buddyExited) return;
-    try {
-      const selectedImages = await handleUpload();
-      if (!selectedImages || selectedImages.length === 0) {
-        return;
-      }
-      const file = selectedImages[0];
-      showToast(<Text>⚠️</Text>, file.fileName);
-      await sendImageMessage(roomId, file);
-    } catch (error: any) {
-      showToast(<Text>⚠️</Text>, t('toast.sendFailed'));
-    }
-  };
+  // const onAddImage = async () => {
+  //   if (buddyExited) return;
+  //   try {
+  //     const selectedImages = await handleUpload();
+  //     if (!selectedImages || selectedImages.length === 0) {
+  //       return;
+  //     }
+  //     const file = selectedImages[0];
+  //     showToast(<Text>⚠️</Text>, file.fileName);
+  //     await sendImageMessage(roomId, file);
+  //   } catch (error: any) {
+  //     showToast(<Text>⚠️</Text>, t('toast.sendFailed'));
+  //   }
+  // };
 
   const renderMessageItem = useCallback(
     ({ item, index }: { item: Message; index: number }) => {
@@ -267,12 +267,7 @@ export const ChatRoomScreen: React.FC<ChatRoomScreenProps> = ({ route }) => {
       disableBottomSafeArea
       headerLeft={
         <TouchableOpacity
-          onPress={() =>
-            navigation.reset({
-              index: 0,
-              routes: [{ name: 'RoomList' }],
-            })
-          }
+          onPress={() => navigation.goBack()}
           className="flex-row items-center"
           hitSlop={{ right: 20 }}
         >
@@ -280,9 +275,11 @@ export const ChatRoomScreen: React.FC<ChatRoomScreenProps> = ({ route }) => {
         </TouchableOpacity>
       }
       headerCenter={
-        <MyText size="text-lg" className="font-semibold">
-          {roomData.name}
-        </MyText>
+        <TouchableOpacity onPress={() => handleProfilePress(String(roomData.buddyId))}>
+          <MyText size="text-lg" className="font-semibold">
+            {roomData.name}
+          </MyText>
+        </TouchableOpacity>
       }
       headerRight={
         <TouchableOpacity
