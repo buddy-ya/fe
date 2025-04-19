@@ -103,7 +103,10 @@ const MessageItem: React.FC<MessageProps> = ({
           parse={[
             {
               type: 'url',
-              style: { color: '#ffffff', textDecorationLine: 'underline' },
+              style: {
+                color: isCurrentUser ? '#ffffff' : '#00A176',
+                textDecorationLine: 'underline',
+              },
               onPress: handleUrlPress,
             },
           ]}
