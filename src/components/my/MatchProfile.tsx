@@ -64,7 +64,9 @@ const MatchProfile: React.FC<MatchProfileProps> = ({
       <View className="mb-4 flex-row items-center justify-between rounded-xl bg-gray-100 p-4">
         <View className="max-w-[90%]">
           <MyText className="font-semibold text-gray-500">{questionText}</MyText>
-          <MyText className="mt-[8px] font-medium text-[14px] text-black">{value}</MyText>
+          <MyText size="text-[14px]" className="mt-[8px] font-medium text-black">
+            {value}
+          </MyText>
           {errorMessage && (
             <MyText size="text-xs" className="mt-2 text-red-500">
               {errorMessage}

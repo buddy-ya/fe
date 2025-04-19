@@ -30,6 +30,7 @@ export default function MyPageScreen({ navigation }: MyPageScreenProps) {
   const point = useUserStore((state) => state.point);
   const update = useUserStore((state) => state.update);
   const isCertificated = useUserStore((state) => state.isCertificated);
+  const BANNER_RATIO = 344 / 155;
 
   const handlePointPress = () => {
     navigation.navigate('Point');
@@ -102,14 +103,11 @@ export default function MyPageScreen({ navigation }: MyPageScreenProps) {
     >
       <InnerLayout>
         <TouchableOpacity
-          className="mt-3 flex-row items-center rounded-[20px] bg-white p-5"
+          className="mt-3 flex-row items-center rounded-xl bg-white p-5"
           onPress={() => navigation.navigate('MyProfile')}
         >
           <View className="flex-row items-center bg-white">
-            <Image
-              source={{ uri: profileImageUrl }}
-              className="mr-3 h-[54] w-[54] rounded-[12px]"
-            />
+            <Image source={{ uri: profileImageUrl }} className="mr-3 h-[54] w-[54] rounded-xl" />
             <View className="flex-1">
               <MyText color="text-textProfile" className="font-semibold">
                 {t(`universities:universities.${university}`)}
@@ -158,7 +156,13 @@ export default function MyPageScreen({ navigation }: MyPageScreenProps) {
         </TouchableOpacity>
 
         <TouchableOpacity className="mt-7 items-center" onPress={handleInvitationEventPress}>
-          {locale.startsWith('ko') ? <EventBannerKo /> : <EventBannerEn />}
+          <View style={{ width: '100%', aspectRatio: BANNER_RATIO }}>
+            {locale.startsWith('ko') ? (
+              <EventBannerKo width="100%" height="100%" preserveAspectRatio="xMidYMid meet" />
+            ) : (
+              <EventBannerEn width="100%" height="100%" preserveAspectRatio="xMidYMid meet" />
+            )}
+          </View>
         </TouchableOpacity>
       </InnerLayout>
     </Layout>
