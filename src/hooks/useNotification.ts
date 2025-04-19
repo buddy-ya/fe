@@ -18,8 +18,8 @@ export function useNotification() {
   const updateMatchData = useMatchStore((state) => state.updateMatchData);
   const prefix = Linking.createURL('/');
 
-  const terminateDelay = Platform.OS === 'android' ? 1400 : 1000;
-  const backgroundDelay = 400;
+  const terminateDelay = Platform.OS === 'android' ? 1400 : 1200;
+  const backgroundDelay = 500;
   const foregroundDelay = 200;
 
   const handleNotificationData = (data: any, delay: number) => {

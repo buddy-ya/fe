@@ -22,8 +22,6 @@ import { MoreVertical, Send } from 'lucide-react-native';
 import { useTabStore } from '@/store/useTabStore';
 import FeedSkeleton from '@/components/feed/FeedSkeleton';
 
-// Zustand 탭 스토어
-
 type FeedDetailScreenProps = NativeStackScreenProps<FeedStackParamList, 'FeedDetail'>;
 
 export default function FeedDetailScreen({ navigation, route }: FeedDetailScreenProps) {
@@ -82,14 +80,19 @@ export default function FeedDetailScreen({ navigation, route }: FeedDetailScreen
   };
 
   useEffect(() => {
-    if (feed) {
-      const effectiveUniversity = feed.universityTab || globalTab;
-      FeedService.incrementViewCount(
-        queryClient,
-        feedKeys.lists(effectiveUniversity, feed.category || 'free'),
-        feedId
-      );
-    }
+    if (!feed) return;
+    const effectiveUniversity = feed.universityTab || globalTab;
+    const listKey = feedKeys.lists(effectiveUniversity, feed.category || 'free');
+    queryClient.setQueryData(listKey, (oldData: any) => {
+      if (!oldData?.pages) return oldData;
+      const newPages = oldData.pages.map((page: any) => ({
+        ...page,
+        feeds: page.feeds.map((f: any) =>
+          f.id === feedId ? { ...f, viewCount: feed.viewCount } : f
+        ),
+      }));
+      return { ...oldData, pages: newPages };
+    });
   }, [feed, feedId, queryClient, globalTab]);
 
   const handleCommentReply = (commentId: number) => {

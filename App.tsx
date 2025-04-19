@@ -8,7 +8,7 @@ import linking from '@/navigation/Linking';
 import Router from '@/navigation/router';
 import AppInitializationProvider from '@/provider/AppInitializationProvider';
 import ErrorPage from '@/screens/ErrorPage';
-import { useToastStore } from '@/store';
+import { useToastStore, useUserStore } from '@/store';
 import { NavigationContainer, createNavigationContainerRef } from '@react-navigation/native';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import * as Notifications from 'expo-notifications';

@@ -33,6 +33,12 @@ function FeedList({
   emptyStateNamespace = 'feed',
 }: FeedListProps) {
   const { t } = useTranslation('common');
+  const renderFeedItem = useCallback(
+    ({ item }) => (
+      <FeedItem feed={item} onLike={onLike} onBookmark={onBookmark} onPress={onPress} />
+    ),
+    [onLike, onBookmark, onPress]
+  );
 
   if (feeds.length === 0) {
     return (
@@ -42,13 +48,6 @@ function FeedList({
       />
     );
   }
-
-  const renderFeedItem = useCallback(
-    ({ item }) => (
-      <FeedItem feed={item} onLike={onLike} onBookmark={onBookmark} onPress={onPress} />
-    ),
-    [onLike, onBookmark, onPress]
-  );
 
   return (
     <FlatList
