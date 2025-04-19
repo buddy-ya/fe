@@ -317,6 +317,7 @@ export const ChatRoomScreen: React.FC<ChatRoomScreenProps> = ({ route }) => {
         <InnerLayout className="px-[12px]">
           <FlatList
             data={messages}
+            ListHeaderComponent={<View style={{ height: 20 }} />}
             keyExtractor={(item) => item.id.toString()}
             inverted
             renderItem={renderMessageItem}
