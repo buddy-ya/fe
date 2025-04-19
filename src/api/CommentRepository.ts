@@ -3,7 +3,6 @@ import { CommentDTO } from '@/types/CommentDTO';
 import API from './API';
 
 class CommentRepository {
-  // TODO: get 으로 바꿔도 될 듯?
   async getComments({ feedId }: CommentDTO): Promise<Comment[]> {
     const { data } = await API.get(`/feeds/${feedId}/comments`);
     return data;

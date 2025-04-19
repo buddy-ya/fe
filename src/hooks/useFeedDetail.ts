@@ -1,3 +1,4 @@
+// hooks/useFeedDetail.ts
 import { CommentRepository, feedKeys, FeedRepository } from '@/api';
 import { CommentService } from '@/service';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -10,11 +11,21 @@ interface UseFeedDetailProps {
   updateMyPostsCache?: boolean;
   updateSearchCache?: boolean;
   searchKeyword?: string;
-  enabled?: boolean;
+}
+
+// 옵티미스틱 업데이트 컨텍스트 타입
+interface OptimisticContext {
+  previous: Record<string, any>;
+  keysToUpdate: string[][];
+}
+
+// 댓글 등록 컨텍스트 타입
+interface CommentContext {
+  keys: string[][];
 }
 
 function updateCaches(
-  queryClient: any,
+  queryClient: ReturnType<typeof useQueryClient>,
   keys: string[][],
   feedId: number,
   updater: (feed: any) => any
@@ -22,19 +33,21 @@ function updateCaches(
   keys.forEach((key) => {
     queryClient.setQueryData(key, (oldData: any) => {
       if (!oldData) return oldData;
+      // infinite query pages 구조
       if (oldData.pages) {
         const newPages = oldData.pages.map((page: any) => ({
           ...page,
-          feeds: page.feeds.map((feed: any) => (feed.id === feedId ? updater(feed) : feed)),
+          feeds: page.feeds.map((f: any) => (f.id === feedId ? updater(f) : f)),
         }));
         return { ...oldData, pages: newPages };
       }
+      // 단일 객체 구조
       return oldData.id === feedId ? updater(oldData) : oldData;
     });
   });
 }
 
-export const useFeedDetail = ({
+export function useFeedDetail({
   feedId,
   university,
   feedCategory,
@@ -42,166 +55,195 @@ export const useFeedDetail = ({
   updateMyPostsCache = false,
   updateSearchCache = false,
   searchKeyword,
-}: UseFeedDetailProps) => {
+}: UseFeedDetailProps) {
   const queryClient = useQueryClient();
   const effectiveUniversity = university ?? 'all';
 
   const collectKeys = (): string[][] => {
-    const keys = [feedKeys.detail(feedId)];
-    if (!updateSearchCache && feedCategory)
-      keys.push(feedKeys.lists(effectiveUniversity, feedCategory ?? 'free'));
+    const keys: string[][] = [feedKeys.detail(feedId)];
+    if (!updateSearchCache && feedCategory) {
+      keys.push(feedKeys.lists(effectiveUniversity, feedCategory));
+    }
     if (updateBookmarkCache) keys.push(feedKeys.bookmarks());
     if (updateMyPostsCache) keys.push(feedKeys.myPosts());
-    if (updateSearchCache && searchKeyword) keys.push(feedKeys.search(searchKeyword));
+    if (updateSearchCache && searchKeyword) {
+      keys.push(feedKeys.search(searchKeyword));
+    }
     return keys;
   };
 
-  const likeMutation = useMutation({
+  // --- 좋아요 옵티미스틱 뮤테이션 ---
+  const likeMutation = useMutation<
+    unknown, // TData (무시)
+    Error, // TError
+    { feedId: number }, // TVariables
+    OptimisticContext // TContext
+  >({
     mutationFn: FeedRepository.toggleLike,
-    onMutate: async () => {
+    onMutate: async (vars) => {
       const keysToUpdate = collectKeys();
       await Promise.all(keysToUpdate.map((key) => queryClient.cancelQueries({ queryKey: key })));
-      const previousStates: Record<string, any> = {};
+      const previous: Record<string, any> = {};
       keysToUpdate.forEach((key) => {
-        previousStates[key.join('-')] = queryClient.getQueryData(key);
+        previous[key.join('-')] = queryClient.getQueryData(key);
       });
-      updateCaches(queryClient, keysToUpdate, feedId, (feed: any) => {
-        const isLiked = !feed.isLiked;
-        return { ...feed, isLiked, likeCount: feed.likeCount + (isLiked ? 1 : -1) };
+      updateCaches(queryClient, keysToUpdate, vars.feedId, (f) => {
+        const nextLiked = !f.isLiked;
+        return {
+          ...f,
+          isLiked: nextLiked,
+          likeCount: f.likeCount + (nextLiked ? 1 : -1),
+        };
       });
-      return { previousStates, keysToUpdate };
+      return { previous, keysToUpdate };
     },
-    onError: (error, variables, context: any) => {
-      if (context && context.keysToUpdate) {
-        context.keysToUpdate.forEach((key: string[]) => {
-          queryClient.setQueryData(key, context.previousStates[key.join('-')]);
-        });
-      }
+    onError: (_err, _vars, context) => {
+      if (!context) return;
+
+      context.keysToUpdate.forEach((key) => {
+        queryClient.setQueryData(key, context.previous[key.join('-')]);
+      });
     },
-    onSettled: (data, error, variables, context: any) => {
-      if (context && context.keysToUpdate) {
-        context.keysToUpdate.forEach((key: string[]) => {
-          queryClient.invalidateQueries({ queryKey: key });
-        });
-      }
-    },
+    // onSettled: invalidate 제거
   });
 
-  const bookmarkMutation = useMutation({
+  // --- 북마크 옵티미스틱 뮤테이션 ---
+  const bookmarkMutation = useMutation<unknown, Error, { feedId: number }, OptimisticContext>({
     mutationFn: FeedRepository.toggleBookmark,
-    onMutate: async () => {
+    onMutate: async (vars) => {
       const keysToUpdate = collectKeys();
       await Promise.all(keysToUpdate.map((key) => queryClient.cancelQueries({ queryKey: key })));
-      const previousStates: Record<string, any> = {};
+      const previous: Record<string, any> = {};
       keysToUpdate.forEach((key) => {
-        previousStates[key.join('-')] = queryClient.getQueryData(key);
+        previous[key.join('-')] = queryClient.getQueryData(key);
       });
-      updateCaches(queryClient, keysToUpdate, feedId, (feed: any) => {
-        return { ...feed, isBookmarked: !feed.isBookmarked };
+      updateCaches(queryClient, keysToUpdate, vars.feedId, (f) => ({
+        ...f,
+        isBookmarked: !f.isBookmarked,
+      }));
+      return { previous, keysToUpdate };
+    },
+    onError: (_err, _vars, context) => {
+      if (!context) return;
+
+      context.keysToUpdate.forEach((key) => {
+        queryClient.setQueryData(key, context.previous[key.join('-')]);
       });
-      return { previousStates, keysToUpdate };
     },
-    onError: (error, variables, context: any) => {
-      if (context && context.keysToUpdate) {
-        context.keysToUpdate.forEach((key: string[]) => {
-          queryClient.setQueryData(key, context.previousStates[key.join('-')]);
-        });
-      }
-    },
-    onSettled: (data, error, variables, context: any) => {
-      if (context && context.keysToUpdate) {
-        context.keysToUpdate.forEach((key: string[]) => {
-          queryClient.invalidateQueries({ queryKey: key });
-        });
-      }
-    },
+    // onSettled: invalidate 제거
   });
 
-  const commentMutation = useMutation({
-    mutationFn: ({ content, parentId }: { content: string; parentId?: number }) =>
-      CommentRepository.create({ feedId, parentId, content }),
-    onMutate: async ({ content, parentId }) => {
-      const keysToUpdate = [feedKeys.detail(feedId)];
-      if (feedCategory) keysToUpdate.push(feedKeys.lists(effectiveUniversity, feedCategory));
-      CommentService.updateCommentCount({ queryClient, keys: keysToUpdate, feedId, delta: +1 });
-      return { keysToUpdate };
-    },
-    onError: (error, variables, context: any) => {
-      if (context && context.keysToUpdate) {
-        CommentService.updateCommentCount({
-          queryClient,
-          keys: context.keysToUpdate,
-          feedId,
-          delta: -1,
-        });
+  // --- 댓글 등록 옵티미스틱 뮤테이션 ---
+  const commentMutation = useMutation<
+    unknown,
+    Error,
+    { content: string; parentId?: number },
+    CommentContext
+  >({
+    mutationFn: ({ content, parentId }) => CommentRepository.create({ feedId, parentId, content }),
+    onMutate: async (vars) => {
+      const keys = [feedKeys.detail(feedId)];
+      if (feedCategory) {
+        keys.push(feedKeys.lists(effectiveUniversity, feedCategory));
       }
+      CommentService.updateCommentCount({
+        queryClient,
+        keys,
+        feedId,
+        delta: +1,
+      });
+      return { keys };
+    },
+    onError: (_err, _vars, context) => {
+      if (!context) return;
+
+      CommentService.updateCommentCount({
+        queryClient,
+        keys: context.keys,
+        feedId,
+        delta: -1,
+      });
     },
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ['feedComments', feedId] });
     },
   });
 
-  const commentLikeMutation = useMutation({
-    mutationFn: (commentId: number) => CommentRepository.toggleLike({ feedId, commentId }),
+  // --- 댓글 좋아요 뮤테이션 ---
+  const commentLikeMutation = useMutation<
+    unknown,
+    Error,
+    number, // commentId
+    undefined
+  >({
+    mutationFn: (commentId) => CommentRepository.toggleLike({ feedId, commentId }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['feedComments', feedId] });
     },
   });
 
-  const deleteCommentMutation = useMutation({
-    mutationFn: (commentId: number) => CommentRepository.delete({ feedId, commentId }),
-    onMutate: async (commentId: number) => {
-      const keysToUpdate = [feedKeys.detail(feedId)];
-      if (feedCategory) keysToUpdate.push(feedKeys.lists(effectiveUniversity, feedCategory));
-      CommentService.updateCommentCount({ queryClient, keys: keysToUpdate, feedId, delta: -1 });
-      return { keysToUpdate };
-    },
-    onError: (error, variables, context: any) => {
-      if (context && context.keysToUpdate) {
-        CommentService.updateCommentCount({
-          queryClient,
-          keys: context.keysToUpdate,
-          feedId,
-          delta: +1,
-        });
+  // --- 댓글 삭제 뮤테이션 ---
+  const deleteCommentMutation = useMutation<
+    unknown,
+    Error,
+    number, // commentId
+    CommentContext
+  >({
+    mutationFn: (commentId) => CommentRepository.delete({ feedId, commentId }),
+    onMutate: async (commentId) => {
+      const keys = [feedKeys.detail(feedId)];
+      if (feedCategory) {
+        keys.push(feedKeys.lists(effectiveUniversity, feedCategory));
       }
+      CommentService.updateCommentCount({
+        queryClient,
+        keys,
+        feedId,
+        delta: -1,
+      });
+      return { keys };
+    },
+    onError: (_err, _vars, context) => {
+      if (!context) return;
+
+      CommentService.updateCommentCount({
+        queryClient,
+        keys: context.keys,
+        feedId,
+        delta: +1,
+      });
     },
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ['feedComments', feedId] });
     },
   });
 
-  const updateCommentMutation = useMutation({
-    mutationFn: ({ commentId, content }: { commentId: number; content: string }) =>
-      CommentRepository.update({ feedId, content, commentId }),
+  // --- 댓글 업데이트 뮤테이션 ---
+  const updateCommentMutation = useMutation<
+    unknown,
+    Error,
+    { commentId: number; content: string },
+    undefined
+  >({
+    mutationFn: ({ commentId, content }) =>
+      CommentRepository.update({ feedId, commentId, content }),
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ['feedComments', feedId] });
     },
   });
-
-  const handleFeedActions = {
-    like: () => likeMutation.mutate({ feedId }),
-    bookmark: () => bookmarkMutation.mutate({ feedId }),
-  };
-
-  const handleCommentActions = {
-    submit: async (content: string, parentId?: number) => {
-      if (!content.trim()) return;
-      await commentMutation.mutateAsync({ content: content.trim(), parentId });
-    },
-    delete: async (commentId: number) => {
-      await deleteCommentMutation.mutateAsync(commentId);
-    },
-    update: async (commentId: number, content: string) => {
-      await updateCommentMutation.mutateAsync({ commentId, content });
-    },
-    like: async (commentId: number) => {
-      await commentLikeMutation.mutateAsync(commentId);
-    },
-  };
 
   return {
-    handleFeedActions,
-    handleCommentActions,
+    handleFeedActions: {
+      like: () => likeMutation.mutate({ feedId }),
+      bookmark: () => bookmarkMutation.mutate({ feedId }),
+    },
+    handleCommentActions: {
+      submit: (content: string, parentId?: number) =>
+        commentMutation.mutate({ content: content.trim(), parentId }),
+      like: (commentId: number) => commentLikeMutation.mutate(commentId),
+      delete: (commentId: number) => deleteCommentMutation.mutate(commentId),
+      update: (commentId: number, content: string) =>
+        updateCommentMutation.mutate({ commentId, content: content.trim() }),
+    },
   };
-};
+}
