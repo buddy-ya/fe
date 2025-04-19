@@ -1,0 +1,24 @@
+{
+  "universities": {
+    "sejong": "Sejong Univ",
+    "konkuk": "Konkuk Univ",
+    "seoulnational": "Seoul National Univ",
+    "yonsei": "Yonsei Univ",
+    "korea": "Korea Univ",
+    "sogang": "Sogang Univ",
+    "hanyang": "Hanyang Univ",
+    "chungang": "Chung-Ang Univ",
+    "kookmin": "Kookmin Univ",
+    "sungkyunkwan": "Sungkyunkwan Univ",
+    "hankukufs": "Hankuk Univ of Foreign Studies",
+    "catholic": "The Catholic Univ",
+    "ewha": "Ewha Womans Univ",
+    "seoulcity": "Univ of Seoul",
+    "seoultech": "Seoul Tech",
+    "dongguk": "Dongguk Univ",
+    "hongik": "Hongik Univ",
+    "karts": "Korea Aerospace Univ",
+    "kyunghee": "Kyung Hee Univ",
+    "sookmyung": "Sookmyung Women's Univ"
+  }
+}

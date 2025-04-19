@@ -1,0 +1,29 @@
+{
+  "roomList": {
+    "title": "Chat",
+    "banner": {
+      "title": "Want to connect\nwith more global buddies?",
+      "description": "Browse Feed >"
+    }
+  },
+  "requests": {
+    "title": "Requests",
+    "banner": {
+      "description": "Requests will disappear after 48 hours."
+    },
+    "accept": "Accept",
+    "decline": "Decline"
+  },
+  "keyboard": {
+    "placeholder": "Please enter your message"
+  },
+  "room": {
+    "systemExit": "{{name}} has left the room.",
+    "startMessage": "Start a conversation with Buddy!",
+    "buddyExitedMessage": "The buddy has left the chat room"
+  },
+  "toast": {
+    "sendFailed": "Message failed to send",
+    "copySuccess": "Message copied."
+  }
+}

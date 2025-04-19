@@ -1,0 +1,58 @@
+{
+  "banner": {
+    "default": {
+      "title": "버디야를 이용하기 위해 학생인증이 필요해요!",
+      "description": "지금 학생 인증을 완료하고\n버디야의 더 많은 기능을 이용해보세요.",
+      "confirm": "인증하기",
+      "cancel": "다음에 하기"
+    },
+    "pending": {
+      "title": "학생증을 확인하고 있어요!",
+      "description": "완료되기까지 최대 하루가 걸릴 수 있으며 개인정보는 인증 외 다른 용도로 사용되지 않아요.",
+      "confirm": "확인하기",
+      "cancel": "닫기"
+    }
+  },
+  "studentId": {
+    "title": "학생 신분을 증명할 수 있는 사진을 업로드 해주세요",
+    "description": "소속 학교의 학생 신분임을 판단할 수 있는 정보가 명확하게 보여야 하며, 사진은 심사 후 즉시 폐기됩니다.",
+    "uploadDescription": "이미지를\n업로드 해주세요",
+    "uploadButton": "학생증 이미지 선택하기",
+    "submitButton": "인증 요청하기",
+    "upload": "업로드",
+    "permission": {
+      "gallery": "이미지를 선택하려면 갤러리 권한이 필요합니다."
+    }
+  },
+  "email": {
+    "title": "대학교 이메일을 알려주세요.",
+    "description": "입력해주신 이메일로 인증코드를 보내드릴게요.",
+    "label": "학교 이메일",
+    "placeholder": "이메일 입력",
+    "footer": "입력하신 정보는 공유되지 않으며,\n회원님의 프로필에 표시되지 않습니다.",
+    "warning": "올바른 형식의 이메일을 입력해주세요."
+  },
+  "verification": {
+    "title": "인증코드를 입력해 주세요.",
+    "titleDescription": "{{email}}으로 인증코드를 보내드렸어요.",
+    "label": "인증번호",
+    "checkSpam": "메일이 안왔나요? 스팸 메일함도 확인해 주세요.",
+    "resend": "인증번호 재전송",
+    "warning": "잘못된 인증코드입니다."
+  },
+  "error": {
+    "invalidCode": "잘못된 인증코드입니다",
+    "registered": "이미 등록된 이메일 주소입니다",
+    "sendFail": "이메일 전송에 실패했습니다"
+  },
+  "verificationComplete": {
+    "title": "학생인증이 완료되었어요!",
+    "description": "입력하신 정보는 인증 외 목적으로 사용되지 않습니다.\n버디야와 함께 즐거운 캠퍼스 생활을 시작해보세요!",
+    "start": "버디야 시작하기"
+  },
+  "studentIdComplete": {
+    "title": "학생 인증 요청이 완료되었습니다.",
+    "description": "심사가 완료되기까지 평균 3시간이 소요되며,\n개인정보는 심사 외 목적으로 사용되지 않습니다.",
+    "complete": "확인"
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "majors": {
+    "language_school": "Language studies",
+    "humanities": "Humanities",
+    "social_sciences": "Social Sciences",
+    "business": "Business",
+    "education": "Education",
+    "natural_sciences": "Sciences",
+    "it": "IT",
+    "engineering": "Engineering",
+    "arts": "Arts",
+    "sports": "Physical education",
+    "nursing": "Nursing",
+    "pharmacy": "Pharmaceutical Sciences",
+    "veterinary": "Veterinary Medicine",
+    "medicine": "Medicine",
+    "law": "Law",
+    "psychology": "Psychology",
+    "architecture": "Architecture",
+    "communication": "Communication",
+    "music": "Music",
+    "design": "Design"
+  }
+}

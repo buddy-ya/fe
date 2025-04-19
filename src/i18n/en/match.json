@@ -1,0 +1,44 @@
+{
+  "match": {
+    "title": "Matching",
+    "not_requested": {
+      "title": "Let’s find the buddy for you!",
+      "description": "You can chat with your match straight away!",
+      "choose_conditions": "Please select your matching preferences",
+      "button": "Find Buddy",
+      "country": {
+        "title": "Nationality",
+        "global": "Global",
+        "korea": "Korea"
+      },
+      "university": {
+        "title": "University",
+        "same": "My Uni",
+        "different": "Others"
+      },
+      "gender": {
+        "title": "Gender",
+        "all": "All",
+        "male": "Man",
+        "female": "Woman"
+      }
+    },
+    "pending": {
+      "title": "Finding your buddy..",
+      "description": "We will notify you once the match is complete!\nyour points will be refunded if you cancel",
+      "button": "Cancel"
+    },
+    "success": {
+      "title": "Match Successful",
+      "description": "Shall we send a chat?",
+      "button": "Send a Chat",
+      "cancel": "Cancel"
+    },
+    "requestModal": {
+      "title": "Shall we search for a buddy?",
+      "description": "It may take up to one day to complete the match,\nand {{point}}points will be used for matching.\nNot replying to a buddy due to gender or nationality is reportable.",
+      "cancelText": "Close",
+      "confirmText": "Confirm"
+    }
+  }
+}

@@ -1,0 +1,113 @@
+{
+  "intro": {
+    "title": "Enjoy\nCam{{flower}}pus Life\nWith Global\nBud{{eye}}dy",
+    "privacy": "Once you tap ‘Start with phone number’\nYou agree to our <privacyLink>privacy policy</privacyLink>",
+    "button": "Start with phone number"
+  },
+  "phone": {
+    "title": "What is your phone number",
+    "titleDescription": "Your phone number is only used for verification",
+    "label": "Phone Number",
+    "placeholder": "010-1234-5678",
+    "warning": "Your phone number must start with 010",
+    "footer": "This information will not be shared nor displayed on your profile"
+  },
+  "verification": {
+    "title": "We have sent a verification code",
+    "titleDescription": "Enter the code sent to {{phoneNumber}}",
+    "label": "Verification code",
+    "notReceived": "Please enter the code within the time limit.",
+    "expired": "Verification time expired",
+    "warning": "Incorrect verification code",
+    "resend": "Resend code"
+  },
+  "notification": {
+    "title": "Don't miss anything\nwhen meeting new buddies",
+    "description": "Allow notifications to be notified of new matches, messages, and other news",
+    "allow": "Allow Notification"
+  },
+  "studentInfo": {
+    "title": "Let's create your Buddya student ID",
+    "description": "The personal information on your student ID must be accurate as it will be used to match with others on Budyya!"
+  },
+  "universitySelect": {
+    "title": "What university are you enrolled in?",
+    "description": "Choose your university and meet your campus buddies",
+    "universities": {
+      "sejong": "Sejong University"
+    },
+    "label": "University"
+  },
+  "studentType": {
+    "title": "Which of these apply to you?",
+    "korean": "Korean Student",
+    "foreign": "International Student"
+  },
+  "gender": {
+    "title": "What is your gender?",
+    "description": "Your gender will be shown on your profile and will be used in the matching process.",
+    "genderDescription": "If you don't specify a gender, you can only be matched with buddies who have selected 'All' as their gender in Match. Gender cannot be edited afterward.",
+    "male": "Man",
+    "female": "Woman",
+    "preferNotToSay": "Prefer not to say",
+    "label": "Gender"
+  },
+  "name": {
+    "title": "What is your name?",
+    "description": "For easier communication, Please enter your name in English",
+    "label": "Nickname",
+    "placeholder": "-",
+    "footer": "This will be displayed on your profile.",
+    "warning": "Please enter your name in English",
+    "warningLength": "Nicknames should be {{min}}-{{max}} characters"
+  },
+  "country": {
+    "title": "Where are you from?",
+    "description": "Choose your nationality and meet buddies from around the world.",
+    "searchPlaceholder": "Search countries"
+  },
+  "language": {
+    "title": "Which languages can you speak?",
+    "description": "Choose available languages and find buddies who speak your preferred language.",
+    "maxSelect": "You can choose up to {{count}} languages",
+    "searchPlaceholder": "Search languages"
+  },
+  "major": {
+    "title": "What are you studying in university?",
+    "description": "Choose your major and meet buddies from your major.",
+    "maxSelect": "You can choose up to {{count}} majors",
+    "placeholder": "Select",
+    "bottomSheetTitle": "Select Major"
+  },
+  "interest": {
+    "title": "What are your interests?",
+    "description": "Choose your interest and match with buddies with same interests",
+    "maxSelect": "You can choose up to {{count}}",
+    "submit": "Next",
+    "categories": {
+      "culture": "Hobbies",
+      "sports": "Sports & Activities",
+      "arts": "Arts & Creativity",
+      "food": "Food & Beverage"
+    }
+  },
+  "userGuide": {
+    "title": "Community Guidelines",
+    "description": "Our community is a space where we respect each other. Please review the following guidelines.",
+    "guideline1": "All posts should be in English so everyone can understand.",
+    "guideline2": "When you're matched, not responding based on someone's gender or nationality, it can deeply hurt them. Buddyya enforces strict penalties for such behavior.",
+    "guideline3": "Buddyya is a community for real university students. Please treat each other with respect.",
+    "guideline4": "Racist or discriminatory remarks are not tolerated",
+    "button": "Start Buddyya",
+    "terms": "By tapping “Start Buddyya,”\nYou agree to our <termsLink>Terms of service.</termsLink>",
+    "checkboxText": "I agree to the community guidelines"
+  },
+  "common": {
+    "next": "Next",
+    "back": "Back",
+    "cancel": "Cancel",
+    "search": "Search",
+    "select": "Select",
+    "selected": "Selected"
+  }
+}

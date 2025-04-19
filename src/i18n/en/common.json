@@ -1,0 +1,88 @@
+{
+  "tab": {
+    "home": "Home",
+    "match": "Matching",
+    "chat": "Chat",
+    "my": "My"
+  },
+  "emptyState": {
+    "feed": {
+      "title": "No feed",
+      "description": "Create your first feed\nand communicate with many global buddies!"
+    },
+    "bookmark": {
+      "title": "No bookmarked feeds",
+      "description": "Bookmark the feeds you like."
+    },
+    "search": {
+      "title": "No search results found",
+      "description": "No matching results found.\nTry again with a different keyword!"
+    },
+    "chat": {
+      "title": "No chats",
+      "description": "Start a chat now and connect with more global buddies!"
+    },
+    "request": {
+      "title": "No chat requests",
+      "description": "Upload a feed, leave comments,\nand connect with more global buddies!"
+    }
+  },
+  "modal": {
+    "cancel": "Close",
+    "report": {
+      "title": "Report",
+      "chat": {
+        "description": "Once reported, you will automatically leave the chatroom."
+      },
+      "description": "Please describe the reason for your report.",
+      "cancel": "No",
+      "accept": "Report",
+      "placeholder": "Enter the reason for the report",
+      "errorTitle": "Error",
+      "errorMessage": "Please enter a valid reason for reporting."
+    },
+    "block": {
+      "title": "Block User",
+      "description": "This action cannot be undone. Are you sure you want to continue?",
+      "cancel": "No",
+      "confirm": "Yes"
+    },
+    "exit": {
+      "title": "Leave Chatroom",
+      "description": "If you leave, you cannot rejoin this chatroom. Are you sure?",
+      "cancel": "No",
+      "accept": "Yes"
+    },
+    "point": {
+      "decrease": "{{point}} points have been deducted!",
+      "increase": "{{point}} points received!",
+      "balance": "Current Points"
+    },
+    "banned": {
+      "title": "App access suspended.",
+      "reason": "Reason",
+      "expiration": "Period"
+    },
+    "noResponse": {
+      "title": "No Response",
+      "description": "Did the other person ignore your Buddy request with no response?\nThe administrator will review and refund your points.\nYou will be automatically exited from the chat room afterward.",
+      "cancel": "Cancel",
+      "confirm": "Report"
+    }
+  },
+  "toast": {
+    "reportSuccess": "Report submitted successfully!",
+    "blockSuccess": "User has been blocked successfully!",
+    "exitSuccess": "You have left the chat.",
+    "error": {
+      "unknown": "An unknown error has occurred.",
+      "network": "Please check your internet connection.",
+      "point": "Not enough points",
+      "chatRoom": "Chat room not found.",
+      "sendSMS": "Verification code request limit exceeded.",
+      "alreadyReported": "This content has already been reported.",
+      "matchProfile": "Matching profile is not complete.",
+      "matchDelay": "You can match only once a day."
+    }
+  }
+}

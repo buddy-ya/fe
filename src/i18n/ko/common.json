@@ -1,0 +1,88 @@
+{
+  "tab": {
+    "home": "홈",
+    "match": "매칭",
+    "chat": "채팅",
+    "my": "마이"
+  },
+  "emptyState": {
+    "feed": {
+      "title": "피드가 없습니다",
+      "description": "첫 피드를 작성하고\n다양한 글로벌 버디와 소통해 보세요!"
+    },
+    "bookmark": {
+      "title": "북마크한 피드가 없습니다",
+      "description": "마음에 드는 피드를 북마크로 저장해보세요!"
+    },
+    "search": {
+      "title": "검색 결과가 없습니다",
+      "description": "일치하는 내용을 찾을 수 없습니다.\n다른 키워드로 다시 시도해보세요!"
+    },
+    "chat": {
+      "title": "채팅이 없습니다",
+      "description": "지금 바로 채팅을 시작하고 다양한 글로벌 버디와 친구가 되어보세요!"
+    },
+    "request": {
+      "title": "채팅 요청이 없습니다",
+      "description": "피드를 올리고 댓글을 남기며\n다양한 글로벌 버디와 소통해 보세요!"
+    }
+  },
+  "modal": {
+    "cancel": "닫기",
+    "report": {
+      "title": "신고하기",
+      "chat": {
+        "description": "신고가 완료되면 해당 상대방과의 채팅에서 자동으로 나가져요."
+      },
+      "description": "신고 사유를 입력해 주세요.",
+      "cancel": "아니오",
+      "accept": "신고",
+      "placeholder": "신고 사유를 입력해 주세요.",
+      "errorTitle": "오류",
+      "errorMessage": "올바른 신고사유를 입력해 주세요."
+    },
+    "block": {
+      "title": "사용자 차단",
+      "description": "한번 차단하면 다시 되돌릴 수 없어요.\n정말 차단하시겠어요?",
+      "cancel": "아니오",
+      "confirm": "예"
+    },
+    "exit": {
+      "title": "채팅방 나가기",
+      "description": "채팅방을 나가면 다시 돌아올 수 없어요.\n정말 나가시겠어요?",
+      "cancel": "아니오",
+      "accept": "예"
+    },
+    "point": {
+      "decrease": "{{point}} 포인트가 차감되었어요!",
+      "increase": "{{point}} 포인트를 받았어요!",
+      "balance": "보유 포인트"
+    },
+    "banned": {
+      "title": "앱 이용이 정지 되었습니다.",
+      "reason": "정지 사유",
+      "expiration": "정지 기간"
+    },
+    "noResponse": {
+      "title": "응답 없음",
+      "description": "상대방이 아무런 응답 없이 버디를 무시했나요?\n운영자가 확인 후 포인트를 환급해 드릴게요.\n이후 자동으로 채팅방에서 나가집니다.",
+      "cancel": "취소",
+      "confirm": "보고하기"
+    }
+  },
+  "toast": {
+    "reportSuccess": "신고가 정상적으로 접수되었습니다!",
+    "blockSuccess": "사용자 차단이 완료되었습니다!",
+    "exitSuccess": "채팅방에서 나갔습니다!",
+    "error": {
+      "unknown": "알 수 없는 에러가 발생했습니다.",
+      "network": "인터넷 연결 상태를 확인해주세요.",
+      "point": "포인트가 부족합니다.",
+      "chatRoom": "채팅방을 찾을 수 없습니다.",
+      "sendSMS": "인증번호 요청 수를 초과했습니다.",
+      "alreadyReported": "이미 신고한 컨텐츠 입니다.",
+      "matchProfile": "매칭 프로필이 작성되지 않았습니다.",
+      "matchDelay": "매칭은 하루에 한 번 가능합니다."
+    }
+  }
+}

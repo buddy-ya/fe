@@ -1,0 +1,93 @@
+{
+  "header": {
+    "myUni": "My Uni",
+    "buddyya": "Buddyya"
+  },
+  "category": {
+    "popular": "Trending",
+    "free": "Feed",
+    "recruitment": "Recruitment",
+    "info": "Tips"
+  },
+  "profile": {
+    "university": {
+      "sju": "Sejong University"
+    }
+  },
+  "comment": {
+    "placeholder": "Please enter a comment.",
+    "deleted": "Deleted comment.",
+    "blocked": "Comment from blocked user."
+  },
+  "action": {
+    "like": "Like",
+    "comment": "Comment",
+    "bookmark": "Bookmark"
+  },
+  "writer": "Author",
+  "me": "Me",
+  "write": {
+    "titlePlaceholder": "Please enter a title.",
+    "contentPlaceholder": "Write content",
+    "categoryModalTitle": "Select Category",
+    "imageUploadError": "Failed to load image.",
+    "photoCaptureError": "Failed to capture photo.",
+    "postError": {
+      "create": "Failed to create post.",
+      "edit": "Failed to edit post."
+    },
+    "loading": "Processing",
+    "postButton": "Post",
+    "imagesCount": "{count}/5",
+    "camera": "Camera",
+    "gallery": "Gallery"
+  },
+  "delete": {
+    "title": "Delete Post",
+    "description": "Once you delete this post, it cannot be recovered. Are you sure you want to delete it?",
+    "confirm": "Delete",
+    "cancel": "Cancel"
+  },
+  "alert": {
+    "feedNotFoundTitle": "Post not found",
+    "feedNotFoundMessage": "Unable to load post.",
+    "confirm": "Confirm",
+    "retry": "Retry"
+  },
+  "search": {
+    "placeholder": "Please enter your keyword",
+    "empty": {
+      "default": "Please enter your keyword",
+      "result": "No search results"
+    }
+  },
+  "modal": {
+    "edit": "Edit",
+    "delete": "Delete",
+    "report": "Report",
+    "cancel": "Cancel",
+    "chat": "Chat",
+    "block": "Block",
+    "exit": "Exit",
+    "noResponse": "No FeedBack"
+  },
+  "chatRequestModal": {
+    "title": "Do you want to send {{name}} a chat request?",
+    "description": "You can view their profile when they accept your chat request.",
+    "confirm": "Send",
+    "cancel": "Cancel",
+    "verified": "Photo verified",
+    "photoStatus": {
+      "verified": "Photo verified",
+      "unverified": "Photo not verified"
+    },
+    "success": "Chat request sent."
+  },
+  "error": {
+    "deletedFeed": "This post has been deleted.",
+    "deletedComment": "This comment has been deleted.",
+    "alreadyBlocked": "User is already blocked.",
+    "alreadyExistChatroom": "A chatroom already exists.",
+    "alreadyExistChatRequest": "A chat request has already been sent."
+  }
+}

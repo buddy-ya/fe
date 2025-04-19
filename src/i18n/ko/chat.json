@@ -1,0 +1,29 @@
+{
+  "roomList": {
+    "title": "채팅",
+    "banner": {
+      "title": "더 많은 글로벌 버디와\n친구가 되고 싶다면?",
+      "description": "피드 둘러보기 >"
+    }
+  },
+  "requests": {
+    "title": "받은 요청",
+    "banner": {
+      "description": "요청은 48시간이 지나면 자동으로 사라져요"
+    },
+    "accept": "수락",
+    "decline": "거절"
+  },
+  "keyboard": {
+    "placeholder": "채팅을 입력해주세요"
+  },
+  "room": {
+    "systemExit": "{{name}} 님이 나갔습니다.",
+    "startMessage": "버디와 대화를 시작해보세요!",
+    "buddyExitedMessage": "상대방이 채팅방을 나갔습니다."
+  },
+  "toast": {
+    "sendFailed": "메시지 전송 실패",
+    "copySuccess": "메시지가 복사되었습니다."
+  }
+}
