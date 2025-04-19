@@ -103,11 +103,14 @@ export default function MyPageScreen({ navigation }: MyPageScreenProps) {
     >
       <InnerLayout>
         <TouchableOpacity
-          className="mt-3 flex-row items-center rounded-xl bg-white p-5"
+          className="mt-3 flex-row items-center rounded-[12px] bg-white p-5"
           onPress={() => navigation.navigate('MyProfile')}
         >
           <View className="flex-row items-center bg-white">
-            <Image source={{ uri: profileImageUrl }} className="mr-3 h-[54] w-[54] rounded-xl" />
+            <Image
+              source={{ uri: profileImageUrl }}
+              className="mr-3 h-[54] w-[54] rounded-[12px]"
+            />
             <View className="flex-1">
               <MyText color="text-textProfile" className="font-semibold">
                 {t(`universities:universities.${university}`)}
@@ -124,7 +127,7 @@ export default function MyPageScreen({ navigation }: MyPageScreenProps) {
             <ChevronRight size={24} color="#636363" strokeWidth={1.3} />
           </View>
         </TouchableOpacity>
-        <View className="mt-3 flex-row justify-around rounded-t-xl bg-white pb-5 pt-5">
+        <View className="mt-4 flex-row justify-around rounded-t-[12px] bg-white pb-5 pt-5">
           {quickMenuItems.map(({ key, label, icon, onPress }) => (
             <TouchableOpacity
               key={key}
@@ -138,7 +141,7 @@ export default function MyPageScreen({ navigation }: MyPageScreenProps) {
           ))}
         </View>
         <TouchableOpacity
-          className="flex-row items-center justify-between rounded-b-xl border-t border-[#f6f6f6] bg-white p-5"
+          className="flex-row items-center justify-between rounded-b-[12px] border-t border-[#f6f6f6] bg-white p-5"
           onPress={handlePointPress}
         >
           <View>
