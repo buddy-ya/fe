@@ -1,8 +1,11 @@
 import { Role } from '@/types';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { create } from 'zustand';
+import { persist, createJSONStorage } from 'zustand/middleware';
 import { immer } from 'zustand/middleware/immer';
 
-type UserState = {
+// 사용자 상태 정의
+export type UserState = {
   id: number;
   name: string;
   country: string;
@@ -29,18 +32,22 @@ type UserState = {
   isMatchingProfileCompleted?: boolean;
   accessToken?: string;
   refreshToken?: string;
+  hydrated: boolean; // Persist rehydration 완료 플래그
 };
 
-type UserAction = {
+// 사용자 액션 정의
+export type UserAction = {
   init: () => void;
-  update: (user: Partial<UserState>) => void; // Partial로 특정 필드만 업데이트 가능
+  update: (user: Partial<UserState>) => void;
+  setHydrated: () => void;
 };
 
+// 초기 상태
 const INITIAL_STATE: UserState = {
   id: -1,
   name: '',
-  university: '',
   country: 'ko',
+  university: '',
   gender: null,
   profileImageUrl: '',
   majors: [],
@@ -50,22 +57,31 @@ const INITIAL_STATE: UserState = {
   isStudentIdCardRequested: false,
   isDefaultProfileImage: false,
   isKorean: false,
+  isAuthenticated: false,
   point: 0,
   role: 'STUDENT',
-  isAuthenticated: false,
+  hydrated: false,
 };
 
-export const useUserStore = create(
-  immer<UserState & UserAction>((set) => ({
-    ...INITIAL_STATE,
-    update: (user) =>
-      set((state) => {
-        Object.assign(state, user); // immer를 사용해 상태를 병합
-      }),
-    init: () => {
-      set((state) => {
-        Object.assign(state, INITIAL_STATE);
-      });
-    },
-  }))
+// Zustand 스토어 생성
+export const useUserStore = create<UserState & UserAction>()(
+  persist(
+    immer((set) => ({
+      ...INITIAL_STATE,
+      // 부분 업데이트
+      update: (user) => set((state) => Object.assign(state, user)),
+      // 초기화
+      init: () => set((state) => Object.assign(state, INITIAL_STATE)),
+      // 리하이드레이트 완료 플래그 설정
+      setHydrated: () => set({ hydrated: true }),
+    })),
+    {
+      name: 'user-storage',
+      storage: createJSONStorage(() => AsyncStorage),
+      onRehydrateStorage: () => (state) => {
+        console.log('🟢 [useUserStore] rehydration complete at');
+        state?.setHydrated();
+      },
+    }
+  )
 );

@@ -22,8 +22,6 @@ import { MoreVertical, Send } from 'lucide-react-native';
 import { useTabStore } from '@/store/useTabStore';
 import FeedSkeleton from '@/components/feed/FeedSkeleton';
 
-// Zustand 탭 스토어
-
 type FeedDetailScreenProps = NativeStackScreenProps<FeedStackParamList, 'FeedDetail'>;
 
 export default function FeedDetailScreen({ navigation, route }: FeedDetailScreenProps) {
