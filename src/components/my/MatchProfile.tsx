@@ -2,13 +2,16 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { TouchableOpacity, TextInput, View } from 'react-native';
 import { MyText } from '@/components';
-import { Pencil } from 'lucide-react-native';
+import { useToastStore } from '@/store';
+import { Copy, Pencil } from 'lucide-react-native';
 
 interface MatchProfileProps {
   isEditing: boolean;
+  isMyProfile: boolean;
   value: string;
   errorMessage?: string;
   onEdit?: () => void;
+  onCopy?: () => void;
   onChange: (text: string) => void;
   onSave: () => void;
   questionText: string;
@@ -16,15 +19,17 @@ interface MatchProfileProps {
 
 const MatchProfile: React.FC<MatchProfileProps> = ({
   isEditing,
+  isMyProfile,
   value,
   errorMessage,
   onEdit,
   onChange,
   onSave,
+  onCopy,
   questionText,
 }) => {
   const { t } = useTranslation('mypage');
-
+  const showToast = useToastStore((state) => state.showToast);
   const handleBlur = () => {
     onSave();
   };
@@ -69,6 +74,11 @@ const MatchProfile: React.FC<MatchProfileProps> = ({
         {onEdit && (
           <TouchableOpacity onPress={onEdit} hitSlop={{ top: 10, left: 10, bottom: 10, right: 10 }}>
             <Pencil size={18} color="#797979" />
+          </TouchableOpacity>
+        )}
+        {!isMyProfile && (
+          <TouchableOpacity onPress={onCopy} hitSlop={{ top: 10, left: 10, bottom: 10, right: 10 }}>
+            <Copy size={18} color="#797979" />
           </TouchableOpacity>
         )}
       </View>
