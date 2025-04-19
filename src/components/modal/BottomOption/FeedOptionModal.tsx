@@ -7,7 +7,7 @@ import { Feed } from '@/types';
 import { useNavigation } from '@react-navigation/native';
 import { useQueryClient } from '@tanstack/react-query';
 import i18next from 'i18next';
-import { Pencil, Trash2, Siren, Ban } from 'lucide-react-native';
+import { Pencil, Trash2, Siren, Ban, Send } from 'lucide-react-native';
 import { logError } from '@/utils';
 import { ActionSheetWrapper, OptionItem } from '../Common';
 
@@ -71,6 +71,17 @@ export function FeedOptionModal({ visible, onClose, feed }: FeedOptionModalProps
     );
   };
 
+  const handleChatRequestOption = () => {
+    onClose();
+    setTimeout(() => {
+      if (isCertificated) {
+        handleModalOpen('chatRequest', { data: feed });
+      } else {
+        handleModalOpen('studentCertification');
+      }
+    }, 200);
+  };
+
   const options: OptionItem[] = feed.isFeedOwner
     ? [
         {
@@ -118,6 +129,12 @@ export function FeedOptionModal({ visible, onClose, feed }: FeedOptionModalProps
           label: i18next.t('feed:modal.block'),
           icon: <Ban size={16} color="#282828" />,
           onPress: handleBlockOption,
+        },
+        {
+          id: 5,
+          label: i18next.t('feed:modal.chat'),
+          icon: <Send size={16} color="#282828" />,
+          onPress: handleChatRequestOption,
         },
       ];
 

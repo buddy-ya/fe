@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { View, TextInput } from 'react-native';
+import { ScrollView } from 'react-native';
 import { AuthRepository } from '@/api';
 import {
   ErrorMessage,
@@ -73,32 +74,38 @@ export default function EmailScreen({ navigation }: EmailScreenProps) {
     <Layout showHeader onBack={() => navigation.goBack()}>
       <KeyboardLayout footer={footer}>
         <InnerLayout>
-          <Heading>{t('email.title')}</Heading>
-          <HeadingDescription>{t('email.description')}</HeadingDescription>
-          <Label>{t('email.label')}</Label>
-          <View>
-            <View className="mb-4 flex-row items-center">
-              <TextInput
-                value={email}
-                onChangeText={handleEmailChange}
-                placeholder={t('email.placeholder')}
-                className="border-inputBorder h-[50px] flex-1 rounded-xl border px-4 py-3 text-[18px] text-text"
-                keyboardType="email-address"
-                placeholderTextColor="#DFDFDF"
-                maxLength={50}
-                autoFocus
-              />
-              <View className="border-inputBorder ml-2 h-[50px] flex-row items-center justify-center rounded-xl border px-4 py-3">
-                <MyText size="text-lg" color="text-textDescription" className="mr-1">
-                  {'@'}
-                </MyText>
-                <MyText size="text-lg" color="text-textDescription">
-                  {UNIVERSITY_EMAIL_DOMAINS[university as UniversityID]}
-                </MyText>
+          <View className="flex-1">
+            <ScrollView showsVerticalScrollIndicator={false}>
+              <Heading>{t('email.title')}</Heading>
+              <HeadingDescription>{t('email.description')}</HeadingDescription>
+              <Label>{t('email.label')}</Label>
+              <View>
+                <View className="mb-4 flex-row items-center">
+                  <TextInput
+                    value={email}
+                    onChangeText={handleEmailChange}
+                    placeholder={t('email.placeholder')}
+                    className="border-inputBorder h-[50px] flex-1 rounded-xl border px-4 py-3 text-[18px] text-text"
+                    keyboardType="email-address"
+                    placeholderTextColor="#DFDFDF"
+                    maxLength={50}
+                    autoFocus
+                  />
+                  <View className="border-inputBorder ml-2 h-[50px] flex-row items-center justify-center rounded-xl border px-4 py-3">
+                    <MyText size="text-lg" color="text-textDescription" className="mr-1">
+                      {'@'}
+                    </MyText>
+                    <MyText size="text-lg" color="text-textDescription">
+                      {UNIVERSITY_EMAIL_DOMAINS[university as UniversityID]}
+                    </MyText>
+                  </View>
+                </View>
+                {email.length > 0 && !isValidEmail && (
+                  <ErrorMessage>{t('email.warning')}</ErrorMessage>
+                )}
+                {errorMessage !== '' && <ErrorMessage>{errorMessage}</ErrorMessage>}
               </View>
-            </View>
-            {email.length > 0 && !isValidEmail && <ErrorMessage>{t('email.warning')}</ErrorMessage>}
-            {errorMessage !== '' && <ErrorMessage>{errorMessage}</ErrorMessage>}
+            </ScrollView>
           </View>
         </InnerLayout>
       </KeyboardLayout>

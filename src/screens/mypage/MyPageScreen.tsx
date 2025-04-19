@@ -115,7 +115,7 @@ export default function MyPageScreen({ navigation }: MyPageScreenProps) {
                 {t(`universities:universities.${university}`)}
               </MyText>
               <View className="flex-row items-center">
-                <MyText size="text-base" color="text-textProfile">
+                <MyText size="text-base" color="text-textProfile" className="font-medium">
                   {name}
                 </MyText>
                 <MyText size="text-lg" className="ml-1">

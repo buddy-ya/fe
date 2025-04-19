@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { View, TouchableOpacity, FlatList, ScrollView } from 'react-native';
+import { View, TouchableOpacity, FlatList, ScrollView, Touchable } from 'react-native';
 import { useModalStore, useUserStore } from '@/store';
 import GlobalIcon from '@assets/icons/match/countryGlobal.svg';
 import KoreaIcon from '@assets/icons/match/countryKorea.svg';
@@ -207,15 +207,13 @@ export default function NotRequestedView({
   };
 
   const handleProfilePress = () => {
-    navigation.getParent()?.navigate('MyPage', {
-      screen: 'MyProfile',
-    });
+    navigation.navigate('MyProfile');
   };
 
   return (
     <InnerLayout>
       <View className="mt-4 w-full flex-row items-center justify-between gap-4 px-4">
-        <View className="flex-row items-center gap-3">
+        <TouchableOpacity className="flex-row items-center gap-3" onPress={handleProfilePress}>
           <ExpoImage
             style={{ height: 48, width: 48, borderRadius: 12 }}
             source={{ uri: userProfileImageUrl }}
@@ -226,13 +224,13 @@ export default function NotRequestedView({
               {t(`universities:universities.${userUniv}`)}
             </MyText>
             <View className="flex-row items-center gap-1">
-              <MyText size="text-sm" color="text-black">
+              <MyText size="text-sm" color="text-black" className="font-medium">
                 {userName}
               </MyText>
               <MyText>{getCountryFlag(userCountry as CountryID)}</MyText>
             </View>
           </View>
-        </View>
+        </TouchableOpacity>
         <PlaneAnimation />
         <View className="h-[48px] w-[48px] flex-row items-center justify-center rounded-xl bg-white">
           <QuestionMarkIcon />

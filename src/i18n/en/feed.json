@@ -40,7 +40,8 @@
     "postButton": "Post",
     "imagesCount": "{count}/5",
     "camera": "Camera",
-    "gallery": "Gallery"
+    "gallery": "Gallery",
+    "profileVisible": "Show Profile"
   },
   "delete": {
     "title": "Delete Post",
@@ -69,7 +70,7 @@
     "chat": "Chat",
     "block": "Block",
     "exit": "Exit",
-    "noResponse": "No FeedBack"
+    "noResponse": "No Response"
   },
   "chatRequestModal": {
     "title": "Do you want to send {{name}} a chat request?",
@@ -89,5 +90,14 @@
     "alreadyBlocked": "User is already blocked.",
     "alreadyExistChatroom": "A chatroom already exists.",
     "alreadyExistChatRequest": "A chat request has already been sent."
+  },
+  "toast": {
+    "feed": {
+      "copySuccess": "Post content has been copied.",
+      "privateProfile": "This post was posted by a private profile."
+    },
+    "comment": {
+      "copySuccess": "The comment has been copied."
+    }
   }
 }

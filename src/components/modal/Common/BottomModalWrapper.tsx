@@ -34,7 +34,7 @@ export function BottomModalWrapper({
   useEffect(() => {
     if (visible) {
       // visible 상태가 true가 될 때마다 초기 위치를 재설정
-      slideAnim.setValue(400);
+      slideAnim.setValue(500);
       Animated.spring(slideAnim, {
         toValue: 0,
         useNativeDriver: true,

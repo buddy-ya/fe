@@ -183,6 +183,7 @@ export default function FeedDetailScreen({ navigation, route }: FeedDetailScreen
               onBookmark={handleFeedActions.bookmark}
               showAllContent
               onPress={() => {}}
+              navigation={navigation}
             />
             <CommentList
               feed={feed}

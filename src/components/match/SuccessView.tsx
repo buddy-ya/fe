@@ -58,7 +58,7 @@ export default function SuccessView({ navigation }: any) {
                 <MyText size="text-xl" className="font-semibold">
                   {t('match.success.title')}
                 </MyText>
-                <MyText size="text-xl" className="font-semibold">
+                <MyText size="text-lg" className="mt-3 text-center">
                   {t('match.success.description')}
                 </MyText>
               </View>

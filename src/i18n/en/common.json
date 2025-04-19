@@ -65,7 +65,7 @@
     },
     "noResponse": {
       "title": "No Response",
-      "description": "Did the other person ignore your Buddy request with no response?\nThe administrator will review and refund your points.\nYou will be automatically exited from the chat room afterward.",
+      "description": "Have you been waiting, but your buddy hasn't replied?\nOur team will check the situation and return your points.\nThe chat will close automatically afterward.",
       "cancel": "Cancel",
       "confirm": "Report"
     }
@@ -82,7 +82,8 @@
       "sendSMS": "Verification code request limit exceeded.",
       "alreadyReported": "This content has already been reported.",
       "matchProfile": "Matching profile is not complete.",
-      "matchDelay": "You can match only once a day."
+      "matchDelay": "You can match only once a day.",
+      "blocked": "You're not in a relationship that allows chat requests."
     }
   }
 }

@@ -21,6 +21,7 @@ export interface FeedUpdateDTO {
   content: string;
   category: string;
   university: string;
+  isProfileVisible: boolean;
   images?: ImageFile[];
 }
 
@@ -44,6 +45,7 @@ export interface Feed {
   isLiked: boolean;
   isBookmarked: boolean;
   isProfileImageUpload: boolean;
+  isProfileVisible: boolean;
   createdDate: string;
   isStudentDeleted: boolean;
 }

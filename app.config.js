@@ -9,7 +9,7 @@ module.exports = {
     owner: 'buddyya',
     description: 'A friendly app for buddy management.',
     slug: 'buddyya',
-    version: '1.0.7',
+    version: '1.1.0',
     orientation: 'portrait',
     userInterfaceStyle: 'light',
     newArchEnabled: false,

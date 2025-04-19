@@ -28,7 +28,7 @@ type InterestSelectProps =
   | NativeStackScreenProps<OnboardingStackParamList, 'OnboardingInterestSelect'>
   | NativeStackScreenProps<MyPageStackParamList, 'EditInterest'>;
 
-const MAX_SELECT = 8;
+const MAX_SELECT = 10;
 
 function InterestSelectScreen({ navigation, route }: InterestSelectProps) {
   const { t } = useTranslation(['onboarding', 'interests']);

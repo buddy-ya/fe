@@ -50,7 +50,7 @@ export default function PointScreen({ navigation }: any) {
             <MyText size="text-lg" color="text-black" className="font-semibold">
               {t('point.currentPoint')}
             </MyText>
-            <MyText size="text-[18px]" color="text-primary" className="ml-3 font-semibold">
+            <MyText size="text-lg" color="text-primary" className="ml-3 font-semibold">
               {pointsData?.currentPoint}
             </MyText>
           </View>

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
+import { ScrollView } from 'react-native';
 import { AuthRepository } from '@/api';
 import {
   ErrorMessage,
@@ -94,13 +95,19 @@ export default function EmailVerificationScreen({
     <Layout showHeader onBack={() => navigation.goBack()}>
       <KeyboardLayout footer={footer}>
         <InnerLayout>
-          <Heading>{t('verification.title')}</Heading>
-          <HeadingDescription>{t('verification.titleDescription', { email })}</HeadingDescription>
-          <Label>{t('verification.label')}</Label>
-          <OTPInput value={code} onChange={handleCode} length={4} />
-          {verificationError && (
-            <ErrorMessage className="mt-2">{t('verification.warning')}</ErrorMessage>
-          )}
+          <View className="flex-1">
+            <ScrollView showsVerticalScrollIndicator={false}>
+              <Heading>{t('verification.title')}</Heading>
+              <HeadingDescription>
+                {t('verification.titleDescription', { email })}
+              </HeadingDescription>
+              <Label>{t('verification.label')}</Label>
+              <OTPInput value={code} onChange={handleCode} length={4} />
+              {verificationError && (
+                <ErrorMessage className="mt-2">{t('verification.warning')}</ErrorMessage>
+              )}
+            </ScrollView>
+          </View>
         </InnerLayout>
       </KeyboardLayout>
     </Layout>
