@@ -130,9 +130,7 @@ export default function FeedItem({
   };
 
   const handleLongPressContent = async () => {
-    if (!isAndroid) {
-      showToast(<MyText>📋</MyText>, t('toast.feed.copySuccess'), 1500);
-    }
+    showToast(<MyText>📋</MyText>, t('toast.feed.copySuccess'), 1500);
     await Clipboard.setStringAsync(content);
   };
 
