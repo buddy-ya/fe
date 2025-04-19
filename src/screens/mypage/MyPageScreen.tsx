@@ -127,11 +127,11 @@ export default function MyPageScreen({ navigation }: MyPageScreenProps) {
             <ChevronRight size={24} color="#636363" strokeWidth={1.3} />
           </View>
         </TouchableOpacity>
-        <View className="mt-4 flex-row justify-around rounded-t-[12px] bg-white pb-5 pt-5">
+        <View className="mt-4 flex-row rounded-t-[12px] bg-white pb-5 pt-5">
           {quickMenuItems.map(({ key, label, icon, onPress }) => (
             <TouchableOpacity
               key={key}
-              className="items-center"
+              className="flex-1 items-center"
               onPress={onPress}
               hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
             >
