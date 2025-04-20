@@ -48,7 +48,7 @@ export default function Button({
     return (
       <TouchableOpacity
         onPress={onPress}
-        disabled={disabled}
+        disabled={true}
         className={`${getTypeStyles()} bg-primary active:bg-active ${className}`}
         style={containerStyle}
         activeOpacity={0.9}
