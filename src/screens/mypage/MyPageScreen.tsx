@@ -30,6 +30,7 @@ export default function MyPageScreen({ navigation }: MyPageScreenProps) {
   const point = useUserStore((state) => state.point);
   const update = useUserStore((state) => state.update);
   const isCertificated = useUserStore((state) => state.isCertificated);
+  const BANNER_RATIO = 344 / 155;
 
   const handlePointPress = () => {
     navigation.navigate('Point');
@@ -102,7 +103,7 @@ export default function MyPageScreen({ navigation }: MyPageScreenProps) {
     >
       <InnerLayout>
         <TouchableOpacity
-          className="mt-3 flex-row items-center rounded-[20px] bg-white p-5"
+          className="mt-3 flex-row items-center rounded-[12px] bg-white p-5"
           onPress={() => navigation.navigate('MyProfile')}
         >
           <View className="flex-row items-center bg-white">
@@ -126,11 +127,11 @@ export default function MyPageScreen({ navigation }: MyPageScreenProps) {
             <ChevronRight size={24} color="#636363" strokeWidth={1.3} />
           </View>
         </TouchableOpacity>
-        <View className="mt-3 flex-row justify-around rounded-t-xl bg-white pb-5 pt-5">
+        <View className="mt-4 flex-row rounded-t-[12px] bg-white pb-5 pt-5">
           {quickMenuItems.map(({ key, label, icon, onPress }) => (
             <TouchableOpacity
               key={key}
-              className="items-center"
+              className="flex-1 items-center"
               onPress={onPress}
               hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
             >
@@ -140,7 +141,7 @@ export default function MyPageScreen({ navigation }: MyPageScreenProps) {
           ))}
         </View>
         <TouchableOpacity
-          className="flex-row items-center justify-between rounded-b-xl border-t border-[#f6f6f6] bg-white p-5"
+          className="flex-row items-center justify-between rounded-b-[12px] border-t border-[#f6f6f6] bg-white p-5"
           onPress={handlePointPress}
         >
           <View>
@@ -158,7 +159,13 @@ export default function MyPageScreen({ navigation }: MyPageScreenProps) {
         </TouchableOpacity>
 
         <TouchableOpacity className="mt-7 items-center" onPress={handleInvitationEventPress}>
-          {locale.startsWith('ko') ? <EventBannerKo /> : <EventBannerEn />}
+          <View style={{ width: '100%', aspectRatio: BANNER_RATIO }}>
+            {locale.startsWith('ko') ? (
+              <EventBannerKo width="100%" height="100%" preserveAspectRatio="xMidYMid meet" />
+            ) : (
+              <EventBannerEn width="100%" height="100%" preserveAspectRatio="xMidYMid meet" />
+            )}
+          </View>
         </TouchableOpacity>
       </InnerLayout>
     </Layout>

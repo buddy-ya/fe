@@ -144,7 +144,7 @@ function OnboardingNavigator() {
   return (
     <OnboardingStack.Navigator
       initialRouteName="OnboardingWelcome"
-      screenOptions={{ headerShown: false, fullScreenGestureEnabled: true }}
+      screenOptions={{ headerShown: false }}
     >
       <OnboardingStack.Screen
         name="OnboardingWelcome"

@@ -51,6 +51,7 @@ const MyText = ({
 
   return (
     <Text
+      allowFontScaling={false}
       onLongPress={onLongPress}
       numberOfLines={numberOfLines}
       ellipsizeMode="tail"

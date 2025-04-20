@@ -37,6 +37,9 @@
     "error": {
       "minLength": "최소 10자 이상 입력해 주세요.",
       "incompleteProfile": "매칭 프로필을 등록해야 매칭을 할 수있습니다."
+    },
+    "toast": {
+      "copySuccess": "매칭 프로필이 복사되었습니다."
     }
   },
   "quickMenu": {

@@ -53,9 +53,7 @@ const CommentItem = ({
   const { t } = useTranslation('feed');
   const showToast = useToastStore((state) => state.showToast);
   const handleCopy = async () => {
-    if (!isAndroid) {
-      showToast(<MyText>📋</MyText>, t('toast.comment.copySuccess'), 1200);
-    }
+    showToast(<MyText>📋</MyText>, t('toast.comment.copySuccess'), 1200);
     await Clipboard.setStringAsync(comment.content);
   };
   const commentActions = (comment: Comment) => [

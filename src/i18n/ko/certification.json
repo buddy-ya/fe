@@ -35,6 +35,7 @@
   "verification": {
     "title": "인증코드를 입력해 주세요.",
     "titleDescription": "{{email}}으로 인증코드를 보내드렸어요.",
+    "spam": "스팸/정크 메일함도 확인해주세요.",
     "label": "인증번호",
     "checkSpam": "메일이 안왔나요? 스팸 메일함도 확인해 주세요.",
     "resend": "인증번호 재전송",

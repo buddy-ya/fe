@@ -1,5 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import { View, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { Linking, Alert } from 'react-native';
+import ParsedText from 'react-native-parsed-text';
 import { Message } from '@/model';
 import { Room } from '@/types';
 import { Image as ExpoImage } from 'expo-image';
@@ -38,6 +40,18 @@ const MessageItem: React.FC<MessageProps> = ({
   const handleImagePress = () => {
     if (message.type === 'IMAGE') {
       setIsFullScreen(true);
+    }
+  };
+
+  const handleUrlPress = async (url: string) => {
+    const link = url.startsWith('http://') || url.startsWith('https://') ? url : `https://${url}`;
+    const supported = await Linking.canOpenURL(link);
+    if (supported) {
+      await Linking.openURL(link);
+    } else {
+      Alert.alert('Notice', 'This link cannot be opened.', [{ text: 'Confrim' }], {
+        cancelable: true,
+      });
     }
   };
 
@@ -85,7 +99,21 @@ const MessageItem: React.FC<MessageProps> = ({
         size="text-[14px]"
         className={`${isCurrentUser ? 'text-white' : 'text-black'} font-medium`}
       >
-        {message.content}
+        <ParsedText
+          parse={[
+            {
+              type: 'url',
+              style: {
+                color: isCurrentUser ? '#ffffff' : '#00A176',
+                textDecorationLine: 'underline',
+              },
+              onPress: handleUrlPress,
+            },
+          ]}
+          childrenProps={{ allowFontScaling: false }}
+        >
+          {message.content}
+        </ParsedText>
       </MyText>
     );
   }, [message, isCurrentUser]);
@@ -120,14 +148,17 @@ const MessageItem: React.FC<MessageProps> = ({
                 style={{ width: 40, height: 40, borderRadius: 14 }}
               />
             </TouchableOpacity>
-            <View className="ml-2 flex-row items-center">
+            <TouchableOpacity
+              className="ml-2 flex-row items-center"
+              onPress={() => onProfilePress && onProfilePress(message.sender)}
+            >
               <MyText size="text-sm" className="font-semibold">
                 {name}
               </MyText>
               <MyText size="text-sm" className="ml-1 font-medium">
                 {getCountryFlag(country as CountryID)}
               </MyText>
-            </View>
+            </TouchableOpacity>
           </View>
         )}
         <View

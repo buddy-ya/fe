@@ -2,7 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { View, Image, TouchableOpacity, TextInput, ScrollView } from 'react-native';
 import { MyText, Chip } from '@/components';
+import { useToastStore } from '@/store';
 import { User } from '@/types';
+import * as Clipboard from 'expo-clipboard';
 import { Camera, Pencil } from 'lucide-react-native';
 import { CountryID, getCountryFlag } from '@/utils/constants/countries';
 import { INTEREST_ICONS } from '@/utils/constants/interests';
@@ -100,6 +102,13 @@ const ProfileView: React.FC<ProfileViewProps> = ({
   useEffect(() => {
     setLocalBuddyActivity(user.buddyActivity || '');
   }, [user.buddyActivity]);
+
+  const showToast = useToastStore((state) => state.showToast);
+
+  const handleCopy = async (text: string) => {
+    showToast(<MyText>📋</MyText>, t('mypage:profile.toast.copySuccess'), 1200);
+    await Clipboard.setStringAsync(text);
+  };
 
   const handleSave = () => {
     if (editingField === 'introduction') {
@@ -219,20 +228,24 @@ const ProfileView: React.FC<ProfileViewProps> = ({
               <View className="mt-4">
                 <MatchProfile
                   isEditing={editingField === 'introduction'}
+                  isMyProfile={isMyProfile}
                   value={localIntroduction}
                   errorMessage={errorIntroduction}
                   onEdit={isMyProfile ? () => setEditingField('introduction') : undefined}
                   onChange={setLocalIntroduction}
                   onSave={handleSave}
+                  onCopy={() => handleCopy(localIntroduction)}
                   questionText={t('mypage:profile.matchingProfile.questionIntroduction')}
                 />
                 <MatchProfile
                   isEditing={editingField === 'buddyActivity'}
+                  isMyProfile={isMyProfile}
                   value={localBuddyActivity}
                   errorMessage={errorBuddyActivity}
                   onEdit={isMyProfile ? () => setEditingField('buddyActivity') : undefined}
                   onChange={setLocalBuddyActivity}
                   onSave={handleSave}
+                  onCopy={() => handleCopy(localBuddyActivity)}
                   questionText={t('mypage:profile.matchingProfile.questionBuddyActivity')}
                 />
               </View>

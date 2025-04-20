@@ -16,7 +16,7 @@
     "ph": "Philippines",
     "sg": "Singapore",
     "th": "Thailand",
-    "tl": "Timor-Leste",
+    "tl": "Timor‑Leste",
     "vn": "Vietnam",
     "bd": "Bangladesh",
     "bt": "Bhutan",
@@ -96,6 +96,20 @@
     "qa": "Qatar",
     "sa": "Saudi Arabia",
     "tr": "Türkiye",
-    "ae": "United Arab Emirates"
+    "ae": "United Arab Emirates",
+    "za": "South Africa",
+    "ng": "Nigeria",
+    "ke": "Kenya",
+    "gh": "Ghana",
+    "bh": "Bahrain",
+    "jm": "Jamaica",
+    "tt": "Trinidad and Tobago",
+    "ad": "Andorra",
+    "md": "Moldova",
+    "mc": "Monaco",
+    "mt": "Malta",
+    "sm": "San Marino",
+    "va": "Vatican City",
+    "li": "Liechtenstein"
   }
 }

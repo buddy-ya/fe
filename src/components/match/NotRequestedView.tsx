@@ -215,7 +215,7 @@ export default function NotRequestedView({
       <View className="mt-4 w-full flex-row items-center justify-between gap-4 px-4">
         <TouchableOpacity className="flex-row items-center gap-3" onPress={handleProfilePress}>
           <ExpoImage
-            style={{ height: 48, width: 48, borderRadius: 12 }}
+            style={{ height: 48, width: 48, borderRadius: 12, aspectRatio: 1 / 1 }}
             source={{ uri: userProfileImageUrl }}
             contentFit="contain"
           />
