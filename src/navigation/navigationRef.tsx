@@ -35,7 +35,7 @@ export type OnboardingStackParamList = {
 export type FeedStackParamList = {
   FeedHome: undefined;
   FeedSearch: undefined;
-  FeedWrite: { feed: Feed; isEdit: boolean } | undefined;
+  FeedWrite: { feed?: Feed; isEdit?: boolean; initialCategoryId?: string } | undefined;
   FeedDetail: {
     feedId: number;
     feedCategory?: string;
