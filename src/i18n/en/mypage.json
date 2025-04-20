@@ -95,7 +95,7 @@
       "invitation_event": "Invitation Event",
       "chatroom_no_response_refund": "Refund Matching",
       "event_reward": "Event Reward",
-      "visit_reward": "Login Reward",
+      "mission_visit_reward": "Visit Reward",
       "rejected_chat_request": "Refund Chat Request"
     },
     "pointChangeType": {

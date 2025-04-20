@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, TextStyle } from 'react-native';
+import { Text, TextStyle, Dimensions } from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
 
 interface MyTextProps {
@@ -12,7 +12,7 @@ interface MyTextProps {
   onLongPress?: () => void;
 }
 
-const fontSizeMapping: { [key: string]: number } = {
+const fontSizeMapping: Record<string, number> = {
   'text-xs': 12,
   'text-sm': 14,
   'text-base': 16,
@@ -28,15 +28,17 @@ const fontSizeMapping: { [key: string]: number } = {
   'text-9xl': 128,
 };
 
-const getFontSize = (size: string): number => {
-  const customSizeMatch = size.match(/^text-\[(\d+(?:\.\d+)?)px\]$/);
-  if (customSizeMatch) {
-    return parseFloat(customSizeMatch[1]);
-  }
-  return fontSizeMapping[size] || fontSizeMapping['text-base'];
-};
+const { height: SCREEN_HEIGHT } = Dimensions.get('window');
+const THRESHOLD = 926;
+const SMALL_MULT = 0.88;
+const LARGE_MULT = 0.8;
 
-const MyText = ({
+function getBaseSize(size: string) {
+  const m = size.match(/^text-\[(\d+(?:\.\d+)?)px\]$/);
+  return m ? parseFloat(m[1]) : (fontSizeMapping[size] ?? fontSizeMapping['text-base']);
+}
+
+export default function MyText({
   children,
   size = 'text-base',
   color = 'text-[#282828]',
@@ -44,10 +46,14 @@ const MyText = ({
   className = '',
   selectable = false,
   onLongPress,
-}: MyTextProps) => {
-  const baseSize = getFontSize(size);
-  const responsiveFontSize = RFValue(baseSize) * 0.88;
-  const textStyle: TextStyle = { fontSize: responsiveFontSize };
+}: MyTextProps) {
+  const base = getBaseSize(size);
+
+  // 화면 높이 기준으로 multiplier 선택
+  const mult = SCREEN_HEIGHT > THRESHOLD ? LARGE_MULT : SMALL_MULT;
+  const fontSize = Math.round(RFValue(base) * mult);
+
+  const style: TextStyle = { fontSize };
 
   return (
     <Text
@@ -55,13 +61,11 @@ const MyText = ({
       onLongPress={onLongPress}
       numberOfLines={numberOfLines}
       ellipsizeMode="tail"
-      style={textStyle}
+      style={style}
       className={`leading-[1.4] ${size} ${color} ${className}`}
       selectable={selectable}
     >
       {children}
     </Text>
   );
-};
-
-export default MyText;
+}
