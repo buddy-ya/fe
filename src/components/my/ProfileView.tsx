@@ -106,7 +106,7 @@ const ProfileView: React.FC<ProfileViewProps> = ({
   const showToast = useToastStore((state) => state.showToast);
 
   const handleCopy = async (text: string) => {
-    showToast(<MyText>📋</MyText>, t('toast.comment.copySuccess'), 1200);
+    showToast(<MyText>📋</MyText>, t('mypage:profile.toast.copySuccess'), 1200);
     await Clipboard.setStringAsync(text);
   };
 

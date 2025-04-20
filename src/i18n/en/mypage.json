@@ -39,6 +39,9 @@
     "error": {
       "minLength": "Please enter at least 10 characters.",
       "incompleteProfile": "Complete your match profile to match."
+    },
+    "toast": {
+      "copySuccess": "Text has been copied."
     }
   },
   "quickMenu": {

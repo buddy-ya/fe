@@ -109,19 +109,45 @@ export const COUNTRY_IDS = [
   'sa', // 사우디아라비아
   'tr', // 터키
   'ae', // 아랍에미리트
+
+  // 아프리카 주요 국가
+  'za', // 남아프리카 공화국
+  'ng', // 나이지리아
+  'ke', // 케냐
+  'gh', // 가나
+
+  // 중동 국가
+  'bh', // 바레인
+
+  // 카리브해 국가
+  'jm', // 자메이카
+  'tt', // 트리니다드 토바고
+
+  // 유럽 소국 (마이크로스테이트)
+  'ad', // 안도라
+  'md', // 몰도바
+  'mc', // 모나코
+  'mt', // 몰타
+  'sm', // 산마리노
+  'va', // 바티칸
+  'li', // 리히텐슈타인
 ] as const;
 
 export const COUNTRY_FLAGS: Record<CountryID, string> = {
   ko: '🇰🇷',
   cn: '🇨🇳',
-  hk: '🇭🇰',
+  vn: '🇻🇳',
   jp: '🇯🇵',
+  in: '🇮🇳',
+  uz: '🇺🇿',
+  kz: '🇰🇿',
+  id: '🇮🇩',
+  tw: '🇹🇼',
+  hk: '🇭🇰',
   mo: '🇲🇴',
   mn: '🇲🇳',
-  tw: '🇹🇼',
   bn: '🇧🇳',
   kh: '🇰🇭',
-  id: '🇮🇩',
   la: '🇱🇦',
   my: '🇲🇾',
   mm: '🇲🇲',
@@ -129,19 +155,15 @@ export const COUNTRY_FLAGS: Record<CountryID, string> = {
   sg: '🇸🇬',
   th: '🇹🇭',
   tl: '🇹🇱',
-  vn: '🇻🇳',
   bd: '🇧🇩',
   bt: '🇧🇹',
-  in: '🇮🇳',
   mv: '🇲🇻',
   np: '🇳🇵',
   pk: '🇵🇰',
   lk: '🇱🇰',
-  kz: '🇰🇿',
   kg: '🇰🇬',
   tj: '🇹🇯',
   tm: '🇹🇲',
-  uz: '🇺🇿',
   ca: '🇨🇦',
   mx: '🇲🇽',
   us: '🇺🇸',
@@ -209,13 +231,22 @@ export const COUNTRY_FLAGS: Record<CountryID, string> = {
   sa: '🇸🇦',
   tr: '🇹🇷',
   ae: '🇦🇪',
+  za: '🇿🇦',
+  ng: '🇳🇬',
+  ke: '🇰🇪',
+  gh: '🇬🇭',
+  bh: '🇧🇭',
+  jm: '🇯🇲',
+  tt: '🇹🇹',
+  ad: '🇦🇩',
+  md: '🇲🇩',
+  mc: '🇲🇨',
+  mt: '🇲🇹',
+  sm: '🇸🇲',
+  va: '🇻🇦',
+  li: '🇱🇮',
 };
 
 export type CountryID = (typeof COUNTRY_IDS)[number];
-
 export const getCountryFlag = (id: CountryID) => COUNTRY_FLAGS[id];
-
-export const COUNTRIES = COUNTRY_IDS.map((id) => ({
-  id,
-  icon: COUNTRY_FLAGS[id],
-}));
+export const COUNTRIES = COUNTRY_IDS.map((id) => ({ id, icon: COUNTRY_FLAGS[id] }));
