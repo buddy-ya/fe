@@ -102,7 +102,9 @@ export default function UserGuideScreen({ navigation }: OnboardingUserGuideProps
           onPress={handleAgree}
           disabled={!isChecked}
         >
-          <MyText className="font-semibold text-lg text-white">{t('userGuide.button')}</MyText>
+          <MyText size="text-lg" className="font-semibold text-white">
+            {t('userGuide.button')}
+          </MyText>
         </Button>
       </InnerLayout>
     </Layout>

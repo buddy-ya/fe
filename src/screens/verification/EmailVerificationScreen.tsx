@@ -101,6 +101,9 @@ export default function EmailVerificationScreen({
               <HeadingDescription>
                 {t('verification.titleDescription', { email })}
               </HeadingDescription>
+              <MyText color="" className="mt-1 font-medium">
+                {t('verification.spam')}
+              </MyText>
               <Label>{t('verification.label')}</Label>
               <OTPInput value={code} onChange={handleCode} length={4} />
               {verificationError && (

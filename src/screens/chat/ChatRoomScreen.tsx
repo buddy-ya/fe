@@ -206,7 +206,9 @@ export const ChatRoomScreen: React.FC<ChatRoomScreenProps> = ({ route }) => {
         return (
           <View className="my-7 items-center justify-center">
             <View className="rounded-lg bg-[#F4F4F4] px-3 py-2">
-              <MyText className="text-xs text-[#999999]">{item.content}</MyText>
+              <MyText size="text-xs" className="text-[#999999]">
+                {item.content}
+              </MyText>
             </View>
           </View>
         );
@@ -317,6 +319,7 @@ export const ChatRoomScreen: React.FC<ChatRoomScreenProps> = ({ route }) => {
         <InnerLayout className="px-[12px]">
           <FlatList
             data={messages}
+            ListHeaderComponent={<View style={{ height: 20 }} />}
             keyExtractor={(item) => item.id.toString()}
             inverted
             renderItem={renderMessageItem}

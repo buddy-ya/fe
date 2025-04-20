@@ -51,6 +51,7 @@ export default function RoomListScreen({ navigation }: RoomListNavigationProps) 
     navigation.navigate('ChatRequests');
   };
 
+  const BANNER_RATIO = 343 / 77;
   const handlePressRoom = (room: Room) => {
     navigation.navigate('ChatRoom', { id: room.id });
   };
@@ -96,7 +97,13 @@ export default function RoomListScreen({ navigation }: RoomListNavigationProps) 
             activeOpacity={0.7}
             className="my-1 items-center"
           >
-            {locale.startsWith('ko') ? <InqueryKo /> : <InqueryEn />}
+            <View style={{ width: '100%', aspectRatio: BANNER_RATIO }}>
+              {locale.startsWith('ko') ? (
+                <InqueryKo width="100%" height="100%" preserveAspectRatio="xMidYMid meet" />
+              ) : (
+                <InqueryEn width="100%" height="100" />
+              )}
+            </View>
           </TouchableOpacity>
           <RoomList
             rooms={rooms}

@@ -25,7 +25,7 @@
     }
   },
   "email": {
-    "title": "Please enter your student email.",
+    "title": "Please enter your university email.",
     "description": "A verification code has been sent to your email",
     "label": "School email",
     "placeholder": "Enter email",
@@ -35,8 +35,10 @@
   "verification": {
     "title": "Please enter the verification code.",
     "titleDescription": "A verification code has been sent to {{email}}.",
+    "spam": "Please also check your spam or junk folder.",
+
     "label": "Verification code",
-    "checkSpam": "Please check your spam folder.",
+    "checkSpam": "Please check your junk folder.",
     "resend": "Resend verification code",
     "warning": "Invalid verification code."
   },

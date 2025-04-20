@@ -25,7 +25,9 @@ const SettingItem = ({ emoji, label, onPress, borderBottom = true }: SettingItem
     className={`flex-row items-center justify-between px-4 py-[16px] ${borderBottom ? 'border-b border-borderBottom' : ''}`}
   >
     <View className="flex-row items-center">
-      <MyText className="mr-3 text-lg">{emoji}</MyText>
+      <MyText size="text-lg" className="mr-3">
+        {emoji}
+      </MyText>
       <MyText className="font-medium">{label}</MyText>
     </View>
     <ChevronRight color="#636363" width={19} height={19} strokeWidth={1.6} />

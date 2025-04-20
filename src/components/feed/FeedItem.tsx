@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { View, TouchableOpacity, ScrollView } from 'react-native';
+import { View, TouchableOpacity, ScrollView, Alert } from 'react-native';
+import { Linking } from 'react-native';
+import ParsedText from 'react-native-parsed-text';
 import { useToastStore } from '@/store';
 import { Feed } from '@/types/FeedDTO';
 import ThumbsUpActive from '@assets/icons/feed/like-active.svg';
@@ -106,6 +108,18 @@ export default function FeedItem({
     },
   ];
 
+  const handleUrlPress = async (url: string) => {
+    const link = url.startsWith('http://') || url.startsWith('https://') ? url : `https://${url}`;
+    const supported = await Linking.canOpenURL(link);
+    if (supported) {
+      await Linking.openURL(link);
+    } else {
+      Alert.alert('Notice', 'This link cannot be opened.', [{ text: 'Confrim' }], {
+        cancelable: true,
+      });
+    }
+  };
+
   const handleProfilePress = () => {
     navigation.navigate('Profile', {
       id: feed.userId,
@@ -116,9 +130,7 @@ export default function FeedItem({
   };
 
   const handleLongPressContent = async () => {
-    if (!isAndroid) {
-      showToast(<MyText>📋</MyText>, t('toast.feed.copySuccess'), 1500);
-    }
+    showToast(<MyText>📋</MyText>, t('toast.feed.copySuccess'), 1500);
     await Clipboard.setStringAsync(content);
   };
 
@@ -195,7 +207,17 @@ export default function FeedItem({
               className={`${!showAllContent && hasImage ? 'flex-1' : ''}`}
               numberOfLines={showAllContent ? 0 : 4}
             >
-              {content}
+              <ParsedText
+                parse={[
+                  {
+                    type: 'url',
+                    style: { color: '#00A176', textDecorationLine: 'underline' },
+                    onPress: handleUrlPress,
+                  },
+                ]}
+              >
+                {content}
+              </ParsedText>
             </MyText>
 
             {hasImage && !showAllContent && (

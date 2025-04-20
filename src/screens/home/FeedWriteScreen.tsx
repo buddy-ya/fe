@@ -44,6 +44,7 @@ type FeedWriteScreenProps = NativeStackScreenProps<FeedStackParamList, 'FeedWrit
 export default function FeedWriteScreen({ navigation, route }: FeedWriteScreenProps) {
   const feed = route.params?.feed;
   const isEdit = route.params?.isEdit;
+  const initialCategoryId = route.params?.initialCategoryId;
   const modalVisible = useModalStore((state) => state.visible.category);
   const handleModalOpen = useModalStore((state) => state.handleOpen);
   const handleModalClose = useModalStore((state) => state.handleClose);
@@ -55,7 +56,7 @@ export default function FeedWriteScreen({ navigation, route }: FeedWriteScreenPr
   const [selectedCategory, setSelectedCategory] = useState(
     feed
       ? FILTERED_CATEGORIES.find((c) => c.id === feed.category) || FILTERED_CATEGORIES[0]
-      : FILTERED_CATEGORIES[0]
+      : FILTERED_CATEGORIES.find((c) => c.id === initialCategoryId) || FILTERED_CATEGORIES[0]
   );
   const [title, setTitle] = useState(feed?.title || '');
   const [content, setContent] = useState(feed?.content || '');
