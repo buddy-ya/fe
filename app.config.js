@@ -1,6 +1,7 @@
 const path = require('path');
-
-require('dotenv').config({ path: path.resolve(__dirname, '.env') });
+require('dotenv').config({
+  path: path.resolve(__dirname, `.env.${process.env.MODE}`),
+});
 
 module.exports = {
   expo: {
@@ -9,7 +10,7 @@ module.exports = {
     owner: 'buddyya',
     description: 'A friendly app for buddy management.',
     slug: 'buddyya',
-    version: '1.1.1',
+    version: '1.1.2',
     orientation: 'portrait',
     userInterfaceStyle: 'light',
     newArchEnabled: false,

@@ -27,6 +27,7 @@ export default function WelcomeScreen({ navigation }: OnboardingWelcomeScreenPro
     Linking.openURL(url).catch((err) => console.error('Failed to open URL:', err));
   };
 
+  const CHARACTERS_RATIO = 275 / 184;
   useBackButton();
 
   return (
@@ -45,8 +46,8 @@ export default function WelcomeScreen({ navigation }: OnboardingWelcomeScreenPro
             </View>
           </View>
           <View className="flex-1 items-center justify-center">
-            <View className="mt-6">
-              <Charactrers />
+            <View className="mt-6" style={{ width: '85%', aspectRatio: CHARACTERS_RATIO }}>
+              <Charactrers width="100%" height="100%" />
             </View>
           </View>
           <View className="mb-12">

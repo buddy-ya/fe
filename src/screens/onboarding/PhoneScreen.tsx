@@ -25,7 +25,7 @@ const PHONE_PLACEHOLDER = '010-1234-5678';
 
 const CountryCodeBox = () => (
   <View className="mr-2 h-[52px] flex-row items-center rounded-xl border border-border px-[14px]">
-    <MyText size="text-xl" color="text-textDescription">
+    <MyText size="text-lg" color="text-textDescription">
       🇰🇷 {COUNTRY_CODE}
     </MyText>
   </View>
