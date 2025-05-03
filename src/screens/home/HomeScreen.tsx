@@ -56,7 +56,7 @@ export function HomeScreen({ navigation }: FeedHomeScreenProps) {
   };
 
   const insets = useSafeAreaInsets();
-  const writeButtonPosition = isAndroid ? insets.bottom + 100 : insets.bottom + 75;
+  const writeButtonPosition = isAndroid ? insets.bottom + 100 : insets.bottom + 70;
 
   useBackButton();
 
