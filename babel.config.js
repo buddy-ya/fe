@@ -2,15 +2,15 @@ module.exports = function (api) {
   api.cache(true);
   return {
     presets: [
-      ["babel-preset-expo", { jsxImportSource: "nativewind" }],
-      "nativewind/babel",
+      ['babel-preset-expo', { jsxImportSource: 'nativewind', unstable_transformImportMeta: true }],
+      'nativewind/babel',
     ],
     plugins: [
       [
-        "module:react-native-dotenv",
+        'module:react-native-dotenv',
         {
-          moduleName: "@env",
-          path: ".env",
+          moduleName: '@env',
+          path: '.env',
           blacklist: null,
           whitelist: null,
           safe: false,
@@ -18,28 +18,28 @@ module.exports = function (api) {
         },
       ],
       [
-        "module-resolver",
+        'module-resolver',
         {
-          root: ["./src"],
-          extensions: [".ios.js", ".android.js", ".js", ".ts", ".tsx", ".json"],
+          root: ['./src'],
+          extensions: ['.ios.js', '.android.js', '.js', '.ts', '.tsx', '.json'],
           alias: {
-            "@": "./src",
-            "@components": "./src/components",
-            "@screens": "./src/screens",
-            "@navigation": "./src/navigation",
-            "@hooks": "./src/hooks",
-            "@api": "./src/api",
-            "@utils": "./src/utils",
-            "@assets": "./assets",
-            "@styles": "./src/styles",
-            "@types": "./src/types",
-            "@services": "./src/services",
-            "@i18n": "./src/i18n",
-            "@store": "./src/store",
+            '@': './src',
+            '@components': './src/components',
+            '@screens': './src/screens',
+            '@navigation': './src/navigation',
+            '@hooks': './src/hooks',
+            '@api': './src/api',
+            '@utils': './src/utils',
+            '@assets': './assets',
+            '@styles': './src/styles',
+            '@types': './src/types',
+            '@services': './src/services',
+            '@i18n': './src/i18n',
+            '@store': './src/store',
           },
         },
       ],
-      "react-native-reanimated/plugin",
+      'react-native-reanimated/plugin',
     ],
   };
 };
