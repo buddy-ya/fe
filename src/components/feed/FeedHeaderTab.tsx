@@ -11,7 +11,7 @@ export function FeedHeaderTab({ selectedTab, onSelectTab }: FeedHeaderTabProps) 
   const { t } = useTranslation('feed');
 
   return (
-    <View className="mt-2 flex-row items-center justify-around">
+    <View className="flex-row items-center justify-around">
       <TouchableOpacity onPress={() => onSelectTab('myUni')}>
         <MyText
           size="text-2xl"

@@ -37,7 +37,7 @@ export default function Header({
   }
 
   return (
-    <View className={`h-[44px] flex-row items-center justify-between px-[16px] ${className}`}>
+    <View className={`h-[44px] flex-row items-center justify-between px-[16px] ${className} `}>
       <View className="flex-1">{leftContent}</View>
       <View className="flex-1 items-center">{centerContent}</View>
       <View className="flex-1 items-end">{rightContent}</View>
