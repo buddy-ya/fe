@@ -211,7 +211,7 @@ export default function NotRequestedView({
         contentContainerStyle={{ flexGrow: 1, paddingBottom: 100 }}
         showsVerticalScrollIndicator={false}
       >
-        <View className="mt-5 rounded-xl bg-white pb-2">
+        <View className="mt-0 rounded-xl bg-white pb-2">
           <MyText size="text-xl" className="mb-2 px-5 pt-5 font-semibold">
             {t('match.not_requested.title')}
           </MyText>

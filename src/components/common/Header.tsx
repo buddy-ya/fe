@@ -37,7 +37,7 @@ export default function Header({
   }
 
   return (
-    <View className={`flex-row items-center justify-between border px-[16px] py-3 ${className} `}>
+    <View className={`flex-row items-center justify-between px-[16px] py-[12px] ${className} `}>
       <View className="flex-1">{leftContent}</View>
       <View className="flex-1 items-center">{centerContent}</View>
       <View className="flex-1 items-end">{rightContent}</View>

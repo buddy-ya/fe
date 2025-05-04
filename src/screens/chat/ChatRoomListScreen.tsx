@@ -101,7 +101,7 @@ export default function RoomListScreen({ navigation }: RoomListNavigationProps) 
               {locale.startsWith('ko') ? (
                 <InqueryKo width="100%" height="100%" preserveAspectRatio="xMidYMid meet" />
               ) : (
-                <InqueryEn width="100%" height="100" />
+                <InqueryEn width="100%" height="100%" />
               )}
             </View>
           </TouchableOpacity>

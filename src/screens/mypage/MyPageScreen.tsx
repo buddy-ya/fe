@@ -103,7 +103,7 @@ export default function MyPageScreen({ navigation }: MyPageScreenProps) {
     >
       <InnerLayout className="">
         <TouchableOpacity
-          className="mt-3 flex-row items-center rounded-[12px] bg-white p-5"
+          className="mt-0 flex-row items-center rounded-[12px] bg-white p-5"
           onPress={() => navigation.navigate('MyProfile')}
         >
           <View className="flex-row items-center bg-white">
