@@ -90,12 +90,12 @@ export default function RoomListScreen({ navigation }: RoomListNavigationProps) 
         </TouchableOpacity>
       }
     >
-      <InnerLayout>
+      <InnerLayout className="">
         <View className="flex-1">
           <TouchableOpacity
             onPress={openInstagramProfile}
             activeOpacity={0.7}
-            className="my-1 items-center"
+            className="items-center"
           >
             <View style={{ width: '100%', aspectRatio: BANNER_RATIO }}>
               {locale.startsWith('ko') ? (

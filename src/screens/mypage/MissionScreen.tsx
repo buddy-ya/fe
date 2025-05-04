@@ -24,7 +24,7 @@ export default function MissionScreen({ navigation }: any) {
   const BANNER_RATIO = 375 / 200;
   const locale = Localization.locale;
   const insets = useSafeAreaInsets();
-  const footerHeight = insets.bottom + 50;
+  const footerHeight = insets.bottom + 54;
 
   const missions: Mission[] = [
     {
@@ -53,6 +53,7 @@ export default function MissionScreen({ navigation }: any) {
   return (
     <Layout
       showHeader
+      isBackgroundWhite
       onBack={() => navigation.goBack()}
       headerCenter={
         <MyText size="text-lg" className="font-semibold">
@@ -60,12 +61,14 @@ export default function MissionScreen({ navigation }: any) {
         </MyText>
       }
     >
-      <ScrollView contentContainerStyle={{ flexGrow: 1, paddingBottom: 100 }}>
+      <ScrollView
+        contentContainerStyle={{ flexGrow: 1, paddingBottom: 100, backgroundColor: '#F6F6F6' }}
+      >
         <View style={{ width: '100%', aspectRatio: BANNER_RATIO }}>
           <MissionKo width="100%" height="100%" preserveAspectRatio="xMidYMid meet" />
         </View>
 
-        <InnerLayout className="mt-7">
+        <InnerLayout className="mt-7 bg-mainBackground">
           {missions.map(({ id, Icon, title, description, point, type, onPress }) => (
             <View key={id} className="mb-3">
               <TouchableOpacity

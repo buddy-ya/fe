@@ -16,7 +16,7 @@ export const BackButton = ({ onPress }: { onPress?: () => void }) => (
     className="relative right-2 flex-row items-center"
     hitSlop={{ right: 20 }}
   >
-    <ChevronLeft strokeWidth={2} size={30} color="#797979" />
+    <ChevronLeft strokeWidth={2} size={28} color="#797979" />
   </TouchableOpacity>
 );
 
@@ -37,7 +37,7 @@ export default function Header({
   }
 
   return (
-    <View className={`h-[44px] flex-row items-center justify-between px-[16px] ${className} `}>
+    <View className={`flex-row items-center justify-between border px-[16px] py-3 ${className} `}>
       <View className="flex-1">{leftContent}</View>
       <View className="flex-1 items-center">{centerContent}</View>
       <View className="flex-1 items-end">{rightContent}</View>
