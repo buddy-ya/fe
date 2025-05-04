@@ -25,7 +25,7 @@ export function HomeScreen({ navigation }: FeedHomeScreenProps) {
 
   const tab = selectedTab === 'myUni' ? userUniversity : 'all';
 
-  const categoriesToShow = tab === 'all' ? CATEGORIES : CATEGORIES;
+  const categoriesToShow = tab === 'all' ? [CATEGORIES[0], CATEGORIES[2]] : [CATEGORIES[0]];
 
   const [activeCategory, setActiveCategory] = useState(categoriesToShow[0].id);
 
