@@ -75,7 +75,7 @@ const MatchProfile: React.FC<MatchProfileProps> = ({
         </View>
         {onEdit && (
           <TouchableOpacity onPress={onEdit} hitSlop={{ top: 10, left: 10, bottom: 10, right: 10 }}>
-            <Pencil size={18} color="#797979" />
+            <Pencil size={18} color="#797979" strokeWidth={1.6} />
           </TouchableOpacity>
         )}
         {!isMyProfile && (
