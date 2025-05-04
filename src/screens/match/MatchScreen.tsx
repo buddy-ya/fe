@@ -87,7 +87,7 @@ export default function MatchScreen({ navigation }: MatchScreenProps) {
   };
 
   const handlePointPress = () => {
-    navigation.navigate('Point');
+    navigation.navigate('Mission');
   };
 
   useBackButton();

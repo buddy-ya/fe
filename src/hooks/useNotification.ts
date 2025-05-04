@@ -95,9 +95,9 @@ export function useNotification() {
     );
 
     return () => {
-      Notifications.removeNotificationSubscription(backgroundListener);
-      Notifications.removeNotificationSubscription(foregroundReceivedListener);
-      Notifications.removeNotificationSubscription(foregroundResponseListener);
+      backgroundListener.remove();
+      foregroundResponseListener.remove();
+      foregroundReceivedListener.remove();
     };
   }, [update, prefix]);
 }

@@ -58,7 +58,7 @@ export function BottomModalWrapper({
                 <MyText size="text-[20px]" className="font-semibold">
                   {title}
                 </MyText>
-                <MyText size="text-[14px] mt-4" color="text-textDescription">
+                <MyText size="text-[14px]" color="text-textDescription" className="mt-4">
                   {description}
                 </MyText>
               </View>

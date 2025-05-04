@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Image, Text, View } from 'react-native';
 import { API, ChatRequestRepository } from '@/api';
 import { useModalStore, useToastStore, useUserStore } from '@/store';
+import SchoolCheck from '@assets/icons/schoolCircleCheck.svg';
 import { getCountryFlag, logError } from '@/utils';
 import MyText from '@/components/common/MyText';
 import { BottomModalWrapper } from './BottomModalWrapper';
@@ -18,7 +19,7 @@ export function ChatRequestModal({ visible, data, onClose }: CommonModalProps) {
   const name = data?.name;
   const university = data?.university;
   const country = data?.country;
-  const isProfileImageUpload = data?.isProfileImageUpload;
+  const isCertificated = data?.isCertificated || false;
   const profileImageUrl = data?.profileImageUrl;
 
   const title = t('chatRequestModal.title', { name });
@@ -49,7 +50,7 @@ export function ChatRequestModal({ visible, data, onClose }: CommonModalProps) {
       onConfirm={onConfirm}
       point="0"
     >
-      <View className="mt-5 rounded-[12px] bg-mainBackground py-4">
+      <View className="mt-5 rounded-[12px] bg-mainBackground py-5">
         <View className="items-center">
           <Image className="h-[48px] w-[48px] rounded-[12px]" source={{ uri: profileImageUrl }} />
           <MyText size="text-[12px]" className="mt-3 font-semibold leading-[1]">
@@ -61,13 +62,14 @@ export function ChatRequestModal({ visible, data, onClose }: CommonModalProps) {
             </MyText>
             <MyText size="">{getCountryFlag(country)}</MyText>
           </View>
+
           <MyText
             size="text-sm"
             className={`mt-3 rounded-full px-2 py-0 ${
-              isProfileImageUpload ? 'bg-[#E8F8F4] text-primary' : 'bg-black/10 text-textProfile'
+              isCertificated ? 'bg-[#E8F8F4] text-primary' : 'bg-black/10 text-textProfile'
             }`}
           >
-            {isProfileImageUpload ? 'Photo verified' : 'Photo unverified'}
+            {isCertificated ? 'Verified Student' : 'Unverified Student'}
           </MyText>
         </View>
       </View>

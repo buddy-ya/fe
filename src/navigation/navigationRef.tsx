@@ -68,6 +68,7 @@ export type VerificationStackParamList = {
 export type MatchstackParamList = {
   MatchHome: undefined;
   Point: undefined;
+  Mission: undefined;
   MyProfile: { id?: string; incompleteProfile?: boolean } | undefined;
   EditProfileImage: undefined;
   EditName: { isEditMode: boolean; initialName: string };

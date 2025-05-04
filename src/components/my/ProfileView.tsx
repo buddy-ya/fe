@@ -186,9 +186,11 @@ const ProfileView: React.FC<ProfileViewProps> = ({
               </View>
 
               {
-                <View className="mt-[6px] flex-row items-center">
+                <View className="mt-[5px] flex-row items-center">
                   <MyText size="text-[14px]" className="font-semibold">
-                    {user.isCertificated ? '학교 인증 완료' : '학교 미인증'}
+                    {user.isCertificated
+                      ? t('profile.studentVerification.verified')
+                      : t('profile.studentVerification.unverified')}
                   </MyText>
                   {user.isCertificated && (
                     <View className="ml-1 items-center justify-center" pointerEvents="none">

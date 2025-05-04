@@ -11,9 +11,14 @@
         "select": "Please select a profile photo"
       }
     },
+    "studentVerification": {
+      "verified": "Verified Student",
+      "unverified": "Unverified Student"
+    },
     "university": {
       "sju": "Sejong University"
     },
+    "studentCertification": "Student Verified",
     "gender": {
       "male": "Man",
       "female": "Woman"
@@ -127,6 +132,18 @@
         "deleted": "This invitation code belongs to a user who has withdrawn."
       }
     }
+  },
+  "mission": {
+    "mission": "Missions",
+    "attendance": {
+      "title": "Check-in Mission",
+      "description": "Check in once a day\nto earn rewards"
+    },
+    "verification": {
+      "title": "Student Verification",
+      "description": "Verify your student status to receive the Buddyya badge and points"
+    },
+    "summary": "Total points earned from missions"
   },
   "setting": "Setting",
   "certification": "Verification is already complete."

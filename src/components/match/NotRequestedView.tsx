@@ -13,7 +13,6 @@ import { Image as ExpoImage } from 'expo-image';
 import { Lock, Check } from 'lucide-react-native';
 import { CountryID, getCountryFlag, UNIVERSITY_ICONS, UniversityID } from '@/utils';
 import { InnerLayout, MyText } from '../common';
-import { PlaneAnimation } from './PlaneAnimation';
 
 interface Option {
   value: string;

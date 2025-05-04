@@ -13,6 +13,7 @@ import MatchScreen from '@/screens/match/MatchScreen';
 import BookmarkScreen from '@/screens/mypage/BookmarkScreen';
 import EditProfileImageScreen from '@/screens/mypage/EditProfileImageScreen';
 import InvitationScreen from '@/screens/mypage/InvitationScreen';
+import MissionScreen from '@/screens/mypage/MissionScreen';
 import MyPostsScreen from '@/screens/mypage/MyPostsScreen';
 import MyProfileScreen from '@/screens/mypage/MyProfileScreen';
 import PointScreen from '@/screens/mypage/PointScreen';
@@ -299,6 +300,7 @@ function MatchNavigator() {
         options={{ gestureEnabled: false }}
       />
       <MatchStack.Screen name="Point" component={PointScreen} />
+      <MatchStack.Screen name="Mission" component={MissionScreen} />
       <MatchStack.Screen name="MyProfile" component={MyProfileScreen} />
       <MatchStack.Screen name="EditProfileImage" component={EditProfileImageScreen} />
       <MatchStack.Screen name="EditName" component={NameScreen} />
