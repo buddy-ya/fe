@@ -20,6 +20,7 @@ interface Option {
   label: string;
   icon: any;
   locked?: boolean;
+  invisible?: boolean;
   category?: 'university' | 'country' | 'gender';
 }
 
@@ -42,11 +43,12 @@ const OptionButton = ({
 }: OptionButtonProps) => {
   const IconComponent = option.icon;
 
+  if (option.invisible) return;
   return (
     <TouchableOpacity onPress={onPress} disabled={option.locked} className="items-center">
       <View
         style={{ width: iconSize, height: iconSize }}
-        className="relative mb-2 overflow-hidden"
+        className="relative mb-3 overflow-hidden"
         pointerEvents="none"
       >
         <IconComponent width={iconSize} height={iconSize} />
@@ -140,17 +142,17 @@ export default function NotRequestedView({
 
   const universityOptions: Option[] = [
     {
-      value: 'SAME',
-      label: t('match.not_requested.university.same'),
-      icon: UNIVERSITY_ICONS[userUniv as UniversityID],
-      category: 'university',
-    },
-    {
       value: 'DIFFERENT',
       label: t('match.not_requested.university.different'),
       icon: DiffUniIcon,
       category: 'university',
       locked: true,
+    },
+    {
+      value: 'SAME',
+      label: t('match.not_requested.university.same'),
+      icon: UNIVERSITY_ICONS[userUniv as UniversityID],
+      category: 'university',
     },
   ];
 
@@ -166,7 +168,7 @@ export default function NotRequestedView({
       label: t('match.not_requested.country.korea'),
       icon: KoreaIcon,
       category: 'country',
-      locked: userCountry === 'ko',
+      invisible: userCountry === 'ko',
     },
   ];
 
@@ -211,7 +213,7 @@ export default function NotRequestedView({
         showsVerticalScrollIndicator={false}
       >
         <View className="mt-6 rounded-xl bg-white pb-2">
-          <MyText size="text-xl" className="px-5 pt-5 font-semibold">
+          <MyText size="text-xl" className="mb-2 px-5 pt-5 font-semibold">
             {t('match.not_requested.title')}
           </MyText>
           <OptionSection
@@ -241,14 +243,14 @@ export default function NotRequestedView({
             onSelect={(value) => setGenderType(value as 'MALE' | 'FEMALE' | 'ALL')}
             iconSize={60}
             overlaySize={18}
-            checkSize={30}
+            checkSize={28}
           />
         </View>
-        <View className="mt-8 items-center">
+        <View className="mt-12 items-center">
           <TouchableOpacity
             onPress={handlePressMatch}
             disabled={!countryType || !universityType || !genderType}
-            className={`w-[180px] flex-row items-center justify-center rounded-full py-3 ${
+            className={`w-[160px] flex-row items-center justify-center rounded-full py-3 ${
               !countryType || !universityType || !genderType ? 'bg-[#CBCBCB]' : 'bg-primary'
             }`}
           >
