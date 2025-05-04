@@ -50,9 +50,10 @@ export function HomeScreen({ navigation }: FeedHomeScreenProps) {
   };
 
   const handleWriteButton = async () => {
-    isCertificated
-      ? navigation.navigate('FeedWrite', { initialCategoryId: activeCategory })
-      : handleModalOpen('studentCertification');
+    // isCertificated
+    //   ? navigation.navigate('FeedWrite', { initialCategoryId: activeCategory })
+    //   : handleModalOpen('studentCertification');
+    navigation.navigate('FeedWrite', { initialCategoryId: activeCategory });
   };
 
   const insets = useSafeAreaInsets();

@@ -194,48 +194,18 @@ export default function NotRequestedView({
   ];
 
   const handlePressMatch = () => {
-    userIsCertificated
-      ? handleModalOpen('matchRequest', {
-          onConfirm: () =>
-            handleMatchRequest({
-              nationalityType: countryType || 'GLOBAL',
-              universityType: universityType || 'SAME',
-              genderType: genderType || 'ALL',
-            }),
-        })
-      : handleModalOpen('studentCertification');
-  };
-
-  const handleProfilePress = () => {
-    navigation.navigate('MyProfile');
+    handleModalOpen('matchRequest', {
+      onConfirm: () =>
+        handleMatchRequest({
+          nationalityType: countryType || 'GLOBAL',
+          universityType: universityType || 'SAME',
+          genderType: genderType || 'ALL',
+        }),
+    });
   };
 
   return (
     <InnerLayout>
-      <View className="mt-4 w-full flex-row items-center justify-between gap-4 px-4">
-        <TouchableOpacity className="flex-row items-center gap-3" onPress={handleProfilePress}>
-          <ExpoImage
-            style={{ height: 48, width: 48, borderRadius: 12, aspectRatio: 1 / 1 }}
-            source={{ uri: userProfileImageUrl }}
-            contentFit="contain"
-          />
-          <View>
-            <MyText size="text-sm" color="text-black" className="font-semibold">
-              {t(`universities:universities.${userUniv}`)}
-            </MyText>
-            <View className="flex-row items-center gap-1">
-              <MyText size="text-sm" color="text-black" className="font-medium">
-                {userName}
-              </MyText>
-              <MyText>{getCountryFlag(userCountry as CountryID)}</MyText>
-            </View>
-          </View>
-        </TouchableOpacity>
-        <PlaneAnimation />
-        <View className="h-[48px] w-[48px] flex-row items-center justify-center rounded-xl bg-white">
-          <QuestionMarkIcon />
-        </View>
-      </View>
       <ScrollView
         contentContainerStyle={{ flexGrow: 1, paddingBottom: 100 }}
         showsVerticalScrollIndicator={false}

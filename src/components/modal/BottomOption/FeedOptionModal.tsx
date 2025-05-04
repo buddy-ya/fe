@@ -21,9 +21,7 @@ export function FeedOptionModal({ visible, onClose, feed }: FeedOptionModalProps
   const queryClient = useQueryClient();
   const navigation = useNavigation<any>();
   const { t } = useTranslation('feed');
-  const isCertificated = useUserStore((state) => state.isCertificated);
   const handleModalOpen = useModalStore((state) => state.handleOpen);
-  const { showToast } = useToastStore();
 
   async function handleBlock() {
     navigation.reset({
@@ -36,26 +34,18 @@ export function FeedOptionModal({ visible, onClose, feed }: FeedOptionModalProps
   const handleReportOption = () => {
     onClose();
     setTimeout(() => {
-      if (isCertificated) {
-        handleModalOpen('report', {
-          type: 'FEED',
-          reportedId: feed.id,
-          reportedUserId: feed.userId,
-        });
-      } else {
-        handleModalOpen('studentCertification');
-      }
+      handleModalOpen('report', {
+        type: 'FEED',
+        reportedId: feed.id,
+        reportedUserId: feed.userId,
+      });
     }, 200);
   };
 
   const handleBlockOption = () => {
     onClose();
     setTimeout(() => {
-      if (isCertificated) {
-        handleModalOpen('block', { buddyId: feed.userId, onBlockSuccess: handleBlock });
-      } else {
-        handleModalOpen('studentCertification');
-      }
+      handleModalOpen('block', { buddyId: feed.userId, onBlockSuccess: handleBlock });
     }, 200);
   };
 
@@ -74,11 +64,7 @@ export function FeedOptionModal({ visible, onClose, feed }: FeedOptionModalProps
   const handleChatRequestOption = () => {
     onClose();
     setTimeout(() => {
-      if (isCertificated) {
-        handleModalOpen('chatRequest', { data: feed });
-      } else {
-        handleModalOpen('studentCertification');
-      }
+      handleModalOpen('chatRequest', { data: feed });
     }, 200);
   };
 
