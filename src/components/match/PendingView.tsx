@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { View, TouchableOpacity, ScrollView } from 'react-native';
 import { useModalStore, useUserStore } from '@/store';
+import DefaultProfileImage from '@assets/icons/defaultProfile.svg';
 import PendingIcon from '@assets/icons/match/pending.svg';
 import QuestionMarkIcon from '@assets/icons/match/question.svg';
 import { Image as ExpoImage } from 'expo-image';
@@ -46,13 +47,9 @@ export default function PendingView({ navigation }: PendingViewProps) {
 
   return (
     <InnerLayout>
-      <View className="mt-8 w-full flex-row items-center justify-between gap-4 px-4">
+      <View className="mt-2 w-full flex-row items-center justify-between gap-4 px-4">
         <TouchableOpacity className="flex-row items-center gap-3" onPress={handleProfilePress}>
-          <ExpoImage
-            style={{ height: 48, width: 48, borderRadius: 12 }}
-            source={{ uri: userProfileImageUrl }}
-            contentFit="contain"
-          />
+          <DefaultProfileImage />
           <View>
             <MyText size="text-sm" color="text-black" className="font-semibold">
               {t(`universities:universities.${userUniv}`)}
