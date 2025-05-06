@@ -68,7 +68,7 @@ export default function Layout({
           rightContent={headerRight}
         />
       )}
-      {preserveHeader && <View className="py-3" />}
+      {preserveHeader && <View style={{ height: 44 }} />}
       {children}
     </SafeAreaView>
   );
