@@ -4,11 +4,11 @@ import { View, TouchableOpacity, FlatList, ScrollView, Touchable } from 'react-n
 import { useModalStore, useUserStore } from '@/store';
 import GlobalIcon from '@assets/icons/match/countryGlobal.svg';
 import KoreaIcon from '@assets/icons/match/countryKorea.svg';
-import DiffUniIcon from '@assets/icons/match/diffUniv.svg';
 import AllGenderIcon from '@assets/icons/match/genderAll.svg';
 import FemaleGenderIcon from '@assets/icons/match/genderFemale.svg';
 import MaleGenderIcon from '@assets/icons/match/genderMale.svg';
 import QuestionMarkIcon from '@assets/icons/match/question.svg';
+import DiffUniIcon from '@assets/icons/seoul.svg';
 import { Image as ExpoImage } from 'expo-image';
 import { Lock, Check } from 'lucide-react-native';
 import { CountryID, getCountryFlag, UNIVERSITY_ICONS, UniversityID } from '@/utils';
@@ -86,7 +86,7 @@ const OptionSection = ({
   options,
   selected,
   onSelect,
-  iconSize = 60,
+  iconSize = 50,
   overlaySize = 24,
   checkSize,
   showBorder = false,

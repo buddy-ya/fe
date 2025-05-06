@@ -134,17 +134,18 @@
     }
   },
   "mission": {
-    "mission": "Missions",
+    "mission": "Mission",
     "attendance": {
       "title": "Check-in Mission",
-      "description": "Check in once a day\nto earn rewards"
+      "description": "Check in once a day\nto receive points"
     },
     "verification": {
-      "title": "Student Verification",
-      "description": "Verify your student status to receive the Buddyya badge and points"
+      "title": "School Verification",
+      "description": "Verify your school and receive a Buddyya badge and points"
     },
-    "summary": "Total points earned from missions"
+    "summary": "Points you've earned so far"
   },
+
   "setting": "Setting",
   "certification": "Verification is already complete."
 }

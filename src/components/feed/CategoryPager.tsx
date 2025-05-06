@@ -54,7 +54,7 @@ export default function CategoryPager({
         ref={scrollViewRef}
         horizontal
         showsHorizontalScrollIndicator={false}
-        className="flex-none py-1"
+        className="flex-none"
       >
         {categories.map((category, index) => (
           <Chip

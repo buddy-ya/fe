@@ -4,6 +4,7 @@ import { View, ScrollView, TouchableOpacity } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { InnerLayout, Layout, MyText } from '@/components';
 import CalendarMission from '@assets/icons/calendar.svg';
+import MissionEn from '@assets/icons/missionEn.svg';
 import MissionKo from '@assets/icons/missionKo.svg';
 import PointIcon from '@assets/icons/point.svg';
 import SchoolMission from '@assets/icons/schoolVerificationMission.svg';
@@ -65,7 +66,11 @@ export default function MissionScreen({ navigation }: any) {
         contentContainerStyle={{ flexGrow: 1, paddingBottom: 100, backgroundColor: '#F6F6F6' }}
       >
         <View style={{ width: '100%', aspectRatio: BANNER_RATIO }}>
-          <MissionKo width="100%" height="100%" preserveAspectRatio="xMidYMid meet" />
+          {locale.startsWith('ko') ? (
+            <MissionKo width="100%" height="100%" preserveAspectRatio="xMidYMid meet" />
+          ) : (
+            <MissionEn width="100%" height="100%" preserveAspectRatio="xMidYMid meet" />
+          )}
         </View>
 
         <InnerLayout className="mt-7 bg-mainBackground">
