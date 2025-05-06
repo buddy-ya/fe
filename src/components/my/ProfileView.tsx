@@ -203,7 +203,7 @@ const ProfileView: React.FC<ProfileViewProps> = ({
                 </View>
               }
             </View>
-            <View className="absolute right-0 top-[50%] -translate-y-1/2 opacity-25">
+            <View className="absolute right-0 top-[50%] -z-10 -translate-y-1/2 opacity-25">
               <UniversityIcon width={100} height={100} />
             </View>
           </View>
