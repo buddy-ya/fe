@@ -50,7 +50,7 @@ export function ChatRequestModal({ visible, data, onClose }: CommonModalProps) {
       onConfirm={onConfirm}
       point="0"
     >
-      <View className="mt-5 rounded-[12px] bg-mainBackground py-5">
+      <View className="mt-5 rounded-[12px] bg-mainBackground py-4">
         <View className="items-center">
           <Image className="h-[48px] w-[48px] rounded-[12px]" source={{ uri: profileImageUrl }} />
           <MyText size="text-[12px]" className="mt-3 font-semibold leading-[1]">
