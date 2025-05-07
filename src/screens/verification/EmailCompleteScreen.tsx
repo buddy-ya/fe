@@ -1,14 +1,31 @@
+import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Image, View } from 'react-native';
 import { Button, Heading, HeadingDescription, InnerLayout, Layout, MyText } from '@/components';
 import { FeedStackParamList } from '@/navigation/navigationRef';
+import { useModalStore } from '@/store';
 import Characters from '@assets/images/verification/characters.svg';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
 type EmailCompleteScreenProps = NativeStackScreenProps<FeedStackParamList, 'EmailComplete'>;
 
-export default function EmailCompleteScreen({ navigation }: EmailCompleteScreenProps) {
+export default function EmailCompleteScreen({ navigation, route }: EmailCompleteScreenProps) {
   const { t } = useTranslation('certification');
+  const handleModalOpen = useModalStore((state) => state.handleOpen);
+  const { pointChange, currentPoint } = route.params;
+
+  useEffect(() => {
+    if (pointChange !== 0) {
+      const timer = setTimeout(() => {
+        handleModalOpen('point', {
+          usedPoint: pointChange,
+          currentPoint: currentPoint,
+          action: 'INCREASE',
+        });
+      }, 300);
+      return () => clearTimeout(timer);
+    }
+  }, [pointChange, currentPoint]);
 
   const handleNavigateButton = () => {
     navigation.navigate('Tab', {

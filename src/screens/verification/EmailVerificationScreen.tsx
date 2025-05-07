@@ -17,7 +17,7 @@ import {
   OTPInput,
 } from '@/components';
 import { FeedStackParamList } from '@/navigation/navigationRef';
-import { useUserStore } from '@/store';
+import { useModalStore, useUserStore } from '@/store';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { Send } from 'lucide-react-native';
 
@@ -35,6 +35,7 @@ export default function EmailVerificationScreen({
   const [verificationError, setVerificationError] = useState(false);
   const email = route.params?.email;
   const update = useUserStore((state) => state.update);
+  const handleModalOpen = useModalStore((state) => state.handleOpen);
   const [loading, setLoading] = useState(false);
 
   const handleCode = (code: string) => {
@@ -51,22 +52,21 @@ export default function EmailVerificationScreen({
   const handleNavigateButton = async () => {
     setLoading(true);
     try {
-      const { success } = await AuthRepository.verifyCodeByMail({
+      const { point, pointChange } = await AuthRepository.verifyCodeByMail({
         email,
         code,
       });
-      if (success) {
-        setVerificationError(false);
-        update({ isCertificated: true });
-        navigation.navigate('EmailComplete');
-      } else {
-        setVerificationError(true);
-        setCode('');
-      }
+      setVerificationError(false);
+      update({ isCertificated: true, point });
+      navigation.navigate('EmailComplete', {
+        pointChange,
+        currentPoint: point,
+      });
     } catch (e) {
       setVerificationError(true);
     } finally {
       setLoading(false);
+      setCode('');
     }
   };
 

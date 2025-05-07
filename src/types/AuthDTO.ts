@@ -13,6 +13,8 @@ export interface AuthResponse {
   success?: boolean;
   code?: number;
   message?: string;
+  point?: number;
+  pointChange?: number;
 }
 
 // Response DTO
