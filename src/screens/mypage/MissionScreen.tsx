@@ -1,31 +1,51 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { View, ScrollView, TouchableOpacity } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { InnerLayout, Layout, MyText } from '@/components';
+import { MissionStatusResponseDTO } from '@/types/MissionDTO';
 import CalendarMission from '@assets/icons/calendar.svg';
 import MissionEn from '@assets/icons/missionEn.svg';
 import MissionKo from '@assets/icons/missionKo.svg';
 import PointIcon from '@assets/icons/point.svg';
 import SchoolMission from '@assets/icons/schoolVerificationMission.svg';
 import * as Localization from 'expo-localization';
+import MissionRepository from '@/api/MissionRepository';
 
 type Mission = {
-  id: string;
+  id: 'attendance' | 'verification';
   Icon: React.FC<any>;
   title: string;
   description: string;
   point: number;
   type: 'claim' | 'navigate';
+  disabled: boolean;
   onPress: () => void;
 };
 
 export default function MissionScreen({ navigation }: any) {
   const { t } = useTranslation('mypage');
-  const BANNER_RATIO = 375 / 200;
   const locale = Localization.locale;
   const insets = useSafeAreaInsets();
   const footerHeight = insets.bottom + 54;
+
+  const [missionStatus, setMissionStatus] = useState<MissionStatusResponseDTO>({
+    hasCertificated: false,
+    todayAttended: false,
+    totalMissionPoint: 0,
+  });
+
+  useEffect(() => {
+    const fetch = async () => {
+      try {
+        const data = await MissionRepository.get();
+        setMissionStatus(data);
+      } catch (e) {
+        console.error(e);
+      }
+    };
+    fetch();
+  }, []);
 
   const missions: Mission[] = [
     {
@@ -35,9 +55,9 @@ export default function MissionScreen({ navigation }: any) {
       description: t('mission.attendance.description'),
       point: 10,
       type: 'claim',
+      disabled: missionStatus.todayAttended,
       onPress: () => {
-        // 포인트 즉시 지급 처리 로직 (api 콜이나 스토어 업데이트)
-        console.log('출석 미션 포인트 지급!');
+        /* 출석 API 호출 */
       },
     },
     {
@@ -47,7 +67,11 @@ export default function MissionScreen({ navigation }: any) {
       description: t('mission.verification.description'),
       point: 100,
       type: 'navigate',
-      onPress: () => navigation.navigate('Verification', { screen: 'VerificationSelect' }),
+      disabled: missionStatus.hasCertificated,
+      onPress: () =>
+        navigation.navigate('Verification', {
+          screen: 'VerificationSelect',
+        }),
     },
   ];
 
@@ -63,9 +87,13 @@ export default function MissionScreen({ navigation }: any) {
       }
     >
       <ScrollView
-        contentContainerStyle={{ flexGrow: 1, paddingBottom: 100, backgroundColor: '#F6F6F6' }}
+        contentContainerStyle={{
+          flexGrow: 1,
+          paddingBottom: 100,
+          backgroundColor: '#F6F6F6',
+        }}
       >
-        <View style={{ width: '100%', aspectRatio: BANNER_RATIO }}>
+        <View style={{ width: '100%', aspectRatio: 375 / 200 }}>
           {locale.startsWith('ko') ? (
             <MissionKo width="100%" height="100%" preserveAspectRatio="xMidYMid meet" />
           ) : (
@@ -74,12 +102,12 @@ export default function MissionScreen({ navigation }: any) {
         </View>
 
         <InnerLayout className="mt-7 bg-mainBackground">
-          {missions.map(({ id, Icon, title, description, point, type, onPress }) => (
+          {missions.map(({ id, Icon, title, description, point, type, disabled, onPress }) => (
             <View key={id} className="mb-3">
               <TouchableOpacity
-                onPress={type === 'navigate' ? onPress : undefined}
-                activeOpacity={type === 'navigate' ? 0.7 : 1}
-                className={`flex-row items-center rounded-[12px] bg-white px-4 py-6`}
+                onPress={disabled ? undefined : onPress}
+                disabled={disabled}
+                className={`flex-row items-center rounded-[12px] bg-white px-4 py-6 ${type === 'navigate' && disabled && 'opacity-60'}`}
               >
                 <Icon />
                 <View className="ml-5 flex-1">
@@ -90,28 +118,42 @@ export default function MissionScreen({ navigation }: any) {
                     {description}
                   </MyText>
                 </View>
-                <TouchableOpacity
-                  onPress={type === 'claim' ? onPress : undefined}
-                  activeOpacity={0.7}
-                  className={`flex-row items-center rounded-[8px] px-[10px] py-[5px] ${
-                    type === 'claim' ? 'bg-primary' : ''
-                  }`}
-                >
-                  <PointIcon width={15} height={15} />
-                  <MyText
-                    color={type === 'claim' ? 'text-white' : ''}
-                    className="ml-[5px] font-semibold"
+
+                {/* 포인트 or 완료 표시 */}
+                {type === 'claim' ? (
+                  <TouchableOpacity
+                    onPress={!disabled ? onPress : undefined}
+                    activeOpacity={!disabled ? 0.7 : 1}
+                    className={`min-w-[54px] flex-row items-center justify-center rounded-[8px] px-[10px] py-[5px] ${
+                      disabled ? 'bg-[#E8E9EB]' : 'bg-primary'
+                    }`}
                   >
-                    {point}
-                  </MyText>
-                </TouchableOpacity>
+                    {disabled ? null : <PointIcon width={15} height={15} />}
+                    <MyText
+                      size=""
+                      className={`font-semibold text-white ${!disabled && 'ml-[5px]'}`}
+                    >
+                      {disabled ? t('mission.completed') : point}
+                    </MyText>
+                  </TouchableOpacity>
+                ) : (
+                  <View
+                    className={`ml-auto flex-row items-center rounded-[8px] px-[10px] py-[5px]`}
+                  >
+                    <PointIcon width={15} height={15} />
+                    <MyText size="" className="ml-[5px] font-semibold">
+                      {point}
+                    </MyText>
+                  </View>
+                )}
               </TouchableOpacity>
             </View>
           ))}
         </InnerLayout>
       </ScrollView>
+
       <View
-        className="absolute bottom-0 w-full border-t border-[#F6F6F6] bg-[#F7FFFE] p-5 px-6"
+        className="absolute bottom-0 w-full border-t border-[#F6F6F6] bg-[#F7FFFE] p-5 px-7"
         style={{ height: footerHeight }}
       >
         <View className="flex-row items-center justify-between">
@@ -119,7 +161,7 @@ export default function MissionScreen({ navigation }: any) {
           <View className="flex-row items-center">
             <PointIcon width={16} height={16} />
             <MyText size="text-lg" className="ml-[5px] font-semibold">
-              {100}
+              {missionStatus.totalMissionPoint}
             </MyText>
           </View>
         </View>

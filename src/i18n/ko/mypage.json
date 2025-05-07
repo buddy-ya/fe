@@ -132,6 +132,7 @@
   },
   "mission": {
     "mission": "미션",
+    "completed": "완료",
     "attendance": {
       "title": "출석 미션",
       "description": "매일 하루에 한 번\n출석을 하면 받을 수 있어요"

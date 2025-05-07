@@ -135,6 +135,7 @@
   },
   "mission": {
     "mission": "Mission",
+    "completed": "Done",
     "attendance": {
       "title": "Check-in Mission",
       "description": "Check in once a day\nto receive points"
