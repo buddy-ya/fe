@@ -136,7 +136,7 @@ export default function MyProfileScreen({ navigation, route }: any) {
         <KeyboardLayout>
           <InnerLayout>
             {incompleteProfile && (
-              <View className="mb-10 rounded-xl">
+              <View className="mb-5 rounded-xl">
                 <MyText
                   size="text-[20px]"
                   className="mt-4 font-semibold leading-[1.4] tracking-wide"
