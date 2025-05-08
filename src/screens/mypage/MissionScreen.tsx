@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { View, ScrollView, TouchableOpacity } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { InnerLayout, Layout, MyText } from '@/components';
+import { useModalStore } from '@/store';
 import { MissionStatusResponseDTO } from '@/types/MissionDTO';
 import CalendarMission from '@assets/icons/calendar.svg';
 import MissionEn from '@assets/icons/missionEn.svg';
@@ -28,7 +29,8 @@ export default function MissionScreen({ navigation }: any) {
   const locale = Localization.locale;
   const insets = useSafeAreaInsets();
   const footerHeight = insets.bottom + 54;
-
+  const handleModalOpen = useModalStore((state) => state.handleOpen);
+  const [isAttending, setIsAttending] = useState(false);
   const [missionStatus, setMissionStatus] = useState<MissionStatusResponseDTO>({
     hasCertificated: false,
     todayAttended: false,
@@ -56,8 +58,25 @@ export default function MissionScreen({ navigation }: any) {
       point: 10,
       type: 'claim',
       disabled: missionStatus.todayAttended,
-      onPress: () => {
-        /* 출석 API 호출 */
+      onPress: async () => {
+        if (isAttending) return;
+        try {
+          setIsAttending(true);
+          const data = await MissionRepository.attend();
+          setMissionStatus((prev) => ({
+            ...prev,
+            todayAttended: data.todayAttended,
+            totalMissionPoint: data.totalMissionPoint,
+          }));
+          handleModalOpen('point', {
+            usedPoint: data.pointChange,
+            currentPoint: data.point,
+            action: 'INCREASE',
+          });
+        } catch (error) {
+        } finally {
+          setIsAttending(false);
+        }
       },
     },
     {

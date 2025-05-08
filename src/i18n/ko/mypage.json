@@ -114,6 +114,7 @@
     "title": "포인트 내역",
     "pointType": {
       "signup": "회원가입 이벤트",
+      "new_signup": "회원가입 이벤트",
       "university_auth": "학교 인증 이벤트",
       "chat_request": "채팅 요청",
       "match_request": "매칭 요청",
