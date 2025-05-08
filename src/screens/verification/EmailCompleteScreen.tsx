@@ -36,6 +36,8 @@ export default function EmailCompleteScreen({ navigation, route }: EmailComplete
     } as any);
   };
 
+  const CHARACTERS_RATIO = 306 / 229;
+
   return (
     <Layout preserveHeader>
       <InnerLayout>
@@ -44,8 +46,10 @@ export default function EmailCompleteScreen({ navigation, route }: EmailComplete
             <Heading>{t('verificationComplete.title')}</Heading>
             <HeadingDescription>{t('verificationComplete.description')}</HeadingDescription>
           </View>
-          <View className="flex-1">
-            <Characters />
+          <View className="flex-1 items-center">
+            <View className="mt-6" style={{ width: '90%', aspectRatio: CHARACTERS_RATIO }}>
+              <Characters width="100%" height="100%" />
+            </View>
           </View>
         </View>
         <Button onPress={handleNavigateButton}>

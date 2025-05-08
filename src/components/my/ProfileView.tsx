@@ -189,13 +189,13 @@ const ProfileView: React.FC<ProfileViewProps> = ({
                 <View className="mt-[7px] flex-row items-center">
                   <MyText
                     size="text-[12px]"
-                    className={`rounded-lg px-1 py-[2px] font-semibold ${!user.isCertificated ? 'bg-[#E8F8F4] text-primary' : 'bg-black/10 text-textProfile'}`}
+                    className={`rounded-lg px-1 py-[2px] font-semibold ${user.isCertificated ? 'bg-[#E8F8F4] text-primary' : 'bg-black/10 text-textProfile'}`}
                   >
-                    {!user.isCertificated
+                    {user.isCertificated
                       ? t('profile.studentVerification.verified')
                       : t('profile.studentVerification.unverified')}
                   </MyText>
-                  {!user.isCertificated && (
+                  {user.isCertificated && (
                     <View className="ml-1 items-center justify-center" pointerEvents="none">
                       <SchoolCheck />
                     </View>
