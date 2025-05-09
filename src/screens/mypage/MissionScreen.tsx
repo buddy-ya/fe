@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { View, ScrollView, TouchableOpacity } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { InnerLayout, Layout, MyText } from '@/components';
 import { useModalStore } from '@/store';
 import { MissionStatusResponseDTO } from '@/types/MissionDTO';
+// SVGs
 import CalendarMission from '@assets/icons/calendar.svg';
 import MissionEn from '@assets/icons/missionEn.svg';
 import MissionKo from '@assets/icons/missionKo.svg';
@@ -14,12 +15,12 @@ import * as Localization from 'expo-localization';
 import MissionRepository from '@/api/MissionRepository';
 
 type Mission = {
-  id: 'attendance' | 'verification';
+  id: string;
   Icon: React.FC<any>;
   title: string;
   description: string;
   point: number;
-  type: 'claim' | 'navigate';
+  variant: 'claim' | 'navigate';
   disabled: boolean;
   onPress: () => void;
 };
@@ -29,70 +30,142 @@ export default function MissionScreen({ navigation }: any) {
   const locale = Localization.locale;
   const insets = useSafeAreaInsets();
   const footerHeight = insets.bottom + 54;
-  const handleModalOpen = useModalStore((state) => state.handleOpen);
-  const [isAttending, setIsAttending] = useState(false);
+  const openModal = useModalStore((s) => s.handleOpen);
+
   const [missionStatus, setMissionStatus] = useState<MissionStatusResponseDTO>({
     hasCertificated: false,
     todayAttended: false,
     totalMissionPoint: 0,
   });
+  const [loading, setLoading] = useState(false);
 
+  // 초기 데이터 fetch
   useEffect(() => {
-    const fetch = async () => {
-      try {
-        const data = await MissionRepository.get();
-        setMissionStatus(data);
-      } catch (e) {
-        console.error(e);
-      }
-    };
-    fetch();
+    MissionRepository.get().then(setMissionStatus).catch(console.error);
   }, []);
 
-  const missions: Mission[] = [
-    {
-      id: 'attendance',
-      Icon: CalendarMission,
-      title: t('mission.attendance.title'),
-      description: t('mission.attendance.description'),
-      point: 10,
-      type: 'claim',
-      disabled: missionStatus.todayAttended,
-      onPress: async () => {
-        if (isAttending) return;
-        try {
-          setIsAttending(true);
-          const data = await MissionRepository.attend();
-          setMissionStatus((prev) => ({
-            ...prev,
-            todayAttended: data.todayAttended,
-            totalMissionPoint: data.totalMissionPoint,
-          }));
-          handleModalOpen('point', {
-            usedPoint: data.pointChange,
-            currentPoint: data.point,
-            action: 'INCREASE',
-          });
-        } catch (error) {
-        } finally {
-          setIsAttending(false);
-        }
+  const handleAttend = useCallback(async () => {
+    if (loading || missionStatus.todayAttended) return;
+    setLoading(true);
+    try {
+      const data = await MissionRepository.attend();
+      setMissionStatus((prev) => ({
+        ...prev,
+        todayAttended: data.todayAttended,
+        totalMissionPoint: data.totalMissionPoint,
+      }));
+      openModal('point', {
+        usedPoint: data.pointChange,
+        currentPoint: data.point,
+        action: 'INCREASE',
+      });
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setLoading(false);
+    }
+  }, [loading, missionStatus.todayAttended, openModal]);
+
+  const missions: Mission[] = useMemo(
+    () => [
+      {
+        id: 'attendance',
+        Icon: CalendarMission,
+        title: t('mission.attendance.title'),
+        description: t('mission.attendance.description'),
+        point: 10,
+        variant: 'claim',
+        disabled: missionStatus.todayAttended,
+        onPress: handleAttend,
       },
-    },
-    {
-      id: 'verification',
-      Icon: SchoolMission,
-      title: t('mission.verification.title'),
-      description: t('mission.verification.description'),
-      point: 100,
-      type: 'navigate',
-      disabled: missionStatus.hasCertificated,
-      onPress: () =>
-        navigation.navigate('Verification', {
-          screen: 'VerificationSelect',
-        }),
-    },
-  ];
+      {
+        id: 'verification',
+        Icon: SchoolMission,
+        title: t('mission.verification.title'),
+        description: t('mission.verification.description'),
+        point: 100,
+        variant: 'navigate',
+        disabled: missionStatus.hasCertificated,
+        onPress: () => navigation.navigate('Verification', { screen: 'VerificationSelect' }),
+      },
+    ],
+    [t, missionStatus.todayAttended, missionStatus.hasCertificated, handleAttend, navigation]
+  );
+
+  function MissionBanner({ locale }: { locale: string }) {
+    return (
+      <View style={{ width: '100%', aspectRatio: 375 / 200 }}>
+        {locale.startsWith('ko') ? (
+          <MissionKo width="100%" height="100%" preserveAspectRatio="xMidYMid meet" />
+        ) : (
+          <MissionEn width="100%" height="100%" preserveAspectRatio="xMidYMid meet" />
+        )}
+      </View>
+    );
+  }
+
+  // 리스트 컴포넌트
+  function MissionList({ missions }: { missions: Mission[] }) {
+    return (
+      <>
+        {missions.map((m) => (
+          <View key={m.id} className="mb-3">
+            <MissionItem mission={m} />
+          </View>
+        ))}
+      </>
+    );
+  }
+
+  function MissionItem({ mission }: { mission: Mission }) {
+    const { Icon, title, description, point, variant, disabled, onPress } = mission;
+
+    const containerStyle = [
+      'flex-row items-center rounded-[12px] bg-white px-4 py-6',
+      variant === 'navigate' && disabled ? 'opacity-60' : '',
+    ].join(' ');
+
+    const badge =
+      variant === 'claim' ? (
+        <TouchableOpacity
+          onPress={disabled ? undefined : onPress}
+          activeOpacity={disabled ? 1 : 0.7}
+          className={[
+            'min-w-[54px] flex-row items-center justify-center rounded-[8px] px-[10px] py-[5px]',
+            disabled ? 'bg-[#E8E9EB]' : 'bg-primary',
+          ].join(' ')}
+        >
+          {!disabled && <PointIcon width={15} height={15} />}
+          <MyText className={`font-semibold text-white ${!disabled ? 'ml-[5px]' : ''}`}>
+            {disabled ? '완료' : point}
+          </MyText>
+        </TouchableOpacity>
+      ) : (
+        <View className="ml-auto flex-row items-center rounded-[8px] px-[10px] py-[5px]">
+          <PointIcon width={15} height={15} />
+          <MyText className="ml-[5px] font-semibold">{point}</MyText>
+        </View>
+      );
+
+    return (
+      <TouchableOpacity
+        onPress={disabled ? undefined : onPress}
+        disabled={disabled}
+        className={containerStyle}
+      >
+        <Icon />
+        <View className="ml-5 flex-1">
+          <MyText size="text-lg" className="font-semibold">
+            {title}
+          </MyText>
+          <MyText size="text-sm" className="mt-1">
+            {description}
+          </MyText>
+        </View>
+        {badge}
+      </TouchableOpacity>
+    );
+  }
 
   return (
     <Layout
@@ -108,66 +181,13 @@ export default function MissionScreen({ navigation }: any) {
       <ScrollView
         contentContainerStyle={{
           flexGrow: 1,
-          paddingBottom: 100,
+          paddingBottom: 60,
           backgroundColor: '#F6F6F6',
         }}
       >
-        <View style={{ width: '100%', aspectRatio: 375 / 200 }}>
-          {locale.startsWith('ko') ? (
-            <MissionKo width="100%" height="100%" preserveAspectRatio="xMidYMid meet" />
-          ) : (
-            <MissionEn width="100%" height="100%" preserveAspectRatio="xMidYMid meet" />
-          )}
-        </View>
-
+        <MissionBanner locale={locale} />
         <InnerLayout className="mt-7 bg-mainBackground">
-          {missions.map(({ id, Icon, title, description, point, type, disabled, onPress }) => (
-            <View key={id} className="mb-3">
-              <TouchableOpacity
-                onPress={disabled ? undefined : onPress}
-                disabled={disabled}
-                className={`flex-row items-center rounded-[12px] bg-white px-4 py-6 ${type === 'navigate' && disabled && 'opacity-60'}`}
-              >
-                <Icon />
-                <View className="ml-5 flex-1">
-                  <MyText size="text-lg" className="font-semibold">
-                    {title}
-                  </MyText>
-                  <MyText size="text-sm" className="mt-1">
-                    {description}
-                  </MyText>
-                </View>
-
-                {/* 포인트 or 완료 표시 */}
-                {type === 'claim' ? (
-                  <TouchableOpacity
-                    onPress={!disabled ? onPress : undefined}
-                    activeOpacity={!disabled ? 0.7 : 1}
-                    className={`min-w-[54px] flex-row items-center justify-center rounded-[8px] px-[10px] py-[5px] ${
-                      disabled ? 'bg-[#E8E9EB]' : 'bg-primary'
-                    }`}
-                  >
-                    {disabled ? null : <PointIcon width={15} height={15} />}
-                    <MyText
-                      size=""
-                      className={`font-semibold text-white ${!disabled && 'ml-[5px]'}`}
-                    >
-                      {disabled ? t('mission.completed') : point}
-                    </MyText>
-                  </TouchableOpacity>
-                ) : (
-                  <View
-                    className={`ml-auto flex-row items-center rounded-[8px] px-[10px] py-[5px]`}
-                  >
-                    <PointIcon width={15} height={15} />
-                    <MyText size="" className="ml-[5px] font-semibold">
-                      {point}
-                    </MyText>
-                  </View>
-                )}
-              </TouchableOpacity>
-            </View>
-          ))}
+          <MissionList missions={missions} />
         </InnerLayout>
       </ScrollView>
 
