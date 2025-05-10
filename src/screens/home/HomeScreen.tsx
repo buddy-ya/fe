@@ -6,8 +6,11 @@ import { Button, CategoryPager, FeedList, InnerLayout, Layout } from '@/componen
 import { useBackButton, useFeedList } from '@/hooks';
 import { FeedStackParamList } from '@/navigation/navigationRef';
 import { useModalStore, useUserStore } from '@/store';
+import MissionBannerEn from '@assets/icons/MissionFeedBannerEn.svg';
+import MissionBannerKo from '@assets/icons/missionFeedBannerKo.svg';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import * as Device from 'expo-device';
+import * as Localization from 'expo-localization';
 import { Pencil, Plus, Search } from 'lucide-react-native';
 import { useTabStore } from '@/store/useTabStore';
 import { isAndroid, CATEGORIES } from '@/utils';
@@ -25,7 +28,7 @@ export function HomeScreen({ navigation }: FeedHomeScreenProps) {
 
   const tab = selectedTab === 'myUni' ? userUniversity : 'all';
 
-  const categoriesToShow = tab === 'all' ? [CATEGORIES[0]] : CATEGORIES;
+  const categoriesToShow = tab === 'all' ? [CATEGORIES[0], CATEGORIES[2]] : [CATEGORIES[0]];
 
   const [activeCategory, setActiveCategory] = useState(categoriesToShow[0].id);
 
@@ -50,13 +53,27 @@ export function HomeScreen({ navigation }: FeedHomeScreenProps) {
   };
 
   const handleWriteButton = async () => {
-    isCertificated
-      ? navigation.navigate('FeedWrite', { initialCategoryId: activeCategory })
-      : handleModalOpen('studentCertification');
+    // isCertificated
+    //   ? navigation.navigate('FeedWrite', { initialCategoryId: activeCategory })
+    //   : handleModalOpen('studentCertification');
+    navigation.navigate('FeedWrite', { initialCategoryId: activeCategory });
   };
 
   const insets = useSafeAreaInsets();
   const writeButtonPosition = isAndroid ? insets.bottom + 100 : insets.bottom + 70;
+
+  const MissionBanner = () => {
+    const locale = Localization.locale;
+    return (
+      <View style={{ width: '100%', aspectRatio: 344 / 77 }} className="mt-4">
+        {locale.startsWith('ko') ? (
+          <MissionBannerKo width="100%" height="100%" preserveAspectRatio="xMidYMid meet" />
+        ) : (
+          <MissionBannerEn width="100%" height="100%" preserveAspectRatio="xMidYMid meet" />
+        )}
+      </View>
+    );
+  };
 
   useBackButton();
 
@@ -106,7 +123,7 @@ export function HomeScreen({ navigation }: FeedHomeScreenProps) {
           <Button
             type="circle"
             onPress={handleWriteButton}
-            className="absolute right-0 h-[48px] w-[48px]"
+            className="absolute right-0 h-[46px] w-[46px]"
             containerStyle={{ bottom: writeButtonPosition }}
             icon={Pencil}
             iconSize={22}

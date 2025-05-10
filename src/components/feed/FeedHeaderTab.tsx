@@ -1,33 +1,37 @@
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { View, TouchableOpacity } from 'react-native';
 import { MyText } from '../common';
 
+type TabKey = 'myUni' | 'buddyya';
+
 interface FeedHeaderTabProps {
-  selectedTab: 'myUni' | 'buddyya';
-  onSelectTab: (tab: 'myUni' | 'buddyya') => void;
+  selectedTab: TabKey;
+  onSelectTab: (tab: TabKey) => void;
 }
 
 export function FeedHeaderTab({ selectedTab, onSelectTab }: FeedHeaderTabProps) {
   const { t } = useTranslation('feed');
 
+  const tabs: Array<{ key: TabKey; label: string }> = [
+    { key: 'buddyya', label: t('header.buddyya') },
+    { key: 'myUni', label: t('header.myUni') },
+  ];
+
   return (
-    <View className="mt-2 flex-row items-center justify-around">
-      <TouchableOpacity onPress={() => onSelectTab('myUni')}>
-        <MyText
-          size="text-2xl"
-          className={`font-semibold ${selectedTab === 'myUni' ? '' : 'text-textLight'}`}
-        >
-          {t('header.myUni')}
-        </MyText>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={() => onSelectTab('buddyya')}>
-        <MyText
-          size="text-2xl"
-          className={`ml-4 font-semibold ${selectedTab === 'buddyya' ? '' : 'text-textLight'}`}
-        >
-          {t('header.buddyya')}
-        </MyText>
-      </TouchableOpacity>
+    <View className="flex-row items-center justify-around">
+      {tabs.map(({ key, label }, index) => (
+        <TouchableOpacity key={key} onPress={() => onSelectTab(key)}>
+          <MyText
+            size="text-2xl"
+            className={`font-semibold ${index === 1 ? 'ml-4' : ''} ${
+              selectedTab === key ? '' : 'text-textLight'
+            }`}
+          >
+            {label}
+          </MyText>
+        </TouchableOpacity>
+      ))}
     </View>
   );
 }

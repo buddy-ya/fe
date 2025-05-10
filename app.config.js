@@ -5,22 +5,27 @@ require('dotenv').config({
 
 module.exports = {
   expo: {
-    scheme: 'buddyya',
+    // General
     name: 'Buddyya',
-    owner: 'buddyya',
-    description: 'A friendly app for buddy management.',
     slug: 'buddyya',
+    scheme: 'buddyya',
+    owner: 'buddyya',
     version: '1.1.2',
     orientation: 'portrait',
     userInterfaceStyle: 'light',
+    description: 'A friendly app for buddy management.',
     newArchEnabled: false,
-    assetBundlePatterns: ['./assets/fonts/*'],
+
+    // Assets
     icon: './assets/images/icon/icon.png',
     splash: {
       image: './assets/images/icon/icon.png',
       resizeMode: 'contain',
       backgroundColor: '#00A176',
     },
+    assetBundlePatterns: ['./assets/fonts/*'],
+
+    // Plugins
     plugins: [
       [
         'expo-notifications',
@@ -45,12 +50,14 @@ module.exports = {
         },
       ],
     ],
+
+    // iOS
     ios: {
       bundleIdentifier: 'com.buddyya.app',
       supportsTablet: false,
       infoPlist: {
         UIBackgroundModes: ['remote-notification'],
-        'aps-environment': 'production',
+        apsEnvironment: 'production',
         NSAppTransportSecurity: {
           NSAllowsArbitraryLoads: true,
         },
@@ -62,6 +69,8 @@ module.exports = {
           'Buddyya requires photo library access to select images for your profile and to provide content sharing.',
       },
     },
+
+    // Android
     android: {
       package: 'com.buddyya.app',
       permissions: ['NOTIFICATIONS', 'VIBRATE', 'WAKE_LOCK'],
@@ -81,13 +90,14 @@ module.exports = {
         {
           action: 'android.intent.action.VIEW',
           category: ['android.intent.category.DEFAULT', 'android.intent.category.BROWSABLE'],
-          data: {
-            scheme: 'buddyya',
-          },
+          data: { scheme: 'buddyya' },
         },
       ],
     },
+
+    // Extras
     extra: {
+      MODE: process.env.MODE,
       BASE_URL: process.env.BASE_URL,
       BASE_DOMAIN: process.env.BASE_DOMAIN,
       eas: {

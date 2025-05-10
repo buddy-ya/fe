@@ -27,7 +27,7 @@ export function useNotification() {
 
     if (data?.type === 'AUTHORIZATION') {
       const failDeepLinkUrl = `${prefix}verification/studentIdCard`;
-      update({ isCertificated: data?.isCertificated });
+      update({ isCertificated: data?.isCertificated, point: data?.point });
       if (data?.isCertificated === false) {
         setTimeout(() => Linking.openURL(failDeepLinkUrl), delay);
       }
@@ -56,7 +56,7 @@ export function useNotification() {
     if (!data) return;
 
     if (data?.type === 'AUTHORIZATION') {
-      update({ isCertificated: data?.isCertificated });
+      update({ isCertificated: data?.isCertificated, point: data?.point });
     } else if (data?.type === 'MATCH') {
       updateMatchData(data as MatchDTO);
     } else if (data?.type === 'CHAT') {
@@ -95,9 +95,9 @@ export function useNotification() {
     );
 
     return () => {
-      Notifications.removeNotificationSubscription(backgroundListener);
-      Notifications.removeNotificationSubscription(foregroundReceivedListener);
-      Notifications.removeNotificationSubscription(foregroundResponseListener);
+      backgroundListener.remove();
+      foregroundResponseListener.remove();
+      foregroundReceivedListener.remove();
     };
   }, [update, prefix]);
 }

@@ -11,9 +11,14 @@
         "select": "Please select a profile photo"
       }
     },
+    "studentVerification": {
+      "verified": "Verified Student",
+      "unverified": "Unverified Student"
+    },
     "university": {
       "sju": "Sejong University"
     },
+    "studentCertification": "Student Verified",
     "gender": {
       "male": "Man",
       "female": "Woman"
@@ -96,7 +101,8 @@
       "chatroom_no_response_refund": "Refund Matching",
       "event_reward": "Event Reward",
       "mission_visit_reward": "Visit Reward",
-      "rejected_chat_request": "Refund Chat Request"
+      "rejected_chat_request": "Refund Chat Request",
+      "mission_certification_reward": "Student Verification Mission"
     },
     "pointChangeType": {
       "earn": "Earned",
@@ -128,6 +134,20 @@
       }
     }
   },
+  "mission": {
+    "mission": "Mission",
+    "completed": "Done",
+    "attendance": {
+      "title": "Check-in Mission",
+      "description": "Check in once a day\nto receive points"
+    },
+    "verification": {
+      "title": "School Verification",
+      "description": "Verify your school and receive a Buddyya badge and points"
+    },
+    "summary": "Points you've earned so far"
+  },
+
   "setting": "Setting",
   "certification": "Verification is already complete."
 }

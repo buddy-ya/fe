@@ -40,10 +40,8 @@ export default function EmailScreen({ navigation }: EmailScreenProps) {
   const handleNavigation = async () => {
     try {
       setLoading(true);
-      const { success } = await AuthRepository.sendCodeByMail({ email: fullEmail });
-      if (success) {
-        navigation.navigate('EmailVerificationCode', { email: fullEmail });
-      }
+      await AuthRepository.sendCodeByMail({ email: fullEmail });
+      navigation.navigate('EmailVerificationCode', { email: fullEmail });
     } catch (error: any) {
       const errorCode = error.response?.data?.code;
       if (errorCode === 1002) {

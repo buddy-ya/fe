@@ -51,7 +51,10 @@ export type FeedStackParamList = {
   };
   EmailVerification: undefined;
   EmailVerificationCode: { email: string };
-  EmailComplete: undefined;
+  EmailComplete: {
+    pointChange?: number;
+    currentPoint?: number;
+  };
   StudentIdVerification: undefined;
   StudentIdComplete: undefined;
 };
@@ -60,7 +63,10 @@ export type VerificationStackParamList = {
   VerificationSelect: undefined;
   EmailVerification: undefined;
   EmailVerificationCode: { email: string };
-  EmailComplete: undefined;
+  EmailComplete: {
+    pointChange?: number;
+    currentPoint?: number;
+  };
   StudentIdVerification: undefined;
   StudentIdComplete: undefined;
 };
@@ -68,6 +74,7 @@ export type VerificationStackParamList = {
 export type MatchstackParamList = {
   MatchHome: undefined;
   Point: undefined;
+  Mission: undefined;
   MyProfile: { id?: string; incompleteProfile?: boolean } | undefined;
   EditProfileImage: undefined;
   EditName: { isEditMode: boolean; initialName: string };

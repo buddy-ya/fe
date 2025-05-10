@@ -58,12 +58,12 @@ export function BottomModalWrapper({
                 <MyText size="text-[20px]" className="font-semibold">
                   {title}
                 </MyText>
-                <MyText size="text-[14px] mt-4" color="text-textDescription">
+                <MyText size="text-[14px]" color="text-textDescription" className="mt-4">
                   {description}
                 </MyText>
               </View>
               {children}
-              <View className="mb-2 mt-10 flex-row gap-2">
+              <View className="mb-2 mt-8 flex-row gap-2">
                 <TouchableOpacity
                   className="mr-3 flex-1 justify-center rounded-[12px] bg-[#E8E9EB] py-[12px]"
                   onPress={onClose}

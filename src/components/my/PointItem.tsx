@@ -8,18 +8,19 @@ import dayjs from 'dayjs';
 type PointItemProps = {
   point: PointDTO;
 };
-
 export function PointItem({ point }: PointItemProps) {
   const { t } = useTranslation('mypage');
-
   const { pointType, pointChangeType, pointChange, createdDate } = point;
-  const isEarn = pointChangeType === 'earn';
+
+  const changeKey = pointChangeType === 'mission' ? 'earn' : (pointChangeType as string);
+  const earnTypes: Array<'earn' | 'mission'> = ['earn', 'mission'];
+  const isEarn = earnTypes.includes(pointChangeType as any);
+
   const sign = isEarn ? '+' : '-';
   const textColor = isEarn ? 'text-green-600' : '';
 
   const typeLabel = t(`point.pointType.${pointType}`, pointType);
-  const changeTypeLabel = t(`point.pointChangeType.${pointChangeType}`, pointChangeType);
-
+  const changeTypeLabel = t(`point.pointChangeType.${changeKey}`, changeKey);
   const dateStr = dayjs(createdDate).format('YYYY-MM-DD HH:mm');
 
   return (

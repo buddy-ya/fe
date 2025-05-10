@@ -12,6 +12,10 @@
       "current": "현재 프로필 사진",
       "select": "프로필 사진을 선택해주세요"
     },
+    "studentVerification": {
+      "verified": "학교 인증 완료",
+      "unverified": "학교 미인증"
+    },
     "gender": {
       "male": "남성",
       "female": "여성"
@@ -110,6 +114,7 @@
     "title": "포인트 내역",
     "pointType": {
       "signup": "회원가입 이벤트",
+      "new_signup": "회원가입 이벤트",
       "university_auth": "학교 인증 이벤트",
       "chat_request": "채팅 요청",
       "match_request": "매칭 요청",
@@ -118,13 +123,27 @@
       "chatroom_no_response_refund": "매칭 환급",
       "event_reward": "이벤트 보상",
       "mission_visit_reward": "접속 보상",
-      "rejected_chat_request": "채팅 요청 환급"
+      "rejected_chat_request": "채팅 요청 환급",
+      "mission_certification_reward": "학교 인증 미션"
     },
     "pointChangeType": {
       "earn": "적립",
       "deduct": "차감"
     },
     "currentPoint": "보유 포인트"
+  },
+  "mission": {
+    "mission": "미션",
+    "completed": "완료",
+    "attendance": {
+      "title": "출석 미션",
+      "description": "매일 하루에 한 번\n출석을 하면 받을 수 있어요"
+    },
+    "verification": {
+      "title": "학교 인증 미션",
+      "description": "학교를 인증하고 버디야 뱃지와\n포인트를 받아보세요"
+    },
+    "summary": "지금까지 미션으로 얻은 포인트"
   },
   "setting": "설정",
   "certification": "이미 인증이 완료되었습니다."

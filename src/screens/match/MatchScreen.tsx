@@ -87,7 +87,7 @@ export default function MatchScreen({ navigation }: MatchScreenProps) {
   };
 
   const handlePointPress = () => {
-    navigation.navigate('Point');
+    navigation.navigate('Mission');
   };
 
   useBackButton();
@@ -122,7 +122,7 @@ export default function MatchScreen({ navigation }: MatchScreenProps) {
       }
       headerRight={
         <TouchableOpacity onPress={handlePointPress} className="mr-3 flex-row items-center">
-          <Point />
+          <Point width={18} height={18} />
           <MyText size="text-lg" color="text-black" className="ml-2 font-semibold">
             {point}
           </MyText>
