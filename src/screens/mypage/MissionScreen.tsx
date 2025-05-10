@@ -137,7 +137,7 @@ export default function MissionScreen({ navigation }: any) {
         >
           {!disabled && <PointIcon width={15} height={15} />}
           <MyText className={`font-semibold text-white ${!disabled ? 'ml-[5px]' : ''}`}>
-            {disabled ? '완료' : point}
+            {disabled ? t('mission.completed') : point}
           </MyText>
         </TouchableOpacity>
       ) : (
