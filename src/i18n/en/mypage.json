@@ -50,7 +50,7 @@
     }
   },
   "quickMenu": {
-    "bookmark": "Bookmarks",
+    "bookmark": "Saved",
     "myPosts": "My Posts",
     "verification": "Verification"
   },
@@ -67,7 +67,7 @@
   },
   "menuItems": {
     "title": "Settings Layout",
-    "bookmark": "Bookmarks",
+    "bookmark": "Saved",
     "myPosts": "My Posts",
     "refresh": "Student Verification Reset",
     "version": "App Version",
