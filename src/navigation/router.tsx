@@ -229,6 +229,7 @@ function FeedNavigator() {
       <FeedStack.Screen name="FeedDetail" component={SuspendedFeedDetailScreen} />
       <FeedStack.Screen name="CommentEdit" component={CommentEditScreen} />
       <FeedStack.Screen name="Profile" component={MyProfileScreen} />
+      <FeedStack.Screen name="Mission" component={MissionScreen} />
     </FeedStack.Navigator>
   );
 }
