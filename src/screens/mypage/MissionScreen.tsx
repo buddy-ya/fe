@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { View, ScrollView, TouchableOpacity } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { InnerLayout, Layout, MyText } from '@/components';
-import { useModalStore } from '@/store';
+import { useModalStore, useUserStore } from '@/store';
 import { MissionStatusResponseDTO } from '@/types/MissionDTO';
 // SVGs
 import CalendarMission from '@assets/icons/calendar.svg';
@@ -31,6 +31,7 @@ export default function MissionScreen({ navigation }: any) {
   const insets = useSafeAreaInsets();
   const footerHeight = insets.bottom + 54;
   const openModal = useModalStore((s) => s.handleOpen);
+  const update = useUserStore((s) => s.update);
 
   const [missionStatus, setMissionStatus] = useState<MissionStatusResponseDTO>({
     hasCertificated: false,
@@ -59,6 +60,7 @@ export default function MissionScreen({ navigation }: any) {
         currentPoint: data.point,
         action: 'INCREASE',
       });
+      update({ point: data.point });
     } catch (e) {
       console.error(e);
     } finally {
