@@ -119,14 +119,16 @@ export function HomeScreen({ navigation }: FeedHomeScreenProps) {
               </View>
             ))}
           </CategoryPager>
-          <Button
-            type="circle"
-            onPress={handleWriteButton}
-            className="absolute right-0 h-[46px] w-[46px]"
-            containerStyle={{ bottom: writeButtonPosition }}
-            icon={Pencil}
-            iconSize={22}
-          />
+          {activeCategory !== 'popular' && (
+            <Button
+              type="circle"
+              onPress={handleWriteButton}
+              className="absolute right-0 h-[46px] w-[46px]"
+              containerStyle={{ bottom: writeButtonPosition }}
+              icon={Pencil}
+              iconSize={22}
+            />
+          )}
         </View>
       </InnerLayout>
     </Layout>
