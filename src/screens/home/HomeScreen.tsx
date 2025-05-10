@@ -6,8 +6,11 @@ import { Button, CategoryPager, FeedList, InnerLayout, Layout } from '@/componen
 import { useBackButton, useFeedList } from '@/hooks';
 import { FeedStackParamList } from '@/navigation/navigationRef';
 import { useModalStore, useUserStore } from '@/store';
+import MissionBannerEn from '@assets/icons/MissionFeedBannerEn.svg';
+import MissionBannerKo from '@assets/icons/missionFeedBannerKo.svg';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import * as Device from 'expo-device';
+import * as Localization from 'expo-localization';
 import { Pencil, Plus, Search } from 'lucide-react-native';
 import { useTabStore } from '@/store/useTabStore';
 import { isAndroid, CATEGORIES } from '@/utils';
@@ -58,6 +61,19 @@ export function HomeScreen({ navigation }: FeedHomeScreenProps) {
 
   const insets = useSafeAreaInsets();
   const writeButtonPosition = isAndroid ? insets.bottom + 100 : insets.bottom + 70;
+
+  const MissionBanner = () => {
+    const locale = Localization.locale;
+    return (
+      <View style={{ width: '100%', aspectRatio: 344 / 77 }} className="mt-4">
+        {locale.startsWith('ko') ? (
+          <MissionBannerKo width="100%" height="100%" preserveAspectRatio="xMidYMid meet" />
+        ) : (
+          <MissionBannerEn width="100%" height="100%" preserveAspectRatio="xMidYMid meet" />
+        )}
+      </View>
+    );
+  };
 
   useBackButton();
 

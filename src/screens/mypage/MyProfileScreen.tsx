@@ -39,6 +39,7 @@ export default function MyProfileScreen({ navigation, route }: any) {
   const university = useUserStore((state) => state.university);
   const country = useUserStore((state) => state.country);
   const gender = useUserStore((state) => state.gender);
+  const isCertificated = useUserStore((state) => state.isCertificated);
   const isDefaultProfileImage = useUserStore((state) => state.isDefaultProfileImage);
   const introductionFromStore = useUserStore((state) => state.introduction);
   const buddyActivityFromStore = useUserStore((state) => state.buddyActivity);
@@ -63,6 +64,7 @@ export default function MyProfileScreen({ navigation, route }: any) {
     majors: data?.majors ?? majors,
     profileImageUrl: data?.profileImageUrl ?? profileImageUrl,
     university: data?.university ?? university,
+    isCertificated: data?.isCertificated ?? isCertificated,
     country: data?.country ?? country,
     gender: (data?.gender ?? gender) as Gender,
     introduction: data?.introduction ?? introductionFromStore,
