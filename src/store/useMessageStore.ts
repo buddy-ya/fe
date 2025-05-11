@@ -67,6 +67,7 @@ export const useMessageStore = create<MessageStore>((set, get) => ({
           msg.id === tempId ? { ...msg, status: 'failed' } : msg
         ),
         isLoading: false,
+        text: '',
         error: error.message,
       }));
     }
