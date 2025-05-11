@@ -24,7 +24,7 @@ export function FeedHeaderTab({ selectedTab, onSelectTab }: FeedHeaderTabProps) 
         <TouchableOpacity key={key} onPress={() => onSelectTab(key)}>
           <MyText
             size="text-2xl"
-            className={`font-semibold ${index === 1 ? 'ml-4' : ''} ${
+            className={`font-semibold ${index === 1 ? 'ml-3' : ''} ${
               selectedTab === key ? '' : 'text-textLight'
             }`}
           >

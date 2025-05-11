@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   View,
@@ -71,6 +71,7 @@ export default function FeedWriteScreen({ navigation, route }: FeedWriteScreenPr
   );
   const [isLoading, setIsLoading] = useState(false);
   const { t } = useTranslation('feed');
+  const scrollRef = useRef<ScrollView>(null);
 
   const queryClient = useQueryClient();
 
@@ -257,7 +258,13 @@ export default function FeedWriteScreen({ navigation, route }: FeedWriteScreenPr
       ) : (
         <KeyboardLayout footer={footerContent}>
           <InnerLayout>
-            <ScrollView className="mt-8 flex-1 pb-[50px]">
+            <ScrollView
+              ref={scrollRef}
+              className="mt-8 flex-1 pb-[50px]"
+              onContentSizeChange={() => {
+                scrollRef.current?.scrollToEnd({ animated: true });
+              }}
+            >
               <TextInput
                 className="font-semibold text-[20px]"
                 placeholder={t('write.titlePlaceholder')}
@@ -277,7 +284,10 @@ export default function FeedWriteScreen({ navigation, route }: FeedWriteScreenPr
                 placeholderTextColor="#CBCBCB"
                 maxLength={4000}
                 value={content}
-                onChangeText={setContent}
+                onChangeText={(text) => {
+                  setContent(text);
+                  scrollRef.current?.scrollToEnd({ animated: false });
+                }}
                 multiline
                 textAlignVertical="top"
                 style={{

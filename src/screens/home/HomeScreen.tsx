@@ -59,7 +59,7 @@ export function HomeScreen({ navigation }: FeedHomeScreenProps) {
     const locale = Localization.locale;
     return (
       <TouchableOpacity
-        style={{ width: '100%', aspectRatio: 344 / 77 }}
+        style={{ width: '100%', aspectRatio: 344 / 70 }}
         className="mb-3"
         activeOpacity={0.8}
         onPress={handlePressMissionBanner}

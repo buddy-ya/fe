@@ -51,7 +51,7 @@ export default function RoomListScreen({ navigation }: RoomListNavigationProps) 
     navigation.navigate('ChatRequests');
   };
 
-  const BANNER_RATIO = 343 / 77;
+  const BANNER_RATIO = 343 / 70;
   const handlePressRoom = (room: Room) => {
     navigation.navigate('ChatRoom', { id: room.id });
   };
