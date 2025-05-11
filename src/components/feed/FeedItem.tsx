@@ -205,7 +205,7 @@ export default function FeedItem({
               size="text-[15px]"
               color="text-textDescription"
               className={`${!showAllContent && hasImage ? 'flex-1' : ''}`}
-              numberOfLines={showAllContent ? 0 : 4}
+              numberOfLines={showAllContent ? 0 : 3}
             >
               <ParsedText
                 parse={[
