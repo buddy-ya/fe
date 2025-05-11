@@ -75,6 +75,8 @@ export const ChatRoomScreen: React.FC<ChatRoomScreenProps> = ({ route }) => {
     getNextPageParam: (lastPage: ChatListResponse) =>
       lastPage.hasNext ? lastPage.currentPage + 1 : undefined,
     initialPageParam: 0,
+    refetchOnMount: 'always',
+    refetchOnWindowFocus: false,
   });
 
   useEffect(() => {
@@ -117,6 +119,8 @@ export const ChatRoomScreen: React.FC<ChatRoomScreenProps> = ({ route }) => {
     try {
       await ChatSocketRepository.roomBack(roomId);
       queryClient.invalidateQueries({ queryKey: ['roomList'] });
+      queryClient.removeQueries({ queryKey: ['chats', roomId] });
+      setMessage([]);
     } catch (error) {
       console.error('채팅방 뒤로가기 실패', error);
     }
@@ -263,6 +267,9 @@ export const ChatRoomScreen: React.FC<ChatRoomScreenProps> = ({ route }) => {
 
   const handleExit = async () => {
     await ChatSocketRepository.roomOut(roomId);
+    queryClient.removeQueries({ queryKey: ['chats', roomId] });
+    queryClient.invalidateQueries({ queryKey: ['roomList'] });
+    setMessage([]);
     navigation.reset({
       index: 0,
       routes: [{ name: 'RoomList' }],
@@ -314,7 +321,7 @@ export const ChatRoomScreen: React.FC<ChatRoomScreenProps> = ({ route }) => {
               value={text}
               leftImage={
                 <TouchableOpacity onPress={onAddImage}>
-                  <View className="ml-2 mr-1 h-[24px] w-[24px] flex-row items-center">
+                  <View className="ml-1 h-[24px] w-[24px] flex-row items-center">
                     <Image size={24} strokeWidth={1} color="#797979" />
                   </View>
                 </TouchableOpacity>

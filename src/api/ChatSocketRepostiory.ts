@@ -29,24 +29,16 @@ class ChatSocketRepository {
       reconnectionDelay: 1000,
     });
 
-    this.socket.on('connect', () => {
-      console.log('WebSocket 연결 성공!', this.socket?.id);
-    });
+    this.socket.on('connect', () => {});
     this.socket.on('connect_error', (err: any) => {
       console.error('WebSocket 연결 에러:', err);
     });
 
     // — 메시지 수신 핸들러: Optimistic UI 대체 + 디버깅 로그 —
     this.socket.on('message', (chat: any) => {
-      console.log('⚡ broadcast received:', chat);
-
       const store = useMessageStore.getState();
       const currentUserId = useUserStore.getState().id;
       const existing = store.messages;
-      console.log(
-        'existing IDs:',
-        existing.map((m) => m.id)
-      );
 
       const realMessage: Message = {
         id: chat.id,
@@ -57,35 +49,17 @@ class ChatSocketRepository {
         status: 'sent',
       };
 
-      // 1) Optimistic 메시지 위치 찾기
       const idx = existing.findIndex((m) => m.id === chat.tempId);
-      console.log('findIndex for tempId', chat.tempId, ':', idx);
 
       let updated: Message[];
       if (idx > -1) {
-        // 교체
         updated = [...existing];
         updated[idx] = realMessage;
-        console.log(
-          'Replaced pending with real. updated IDs:',
-          updated.map((m) => m.id)
-        );
       } else {
-        // prepend
         updated = [realMessage, ...existing];
-        console.log(
-          'Prepended new message. updated IDs:',
-          updated.map((m) => m.id)
-        );
       }
-
       store.setMessage(updated);
-      console.log(
-        'After setMessage, store.messages IDs:',
-        useMessageStore.getState().messages.map((m) => m.id)
-      );
     });
-    // — 핸들러 끝 —
 
     this.socket.on('roomOut', (data) => {
       this.roomOutHandler?.(data);
@@ -122,14 +96,12 @@ class ChatSocketRepository {
   }
 
   sendMessage(messageData: MessageRequest): Promise<{ chat: any }> {
-    console.log("▶ emit 'message' 시도:", messageData);
     return new Promise((resolve, reject) => {
       if (!this.socket) return reject(new Error('Socket not initialized'));
       this.socket.emit(
         'message',
         messageData,
         (ack: { status: string; chat?: any; message?: string }) => {
-          console.log('◀ server ack:', ack);
           if (ack.status === 'success' && ack.chat) {
             resolve({ chat: ack.chat });
           } else {

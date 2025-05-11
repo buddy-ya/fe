@@ -12,7 +12,7 @@ import { Image as ExpoImage } from 'expo-image';
 import { Bookmark, MessageSquare, ThumbsUp, Eye, Copy } from 'lucide-react-native';
 import { getCountryFlag, getTimeAgo, isAndroid } from '@/utils';
 import { MyText } from '../common';
-import { FullScreenImage } from '../common/FullImage';
+import { FullScreenImage } from '../common/FullScreenImage';
 
 interface FeedItemProps {
   feed: Feed;
