@@ -14,7 +14,6 @@ module.exports = {
     orientation: 'portrait',
     userInterfaceStyle: 'light',
     description: 'A friendly app for buddy management.',
-    newArchEnabled: false,
 
     // Assets
     icon: './assets/images/icon/icon.png',
