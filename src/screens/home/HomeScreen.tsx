@@ -9,9 +9,8 @@ import { useModalStore, useUserStore } from '@/store';
 import MissionBannerEn from '@assets/icons/MissionFeedBannerEn.svg';
 import MissionBannerKo from '@assets/icons/missionFeedBannerKo.svg';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import * as Device from 'expo-device';
 import * as Localization from 'expo-localization';
-import { Pencil, Plus, Search } from 'lucide-react-native';
+import { Pencil, Search } from 'lucide-react-native';
 import { useTabStore } from '@/store/useTabStore';
 import { isAndroid, CATEGORIES } from '@/utils';
 import { FeedHeaderTab } from '@/components/feed/FeedHeaderTab';
@@ -27,20 +26,13 @@ export function HomeScreen({ navigation }: FeedHomeScreenProps) {
   const isCertificated = useUserStore((state) => state.isCertificated);
 
   const tab = selectedTab === 'myUni' ? userUniversity : 'all';
-
   const categoriesToShow = tab === 'all' ? [CATEGORIES[0], CATEGORIES[2]] : [CATEGORIES[0]];
-
   const [activeCategory, setActiveCategory] = useState(categoriesToShow[0].id);
 
   const feedListData = useFeedList({
     queryKey: feedKeys.lists(tab, activeCategory),
-    fetchFn: async (params) => {
-      return FeedRepository.getAll({
-        ...params,
-        university: tab,
-        category: activeCategory,
-      });
-    },
+    fetchFn: async (params) =>
+      FeedRepository.getAll({ ...params, university: tab, category: activeCategory }),
     staleTime: STALE_TIME,
   });
 
@@ -52,11 +44,12 @@ export function HomeScreen({ navigation }: FeedHomeScreenProps) {
     navigation.navigate('FeedDetail', { feedId });
   };
 
-  const handleWriteButton = async () => {
-    // isCertificated
-    //   ? navigation.navigate('FeedWrite', { initialCategoryId: activeCategory })
-    //   : handleModalOpen('studentCertification');
+  const handleWriteButton = () => {
     navigation.navigate('FeedWrite', { initialCategoryId: activeCategory });
+  };
+
+  const handlePressMissionBanner = () => {
+    navigation.navigate('Mission');
   };
 
   const insets = useSafeAreaInsets();
@@ -65,13 +58,18 @@ export function HomeScreen({ navigation }: FeedHomeScreenProps) {
   const MissionBanner = () => {
     const locale = Localization.locale;
     return (
-      <View style={{ width: '100%', aspectRatio: 344 / 77 }} className="mt-4">
+      <TouchableOpacity
+        style={{ width: '100%', aspectRatio: 344 / 70 }}
+        className="mb-3"
+        activeOpacity={0.8}
+        onPress={handlePressMissionBanner}
+      >
         {locale.startsWith('ko') ? (
           <MissionBannerKo width="100%" height="100%" preserveAspectRatio="xMidYMid meet" />
         ) : (
           <MissionBannerEn width="100%" height="100%" preserveAspectRatio="xMidYMid meet" />
         )}
-      </View>
+      </TouchableOpacity>
     );
   };
 
@@ -115,19 +113,22 @@ export function HomeScreen({ navigation }: FeedHomeScreenProps) {
                       onRefresh: feedListData.handleRefresh,
                       tintColor: '#4AA366',
                     }}
+                    ListHeaderComponent={<MissionBanner />}
                   />
                 )}
               </View>
             ))}
           </CategoryPager>
-          <Button
-            type="circle"
-            onPress={handleWriteButton}
-            className="absolute right-0 h-[46px] w-[46px]"
-            containerStyle={{ bottom: writeButtonPosition }}
-            icon={Pencil}
-            iconSize={22}
-          />
+          {activeCategory !== 'popular' && (
+            <Button
+              type="circle"
+              onPress={handleWriteButton}
+              className="absolute right-0 h-[46px] w-[46px]"
+              containerStyle={{ bottom: writeButtonPosition }}
+              icon={Pencil}
+              iconSize={22}
+            />
+          )}
         </View>
       </InnerLayout>
     </Layout>

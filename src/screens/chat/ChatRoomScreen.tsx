@@ -23,7 +23,7 @@ import { NativeStackNavigationProp, NativeStackScreenProps } from '@react-naviga
 import { useSuspenseQuery, useInfiniteQuery, useQueryClient } from '@tanstack/react-query';
 import * as Clipboard from 'expo-clipboard';
 import { ImagePickerOptions } from 'expo-image-picker';
-import { EllipsisVertical, ChevronLeft, Image } from 'lucide-react-native';
+import { EllipsisVertical, ChevronLeft, Image, ImagePlus } from 'lucide-react-native';
 import ChatRepository from '@/api/ChatRepository';
 
 const IMAGE_PICKER_OPTIONS: ImagePickerOptions = {
@@ -75,22 +75,34 @@ export const ChatRoomScreen: React.FC<ChatRoomScreenProps> = ({ route }) => {
     getNextPageParam: (lastPage: ChatListResponse) =>
       lastPage.hasNext ? lastPage.currentPage + 1 : undefined,
     initialPageParam: 0,
+    refetchOnMount: 'always',
+    refetchOnWindowFocus: false,
   });
 
   useEffect(() => {
-    if (chatData) {
-      const newMessages = chatData.pages.flatMap((page) =>
-        page.messages.map((chat) => ({
-          id: chat.id,
-          sender: chat.senderId === CURRENT_USER_ID ? 'me' : String(chat.senderId),
-          content: chat.message,
-          type: chat.type,
-          createdDate: chat.createdDate,
-        }))
-      );
-      setMessage(newMessages);
+    if (!chatData) return;
+
+    // 1) pagination 으로 받아온 메시지 리스트
+    const fetched = chatData.pages.flatMap((page) =>
+      page.messages.map((chat) => ({
+        id: chat.id,
+        sender: chat.senderId === CURRENT_USER_ID ? 'me' : String(chat.senderId),
+        content: chat.message,
+        type: chat.type,
+        createdDate: chat.createdDate,
+      }))
+    );
+
+    if (messages.length === 0) {
+      setMessage(fetched);
+    } else {
+      const existingIds = new Set(messages.map((m) => m.id));
+      const toAdd = fetched.filter((m) => !existingIds.has(m.id));
+      if (toAdd.length > 0) {
+        setMessage([...messages, ...toAdd]);
+      }
     }
-  }, [chatData, setMessage, CURRENT_USER_ID]);
+  }, [chatData, CURRENT_USER_ID]);
 
   const joinChatRoom = useCallback(async (roomId: number) => {
     try {
@@ -107,6 +119,8 @@ export const ChatRoomScreen: React.FC<ChatRoomScreenProps> = ({ route }) => {
     try {
       await ChatSocketRepository.roomBack(roomId);
       queryClient.invalidateQueries({ queryKey: ['roomList'] });
+      queryClient.removeQueries({ queryKey: ['chats', roomId] });
+      setMessage([]);
     } catch (error) {
       console.error('채팅방 뒤로가기 실패', error);
     }
@@ -185,20 +199,19 @@ export const ChatRoomScreen: React.FC<ChatRoomScreenProps> = ({ route }) => {
 
   const { handleUpload } = useImageUpload({ options: IMAGE_PICKER_OPTIONS });
 
-  // const onAddImage = async () => {
-  //   if (buddyExited) return;
-  //   try {
-  //     const selectedImages = await handleUpload();
-  //     if (!selectedImages || selectedImages.length === 0) {
-  //       return;
-  //     }
-  //     const file = selectedImages[0];
-  //     showToast(<Text>⚠️</Text>, file.fileName);
-  //     await sendImageMessage(roomId, file);
-  //   } catch (error: any) {
-  //     showToast(<Text>⚠️</Text>, t('toast.sendFailed'));
-  //   }
-  // };
+  const onAddImage = async () => {
+    if (buddyExited) return;
+    try {
+      const selectedImages = await handleUpload();
+      if (!selectedImages || selectedImages.length === 0) {
+        return;
+      }
+      const file = selectedImages[0];
+      await sendImageMessage(roomId, file);
+    } catch (error: any) {
+      showToast(<Text>⚠️</Text>, t('toast.sendFailed'));
+    }
+  };
 
   const renderMessageItem = useCallback(
     ({ item, index }: { item: Message; index: number }) => {
@@ -254,6 +267,9 @@ export const ChatRoomScreen: React.FC<ChatRoomScreenProps> = ({ route }) => {
 
   const handleExit = async () => {
     await ChatSocketRepository.roomOut(roomId);
+    queryClient.removeQueries({ queryKey: ['chats', roomId] });
+    queryClient.invalidateQueries({ queryKey: ['roomList'] });
+    setMessage([]);
     navigation.reset({
       index: 0,
       routes: [{ name: 'RoomList' }],
@@ -303,10 +319,17 @@ export const ChatRoomScreen: React.FC<ChatRoomScreenProps> = ({ route }) => {
           <View>
             <Input
               value={text}
+              leftImage={
+                <TouchableOpacity onPress={onAddImage}>
+                  <View className="ml-1 h-[24px] w-[24px] flex-row items-center">
+                    <Image size={24} strokeWidth={1} color="#797979" />
+                  </View>
+                </TouchableOpacity>
+              }
               onChange={handleChange}
               onSubmit={onSubmit}
               disabled={buddyExited}
-              maxLength={1000}
+              maxLength={1500}
               placeholder={
                 buddyExited
                   ? t('room.systemExit', { name: roomData?.name })

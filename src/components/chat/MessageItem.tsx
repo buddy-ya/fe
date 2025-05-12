@@ -1,12 +1,12 @@
 import React, { useMemo, useState } from 'react';
-import { View, TouchableOpacity, ActivityIndicator } from 'react-native';
-import { Linking, Alert } from 'react-native';
+import { View, TouchableOpacity, ActivityIndicator, Alert, Linking } from 'react-native';
 import ParsedText from 'react-native-parsed-text';
 import { Message } from '@/model';
 import { Room } from '@/types';
 import { Image as ExpoImage } from 'expo-image';
 import { CountryID, getCountryFlag } from '@/utils';
 import { MyText } from '../common';
+import { FullScreenImage } from '../common/FullScreenImage';
 
 interface MessageProps {
   message: Message;
@@ -18,7 +18,7 @@ interface MessageProps {
   isLastMessageOfUser: boolean;
   onLongPress?: (content: string) => void;
   onProfilePress?: (senderId: string) => void;
-  onRetry?: (message: Message) => void; // 재전송 기능을 위한 콜백
+  onRetry?: (message: Message) => void;
 }
 
 const MessageItem: React.FC<MessageProps> = ({
@@ -33,13 +33,16 @@ const MessageItem: React.FC<MessageProps> = ({
   onProfilePress,
   onRetry,
 }) => {
-  const [isFullScreen, setIsFullScreen] = useState(false); // 모달 열림 상태
+  const [fullScreenImage, setFullScreenImage] = useState<{
+    visible: boolean;
+    url: string;
+  }>({ visible: false, url: '' });
+
   const { profileImageUrl, country, name } = roomData;
 
-  // 이미지 클릭 시 전체화면 모달 열기
   const handleImagePress = () => {
     if (message.type === 'IMAGE') {
-      setIsFullScreen(true);
+      setFullScreenImage({ visible: true, url: message.content });
     }
   };
 
@@ -49,9 +52,15 @@ const MessageItem: React.FC<MessageProps> = ({
     if (supported) {
       await Linking.openURL(link);
     } else {
-      Alert.alert('Notice', 'This link cannot be opened.', [{ text: 'Confrim' }], {
+      Alert.alert('Notice', 'This link cannot be opened.', [{ text: 'Confirm' }], {
         cancelable: true,
       });
+    }
+  };
+
+  const handleLongPress = () => {
+    if (message.type === 'TALK' && onLongPress) {
+      onLongPress(message.content);
     }
   };
 
@@ -63,16 +72,14 @@ const MessageItem: React.FC<MessageProps> = ({
       return isFirstMessage
         ? 'rounded-tl-xl rounded-bl-xl rounded-tr-sm rounded-br-xl'
         : 'rounded-xl';
-    } else {
-      return isFirstMessage ? 'rounded-tr-xl rounded-br-xl rounded-bl-xl' : 'rounded-xl';
     }
+    return isFirstMessage ? 'rounded-tr-xl rounded-br-xl rounded-bl-xl' : 'rounded-xl';
   }, [message.type, isCurrentUser, isFirstMessage]);
 
-  // 이미지 메시지도 max-w-[70%]로 제한 (텍스트 메시지는 패딩과 배경색 포함)
   const containerClasses =
     message.type === 'IMAGE'
-      ? `${bubbleStyle} ${'max-w-[70%]'}`
-      : `px-4 py-2.5 ${bubbleStyle} ${'max-w-[70%]'} ${
+      ? `${bubbleStyle} max-w-[70%]`
+      : `px-4 py-2.5 ${bubbleStyle} max-w-[70%] ${
           isCurrentUser ? (isFirstMessage ? 'mt-3 bg-primary' : 'bg-primary') : 'bg-[#F4F4F4]'
         }`;
 
@@ -81,7 +88,6 @@ const MessageItem: React.FC<MessageProps> = ({
     return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   }, [message.createdDate]);
 
-  // 메시지 타입에 따라 컨텐츠 렌더링
   const renderContent = useMemo(() => {
     if (message.type === 'IMAGE') {
       return (
@@ -118,13 +124,7 @@ const MessageItem: React.FC<MessageProps> = ({
     );
   }, [message, isCurrentUser]);
 
-  const handleLongPress = () => {
-    if (message.type === 'TALK' && onLongPress) {
-      onLongPress(message.content);
-    }
-  };
-
-  // SYSTEM 메시지면 별도 UI 처리
+  // SYSTEM message
   if (message.type === 'SYSTEM') {
     return (
       <View className="my-7 items-center justify-center">
@@ -176,23 +176,32 @@ const MessageItem: React.FC<MessageProps> = ({
               <MyText size="text-xs" className="mx-[5px] self-end text-gray-500">
                 {formattedTime}
               </MyText>
-              {isCurrentUser && message.status && message.status !== 'sent' && (
-                <>
-                  {message.status === 'pending' ? (
-                    <ActivityIndicator size="small" style={{ marginLeft: 5 }} />
-                  ) : (
-                    <TouchableOpacity className="ml-[5px]">
-                      <MyText size="text-sm" className="mr-1">
-                        ⚠️
-                      </MyText>
-                    </TouchableOpacity>
-                  )}
-                </>
-              )}
+              {isCurrentUser &&
+                message.status &&
+                message.status !== 'sent' &&
+                (message.status === 'pending' ? (
+                  <ActivityIndicator size="small" style={{ marginLeft: 5 }} />
+                ) : (
+                  <TouchableOpacity className="ml-[5px]">
+                    <MyText size="text-sm" className="mr-1">
+                      ⚠️
+                    </MyText>
+                  </TouchableOpacity>
+                ))}
             </View>
           )}
         </View>
       </View>
+
+      {/* Fullscreen image modal */}
+      {fullScreenImage.visible && (
+        <FullScreenImage
+          visible={fullScreenImage.visible}
+          imageUrls={[fullScreenImage.url]}
+          initialIndex={0}
+          onClose={() => setFullScreenImage({ visible: false, url: '' })}
+        />
+      )}
     </>
   );
 };

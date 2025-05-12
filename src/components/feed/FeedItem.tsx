@@ -12,7 +12,7 @@ import { Image as ExpoImage } from 'expo-image';
 import { Bookmark, MessageSquare, ThumbsUp, Eye, Copy } from 'lucide-react-native';
 import { getCountryFlag, getTimeAgo, isAndroid } from '@/utils';
 import { MyText } from '../common';
-import { FullScreenImage } from '../common/FullImage';
+import { FullScreenImage } from '../common/FullScreenImage';
 
 interface FeedItemProps {
   feed: Feed;
@@ -138,7 +138,7 @@ export default function FeedItem({
     const hasImage = imageUrls.length > 0;
     return (
       <View
-        className={`mb-4 mt-[4px] rounded-[20px] border-[0.3px] border-b-[0px] border-borderFeed bg-white p-4 pb-5 ${
+        className={`mb-2 mt-[4px] rounded-[20px] border-[0.3px] border-b-[0px] border-borderFeed bg-white p-4 pb-5 ${
           showAllContent && 'rounded-none'
         }`}
       >

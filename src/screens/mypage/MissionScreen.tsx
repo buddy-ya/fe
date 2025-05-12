@@ -1,11 +1,10 @@
 import React, { useEffect, useState, useMemo, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import { View, ScrollView, TouchableOpacity } from 'react-native';
+import { View, ScrollView, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { InnerLayout, Layout, MyText } from '@/components';
 import { useModalStore, useUserStore } from '@/store';
 import { MissionStatusResponseDTO } from '@/types/MissionDTO';
-// SVGs
 import CalendarMission from '@assets/icons/calendar.svg';
 import MissionEn from '@assets/icons/missionEn.svg';
 import MissionKo from '@assets/icons/missionKo.svg';
@@ -22,6 +21,7 @@ type Mission = {
   point: number;
   variant: 'claim' | 'navigate';
   disabled: boolean;
+  loading: boolean;
   onPress: () => void;
 };
 
@@ -29,25 +29,28 @@ export default function MissionScreen({ navigation }: any) {
   const { t } = useTranslation('mypage');
   const locale = Localization.locale;
   const insets = useSafeAreaInsets();
-  const footerHeight = insets.bottom + 54;
   const openModal = useModalStore((s) => s.handleOpen);
-  const update = useUserStore((s) => s.update);
+  const updateUser = useUserStore((s) => s.update);
 
   const [missionStatus, setMissionStatus] = useState<MissionStatusResponseDTO>({
     hasCertificated: false,
     todayAttended: false,
     totalMissionPoint: 0,
   });
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [attendingLoading, setAttendingLoading] = useState(false);
 
-  // 초기 데이터 fetch
   useEffect(() => {
-    MissionRepository.get().then(setMissionStatus).catch(console.error);
+    setLoading(true);
+    MissionRepository.get()
+      .then(setMissionStatus)
+      .catch(console.error)
+      .finally(() => setLoading(false));
   }, []);
 
   const handleAttend = useCallback(async () => {
-    if (loading || missionStatus.todayAttended) return;
-    setLoading(true);
+    if (missionStatus.todayAttended) return;
+    setAttendingLoading(true);
     try {
       const data = await MissionRepository.attend();
       setMissionStatus((prev) => ({
@@ -60,13 +63,13 @@ export default function MissionScreen({ navigation }: any) {
         currentPoint: data.point,
         action: 'INCREASE',
       });
-      update({ point: data.point });
+      updateUser({ point: data.point });
     } catch (e) {
       console.error(e);
     } finally {
-      setLoading(false);
+      setAttendingLoading(false);
     }
-  }, [loading, missionStatus.todayAttended, openModal]);
+  }, [missionStatus.todayAttended, openModal, updateUser]);
 
   const missions: Mission[] = useMemo(
     () => [
@@ -78,6 +81,7 @@ export default function MissionScreen({ navigation }: any) {
         point: 10,
         variant: 'claim',
         disabled: missionStatus.todayAttended,
+        loading: attendingLoading,
         onPress: handleAttend,
       },
       {
@@ -88,13 +92,26 @@ export default function MissionScreen({ navigation }: any) {
         point: 100,
         variant: 'navigate',
         disabled: missionStatus.hasCertificated,
+        loading: false,
         onPress: () => navigation.navigate('Verification', { screen: 'VerificationSelect' }),
       },
     ],
-    [t, missionStatus.todayAttended, missionStatus.hasCertificated, handleAttend, navigation]
+    [t, missionStatus, handleAttend, navigation]
   );
 
-  function MissionBanner({ locale }: { locale: string }) {
+  if (loading) {
+    return (
+      <Layout showHeader isBackgroundWhite headerCenter={<MyText>{t('mission.mission')}</MyText>}>
+        <View className="flex-1 items-center justify-center">
+          <ActivityIndicator size="large" />
+        </View>
+      </Layout>
+    );
+  }
+
+  const footerHeight = insets.bottom + 54;
+
+  function MissionBanner() {
     return (
       <View style={{ width: '100%', aspectRatio: 375 / 200 }}>
         {locale.startsWith('ko') ? (
@@ -106,7 +123,6 @@ export default function MissionScreen({ navigation }: any) {
     );
   }
 
-  // 리스트 컴포넌트
   function MissionList({ missions }: { missions: Mission[] }) {
     return (
       <>
@@ -121,26 +137,30 @@ export default function MissionScreen({ navigation }: any) {
 
   function MissionItem({ mission }: { mission: Mission }) {
     const { Icon, title, description, point, variant, disabled, onPress } = mission;
-
     const containerStyle = [
       'flex-row items-center rounded-[12px] bg-white px-4 py-6',
       variant === 'navigate' && disabled ? 'opacity-60' : '',
     ].join(' ');
-
     const badge =
       variant === 'claim' ? (
         <TouchableOpacity
-          onPress={disabled ? undefined : onPress}
+          onPress={disabled || loading ? undefined : onPress}
           activeOpacity={disabled ? 1 : 0.7}
           className={[
             'min-w-[54px] flex-row items-center justify-center rounded-[8px] px-[10px] py-[5px]',
             disabled ? 'bg-[#E8E9EB]' : 'bg-primary',
           ].join(' ')}
         >
-          {!disabled && <PointIcon width={15} height={15} />}
-          <MyText className={`font-semibold text-white ${!disabled ? 'ml-[5px]' : ''}`}>
-            {disabled ? t('mission.completed') : point}
-          </MyText>
+          {loading ? (
+            <ActivityIndicator size="small" color="#fff" />
+          ) : (
+            <>
+              {!disabled && <PointIcon width={15} height={15} />}
+              <MyText className={`font-semibold text-white ${!disabled ? 'ml-[5px]' : ''}`}>
+                {disabled ? t('mission.completed') : point}
+              </MyText>
+            </>
+          )}
         </TouchableOpacity>
       ) : (
         <View className="ml-auto flex-row items-center rounded-[8px] px-[10px] py-[5px]">
@@ -187,12 +207,11 @@ export default function MissionScreen({ navigation }: any) {
           backgroundColor: '#F6F6F6',
         }}
       >
-        <MissionBanner locale={locale} />
+        <MissionBanner />
         <InnerLayout className="mt-7 bg-mainBackground">
           <MissionList missions={missions} />
         </InnerLayout>
       </ScrollView>
-
       <View
         className="absolute bottom-0 w-full border-t border-[#F6F6F6] bg-[#F7FFFE] p-5 px-7"
         style={{ height: footerHeight }}

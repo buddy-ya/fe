@@ -18,19 +18,25 @@ interface FeedListProps {
   refreshControl?: RefreshControlProps | null;
   emptyStateMessage?: string;
   emptyStateNamespace?: string;
+
+  /** 헤더 컴포넌트 (e.g. MissionBanner) */
+  ListHeaderComponent?: React.ReactElement;
+  /** 스티키 헤더 인덱스 */
+  stickyHeaderIndices?: number[];
 }
 
 function FeedList({
   feeds,
   onLike,
   onBookmark,
-  onView,
   onPress,
   className,
   onLoadMore,
   refreshControl,
   hasMore,
   emptyStateNamespace = 'feed',
+  ListHeaderComponent,
+  stickyHeaderIndices,
 }: FeedListProps) {
   const { t } = useTranslation('common');
   const renderFeedItem = useCallback(
@@ -53,7 +59,7 @@ function FeedList({
     <FlatList
       data={feeds}
       renderItem={renderFeedItem}
-      className={`mt-1 pt-3 ${className}`}
+      className={`pt-1 ${className}`}
       contentContainerStyle={{ paddingBottom: 60 }}
       keyExtractor={(item) => `feed-${item.id}`}
       onEndReached={hasMore ? onLoadMore : undefined}
@@ -64,6 +70,8 @@ function FeedList({
       windowSize={7}
       scrollEventThrottle={16}
       refreshControl={refreshControl ? <RefreshControl {...refreshControl} /> : undefined}
+      ListHeaderComponent={ListHeaderComponent}
+      stickyHeaderIndices={stickyHeaderIndices}
     />
   );
 }

@@ -21,7 +21,7 @@ export function CategorySelectModal({
 }: CategorySelectModalProps) {
   const { t } = useTranslation('feed');
   const { selectedTab } = useTabStore();
-  const categories = selectedTab === 'buddyya' ? [CATEGORIES[0]] : CATEGORIES;
+  const categories = selectedTab === 'buddyya' ? [CATEGORIES[0]] : [CATEGORIES[0]];
 
   const slideAnim = useRef(new Animated.Value(100)).current;
 
