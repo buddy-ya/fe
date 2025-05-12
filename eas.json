@@ -22,7 +22,9 @@
     },
     "production": {
       "autoIncrement": true,
-      "android": {},
+      "android": {
+        "buildType": "apk"
+      },
       "ios": {
         "buildConfiguration": "Release",
         "scheme": "buddyya"
