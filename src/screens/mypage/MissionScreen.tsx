@@ -21,6 +21,7 @@ type Mission = {
   point: number;
   variant: 'claim' | 'navigate';
   disabled: boolean;
+  loading: boolean;
   onPress: () => void;
 };
 
@@ -37,6 +38,7 @@ export default function MissionScreen({ navigation }: any) {
     totalMissionPoint: 0,
   });
   const [loading, setLoading] = useState(true);
+  const [attendingLoading, setAttendingLoading] = useState(false);
 
   useEffect(() => {
     setLoading(true);
@@ -48,7 +50,7 @@ export default function MissionScreen({ navigation }: any) {
 
   const handleAttend = useCallback(async () => {
     if (missionStatus.todayAttended) return;
-    setLoading(true);
+    setAttendingLoading(true);
     try {
       const data = await MissionRepository.attend();
       setMissionStatus((prev) => ({
@@ -65,7 +67,7 @@ export default function MissionScreen({ navigation }: any) {
     } catch (e) {
       console.error(e);
     } finally {
-      setLoading(false);
+      setAttendingLoading(false);
     }
   }, [missionStatus.todayAttended, openModal, updateUser]);
 
@@ -79,6 +81,7 @@ export default function MissionScreen({ navigation }: any) {
         point: 10,
         variant: 'claim',
         disabled: missionStatus.todayAttended,
+        loading: attendingLoading,
         onPress: handleAttend,
       },
       {
@@ -89,6 +92,7 @@ export default function MissionScreen({ navigation }: any) {
         point: 100,
         variant: 'navigate',
         disabled: missionStatus.hasCertificated,
+        loading: false,
         onPress: () => navigation.navigate('Verification', { screen: 'VerificationSelect' }),
       },
     ],
@@ -140,17 +144,23 @@ export default function MissionScreen({ navigation }: any) {
     const badge =
       variant === 'claim' ? (
         <TouchableOpacity
-          onPress={disabled ? undefined : onPress}
+          onPress={disabled || loading ? undefined : onPress}
           activeOpacity={disabled ? 1 : 0.7}
           className={[
             'min-w-[54px] flex-row items-center justify-center rounded-[8px] px-[10px] py-[5px]',
             disabled ? 'bg-[#E8E9EB]' : 'bg-primary',
           ].join(' ')}
         >
-          {!disabled && <PointIcon width={15} height={15} />}
-          <MyText className={`font-semibold text-white ${!disabled ? 'ml-[5px]' : ''}`}>
-            {disabled ? t('mission.completed') : point}
-          </MyText>
+          {loading ? (
+            <ActivityIndicator size="small" color="#fff" />
+          ) : (
+            <>
+              {!disabled && <PointIcon width={15} height={15} />}
+              <MyText className={`font-semibold text-white ${!disabled ? 'ml-[5px]' : ''}`}>
+                {disabled ? t('mission.completed') : point}
+              </MyText>
+            </>
+          )}
         </TouchableOpacity>
       ) : (
         <View className="ml-auto flex-row items-center rounded-[8px] px-[10px] py-[5px]">
