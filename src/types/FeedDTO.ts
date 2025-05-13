@@ -44,7 +44,8 @@ export interface Feed {
   isFeedOwner: boolean;
   isLiked: boolean;
   isBookmarked: boolean;
-  isProfileImageUpload: boolean;
+  isCertificated: boolean;
+  isPinned: boolean;
   isProfileVisible: boolean;
   createdDate: string;
   isStudentDeleted: boolean;

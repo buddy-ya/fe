@@ -29,10 +29,26 @@ export function HomeScreen({ navigation }: FeedHomeScreenProps) {
   const categoriesToShow = tab === 'all' ? [CATEGORIES[0], CATEGORIES[2]] : [CATEGORIES[0]];
   const [activeCategory, setActiveCategory] = useState(categoriesToShow[0].id);
 
+  const isPopular = activeCategory === 'popular';
+
+  const fetchFn = async (params: any) => {
+    if (isPopular) {
+      return FeedRepository.getPopular({
+        ...params,
+        university: tab,
+        category: activeCategory,
+      });
+    }
+    return FeedRepository.getAll({
+      ...params,
+      university: tab,
+      category: activeCategory,
+    });
+  };
+
   const feedListData = useFeedList({
     queryKey: feedKeys.lists(tab, activeCategory),
-    fetchFn: async (params) =>
-      FeedRepository.getAll({ ...params, university: tab, category: activeCategory }),
+    fetchFn,
     staleTime: STALE_TIME,
   });
 

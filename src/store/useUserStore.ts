@@ -27,6 +27,8 @@ export type UserState = {
   banReason?: string;
   point: number;
   role: Role;
+  isMatchingActive?: boolean;
+  isFeedActive?: boolean;
   introduction?: string;
   buddyActivity?: string;
   isMatchingProfileCompleted?: boolean;

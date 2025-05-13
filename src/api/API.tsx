@@ -14,8 +14,6 @@ export const API = axios.create({
   headers: { 'Content-Type': 'application/json' },
 });
 
-Alert.alert('🚨 ENV DEBUG 🚨', `BASE_URL: ${BASE_URL}\n`);
-
 export const reissueToken = async (
   refreshToken: string
 ): Promise<{ accessToken: string; refreshToken: null }> => {
