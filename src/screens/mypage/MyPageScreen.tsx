@@ -65,11 +65,15 @@ export default function MyPageScreen({ navigation }: MyPageScreenProps) {
       ) : (
         <ShieldAlert size={24} color="#282828" strokeWidth={1.5} />
       ),
-      onPress: isCertificated
-        ? () => {
-            handleShowToast();
-          }
-        : () => navigation.navigate('Verification', { screen: 'Verification' } as any),
+      disabled: university === 'all',
+      onPress: () => {
+        if (university === 'all') return;
+        if (isCertificated) {
+          handleShowToast();
+        } else {
+          navigation.navigate('Verification', { screen: 'Verification' } as any);
+        }
+      },
     },
   ];
 
@@ -128,15 +132,17 @@ export default function MyPageScreen({ navigation }: MyPageScreenProps) {
           </View>
         </TouchableOpacity>
         <View className="mt-4 flex-row rounded-t-[12px] bg-white pb-5 pt-5">
-          {quickMenuItems.map(({ key, label, icon, onPress }) => (
+          {quickMenuItems.map(({ key, label, icon, onPress, disabled }) => (
             <TouchableOpacity
               key={key}
               className="flex-1 items-center"
               onPress={onPress}
               hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
             >
-              <View className="mb-1">{icon}</View>
-              {label}
+              <View className={`mb-1 ${disabled && 'opacity-40'}`}>
+                {icon}
+                {label}
+              </View>
             </TouchableOpacity>
           ))}
         </View>

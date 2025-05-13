@@ -134,10 +134,8 @@ export default function NotRequestedView({
   const handleModalOpen = useModalStore((state) => state.handleOpen);
   const userUniv = useUserStore((state) => state.university);
   const userGender = useUserStore((state) => state.gender);
-  const userProfileImageUrl = useUserStore((state) => state.profileImageUrl);
-  const userName = useUserStore((state) => state.name);
   const userCountry = useUserStore((state) => state.country);
-  const userIsCertificated = useUserStore((state) => state.isCertificated);
+  const userUnivMatchingActive = useUserStore((state) => state.isMatchingActive);
 
   const universityOptions: Option[] = [
     {
@@ -145,29 +143,29 @@ export default function NotRequestedView({
       label: t('match.not_requested.university.different'),
       icon: DiffUniIcon,
       category: 'university',
-      locked: true,
     },
     {
       value: 'SAME',
       label: t('match.not_requested.university.same'),
       icon: UNIVERSITY_ICONS[userUniv as UniversityID],
       category: 'university',
+      locked: userUnivMatchingActive,
     },
   ];
 
   const countryOption: Option[] = [
-    {
-      value: 'GLOBAL',
-      label: t('match.not_requested.country.global'),
-      icon: GlobalIcon,
-      category: 'country',
-    },
     {
       value: 'KOREAN',
       label: t('match.not_requested.country.korea'),
       icon: KoreaIcon,
       category: 'country',
       invisible: userCountry === 'ko',
+    },
+    {
+      value: 'GLOBAL',
+      label: t('match.not_requested.country.global'),
+      icon: GlobalIcon,
+      category: 'country',
     },
   ];
 

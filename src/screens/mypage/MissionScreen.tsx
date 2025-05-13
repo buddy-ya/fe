@@ -31,6 +31,7 @@ export default function MissionScreen({ navigation }: any) {
   const insets = useSafeAreaInsets();
   const openModal = useModalStore((s) => s.handleOpen);
   const updateUser = useUserStore((s) => s.update);
+  const university = useUserStore((s) => s.university);
 
   const [missionStatus, setMissionStatus] = useState<MissionStatusResponseDTO>({
     hasCertificated: false,
@@ -91,7 +92,7 @@ export default function MissionScreen({ navigation }: any) {
         description: t('mission.verification.description'),
         point: 100,
         variant: 'navigate',
-        disabled: missionStatus.hasCertificated,
+        disabled: missionStatus.hasCertificated || university === 'all',
         loading: false,
         onPress: () => navigation.navigate('Verification', { screen: 'VerificationSelect' }),
       },
