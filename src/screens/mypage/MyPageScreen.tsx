@@ -139,10 +139,8 @@ export default function MyPageScreen({ navigation }: MyPageScreenProps) {
               onPress={onPress}
               hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
             >
-              <View className={`mb-1 ${disabled && 'opacity-40'}`}>
-                {icon}
-                {label}
-              </View>
+              <View className={`mb-1 ${disabled && 'opacity-40'}`}>{icon}</View>
+              <View className={`${disabled && 'opacity-40'}`}>{label}</View>
             </TouchableOpacity>
           ))}
         </View>
