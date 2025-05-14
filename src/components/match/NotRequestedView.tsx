@@ -92,13 +92,14 @@ const OptionSection = ({
   checkSize,
   showBorder = false,
 }: OptionSectionProps) => {
+  const visibleOptions = options.filter((opt) => !opt.invisible);
   return (
     <View className={`${showBorder && 'border-b'} border-[#F6F6F6] px-5 py-3`}>
       <MyText size="text-sm" color="text-textDescription" className="mb-4">
         {title}
       </MyText>
       <View className="flex-row gap-10">
-        {options.map((option) => (
+        {visibleOptions.map((option) => (
           <View key={option.value} className="items-center">
             <OptionButton
               option={option}
@@ -165,7 +166,7 @@ export default function NotRequestedView({
       label: t('match.not_requested.university.same'),
       icon: UNIVERSITY_ICONS[userUniv as UniversityID],
       category: 'university',
-      locked: userUnivMatchingActive,
+      locked: !userUnivMatchingActive,
     },
   ];
 
