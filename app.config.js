@@ -10,7 +10,7 @@ module.exports = {
     slug: 'buddyya',
     scheme: 'buddyya',
     owner: 'buddyya',
-    version: '1.1.4',
+    version: '1.1.5',
     orientation: 'portrait',
     userInterfaceStyle: 'light',
     description: 'A friendly app for buddy management.',
