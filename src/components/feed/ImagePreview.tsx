@@ -1,5 +1,5 @@
-import { X } from 'lucide-react-native';
 import { Image, ScrollView, TouchableOpacity, View } from 'react-native';
+import { X } from 'lucide-react-native';
 
 interface ImagePreviewProps {
   images: Array<{ uri: string }>;
@@ -19,7 +19,7 @@ export function ImagePreview({ images, onRemove }: ImagePreviewProps) {
         {images.map((image, index) => (
           <View key={index} className="mr-2" style={{ overflow: 'visible' }}>
             <View className="relative">
-              <Image source={{ uri: image.uri }} className="h-32 w-32 rounded-[12px]" />
+              <Image source={{ uri: image.uri }} className="h-16 w-16 rounded-[12px]" />
               <TouchableOpacity
                 onPress={() => onRemove(index)}
                 style={{

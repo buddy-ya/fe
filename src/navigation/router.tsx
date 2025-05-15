@@ -225,7 +225,11 @@ function FeedNavigator() {
         options={{ gestureEnabled: false }}
       />
       <FeedStack.Screen name="FeedSearch" component={FeedSearchScreen} />
-      <FeedStack.Screen name="FeedWrite" component={FeedWriteScreen} />
+      <FeedStack.Screen
+        name="FeedWrite"
+        component={FeedWriteScreen}
+        options={{ gestureEnabled: false }}
+      />
       <FeedStack.Screen name="FeedDetail" component={SuspendedFeedDetailScreen} />
       <FeedStack.Screen name="CommentEdit" component={CommentEditScreen} />
       <FeedStack.Screen name="Profile" component={MyProfileScreen} />
