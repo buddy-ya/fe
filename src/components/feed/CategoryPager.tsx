@@ -29,9 +29,16 @@ export default function CategoryPager({
   const scrollViewRef = useRef<ScrollView>(null);
 
   useEffect(() => {
-    setActiveIndex(0);
-    pagerRef.current?.setPage(0);
-    scrollViewRef.current?.scrollTo({ x: 0, animated: true });
+    let isMounted = true;
+    setTimeout(() => {
+      if (!isMounted) return;
+      setActiveIndex(0);
+      pagerRef.current?.setPage(0);
+      scrollViewRef.current?.scrollTo({ x: 0, animated: true });
+    }, 0);
+    return () => {
+      isMounted = false;
+    };
   }, [currentTab]);
 
   const handlePageSelected = (page: number) => {
