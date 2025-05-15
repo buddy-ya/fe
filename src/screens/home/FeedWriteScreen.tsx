@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { View, TouchableOpacity, TextInput, Alert, Platform, Switch } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
 import { feedKeys, FeedRepository } from '@/api';
 import {
   Layout,
@@ -42,6 +43,7 @@ export default function FeedWriteScreen({ navigation, route }: FeedWriteScreenPr
   const { selectedTab } = useTabStore();
   const userUniversity = useUserStore((s) => s.university);
   const tab = selectedTab === 'myUni' ? userUniversity : 'all';
+  const scrollViewRef = useRef<ScrollView>(null);
 
   const [selectedCategory, setSelectedCategory] = useState(
     feed
@@ -81,7 +83,13 @@ export default function FeedWriteScreen({ navigation, route }: FeedWriteScreenPr
           width: asset.width,
           height: asset.height,
         }));
-        setImages((prev) => [...prev, ...newImages].slice(0, 5));
+        setImages((prev) => {
+          const updated = [...prev, ...newImages].slice(0, 5);
+          setTimeout(() => {
+            scrollViewRef.current?.scrollToEnd({ animated: true });
+          }, 50);
+          return updated;
+        });
       }
     } catch (error) {
       Alert.alert('Error', 'Failed to upload image');
@@ -220,32 +228,34 @@ export default function FeedWriteScreen({ navigation, route }: FeedWriteScreenPr
         <Loading />
       ) : (
         <KeyboardLayout footer={footerContent}>
-          <InnerLayout className="flex-1">
-            <TextInput
-              className="mt-3 font-semibold text-[18px]"
-              placeholder={t('write.titlePlaceholder')}
-              placeholderTextColor="#CBCBCB"
-              value={title}
-              maxLength={100}
-              onChangeText={setTitle}
-              style={{ textAlignVertical: 'top', padding: 0 }}
-            />
-            <TextInput
-              className="mt-5 font-medium text-[16px]"
-              placeholder={t('write.contentPlaceholder')}
-              placeholderTextColor="#CBCBCB"
-              value={content}
-              onChangeText={setContent}
-              style={{
-                flex: 1,
-                textAlignVertical: 'top',
-                paddingTop: Platform.OS === 'android' ? 0 : undefined,
-              }}
-              multiline
-              scrollEnabled
-              maxLength={4000}
-            />
-          </InnerLayout>
+          <ScrollView ref={scrollViewRef}>
+            <InnerLayout className="flex-1">
+              <TextInput
+                className="mt-3 font-semibold text-[18px]"
+                placeholder={t('write.titlePlaceholder')}
+                placeholderTextColor="#CBCBCB"
+                value={title}
+                maxLength={100}
+                onChangeText={setTitle}
+                style={{ textAlignVertical: 'top', padding: 0 }}
+              />
+              <TextInput
+                className="mt-5 min-h-[100px] font-medium text-[16px]"
+                placeholder={t('write.contentPlaceholder')}
+                placeholderTextColor="#CBCBCB"
+                value={content}
+                onChangeText={setContent}
+                style={{
+                  flex: 1,
+                  textAlignVertical: 'top',
+                  paddingTop: Platform.OS === 'android' ? 0 : undefined,
+                }}
+                multiline
+                scrollEnabled={false}
+                maxLength={4000}
+              />
+            </InnerLayout>
+          </ScrollView>
         </KeyboardLayout>
       )}
 
