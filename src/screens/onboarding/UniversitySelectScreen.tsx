@@ -89,7 +89,7 @@ export default function UniversitySelectScreen({ navigation }: Props) {
               selectedValues={selectedOption ? [selectedOption] : []}
               onSelect={handleSelect}
               multiple={false}
-              nameSpace="universities:universities"
+              nameSpace="universities:universities_onboarding"
             />
           )}
         </View>

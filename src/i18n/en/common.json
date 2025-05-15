@@ -82,7 +82,7 @@
       "sendSMS": "Verification code request limit exceeded.",
       "alreadyReported": "This content has already been reported.",
       "matchProfile": "Matching profile is not complete.",
-      "matchDelay": "You can match only once a day.",
+      "matchDelay": "You can match only twice a day.",
       "blocked": "You're not in a relationship that allows chat requests."
     }
   }
