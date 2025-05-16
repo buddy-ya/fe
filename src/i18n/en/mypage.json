@@ -62,7 +62,7 @@
     },
     "students": {
       "title": "Student Verification",
-      "description": "You can verify using any proof of student status, such as digital or physical student ID, library card, certificate of enrollment, school's webstie login status, tuition bill, etc."
+      "description": "You can verify using any proof of student status, such as digital or physical student ID, library card, certificate of enrollment, school's webstie login status, tuition bill, certificate of admission etc."
     }
   },
   "menuItems": {

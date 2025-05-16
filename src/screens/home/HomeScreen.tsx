@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { View, TouchableOpacity } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { feedKeys, FeedRepository } from '@/api';
@@ -6,6 +6,7 @@ import { Button, CategoryPager, FeedList, InnerLayout, Layout } from '@/componen
 import { useBackButton, useFeedList } from '@/hooks';
 import { FeedStackParamList } from '@/navigation/navigationRef';
 import { useModalStore, useUserStore } from '@/store';
+import GlobalBuddyBannerEn from '@assets/icons/GlobalBuddyBannerEn.svg';
 import MissionBannerEn from '@assets/icons/MissionFeedBannerEn.svg';
 import MissionBannerKo from '@assets/icons/missionFeedBannerKo.svg';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
@@ -64,27 +65,44 @@ export function HomeScreen({ navigation }: FeedHomeScreenProps) {
     navigation.navigate('FeedWrite', { initialCategoryId: activeCategory });
   };
 
-  const handlePressMissionBanner = () => {
-    navigation.navigate('Mission');
-  };
-
   const insets = useSafeAreaInsets();
   const writeButtonPosition = isAndroid ? insets.bottom + 100 : insets.bottom + 70;
 
-  const MissionBanner = () => {
+  // ✅ 랜덤 배너 통합 컴포넌트
+  const RandomBanner = () => {
     const locale = Localization.locale;
+
+    const banners = useMemo(
+      () => [
+        {
+          key: 'mission',
+          image: locale.startsWith('ko') ? MissionBannerKo : MissionBannerEn,
+          onPress: () => navigation.navigate('Mission'),
+        },
+        {
+          key: 'globalBuddy',
+          image: GlobalBuddyBannerEn,
+          onPress: () => navigation.navigate('GlobalBuddyPage'),
+        },
+      ],
+      [locale]
+    );
+
+    const selectedBanner = useMemo(() => {
+      const index = Math.floor(Math.random() * banners.length);
+      return banners[index];
+    }, [banners]);
+
+    const BannerComponent = selectedBanner.image;
+
     return (
       <TouchableOpacity
         style={{ width: '100%', aspectRatio: 344 / 70 }}
         className="mb-3"
         activeOpacity={0.8}
-        onPress={handlePressMissionBanner}
+        onPress={selectedBanner.onPress}
       >
-        {locale.startsWith('ko') ? (
-          <MissionBannerKo width="100%" height="100%" preserveAspectRatio="xMidYMid meet" />
-        ) : (
-          <MissionBannerEn width="100%" height="100%" preserveAspectRatio="xMidYMid meet" />
-        )}
+        <BannerComponent width="100%" height="100%" preserveAspectRatio="xMidYMid meet" />
       </TouchableOpacity>
     );
   };
@@ -129,7 +147,7 @@ export function HomeScreen({ navigation }: FeedHomeScreenProps) {
                       onRefresh: feedListData.handleRefresh,
                       tintColor: '#4AA366',
                     }}
-                    ListHeaderComponent={<MissionBanner />}
+                    ListHeaderComponent={<RandomBanner />}
                   />
                 )}
               </View>

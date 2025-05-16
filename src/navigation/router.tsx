@@ -8,6 +8,8 @@ import CommentEditScreen from '@/screens/home/CommentEditScreen';
 import { SuspendedFeedDetailScreen } from '@/screens/home/FeedDetailScreen';
 import FeedSearchScreen from '@/screens/home/FeedSearchScreen';
 import FeedWriteScreen from '@/screens/home/FeedWriteScreen';
+import EventScreen from '@/screens/home/GlobalBuddyPage';
+import GlobalBuddyPage from '@/screens/home/GlobalBuddyPage';
 import { HomeScreen } from '@/screens/home/HomeScreen';
 import MatchScreen from '@/screens/match/MatchScreen';
 import BookmarkScreen from '@/screens/mypage/BookmarkScreen';
@@ -233,6 +235,7 @@ function FeedNavigator() {
       <FeedStack.Screen name="FeedDetail" component={SuspendedFeedDetailScreen} />
       <FeedStack.Screen name="CommentEdit" component={CommentEditScreen} />
       <FeedStack.Screen name="Profile" component={MyProfileScreen} />
+      <FeedStack.Screen name="GlobalBuddyPage" component={GlobalBuddyPage} />
       <FeedStack.Screen name="Mission" component={MissionScreen} />
     </FeedStack.Navigator>
   );

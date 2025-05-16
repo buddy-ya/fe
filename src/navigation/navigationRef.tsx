@@ -58,6 +58,7 @@ export type FeedStackParamList = {
   StudentIdVerification: undefined;
   StudentIdComplete: undefined;
   Mission: undefined;
+  GlobalBuddyPage: undefined;
 };
 
 export type VerificationStackParamList = {
