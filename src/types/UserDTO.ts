@@ -1,6 +1,6 @@
 export type Gender = 'male' | 'female' | 'unknown' | null;
 
-export type Role = 'STUDENT' | 'ADMIN';
+export type Role = 'STUDENT' | 'ADMIN' | 'OWNER';
 
 export interface User {
   id?: number;
@@ -29,6 +29,8 @@ export interface User {
   buddyActivity?: string;
   isMatchingProfileCompleted?: boolean;
   totalUnreadCount?: number;
+  isMatchingActive?: boolean;
+  isFeedActive?: boolean;
   accessToken?: string;
   refreshToken?: string;
 }

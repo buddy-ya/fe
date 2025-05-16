@@ -14,7 +14,7 @@ import {
 import { OnboardingStackParamList } from '@/navigation/navigationRef';
 import { useOnboardingStore } from '@/store';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { UNIVERSITY_ICONS, UniversityID } from '@/utils';
+import { UNIVERSITY_ICONS, UNIVERSITY_IDS, UniversityID } from '@/utils';
 
 type UniversityItem = { university: string };
 type OptionItem = { id: string; icon?: React.ReactNode };
@@ -42,13 +42,19 @@ export default function UniversitySelectScreen({ navigation }: Props) {
     fetchUniversities();
   }, [t]);
 
-  const options: OptionItem[] = universities.map((item) => {
+  const ordered = [...universities].sort(
+    (a, b) =>
+      UNIVERSITY_IDS.indexOf(a.university as UniversityID) -
+      UNIVERSITY_IDS.indexOf(b.university as UniversityID)
+  );
+
+  const options: OptionItem[] = ordered.map((item) => {
     const IconComponent = UNIVERSITY_ICONS[item.university as UniversityID];
     return {
       id: item.university,
       icon: IconComponent ? (
         <View pointerEvents="none" className="overflow-hidden">
-          <IconComponent />
+          <IconComponent width={23} height={23} />
         </View>
       ) : null,
     };
@@ -66,7 +72,7 @@ export default function UniversitySelectScreen({ navigation }: Props) {
       <InnerLayout>
         <Heading>{t('universitySelect.title')}</Heading>
         <HeadingDescription>{t('universitySelect.description')}</HeadingDescription>
-
+        <HeadingDescription>{t('universitySelect.tip')}</HeadingDescription>
         <MyText size="text-base" className="mt-6 font-semibold">
           {t('universitySelect.label')}
         </MyText>
@@ -83,7 +89,7 @@ export default function UniversitySelectScreen({ navigation }: Props) {
               selectedValues={selectedOption ? [selectedOption] : []}
               onSelect={handleSelect}
               multiple={false}
-              nameSpace="universities:universities"
+              nameSpace="universities:universities_onboarding"
             />
           )}
         </View>

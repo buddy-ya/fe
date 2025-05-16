@@ -33,6 +33,7 @@
   "universitySelect": {
     "title": "What university are you enrolled in?",
     "description": "Choose your university and meet your campus buddies",
+    "tip": "Can’t find your university?\nPlease select Buddyya",
     "universities": {
       "sejong": "Sejong University"
     },

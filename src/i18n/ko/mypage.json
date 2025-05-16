@@ -59,7 +59,7 @@
     },
     "students": {
       "title": "학생 인증",
-      "description": "실물 학생증, 온라인 학생증, 재학증명서, 도서관 출입증 등 학생임을 보여주는 모든 수단으로 인증을 받습니다."
+      "description": "실물 학생증, 온라인 학생증, 재학증명서, 도서관 출입증, 등록금 고지서, 입학 증명서등 학생임을 보여주는 모든 수단으로 인증을 받습니다."
     }
   },
   "menuItems": {
@@ -122,6 +122,7 @@
       "invitation_event": "친구초대 이벤트",
       "chatroom_no_response_refund": "매칭 환급",
       "event_reward": "이벤트 보상",
+      "festival_reward": "축제기간 이벤트",
       "mission_visit_reward": "출석 미션",
       "rejected_chat_request": "채팅 요청 환급",
       "mission_certification_reward": "학교 인증 미션"

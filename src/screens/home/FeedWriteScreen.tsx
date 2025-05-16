@@ -1,14 +1,7 @@
 import { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import {
-  View,
-  TouchableOpacity,
-  TextInput,
-  ScrollView,
-  Alert,
-  Platform,
-  Switch,
-} from 'react-native';
+import { View, TouchableOpacity, TextInput, Alert, Platform, Switch } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
 import { feedKeys, FeedRepository } from '@/api';
 import {
   Layout,
@@ -30,7 +23,6 @@ import { useTabStore } from '@/store/useTabStore';
 import { CATEGORIES, isAndroid, logError } from '@/utils';
 
 const FILTERED_CATEGORIES = CATEGORIES;
-
 const IMAGE_PICKER_OPTIONS: ImagePicker.ImagePickerOptions = {
   mediaTypes: 'images',
   allowsEditing: false,
@@ -45,18 +37,18 @@ export default function FeedWriteScreen({ navigation, route }: FeedWriteScreenPr
   const feed = route.params?.feed;
   const isEdit = route.params?.isEdit;
   const initialCategoryId = route.params?.initialCategoryId;
-  const modalVisible = useModalStore((state) => state.visible.category);
-  const handleModalOpen = useModalStore((state) => state.handleOpen);
-  const handleModalClose = useModalStore((state) => state.handleClose);
-
+  const modalVisible = useModalStore((s) => s.visible.category);
+  const handleModalOpen = useModalStore((s) => s.handleOpen);
+  const handleModalClose = useModalStore((s) => s.handleClose);
   const { selectedTab } = useTabStore();
-  const userUniversity = useUserStore((state) => state.university);
+  const userUniversity = useUserStore((s) => s.university);
   const tab = selectedTab === 'myUni' ? userUniversity : 'all';
+  const scrollViewRef = useRef<ScrollView>(null);
 
   const [selectedCategory, setSelectedCategory] = useState(
     feed
-      ? FILTERED_CATEGORIES.find((c) => c.id === feed.category) || FILTERED_CATEGORIES[0]
-      : FILTERED_CATEGORIES.find((c) => c.id === initialCategoryId) || FILTERED_CATEGORIES[0]
+      ? FILTERED_CATEGORIES.find((c) => c.id === feed.category)!
+      : FILTERED_CATEGORIES.find((c) => c.id === initialCategoryId)!
   );
   const [title, setTitle] = useState(feed?.title || '');
   const [content, setContent] = useState(feed?.content || '');
@@ -71,8 +63,6 @@ export default function FeedWriteScreen({ navigation, route }: FeedWriteScreenPr
   );
   const [isLoading, setIsLoading] = useState(false);
   const { t } = useTranslation('feed');
-  const scrollRef = useRef<ScrollView>(null);
-
   const queryClient = useQueryClient();
 
   const handleCategorySelect = (category: (typeof CATEGORIES)[0]) => {
@@ -82,16 +72,9 @@ export default function FeedWriteScreen({ navigation, route }: FeedWriteScreenPr
 
   const pickImage = async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-
-    if (status !== 'granted') {
-      return;
-    }
-
+    if (status !== 'granted') return;
     try {
-      const result = await ImagePicker.launchImageLibraryAsync({
-        ...IMAGE_PICKER_OPTIONS,
-      });
-
+      const result = await ImagePicker.launchImageLibraryAsync(IMAGE_PICKER_OPTIONS);
       if (!result.canceled) {
         const newImages = result.assets.map((asset) => ({
           uri: asset.uri,
@@ -100,10 +83,12 @@ export default function FeedWriteScreen({ navigation, route }: FeedWriteScreenPr
           width: asset.width,
           height: asset.height,
         }));
-
         setImages((prev) => {
-          const updatedImages = [...prev, ...newImages];
-          return updatedImages.slice(0, 5);
+          const updated = [...prev, ...newImages].slice(0, 5);
+          setTimeout(() => {
+            scrollViewRef.current?.scrollToEnd({ animated: true });
+          }, 50);
+          return updated;
         });
       }
     } catch (error) {
@@ -113,38 +98,26 @@ export default function FeedWriteScreen({ navigation, route }: FeedWriteScreenPr
 
   const takePhoto = async () => {
     const { status } = await ImagePicker.requestCameraPermissionsAsync();
-
-    if (status !== 'granted') {
-      return;
-    }
-
+    if (status !== 'granted') return;
     try {
       const result = await ImagePicker.launchCameraAsync({
         ...IMAGE_PICKER_OPTIONS,
         allowsMultipleSelection: false,
       });
-
       if (!result.canceled) {
+        const asset = result.assets[0];
         const newImage = {
-          uri: result.assets[0].uri,
+          uri: asset.uri,
           type: 'image/jpeg',
           fileName: `camera_${Date.now()}.jpg`,
-          width: result.assets[0].width,
-          height: result.assets[0].height,
+          width: asset.width,
+          height: asset.height,
         };
-
-        setImages((prev) => {
-          const updatedImages = [...prev, newImage];
-          return updatedImages.slice(0, 5);
-        });
+        setImages((prev) => [...prev, newImage].slice(0, 5));
       }
     } catch (error) {
       Alert.alert('Error', 'Failed to take a photo');
     }
-  };
-
-  const handleOpenCategoryModal = () => {
-    handleModalOpen('category');
   };
 
   const removeImage = (index: number) => {
@@ -152,9 +125,9 @@ export default function FeedWriteScreen({ navigation, route }: FeedWriteScreenPr
   };
 
   const footerContent = (
-    <View className="">
+    <View>
       <ImagePreview images={images} onRemove={removeImage} />
-      <View className={`flex-row items-center justify-between border-gray-200 px-4 py-3`}>
+      <View className="flex-row items-center justify-between border-gray-200 px-4 py-3">
         <View className="ml-1 flex-row items-center">
           <TouchableOpacity onPress={takePhoto} className="mr-3">
             <Camera size={24} color="#797979" />
@@ -163,11 +136,9 @@ export default function FeedWriteScreen({ navigation, route }: FeedWriteScreenPr
             <ImagePlus size={24} color="#797979" />
           </TouchableOpacity>
         </View>
-        <View className="flex-row items-center">
-          <MyText color="text-textDescription" className="font-semibold">
-            {images.length > 0 && `${images.length}/5`}
-          </MyText>
-        </View>
+        <MyText color="text-textDescription" className="font-semibold">
+          {images.length > 0 && `${images.length}/5`}
+        </MyText>
         <View className="flex-row items-center">
           <MyText size="text-[15px]" color="text-textDescription" className="mr-2 font-semibold">
             {t('write.profileVisible')}
@@ -185,9 +156,8 @@ export default function FeedWriteScreen({ navigation, route }: FeedWriteScreenPr
 
   const handleUpload = async () => {
     if (!isValid) return;
-
+    setIsLoading(true);
     try {
-      setIsLoading(true);
       if (isEdit && feed) {
         await FeedRepository.update({
           feedId: feed.id,
@@ -199,9 +169,7 @@ export default function FeedWriteScreen({ navigation, route }: FeedWriteScreenPr
           university: tab,
         });
         queryClient.refetchQueries({ queryKey: feedKeys.detail(feed.id) });
-        queryClient.refetchQueries({
-          queryKey: feedKeys.lists(tab, selectedCategory.id),
-        });
+        queryClient.refetchQueries({ queryKey: feedKeys.lists(tab, selectedCategory.id) });
       } else {
         await FeedRepository.create({
           title: title.trim(),
@@ -211,16 +179,14 @@ export default function FeedWriteScreen({ navigation, route }: FeedWriteScreenPr
           university: tab,
           isProfileVisible,
         });
-        queryClient.refetchQueries({
-          queryKey: feedKeys.lists(tab, selectedCategory.id),
-        });
+        queryClient.refetchQueries({ queryKey: feedKeys.lists(tab, selectedCategory.id) });
       }
+      navigation.goBack();
     } catch (error) {
       logError(error);
       Alert.alert('Error', `Feed ${isEdit ? 'Edit' : 'Upload'} Fail.`);
     } finally {
       setIsLoading(false);
-      navigation.goBack();
     }
   };
 
@@ -234,7 +200,10 @@ export default function FeedWriteScreen({ navigation, route }: FeedWriteScreenPr
         </TouchableOpacity>
       }
       headerCenter={
-        <TouchableOpacity onPress={handleOpenCategoryModal} className="flex-row items-center">
+        <TouchableOpacity
+          onPress={() => handleModalOpen('category')}
+          className="flex-row items-center"
+        >
           <MyText size="text-lg" className="mr-[2px] font-semibold" numberOfLines={1}>
             {selectedCategory.icon} {t(`category.${selectedCategory.label}`)}
           </MyText>
@@ -243,7 +212,9 @@ export default function FeedWriteScreen({ navigation, route }: FeedWriteScreenPr
       }
       headerRight={
         <TouchableOpacity
-          className={`items-center justify-center rounded-full px-3.5 py-1.5 ${isValid ? 'bg-primary' : 'bg-gray-400'}`}
+          className={`items-center justify-center rounded-full px-3.5 py-1.5 ${
+            isValid ? 'bg-primary' : 'bg-gray-400'
+          }`}
           onPress={handleUpload}
           disabled={isLoading}
         >
@@ -257,47 +228,34 @@ export default function FeedWriteScreen({ navigation, route }: FeedWriteScreenPr
         <Loading />
       ) : (
         <KeyboardLayout footer={footerContent}>
-          <InnerLayout>
-            <ScrollView
-              ref={scrollRef}
-              className="mt-8 flex-1 pb-[50px]"
-              onContentSizeChange={() => {
-                scrollRef.current?.scrollToEnd({ animated: true });
-              }}
-            >
+          <ScrollView ref={scrollViewRef}>
+            <InnerLayout className="flex-1">
               <TextInput
-                className="font-semibold text-[20px]"
+                className="mt-3 font-semibold text-[18px]"
                 placeholder={t('write.titlePlaceholder')}
                 placeholderTextColor="#CBCBCB"
                 value={title}
                 maxLength={100}
                 onChangeText={setTitle}
-                style={{
-                  textAlignVertical: 'top',
-                  paddingBottom: Platform.OS === 'android' ? 0 : undefined,
-                  paddingTop: Platform.OS === 'android' ? 0 : undefined,
-                }}
+                style={{ textAlignVertical: 'top', padding: 0 }}
               />
               <TextInput
-                className="mt-6 font-medium text-[18px]"
+                className="mt-5 min-h-[100px] font-medium text-[16px]"
                 placeholder={t('write.contentPlaceholder')}
                 placeholderTextColor="#CBCBCB"
-                maxLength={4000}
                 value={content}
-                onChangeText={(text) => {
-                  setContent(text);
-                  scrollRef.current?.scrollToEnd({ animated: false });
-                }}
-                multiline
-                textAlignVertical="top"
+                onChangeText={setContent}
                 style={{
-                  minHeight: 180,
+                  flex: 1,
                   textAlignVertical: 'top',
                   paddingTop: Platform.OS === 'android' ? 0 : undefined,
                 }}
+                multiline
+                scrollEnabled={false}
+                maxLength={4000}
               />
-            </ScrollView>
-          </InnerLayout>
+            </InnerLayout>
+          </ScrollView>
         </KeyboardLayout>
       )}
 

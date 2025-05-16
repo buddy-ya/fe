@@ -10,6 +10,7 @@ import MaleGenderIcon from '@assets/icons/match/genderMale.svg';
 import QuestionMarkIcon from '@assets/icons/match/question.svg';
 import DiffUniIcon from '@assets/icons/seoul.svg';
 import { Image as ExpoImage } from 'expo-image';
+import { t } from 'i18next';
 import { Lock, Check } from 'lucide-react-native';
 import { CountryID, getCountryFlag, UNIVERSITY_ICONS, UniversityID } from '@/utils';
 import { InnerLayout, MyText } from '../common';
@@ -47,7 +48,7 @@ const OptionButton = ({
     <TouchableOpacity onPress={onPress} disabled={option.locked} className="items-center">
       <View
         style={{ width: iconSize, height: iconSize }}
-        className="relative mb-3 overflow-hidden"
+        className="relative mb-[10px] overflow-hidden"
         pointerEvents="none"
       >
         <IconComponent width={iconSize} height={iconSize} />
@@ -91,22 +92,32 @@ const OptionSection = ({
   checkSize,
   showBorder = false,
 }: OptionSectionProps) => {
+  const visibleOptions = options.filter((opt) => !opt.invisible);
   return (
     <View className={`${showBorder && 'border-b'} border-[#F6F6F6] px-5 py-3`}>
       <MyText size="text-sm" color="text-textDescription" className="mb-4">
         {title}
       </MyText>
-      <View className="flex-row items-center gap-10">
-        {options.map((option) => (
-          <OptionButton
-            key={option.value}
-            option={option}
-            isSelected={selected === option.value}
-            onPress={() => onSelect(option.value)}
-            iconSize={iconSize}
-            overlaySize={overlaySize}
-            checkSize={checkSize}
-          />
+      <View className="flex-row gap-10">
+        {visibleOptions.map((option) => (
+          <View key={option.value} className="items-center">
+            <OptionButton
+              option={option}
+              isSelected={selected === option.value}
+              onPress={() => onSelect(option.value)}
+              iconSize={iconSize}
+              overlaySize={overlaySize}
+              checkSize={checkSize}
+            />
+            {option.value === 'DIFFERENT' && (
+              <MyText
+                size="text-[10px]"
+                className="mt-[2px] rounded-lg bg-[#E8F8F4] p-[1px] font-medium text-primary"
+              >
+                {t('match:match.not_requested.quick')}
+              </MyText>
+            )}
+          </View>
         ))}
       </View>
     </View>
@@ -127,17 +138,21 @@ export default function NotRequestedView({
   navigation,
 }: NotRequestedViewProps) {
   const { t } = useTranslation('match');
-  const [countryType, setCountryType] = useState<'GLOBAL' | 'KOREAN' | null>(null);
-  const [universityType, setUniversityType] = useState<'SAME' | 'DIFFERENT' | null>(null);
-  const [genderType, setGenderType] = useState<'MALE' | 'FEMALE' | 'ALL' | null>(null);
-
   const handleModalOpen = useModalStore((state) => state.handleOpen);
   const userUniv = useUserStore((state) => state.university);
   const userGender = useUserStore((state) => state.gender);
-  const userProfileImageUrl = useUserStore((state) => state.profileImageUrl);
-  const userName = useUserStore((state) => state.name);
   const userCountry = useUserStore((state) => state.country);
-  const userIsCertificated = useUserStore((state) => state.isCertificated);
+  const userUnivMatchingActive = useUserStore((state) => state.isMatchingActive);
+
+  const defaultCountry = userCountry === 'ko' ? 'GLOBAL' : 'KOREAN';
+  const defaultUniversity = 'DIFFERENT';
+  const defaultGender = 'ALL';
+
+  const [countryType, setCountryType] = useState<'GLOBAL' | 'KOREAN' | null>(defaultCountry);
+  const [universityType, setUniversityType] = useState<'SAME' | 'DIFFERENT' | null>(
+    defaultUniversity
+  );
+  const [genderType, setGenderType] = useState<'MALE' | 'FEMALE' | 'ALL' | null>(null);
 
   const universityOptions: Option[] = [
     {
@@ -145,29 +160,29 @@ export default function NotRequestedView({
       label: t('match.not_requested.university.different'),
       icon: DiffUniIcon,
       category: 'university',
-      locked: true,
     },
     {
       value: 'SAME',
       label: t('match.not_requested.university.same'),
       icon: UNIVERSITY_ICONS[userUniv as UniversityID],
       category: 'university',
+      locked: !userUnivMatchingActive,
     },
   ];
 
   const countryOption: Option[] = [
-    {
-      value: 'GLOBAL',
-      label: t('match.not_requested.country.global'),
-      icon: GlobalIcon,
-      category: 'country',
-    },
     {
       value: 'KOREAN',
       label: t('match.not_requested.country.korea'),
       icon: KoreaIcon,
       category: 'country',
       invisible: userCountry === 'ko',
+    },
+    {
+      value: 'GLOBAL',
+      label: t('match.not_requested.country.global'),
+      icon: GlobalIcon,
+      category: 'country',
     },
   ];
 

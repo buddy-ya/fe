@@ -20,6 +20,18 @@ class FeedRepository {
     return data;
   }
 
+  async getPopular({ university, category, page, size }: FeedDTO) {
+    const { data } = await API.get('/feeds/popular', {
+      params: {
+        university,
+        category,
+        page,
+        size,
+      },
+    });
+    return data;
+  }
+
   async create(feedData: FeedFormData) {
     const formData = createFeedFormData(feedData);
     const headers = getFormDataHeaders();
@@ -78,6 +90,11 @@ class FeedRepository {
 
   async toggleBookmark({ feedId }: FeedDTO) {
     const { data } = await API.put(`/feeds/${feedId}/bookmark`);
+    return data;
+  }
+
+  async togglePin({ feedId }: FeedDTO) {
+    const { data } = await API.put(`/feeds/${feedId}/pin`);
     return data;
   }
 }

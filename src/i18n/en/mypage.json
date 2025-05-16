@@ -62,7 +62,7 @@
     },
     "students": {
       "title": "Student Verification",
-      "description": "You can verify using any proof of student status, such as digital or physical student ID, library card, certificate of enrollment, school's webstie login status, tuition bill, etc."
+      "description": "You can verify using any proof of student status, such as digital or physical student ID, library card, certificate of enrollment, school's webstie login status, tuition bill, certificate of admission etc."
     }
   },
   "menuItems": {
@@ -93,6 +93,7 @@
     "title": "Point History",
     "pointType": {
       "signup": "Sign Up Event",
+      "new_signup": "Sign Up Event",
       "university_auth": "University Verification Event",
       "chat_request": "Chat Request",
       "match_request": "Match Request",
@@ -101,6 +102,7 @@
       "chatroom_no_response_refund": "Refund Matching",
       "event_reward": "Event Reward",
       "mission_visit_reward": "Check-in Mission",
+      "festival_reward": "Festival Event",
       "rejected_chat_request": "Refund Chat Request",
       "mission_certification_reward": "Student Verification Mission"
     },
