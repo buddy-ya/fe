@@ -105,7 +105,8 @@
       "mission_visit_reward": "Check-in Mission",
       "festival_reward": "Festival Event",
       "rejected_chat_request": "Refund Chat Request",
-      "mission_certification_reward": "Student Verification Mission"
+      "mission_certification_reward": "Student Verification Mission",
+      "coupon_event_reward": "Point Coupon Reward"
     },
     "pointChangeType": {
       "earn": "Earned",
