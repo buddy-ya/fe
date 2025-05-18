@@ -49,11 +49,17 @@ export default function Layout({
   return (
     <SafeAreaView
       edges={edges}
-      className={`flex-1 py-2 ${
-        shouldUseWhiteBackground ? 'bg-white' : 'bg-mainBackground'
-      } ${className}`}
+      style={{
+        flex: 1,
+        backgroundColor: shouldUseWhiteBackground ? '#FFFFFF' : '#F6F6F6',
+      }}
+      className={`${className}`}
     >
-      <StatusBar barStyle="dark-content" backgroundColor="white" />
+      <StatusBar
+        translucent
+        backgroundColor={isBackgroundWhite ? 'white' : 'transparent'}
+        barStyle="dark-content"
+      />
       {showHeader && (
         <Header
           isSearchLayout={isSearchLayout}
@@ -62,7 +68,7 @@ export default function Layout({
           rightContent={headerRight}
         />
       )}
-      {preserveHeader && <View className="h-[44px]" />}
+      {preserveHeader && <View style={{ height: 44 }} />}
       {children}
     </SafeAreaView>
   );

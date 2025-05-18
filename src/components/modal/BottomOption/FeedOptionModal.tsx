@@ -1,13 +1,13 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Alert, Text } from 'react-native';
+import { Alert } from 'react-native';
 import { feedKeys, FeedRepository } from '@/api';
-import { useModalStore, useToastStore, useUserStore } from '@/store';
+import { useModalStore, useUserStore } from '@/store';
 import { Feed } from '@/types';
 import { useNavigation } from '@react-navigation/native';
 import { useQueryClient } from '@tanstack/react-query';
 import i18next from 'i18next';
-import { Pencil, Trash2, Siren, Ban, Send } from 'lucide-react-native';
+import { Pencil, Trash2, Pin, Siren, Ban, Send } from 'lucide-react-native';
 import { logError } from '@/utils';
 import { ActionSheetWrapper, OptionItem } from '../Common';
 
@@ -21,41 +21,30 @@ export function FeedOptionModal({ visible, onClose, feed }: FeedOptionModalProps
   const queryClient = useQueryClient();
   const navigation = useNavigation<any>();
   const { t } = useTranslation('feed');
-  const isCertificated = useUserStore((state) => state.isCertificated);
   const handleModalOpen = useModalStore((state) => state.handleOpen);
-  const { showToast } = useToastStore();
+  const role = useUserStore((state) => state.role);
+  const isOwner = role === 'OWNER';
 
   async function handleBlock() {
-    navigation.reset({
-      index: 0,
-      routes: [{ name: 'FeedHome' }],
-    });
+    navigation.reset({ index: 0, routes: [{ name: 'FeedHome' }] });
     await queryClient.invalidateQueries({ queryKey: feedKeys.all });
   }
 
   const handleReportOption = () => {
     onClose();
     setTimeout(() => {
-      if (isCertificated) {
-        handleModalOpen('report', {
-          type: 'FEED',
-          reportedId: feed.id,
-          reportedUserId: feed.userId,
-        });
-      } else {
-        handleModalOpen('studentCertification');
-      }
+      handleModalOpen('report', {
+        type: 'FEED',
+        reportedId: feed.id,
+        reportedUserId: feed.userId,
+      });
     }, 200);
   };
 
   const handleBlockOption = () => {
     onClose();
     setTimeout(() => {
-      if (isCertificated) {
-        handleModalOpen('block', { buddyId: feed.userId, onBlockSuccess: handleBlock });
-      } else {
-        handleModalOpen('studentCertification');
-      }
+      handleModalOpen('block', { buddyId: feed.userId, onBlockSuccess: handleBlock });
     }, 200);
   };
 
@@ -74,69 +63,102 @@ export function FeedOptionModal({ visible, onClose, feed }: FeedOptionModalProps
   const handleChatRequestOption = () => {
     onClose();
     setTimeout(() => {
-      if (isCertificated) {
-        handleModalOpen('chatRequest', { data: feed });
-      } else {
-        handleModalOpen('studentCertification');
-      }
+      handleModalOpen('chatRequest', { data: feed });
     }, 200);
   };
 
-  const options: OptionItem[] = feed.isFeedOwner
-    ? [
-        {
-          id: 1,
-          label: i18next.t('feed:modal.edit'),
-          icon: <Pencil size={16} color="#282828" />,
-          onPress: () => {
-            navigation.navigate('FeedWrite', { feed, isEdit: true });
+  const handleTogglePin = async () => {
+    try {
+      await FeedRepository.togglePin({ feedId: feed.id });
+      queryClient.invalidateQueries({ queryKey: feedKeys.all });
+      onClose();
+    } catch (err: any) {
+      logError(err);
+    }
+  };
+
+  const authorOptions: OptionItem[] = [
+    {
+      id: 1,
+      label: i18next.t('feed:modal.edit'),
+      icon: <Pencil size={16} color="#282828" />,
+      onPress: () => {
+        navigation.navigate('FeedWrite', { feed, isEdit: true });
+        onClose();
+      },
+    },
+    {
+      id: 2,
+      label: i18next.t('feed:modal.delete'),
+      icon: <Trash2 size={16} color="#282828" />,
+      onPress: () =>
+        showDeleteAlert(async () => {
+          try {
+            await FeedRepository.delete({ feedId: feed.id });
+            queryClient.invalidateQueries({
+              predicate: (q) => q.queryKey[0] === 'feeds' && q.queryKey[1] !== 'detail',
+            });
+            navigation.goBack();
             onClose();
-          },
-        },
-        {
-          id: 2,
-          label: i18next.t('feed:modal.delete'),
-          icon: <Trash2 size={16} color="#282828" />,
-          onPress: () =>
-            showDeleteAlert(async () => {
-              try {
-                await FeedRepository.delete({ feedId: feed.id });
-                queryClient.invalidateQueries({
-                  predicate: (query) => {
-                    const key = query.queryKey;
-                    if (key[0] !== 'feeds') return false;
-                    if (key[1] === 'detail') return false;
-                    return true;
-                  },
-                });
-                navigation.goBack();
-                onClose();
-              } catch (error: any) {
-                logError(error);
-              }
-            }),
-        },
-      ]
-    : [
-        {
-          id: 3,
-          label: i18next.t('feed:modal.report'),
-          icon: <Siren size={16} color="#282828" />,
-          onPress: handleReportOption,
-        },
-        {
-          id: 4,
-          label: i18next.t('feed:modal.block'),
-          icon: <Ban size={16} color="#282828" />,
-          onPress: handleBlockOption,
-        },
-        {
-          id: 5,
-          label: i18next.t('feed:modal.chat'),
-          icon: <Send size={16} color="#282828" />,
-          onPress: handleChatRequestOption,
-        },
-      ];
+          } catch (error: any) {
+            logError(error);
+          }
+        }),
+    },
+  ];
+
+  const guestOptions: OptionItem[] = [
+    {
+      id: 3,
+      label: i18next.t('feed:modal.report'),
+      icon: <Siren size={16} color="#282828" />,
+      onPress: handleReportOption,
+    },
+    {
+      id: 4,
+      label: i18next.t('feed:modal.block'),
+      icon: <Ban size={16} color="#282828" />,
+      onPress: handleBlockOption,
+    },
+    {
+      id: 5,
+      label: i18next.t('feed:modal.chat'),
+      icon: <Send size={16} color="#282828" />,
+      onPress: handleChatRequestOption,
+    },
+  ];
+
+  const ownerOption: OptionItem[] = [
+    {
+      id: 6,
+      label: feed.isPinned ? i18next.t('feed:modal.unpin') : i18next.t('feed:modal.pin'),
+      icon: <Pin size={16} color="#282828" />,
+      onPress: handleTogglePin,
+    },
+    {
+      id: 7,
+      label: i18next.t('feed:modal.delete'),
+      icon: <Trash2 size={16} color="#282828" />,
+      onPress: () =>
+        showDeleteAlert(async () => {
+          try {
+            await FeedRepository.delete({ feedId: feed.id });
+            queryClient.invalidateQueries({
+              predicate: (q) => q.queryKey[0] === 'feeds' && q.queryKey[1] !== 'detail',
+            });
+            navigation.goBack();
+            onClose();
+          } catch (error: any) {
+            logError(error);
+          }
+        }),
+    },
+  ];
+
+  const options: OptionItem[] = [
+    ...(feed.isFeedOwner ? authorOptions : guestOptions),
+    ...(isOwner ? ownerOption : []),
+  ];
 
   return <ActionSheetWrapper visible={visible} onClose={onClose} options={options} />;
 }

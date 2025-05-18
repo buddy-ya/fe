@@ -1,4 +1,5 @@
 import { ChatListResponse, ChatDTO } from '@/types/ChatDTO';
+import { getFormDataHeaders } from '@/utils';
 import API from './API';
 
 class ChatRepository {
@@ -19,11 +20,8 @@ class ChatRepository {
     const image = new FormData();
     image.append('image', file);
     image.append('tempId', String(tempId));
-    const { data } = await API.post(`/node/room/${roomId}/image`, image, {
-      headers: {
-        ...API.defaults.headers.common,
-      },
-    });
+    const headers = getFormDataHeaders();
+    const { data } = await API.post(`/node/room/${roomId}/image`, image, { headers });
     return data;
   }
 }

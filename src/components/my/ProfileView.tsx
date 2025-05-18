@@ -4,8 +4,10 @@ import { View, Image, TouchableOpacity, TextInput, ScrollView } from 'react-nati
 import { MyText, Chip } from '@/components';
 import { useToastStore } from '@/store';
 import { User } from '@/types';
+import SchoolCheck from '@assets/icons/schoolCircleCheck.svg';
 import * as Clipboard from 'expo-clipboard';
 import { Camera, Pencil } from 'lucide-react-native';
+import { UNIVERSITY_ICONS, UNIVERSITY_IDS, UniversityID } from '@/utils';
 import { CountryID, getCountryFlag } from '@/utils/constants/countries';
 import { INTEREST_ICONS } from '@/utils/constants/interests';
 import { MAJOR_ICONS } from '@/utils/constants/majors';
@@ -105,6 +107,8 @@ const ProfileView: React.FC<ProfileViewProps> = ({
 
   const showToast = useToastStore((state) => state.showToast);
 
+  const UniversityIcon = UNIVERSITY_ICONS[user.university as UniversityID];
+
   const handleCopy = async (text: string) => {
     showToast(<MyText>📋</MyText>, t('mypage:profile.toast.copySuccess'), 1200);
     await Clipboard.setStringAsync(text);
@@ -139,9 +143,9 @@ const ProfileView: React.FC<ProfileViewProps> = ({
         showsVerticalScrollIndicator={false}
         contentContainerStyle={isMyProfile ? { paddingBottom: 70 } : { paddingBottom: 0 }}
       >
-        <View className="mt-3 rounded-[12px]">
-          <View className="items-center">
-            <View className="relative h-[110px] w-[110px] overflow-hidden rounded-[25px]">
+        <View className="mt-3 overflow-hidden rounded-[16px] bg-white p-5 py-9">
+          <View className="flex-row items-center">
+            <View className="relative h-[90px] w-[90px] overflow-hidden rounded-[25px]">
               <Image
                 source={
                   characterImageUrl ? { uri: characterImageUrl } : { uri: user.profileImageUrl }
@@ -159,22 +163,52 @@ const ProfileView: React.FC<ProfileViewProps> = ({
                 </TouchableOpacity>
               )}
             </View>
-            <View className="mt-4 flex-row items-center">
-              <MyText size="text-2xl" className="font-bold">
-                {user.name}
-              </MyText>
-              {isMyProfile && handleEditName && (
-                <TouchableOpacity className="ml-2" onPress={handleEditName}>
-                  <Pencil size={18} color="#797979" />
-                </TouchableOpacity>
-              )}
+            <View className="ml-5">
+              <View className="flex-row items-center">
+                <MyText size="text-xl" className="font-semibold">
+                  {user.name}
+                </MyText>
+                {isMyProfile && handleEditName && (
+                  <TouchableOpacity
+                    className="ml-2"
+                    onPress={handleEditName}
+                    style={{ zIndex: 10 }}
+                    hitSlop={{ top: 10, left: 10, right: 10, bottom: 10 }}
+                  >
+                    <Pencil size={15} color="#797979" strokeWidth={1.6} />
+                  </TouchableOpacity>
+                )}
+              </View>
+              <View className="flex-row items-center">
+                <MyText className="mt-1 font-semibold">
+                  {t(`universities:universities.${user.university}`)}
+                </MyText>
+              </View>
+
+              {
+                <View className="mt-[7px] flex-row items-center">
+                  <MyText
+                    size="text-[12px]"
+                    className={`rounded-lg px-1 py-[2px] font-semibold ${user.isCertificated ? 'bg-[#E8F8F4] text-primary' : 'bg-black/10 text-textProfile'}`}
+                  >
+                    {user.isCertificated
+                      ? t('profile.studentVerification.verified')
+                      : t('profile.studentVerification.unverified')}
+                  </MyText>
+                  {user.isCertificated && (
+                    <View className="ml-1 items-center justify-center" pointerEvents="none">
+                      <SchoolCheck />
+                    </View>
+                  )}
+                </View>
+              }
             </View>
-            <MyText size="text-[14px]" color="text-textProfile" className="mt-3">
-              {t(`universities:universities.${user.university}`)}
-            </MyText>
+            <View className="absolute right-0 top-[50%] -z-10 -translate-y-1/2 opacity-25">
+              <UniversityIcon width={100} height={100} />
+            </View>
           </View>
         </View>
-        <View className="mt-7 rounded-[20px] bg-white">
+        <View className="mt-7 rounded-[16px] bg-white">
           <View className="flex-row items-start justify-between px-5 py-4">
             <View className="flex-1">
               {renderSectionHeader(t('mypage:profile.sections.country'))}

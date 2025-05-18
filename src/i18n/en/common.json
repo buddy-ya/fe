@@ -8,11 +8,11 @@
   "emptyState": {
     "feed": {
       "title": "No feed",
-      "description": "Create your first feed\nand communicate with many global buddies!"
+      "description": "Create your first feed and communicate with many global buddies!"
     },
     "bookmark": {
       "title": "No bookmarked feeds",
-      "description": "Bookmark the feeds you like."
+      "description": "Bookmark posts you like."
     },
     "search": {
       "title": "No search results found",
@@ -82,7 +82,7 @@
       "sendSMS": "Verification code request limit exceeded.",
       "alreadyReported": "This content has already been reported.",
       "matchProfile": "Matching profile is not complete.",
-      "matchDelay": "You can match only once a day.",
+      "matchDelay": "You can match only twice a day.",
       "blocked": "You're not in a relationship that allows chat requests."
     }
   }

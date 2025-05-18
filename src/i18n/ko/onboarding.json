@@ -33,6 +33,7 @@
   "universitySelect": {
     "title": "재학 중인 학교를 선택해주세요",
     "description": "선택한 학교는 프로필에 표시되며,\n같은 학교 버디들과 소통할 수 있어요.",
+    "tip": "'대학을 찾을 수 없나요?\n버디야를 선택해주세요.",
     "universities": {
       "sejong": "세종대학교"
     },

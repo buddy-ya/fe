@@ -5,8 +5,10 @@
   },
   "build": {
     "development": {
+      "autoIncrement": true,
       "developmentClient": true,
       "distribution": "internal",
+      "credentialsSource": "remote",
       "ios": {
         "buildConfiguration": "Debug",
         "scheme": "buddyya"
@@ -20,7 +22,6 @@
     },
     "production": {
       "autoIncrement": true,
-      "android": {},
       "ios": {
         "buildConfiguration": "Release",
         "scheme": "buddyya"

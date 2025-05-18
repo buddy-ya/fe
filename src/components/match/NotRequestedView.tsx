@@ -4,22 +4,23 @@ import { View, TouchableOpacity, FlatList, ScrollView, Touchable } from 'react-n
 import { useModalStore, useUserStore } from '@/store';
 import GlobalIcon from '@assets/icons/match/countryGlobal.svg';
 import KoreaIcon from '@assets/icons/match/countryKorea.svg';
-import DiffUniIcon from '@assets/icons/match/diffUniv.svg';
 import AllGenderIcon from '@assets/icons/match/genderAll.svg';
 import FemaleGenderIcon from '@assets/icons/match/genderFemale.svg';
 import MaleGenderIcon from '@assets/icons/match/genderMale.svg';
 import QuestionMarkIcon from '@assets/icons/match/question.svg';
+import DiffUniIcon from '@assets/icons/seoul.svg';
 import { Image as ExpoImage } from 'expo-image';
+import { t } from 'i18next';
 import { Lock, Check } from 'lucide-react-native';
 import { CountryID, getCountryFlag, UNIVERSITY_ICONS, UniversityID } from '@/utils';
 import { InnerLayout, MyText } from '../common';
-import { PlaneAnimation } from './PlaneAnimation';
 
 interface Option {
   value: string;
   label: string;
   icon: any;
   locked?: boolean;
+  invisible?: boolean;
   category?: 'university' | 'country' | 'gender';
 }
 
@@ -42,11 +43,12 @@ const OptionButton = ({
 }: OptionButtonProps) => {
   const IconComponent = option.icon;
 
+  if (option.invisible) return;
   return (
     <TouchableOpacity onPress={onPress} disabled={option.locked} className="items-center">
       <View
         style={{ width: iconSize, height: iconSize }}
-        className="relative mb-2 overflow-hidden"
+        className="relative mb-[10px] overflow-hidden"
         pointerEvents="none"
       >
         <IconComponent width={iconSize} height={iconSize} />
@@ -85,27 +87,37 @@ const OptionSection = ({
   options,
   selected,
   onSelect,
-  iconSize = 60,
+  iconSize = 50,
   overlaySize = 24,
   checkSize,
   showBorder = false,
 }: OptionSectionProps) => {
+  const visibleOptions = options.filter((opt) => !opt.invisible);
   return (
     <View className={`${showBorder && 'border-b'} border-[#F6F6F6] px-5 py-3`}>
       <MyText size="text-sm" color="text-textDescription" className="mb-4">
         {title}
       </MyText>
-      <View className="flex-row items-center gap-10">
-        {options.map((option) => (
-          <OptionButton
-            key={option.value}
-            option={option}
-            isSelected={selected === option.value}
-            onPress={() => onSelect(option.value)}
-            iconSize={iconSize}
-            overlaySize={overlaySize}
-            checkSize={checkSize}
-          />
+      <View className="flex-row gap-10">
+        {visibleOptions.map((option) => (
+          <View key={option.value} className="items-center">
+            <OptionButton
+              option={option}
+              isSelected={selected === option.value}
+              onPress={() => onSelect(option.value)}
+              iconSize={iconSize}
+              overlaySize={overlaySize}
+              checkSize={checkSize}
+            />
+            {option.value === 'DIFFERENT' && (
+              <MyText
+                size="text-[10px]"
+                className="mt-[2px] rounded-lg bg-[#E8F8F4] p-[1px] font-medium text-primary"
+              >
+                {t('match:match.not_requested.quick')}
+              </MyText>
+            )}
+          </View>
         ))}
       </View>
     </View>
@@ -126,47 +138,51 @@ export default function NotRequestedView({
   navigation,
 }: NotRequestedViewProps) {
   const { t } = useTranslation('match');
-  const [countryType, setCountryType] = useState<'GLOBAL' | 'KOREAN' | null>(null);
-  const [universityType, setUniversityType] = useState<'SAME' | 'DIFFERENT' | null>(null);
-  const [genderType, setGenderType] = useState<'MALE' | 'FEMALE' | 'ALL' | null>(null);
-
   const handleModalOpen = useModalStore((state) => state.handleOpen);
   const userUniv = useUserStore((state) => state.university);
   const userGender = useUserStore((state) => state.gender);
-  const userProfileImageUrl = useUserStore((state) => state.profileImageUrl);
-  const userName = useUserStore((state) => state.name);
   const userCountry = useUserStore((state) => state.country);
-  const userIsCertificated = useUserStore((state) => state.isCertificated);
+  const userUnivMatchingActive = useUserStore((state) => state.isMatchingActive);
+
+  const defaultCountry = userCountry === 'ko' ? 'GLOBAL' : 'KOREAN';
+  const defaultUniversity = 'DIFFERENT';
+  const defaultGender = 'ALL';
+
+  const [countryType, setCountryType] = useState<'GLOBAL' | 'KOREAN' | null>(defaultCountry);
+  const [universityType, setUniversityType] = useState<'SAME' | 'DIFFERENT' | null>(
+    defaultUniversity
+  );
+  const [genderType, setGenderType] = useState<'MALE' | 'FEMALE' | 'ALL' | null>(null);
 
   const universityOptions: Option[] = [
-    {
-      value: 'SAME',
-      label: t('match.not_requested.university.same'),
-      icon: UNIVERSITY_ICONS[userUniv as UniversityID],
-      category: 'university',
-    },
     {
       value: 'DIFFERENT',
       label: t('match.not_requested.university.different'),
       icon: DiffUniIcon,
       category: 'university',
-      locked: true,
+    },
+    {
+      value: 'SAME',
+      label: t('match.not_requested.university.same'),
+      icon: UNIVERSITY_ICONS[userUniv as UniversityID],
+      category: 'university',
+      locked: !userUnivMatchingActive,
     },
   ];
 
   const countryOption: Option[] = [
     {
-      value: 'GLOBAL',
-      label: t('match.not_requested.country.global'),
-      icon: GlobalIcon,
-      category: 'country',
-    },
-    {
       value: 'KOREAN',
       label: t('match.not_requested.country.korea'),
       icon: KoreaIcon,
       category: 'country',
-      locked: userCountry === 'ko',
+      invisible: userCountry === 'ko',
+    },
+    {
+      value: 'GLOBAL',
+      label: t('match.not_requested.country.global'),
+      icon: GlobalIcon,
+      category: 'country',
     },
   ];
 
@@ -194,54 +210,24 @@ export default function NotRequestedView({
   ];
 
   const handlePressMatch = () => {
-    userIsCertificated
-      ? handleModalOpen('matchRequest', {
-          onConfirm: () =>
-            handleMatchRequest({
-              nationalityType: countryType || 'GLOBAL',
-              universityType: universityType || 'SAME',
-              genderType: genderType || 'ALL',
-            }),
-        })
-      : handleModalOpen('studentCertification');
-  };
-
-  const handleProfilePress = () => {
-    navigation.navigate('MyProfile');
+    handleModalOpen('matchRequest', {
+      onConfirm: () =>
+        handleMatchRequest({
+          nationalityType: countryType || 'GLOBAL',
+          universityType: universityType || 'SAME',
+          genderType: genderType || 'ALL',
+        }),
+    });
   };
 
   return (
     <InnerLayout>
-      <View className="mt-4 w-full flex-row items-center justify-between gap-4 px-4">
-        <TouchableOpacity className="flex-row items-center gap-3" onPress={handleProfilePress}>
-          <ExpoImage
-            style={{ height: 48, width: 48, borderRadius: 12, aspectRatio: 1 / 1 }}
-            source={{ uri: userProfileImageUrl }}
-            contentFit="contain"
-          />
-          <View>
-            <MyText size="text-sm" color="text-black" className="font-semibold">
-              {t(`universities:universities.${userUniv}`)}
-            </MyText>
-            <View className="flex-row items-center gap-1">
-              <MyText size="text-sm" color="text-black" className="font-medium">
-                {userName}
-              </MyText>
-              <MyText>{getCountryFlag(userCountry as CountryID)}</MyText>
-            </View>
-          </View>
-        </TouchableOpacity>
-        <PlaneAnimation />
-        <View className="h-[48px] w-[48px] flex-row items-center justify-center rounded-xl bg-white">
-          <QuestionMarkIcon />
-        </View>
-      </View>
       <ScrollView
         contentContainerStyle={{ flexGrow: 1, paddingBottom: 100 }}
         showsVerticalScrollIndicator={false}
       >
-        <View className="mt-6 rounded-xl bg-white pb-2">
-          <MyText size="text-xl" className="px-5 pt-5 font-semibold">
+        <View className="mt-2 rounded-xl bg-white pb-2">
+          <MyText size="text-xl" className="mb-2 px-5 pt-5 font-semibold">
             {t('match.not_requested.title')}
           </MyText>
           <OptionSection
@@ -271,14 +257,14 @@ export default function NotRequestedView({
             onSelect={(value) => setGenderType(value as 'MALE' | 'FEMALE' | 'ALL')}
             iconSize={60}
             overlaySize={18}
-            checkSize={30}
+            checkSize={28}
           />
         </View>
-        <View className="mt-8 items-center">
+        <View className="mt-12 items-center">
           <TouchableOpacity
             onPress={handlePressMatch}
             disabled={!countryType || !universityType || !genderType}
-            className={`w-[180px] flex-row items-center justify-center rounded-full py-3 ${
+            className={`w-[160px] flex-row items-center justify-center rounded-full py-3 ${
               !countryType || !universityType || !genderType ? 'bg-[#CBCBCB]' : 'bg-primary'
             }`}
           >

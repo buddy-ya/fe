@@ -14,14 +14,15 @@
       "university": {
         "title": "학교",
         "same": "같은 학교",
-        "different": "다른 학교"
+        "different": "서울"
       },
       "gender": {
         "title": "성별",
         "all": "모두",
         "male": "남성",
         "female": "여성"
-      }
+      },
+      "quick": "빠른 매칭"
     },
     "pending": {
       "title": "버디를 찾고 있어요.",

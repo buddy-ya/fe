@@ -1,25 +1,30 @@
 const path = require('path');
-
-require('dotenv').config({ path: path.resolve(__dirname, '.env') });
+require('dotenv').config({
+  path: path.resolve(__dirname, `.env.${process.env.MODE}`),
+});
 
 module.exports = {
   expo: {
-    scheme: 'buddyya',
+    // General
     name: 'Buddyya',
-    owner: 'buddyya',
-    description: 'A friendly app for buddy management.',
     slug: 'buddyya',
-    version: '1.1.1',
+    scheme: 'buddyya',
+    owner: 'buddyya',
+    version: '1.1.6',
     orientation: 'portrait',
     userInterfaceStyle: 'light',
-    newArchEnabled: false,
-    assetBundlePatterns: ['./assets/fonts/*'],
+    description: 'A friendly app for buddy management.',
+
+    // Assets
     icon: './assets/images/icon/icon.png',
     splash: {
       image: './assets/images/icon/icon.png',
       resizeMode: 'contain',
       backgroundColor: '#00A176',
     },
+    assetBundlePatterns: ['./assets/fonts/*'],
+
+    // Plugins
     plugins: [
       [
         'expo-notifications',
@@ -44,12 +49,14 @@ module.exports = {
         },
       ],
     ],
+
+    // iOS
     ios: {
       bundleIdentifier: 'com.buddyya.app',
       supportsTablet: false,
       infoPlist: {
         UIBackgroundModes: ['remote-notification'],
-        'aps-environment': 'production',
+        apsEnvironment: 'production',
         NSAppTransportSecurity: {
           NSAllowsArbitraryLoads: true,
         },
@@ -61,6 +68,8 @@ module.exports = {
           'Buddyya requires photo library access to select images for your profile and to provide content sharing.',
       },
     },
+
+    // Android
     android: {
       package: 'com.buddyya.app',
       permissions: ['NOTIFICATIONS', 'VIBRATE', 'WAKE_LOCK'],
@@ -80,13 +89,14 @@ module.exports = {
         {
           action: 'android.intent.action.VIEW',
           category: ['android.intent.category.DEFAULT', 'android.intent.category.BROWSABLE'],
-          data: {
-            scheme: 'buddyya',
-          },
+          data: { scheme: 'buddyya' },
         },
       ],
     },
+
+    // Extras
     extra: {
+      MODE: process.env.MODE,
       BASE_URL: process.env.BASE_URL,
       BASE_DOMAIN: process.env.BASE_DOMAIN,
       eas: {

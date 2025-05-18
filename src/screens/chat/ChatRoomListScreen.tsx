@@ -51,7 +51,7 @@ export default function RoomListScreen({ navigation }: RoomListNavigationProps) 
     navigation.navigate('ChatRequests');
   };
 
-  const BANNER_RATIO = 343 / 77;
+  const BANNER_RATIO = 343 / 70;
   const handlePressRoom = (room: Room) => {
     navigation.navigate('ChatRoom', { id: room.id });
   };
@@ -90,18 +90,18 @@ export default function RoomListScreen({ navigation }: RoomListNavigationProps) 
         </TouchableOpacity>
       }
     >
-      <InnerLayout>
+      <InnerLayout className="">
         <View className="flex-1">
           <TouchableOpacity
             onPress={openInstagramProfile}
             activeOpacity={0.7}
-            className="my-1 items-center"
+            className="items-center"
           >
             <View style={{ width: '100%', aspectRatio: BANNER_RATIO }}>
               {locale.startsWith('ko') ? (
                 <InqueryKo width="100%" height="100%" preserveAspectRatio="xMidYMid meet" />
               ) : (
-                <InqueryEn width="100%" height="100" />
+                <InqueryEn width="100%" height="100%" />
               )}
             </View>
           </TouchableOpacity>

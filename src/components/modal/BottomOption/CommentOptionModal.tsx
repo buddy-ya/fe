@@ -32,12 +32,8 @@ export function CommentOptionModal({
     university: feed.universityTab,
     feedId,
   });
-  const { t } = useTranslation();
   const handleModalOpen = useModalStore((state) => state.handleOpen);
-  const { showToast } = useToastStore();
-  const isCertificated = useUserStore((state) => state.isCertificated);
 
-  // handleBlock: 쿼리 무효화로 댓글 리스트 갱신 (필요 시)
   const handleBlock = async () => {
     await queryClient.invalidateQueries({ queryKey: ['feedComments', feedId] });
   };
@@ -45,40 +41,28 @@ export function CommentOptionModal({
   const handleReportOption = () => {
     onClose();
     setTimeout(() => {
-      if (isCertificated) {
-        handleModalOpen('report', {
-          type: 'COMMENT',
-          reportedId: comment.id,
-          reportedUserId: comment.userId,
-        });
-      } else {
-        handleModalOpen('studentCertification');
-      }
+      handleModalOpen('report', {
+        type: 'COMMENT',
+        reportedId: comment.id,
+        reportedUserId: comment.userId,
+      });
     }, 200);
   };
 
   const handleBlockOption = () => {
     onClose();
     setTimeout(() => {
-      if (isCertificated) {
-        handleModalOpen('block', {
-          buddyId: comment.userId,
-          onBlockSuccess: handleBlock,
-        });
-      } else {
-        handleModalOpen('studentCertification');
-      }
+      handleModalOpen('block', {
+        buddyId: comment.userId,
+        onBlockSuccess: handleBlock,
+      });
     }, 200);
   };
 
   const handleChatRequestOption = () => {
     onClose();
     setTimeout(() => {
-      if (isCertificated) {
-        handleModalOpen('chatRequest', { data: comment });
-      } else {
-        handleModalOpen('studentCertification');
-      }
+      handleModalOpen('chatRequest', { data: comment });
     }, 200);
   };
 

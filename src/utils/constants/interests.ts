@@ -279,3 +279,5 @@ export const INTEREST_CATEGORIES = INTEREST_CATEGORY_IDS.map((categoryId) => ({
     icon: INTEREST_ICONS[interestId],
   })),
 }));
+
+export type InterestID = (typeof CATEGORY_INTERESTS)[keyof typeof CATEGORY_INTERESTS][number];

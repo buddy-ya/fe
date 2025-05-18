@@ -1,9 +1,8 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { View, TouchableOpacity, ScrollView, TextInput } from 'react-native';
-import { Text } from 'react-native';
+import { View, TouchableOpacity, ScrollView, TextInput, Text } from 'react-native';
 import { UserRepository } from '@/api';
-import { Layout, InnerLayout, MyText, Button, KeyboardLayout } from '@/components';
+import { Layout, InnerLayout, MyText, KeyboardLayout } from '@/components';
 import { useModalStore, useToastStore, useUserStore } from '@/store';
 import EventIcon from '@assets/icons/invitationEvent.svg';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
@@ -20,6 +19,7 @@ export interface InvitationCodeDTO {
 export default function InvitationScreen({ navigation }: NativeStackScreenProps<any>) {
   const [ownInviteCode, setOwnInviteCode] = useState<string>('M65VOS');
   const [inputCode, setInputCode] = useState<string>('');
+  const [submitting, setSubmitting] = useState<boolean>(false);
   const { showToast } = useToastStore();
   const { t } = useTranslation('mypage');
   const userUpdate = useUserStore((state) => state.update);
@@ -42,9 +42,10 @@ export default function InvitationScreen({ navigation }: NativeStackScreenProps<
   }, [ownInviteCode, showToast, t]);
 
   const handleSubmitInputCode = useCallback(async () => {
-    if (!inputCode.trim()) {
+    if (!inputCode.trim() || submitting) {
       return;
     }
+    setSubmitting(true);
     try {
       const data = await UserRepository.submitInvitaionCode({ code: inputCode });
       userUpdate({ point: data.point });
@@ -55,11 +56,16 @@ export default function InvitationScreen({ navigation }: NativeStackScreenProps<
       });
       setInputCode('');
     } catch (error) {
+      console.error(error);
       setInputCode('');
+    } finally {
+      setTimeout(() => {
+        setSubmitting(false);
+      }, 500);
     }
-  }, [inputCode, userUpdate, handleModalOpen]);
+  }, [inputCode, submitting, userUpdate, handleModalOpen]);
 
-  const isSubmitDisabled = !inputCode.trim();
+  const isSubmitDisabled = submitting || !inputCode.trim();
 
   return (
     <Layout
@@ -89,6 +95,7 @@ export default function InvitationScreen({ navigation }: NativeStackScreenProps<
               <MyText color="text-textDescription" className="mt-3 text-center">
                 {t('event.invitation.subtitle')}
               </MyText>
+
               <TouchableOpacity
                 onPress={handleCopyCode}
                 className="mt-7 w-80 flex-row items-center justify-between rounded-[30px] border border-gray-300 bg-white px-9 py-[16px]"
@@ -130,6 +137,7 @@ export default function InvitationScreen({ navigation }: NativeStackScreenProps<
                   </TouchableOpacity>
                 </View>
               </View>
+
               <View className="mt-20 max-w-[95%]">
                 <MyText size="text-xs" color="text-gray-500" className="mb-[2px] text-center">
                   {t('event.invitation.notice1')}

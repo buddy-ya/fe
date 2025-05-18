@@ -11,9 +11,14 @@
         "select": "Please select a profile photo"
       }
     },
+    "studentVerification": {
+      "verified": "Verified Student",
+      "unverified": "Unverified Student"
+    },
     "university": {
       "sju": "Sejong University"
     },
+    "studentCertification": "Student Verified",
     "gender": {
       "male": "Man",
       "female": "Woman"
@@ -45,7 +50,7 @@
     }
   },
   "quickMenu": {
-    "bookmark": "Bookmarks",
+    "bookmark": "Saved",
     "myPosts": "My Posts",
     "verification": "Verification"
   },
@@ -57,12 +62,12 @@
     },
     "students": {
       "title": "Student Verification",
-      "description": "You can verify using any proof of student status, such as digital or physical student ID, library card, certificate of enrollment, school's webstie login status, tuition bill, etc."
+      "description": "You can verify using any proof of student status, such as digital or physical student ID, library card, certificate of enrollment, school's webstie login status, tuition bill, certificate of admission etc."
     }
   },
   "menuItems": {
     "title": "Settings Layout",
-    "bookmark": "Bookmarks",
+    "bookmark": "Saved",
     "myPosts": "My Posts",
     "refresh": "Student Verification Reset",
     "version": "App Version",
@@ -88,6 +93,7 @@
     "title": "Point History",
     "pointType": {
       "signup": "Sign Up Event",
+      "new_signup": "Sign Up Event",
       "university_auth": "University Verification Event",
       "chat_request": "Chat Request",
       "match_request": "Match Request",
@@ -95,8 +101,10 @@
       "invitation_event": "Invitation Event",
       "chatroom_no_response_refund": "Refund Matching",
       "event_reward": "Event Reward",
-      "visit_reward": "Login Reward",
-      "rejected_chat_request": "Refund Chat Request"
+      "mission_visit_reward": "Check-in Mission",
+      "festival_reward": "Festival Event",
+      "rejected_chat_request": "Refund Chat Request",
+      "mission_certification_reward": "Student Verification Mission"
     },
     "pointChangeType": {
       "earn": "Earned",
@@ -128,6 +136,20 @@
       }
     }
   },
+  "mission": {
+    "mission": "Mission",
+    "completed": "Done",
+    "attendance": {
+      "title": "Check-in Mission",
+      "description": "Check in once a day\nto receive points"
+    },
+    "verification": {
+      "title": "School Verification",
+      "description": "Verify your school and receive a Buddyya badge and points"
+    },
+    "summary": "Points you've earned so far"
+  },
+
   "setting": "Setting",
   "certification": "Verification is already complete."
 }

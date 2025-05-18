@@ -33,6 +33,7 @@
   "universitySelect": {
     "title": "What university are you enrolled in?",
     "description": "Choose your university and meet your campus buddies",
+    "tip": "Can’t find your university?\nPlease select Buddyya",
     "universities": {
       "sejong": "Sejong University"
     },
@@ -55,7 +56,7 @@
   "name": {
     "title": "What is your name?",
     "description": "To make it easier for buddies to remember,\nwe recommend using an English name.",
-    "label": "Name",
+    "label": "Nickname",
     "placeholder": "-",
     "footer": "This will be displayed on your profile.",
     "warning": "Please enter your name in English",

@@ -9,19 +9,20 @@
       "country": {
         "title": "Nationality",
         "global": "Global",
-        "korea": "Korea"
+        "korea": "Korean"
       },
       "university": {
         "title": "University",
-        "same": "My Uni",
-        "different": "Others"
+        "same": "My Univ",
+        "different": "Seoul"
       },
       "gender": {
         "title": "Gender",
         "all": "All",
         "male": "Man",
         "female": "Woman"
-      }
+      },
+      "quick": "Quick Match"
     },
     "pending": {
       "title": "Finding your buddy..",

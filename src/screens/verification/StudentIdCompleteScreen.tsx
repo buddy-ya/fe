@@ -19,16 +19,20 @@ export default function StudentIdCardCompleteScreen({ navigation }: EmailVerific
     } as any);
   };
 
+  const CHARACTERS_RATIO = 306 / 229;
+
   return (
-    <Layout showHeader onBack={() => navigation.goBack()}>
+    <Layout preserveHeader>
       <InnerLayout>
         <View className="flex-1">
           <View className="flex-1">
             <Heading>{t('studentIdComplete.title')}</Heading>
             <HeadingDescription>{t('studentIdComplete.description')}</HeadingDescription>
           </View>
-          <View className="flex-1">
-            <Characters />
+          <View className="flex-1 items-center">
+            <View className="mt-6" style={{ width: '90%', aspectRatio: CHARACTERS_RATIO }}>
+              <Characters width="100%" height="100%" />
+            </View>
           </View>
         </View>
         <Button onPress={handleNavigationButton}>

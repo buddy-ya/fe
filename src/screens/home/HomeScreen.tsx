@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { View, TouchableOpacity } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { feedKeys, FeedRepository } from '@/api';
@@ -6,9 +6,12 @@ import { Button, CategoryPager, FeedList, InnerLayout, Layout } from '@/componen
 import { useBackButton, useFeedList } from '@/hooks';
 import { FeedStackParamList } from '@/navigation/navigationRef';
 import { useModalStore, useUserStore } from '@/store';
+import GlobalBuddyBannerEn from '@assets/icons/GlobalBuddyBannerEn.svg';
+import MissionBannerEn from '@assets/icons/MissionFeedBannerEn.svg';
+import MissionBannerKo from '@assets/icons/missionFeedBannerKo.svg';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import * as Device from 'expo-device';
-import { Pencil, Plus, Search } from 'lucide-react-native';
+import * as Localization from 'expo-localization';
+import { Pencil, Search } from 'lucide-react-native';
 import { useTabStore } from '@/store/useTabStore';
 import { isAndroid, CATEGORIES } from '@/utils';
 import { FeedHeaderTab } from '@/components/feed/FeedHeaderTab';
@@ -24,20 +27,29 @@ export function HomeScreen({ navigation }: FeedHomeScreenProps) {
   const isCertificated = useUserStore((state) => state.isCertificated);
 
   const tab = selectedTab === 'myUni' ? userUniversity : 'all';
-
-  const categoriesToShow = tab === 'all' ? [CATEGORIES[0]] : CATEGORIES;
-
+  const categoriesToShow = tab === 'all' ? [CATEGORIES[0], CATEGORIES[2]] : [CATEGORIES[0]];
   const [activeCategory, setActiveCategory] = useState(categoriesToShow[0].id);
 
-  const feedListData = useFeedList({
-    queryKey: feedKeys.lists(tab, activeCategory),
-    fetchFn: async (params) => {
-      return FeedRepository.getAll({
+  const isPopular = activeCategory === 'popular';
+
+  const fetchFn = async (params: any) => {
+    if (isPopular) {
+      return FeedRepository.getPopular({
         ...params,
         university: tab,
         category: activeCategory,
       });
-    },
+    }
+    return FeedRepository.getAll({
+      ...params,
+      university: tab,
+      category: activeCategory,
+    });
+  };
+
+  const feedListData = useFeedList({
+    queryKey: feedKeys.lists(tab, activeCategory),
+    fetchFn,
     staleTime: STALE_TIME,
   });
 
@@ -49,14 +61,51 @@ export function HomeScreen({ navigation }: FeedHomeScreenProps) {
     navigation.navigate('FeedDetail', { feedId });
   };
 
-  const handleWriteButton = async () => {
-    isCertificated
-      ? navigation.navigate('FeedWrite', { initialCategoryId: activeCategory })
-      : handleModalOpen('studentCertification');
+  const handleWriteButton = () => {
+    navigation.navigate('FeedWrite', { initialCategoryId: activeCategory });
   };
 
   const insets = useSafeAreaInsets();
-  const writeButtonPosition = isAndroid ? insets.bottom + 100 : insets.bottom + 75;
+  const writeButtonPosition = isAndroid ? insets.bottom + 100 : insets.bottom + 70;
+
+  // ✅ 랜덤 배너 통합 컴포넌트
+  const RandomBanner = () => {
+    const locale = Localization.locale;
+
+    const banners = useMemo(
+      () => [
+        {
+          key: 'mission',
+          image: locale.startsWith('ko') ? MissionBannerKo : MissionBannerEn,
+          onPress: () => navigation.navigate('Mission'),
+        },
+        {
+          key: 'globalBuddy',
+          image: GlobalBuddyBannerEn,
+          onPress: () => navigation.navigate('GlobalBuddyPage'),
+        },
+      ],
+      [locale]
+    );
+
+    const selectedBanner = useMemo(() => {
+      const index = Math.floor(Math.random() * banners.length);
+      return banners[index];
+    }, [banners]);
+
+    const BannerComponent = selectedBanner.image;
+
+    return (
+      <TouchableOpacity
+        style={{ width: '100%', aspectRatio: 344 / 70 }}
+        className="mb-3"
+        activeOpacity={0.8}
+        onPress={selectedBanner.onPress}
+      >
+        <BannerComponent width="100%" height="100%" preserveAspectRatio="xMidYMid meet" />
+      </TouchableOpacity>
+    );
+  };
 
   useBackButton();
 
@@ -98,19 +147,22 @@ export function HomeScreen({ navigation }: FeedHomeScreenProps) {
                       onRefresh: feedListData.handleRefresh,
                       tintColor: '#4AA366',
                     }}
+                    ListHeaderComponent={<RandomBanner />}
                   />
                 )}
               </View>
             ))}
           </CategoryPager>
-          <Button
-            type="circle"
-            onPress={handleWriteButton}
-            className="absolute right-0 h-[48px] w-[48px]"
-            containerStyle={{ bottom: writeButtonPosition }}
-            icon={Pencil}
-            iconSize={22}
-          />
+          {activeCategory !== 'popular' && (
+            <Button
+              type="circle"
+              onPress={handleWriteButton}
+              className="absolute right-0 h-[46px] w-[46px]"
+              containerStyle={{ bottom: writeButtonPosition }}
+              icon={Pencil}
+              iconSize={22}
+            />
+          )}
         </View>
       </InnerLayout>
     </Layout>

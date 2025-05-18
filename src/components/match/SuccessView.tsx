@@ -54,7 +54,7 @@ export default function SuccessView({ navigation }: any) {
         >
           {matchData && (
             <View className="rounded-xl bg-white">
-              <View className="my-7 items-center">
+              <View className="mt-7 items-center">
                 <MyText size="text-xl" className="font-semibold">
                   {t('match.success.title')}
                 </MyText>

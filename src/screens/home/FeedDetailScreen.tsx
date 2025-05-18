@@ -101,21 +101,13 @@ export default function FeedDetailScreen({ navigation, route }: FeedDetailScreen
   };
 
   const handleChatRequest = () => {
-    if (isCertificated) {
-      handleModalOpen('chatRequest', { data: feed });
-    } else {
-      handleModalOpen('studentCertification');
-    }
+    handleModalOpen('chatRequest', { data: feed });
   };
 
   const handleCommentSubmit = async () => {
     if (!commentInput.trim()) return;
     Keyboard.dismiss();
     try {
-      if (!isCertificated) {
-        handleModalOpen('studentCertification');
-        return;
-      }
       if (parentCommentId) {
         await handleCommentActions.submit(commentInput, parentCommentId);
       } else {

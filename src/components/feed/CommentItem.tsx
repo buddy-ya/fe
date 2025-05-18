@@ -1,5 +1,7 @@
 import { useTranslation } from 'react-i18next';
-import { Image, Text, TouchableOpacity, View } from 'react-native';
+import { Alert, Image, Text, TouchableOpacity, View } from 'react-native';
+import { Linking } from 'react-native';
+import ParsedText from 'react-native-parsed-text';
 import { useToastStore } from '@/store';
 import { Comment } from '@/types';
 import * as Clipboard from 'expo-clipboard';
@@ -22,15 +24,15 @@ interface CommentLabelProps {
 
 const CommentLabel = ({ isFeedOwner, isCommentOwner }: CommentLabelProps) => {
   const { t } = useTranslation('feed');
-  if (isFeedOwner) {
-    return (
-      <View className="ml-2 rounded-lg bg-primary/10 px-[6px] py-[1px]">
-        <MyText size="text-[11px]" color="text-primary">
-          {t('writer')}
-        </MyText>
-      </View>
-    );
-  }
+  // if (isFeedOwner) {
+  //   return (
+  //     <View className="ml-2 rounded-lg bg-primary/10 px-[6px] py-[1px]">
+  //       <MyText size="text-[11px]" color="text-primary">
+  //         {t('writer')}
+  //       </MyText>
+  //     </View>
+  //   );
+  // }
   if (isCommentOwner) {
     return (
       <View className="ml-2 rounded-lg bg-[#F6F6F6] px-[6px] py-[1px]">
@@ -74,6 +76,17 @@ const CommentItem = ({
   ];
 
   const renderCommentText = (comment: Comment) => {
+    const handleUrlPress = async (url: string) => {
+      const link = url.startsWith('http://') || url.startsWith('https://') ? url : `https://${url}`;
+      const supported = await Linking.canOpenURL(link);
+      if (supported) {
+        await Linking.openURL(link);
+      } else {
+        Alert.alert('Notice', 'This link cannot be opened.', [{ text: 'Confrim' }], {
+          cancelable: true,
+        });
+      }
+    };
     if (comment.isDeleted) {
       return (
         <MyText size="text-[14px]" color={'text-[#797979]'}>
@@ -87,7 +100,23 @@ const CommentItem = ({
         </MyText>
       );
     }
-    return <MyText size="text-[14px]">{comment.content}</MyText>;
+    return (
+      <MyText size="text-[14px]">
+        {
+          <ParsedText
+            parse={[
+              {
+                type: 'url',
+                style: { color: '#00A176', textDecorationLine: 'underline' },
+                onPress: handleUrlPress,
+              },
+            ]}
+          >
+            {comment.content}
+          </ParsedText>
+        }
+      </MyText>
+    );
   };
   return (
     <View className={`bg-white px-4 py-3 ${isReply ? 'py-2 pl-[60px]' : ''}`}>

@@ -8,11 +8,14 @@ import CommentEditScreen from '@/screens/home/CommentEditScreen';
 import { SuspendedFeedDetailScreen } from '@/screens/home/FeedDetailScreen';
 import FeedSearchScreen from '@/screens/home/FeedSearchScreen';
 import FeedWriteScreen from '@/screens/home/FeedWriteScreen';
+import EventScreen from '@/screens/home/GlobalBuddyPage';
+import GlobalBuddyPage from '@/screens/home/GlobalBuddyPage';
 import { HomeScreen } from '@/screens/home/HomeScreen';
 import MatchScreen from '@/screens/match/MatchScreen';
 import BookmarkScreen from '@/screens/mypage/BookmarkScreen';
 import EditProfileImageScreen from '@/screens/mypage/EditProfileImageScreen';
 import InvitationScreen from '@/screens/mypage/InvitationScreen';
+import MissionScreen from '@/screens/mypage/MissionScreen';
 import MyPostsScreen from '@/screens/mypage/MyPostsScreen';
 import MyProfileScreen from '@/screens/mypage/MyProfileScreen';
 import PointScreen from '@/screens/mypage/PointScreen';
@@ -224,10 +227,16 @@ function FeedNavigator() {
         options={{ gestureEnabled: false }}
       />
       <FeedStack.Screen name="FeedSearch" component={FeedSearchScreen} />
-      <FeedStack.Screen name="FeedWrite" component={FeedWriteScreen} />
+      <FeedStack.Screen
+        name="FeedWrite"
+        component={FeedWriteScreen}
+        options={{ gestureEnabled: false }}
+      />
       <FeedStack.Screen name="FeedDetail" component={SuspendedFeedDetailScreen} />
       <FeedStack.Screen name="CommentEdit" component={CommentEditScreen} />
       <FeedStack.Screen name="Profile" component={MyProfileScreen} />
+      <FeedStack.Screen name="GlobalBuddyPage" component={GlobalBuddyPage} />
+      <FeedStack.Screen name="Mission" component={MissionScreen} />
     </FeedStack.Navigator>
   );
 }
@@ -299,6 +308,7 @@ function MatchNavigator() {
         options={{ gestureEnabled: false }}
       />
       <MatchStack.Screen name="Point" component={PointScreen} />
+      <MatchStack.Screen name="Mission" component={MissionScreen} />
       <MatchStack.Screen name="MyProfile" component={MyProfileScreen} />
       <MatchStack.Screen name="EditProfileImage" component={EditProfileImageScreen} />
       <MatchStack.Screen name="EditName" component={NameScreen} />
