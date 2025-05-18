@@ -74,6 +74,7 @@
     "inquiry": "Inquiry",
     "terms": "Terms of Use",
     "privacy": "Privacy Policy",
+    "pointCoupon": "Point Coupon",
     "logout": "Logout",
     "delete": {
       "label": "Delete Account",
@@ -114,6 +115,19 @@
   },
   "common": {
     "complete": "Done"
+  },
+  "pointCouponScreen": {
+    "title": "Enter Point Coupon",
+    "description": "Enter your point coupon code and receive 100 points!",
+    "label": "Coupon Code",
+    "placeholder": "ABCD1234EF",
+    "footer": "After entering the coupon code, press “Submit.”",
+    "submit": "Submit",
+    "errors": {
+      "notFound": "The coupon does not exist.",
+      "alreadyUsed": "The coupon has already been used.",
+      "invalid": "Invalid coupon code."
+    }
   },
   "event": {
     "invitation": {

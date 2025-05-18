@@ -18,6 +18,7 @@ import InvitationScreen from '@/screens/mypage/InvitationScreen';
 import MissionScreen from '@/screens/mypage/MissionScreen';
 import MyPostsScreen from '@/screens/mypage/MyPostsScreen';
 import MyProfileScreen from '@/screens/mypage/MyProfileScreen';
+import PointCouponScreen from '@/screens/mypage/PointCouponScreen';
 import PointScreen from '@/screens/mypage/PointScreen';
 import SettingScreen from '@/screens/mypage/SettingScreen';
 import VerificationScreen from '@/screens/mypage/VerificationScreen';
@@ -403,6 +404,7 @@ function MyPageNavigator() {
       <MyPageStack.Screen name="FeedDetail" component={SuspendedFeedDetailScreen} />
       <MyPageStack.Screen name="Point" component={PointScreen} />
       <MyPageStack.Screen name="InvitationEvent" component={InvitationScreen} />
+      <MyPageStack.Screen name="PointCoupon" component={PointCouponScreen} />
     </MyPageStack.Navigator>
   );
 }

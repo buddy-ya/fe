@@ -73,6 +73,12 @@ export default function SettingScreen({ navigation }: SettingScreenProps) {
       label: t('menuItems.privacy'),
       onPress: handlePrivacyPolicyPress,
     },
+    {
+      key: 'pointCoupon',
+      emoji: '🎉',
+      label: t('menuItems.pointCoupon') /* 또는 그냥 '포인트 쿠폰 입력' */,
+      onPress: () => navigation.navigate('PointCoupon'), // 스크린 이름에 맞춰서 변경
+    },
   ];
 
   // 그룹2: 하단 박스 (로그아웃, 회원탈퇴, 갱신)

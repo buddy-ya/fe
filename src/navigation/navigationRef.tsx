@@ -110,4 +110,5 @@ export type MyPageStackParamList = {
   };
   Onboarding: undefined;
   InvitationEvent: undefined;
+  PointCoupon: undefined;
 };

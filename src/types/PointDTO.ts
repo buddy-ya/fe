@@ -10,3 +10,8 @@ export interface PointsResponseDTO {
   points: PointDTO[];
   currentPoint: number;
 }
+
+export interface PointResponseDTO {
+  point: number;
+  pointChange: number;
+}

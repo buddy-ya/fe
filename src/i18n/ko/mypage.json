@@ -73,6 +73,7 @@
     "inquiry": "문의하기",
     "terms": "이용약관",
     "privacy": "개인정보처리방침",
+    "pointCoupon": "포인트 쿠폰",
     "logout": "로그아웃",
     "delete": {
       "label": "회원탈퇴",
@@ -132,6 +133,19 @@
       "deduct": "차감"
     },
     "currentPoint": "보유 포인트"
+  },
+  "pointCouponScreen": {
+    "title": "포인트 쿠폰 입력",
+    "description": "포인트 쿠폰 코드를 입력하고 100포인트 받아가세요!",
+    "label": "쿠폰 코드",
+    "placeholder": "ABCD1234EF",
+    "footer": "받은 쿠폰 코드를 입력 후 “등록”을 눌러주세요.",
+    "submit": "등록",
+    "errors": {
+      "notFound": "쿠폰이 존재하지 않습니다.",
+      "alreadyUsed": "이미 사용된 쿠폰입니다.",
+      "invalid": "유효하지 않은 쿠폰 코드입니다."
+    }
   },
   "mission": {
     "mission": "미션",
