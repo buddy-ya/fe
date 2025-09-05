@@ -66,7 +66,7 @@ API.interceptors.response.use(
         showErrorModal('tokenExpired');
         return Promise.reject(reissueError);
       }
-    } else if (error.response?.status === 401 && errorCode === 3002) {
+    } else if (error.response?.status === 401 && errorCode === 3000) {
       await SecureStore.deleteItemAsync(TOKEN_KEYS.ACCESS);
       await SecureStore.deleteItemAsync(TOKEN_KEYS.REFRESH);
       delete API.defaults.headers.common['Authorization'];
